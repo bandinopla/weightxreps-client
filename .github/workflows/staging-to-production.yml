@@ -16,4 +16,4 @@ jobs:
           password: ${{ secrets.PASS }}
           port: ${{ secrets.SSH_PORT }}
           script: | 
-            rsync -av /home/${{ secrets.USER }}/wxr-server-staging/. /home/${{ secrets.USER }}/public_html/weightxreps.net/ 
+            rsync -av --exclude=".htaccess" --exclude=".ftp-deploy-sync-state.json" --exclude="wxr-server-2" --exclude=".well-known" --exclude="cgi-bin" /home/${{ secrets.USER }}/staging.weightxreps.net/. /home/${{ secrets.USER }}/public_html/weightxreps.net/ 
