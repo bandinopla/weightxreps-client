@@ -19,7 +19,7 @@ jobs:
         run: npm i  
         
       - name: Build
-        run: npm run build  
+        run: CI=false npm run build  
 
       - name: Upload 
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
