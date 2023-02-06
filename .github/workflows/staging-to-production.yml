@@ -16,4 +16,9 @@ jobs:
           password: ${{ secrets.PASS }}
           port: ${{ secrets.SSH_PORT }}
           script: | 
-            rsync -av --exclude=".htaccess" --exclude=".ftp-deploy-sync-state.json" --exclude="wxr-server-2" --exclude=".well-known" --exclude="cgi-bin" /home/${{ secrets.USER }}/staging.weightxreps.net/. /home/${{ secrets.USER }}/public_html/weightxreps.net/ 
+            rsync -av --chmod=0755 --exclude="notif.txt" --exclude=".htaccess" --exclude=".ftp-deploy-sync-state.json" --exclude="wxr-server-2" --exclude=".well-known" --exclude="cgi-bin" /home/${{ secrets.USER }}/staging.weightxreps.net/. /home/${{ secrets.USER }}/public_html/weightxreps.net/ 
+
+#
+# 1) Almost had a heart attack... if you dont set the permission to 0755 the server will throw 404 on all files... omg... 
+# 2) Don't override the .htaccess because it has old stuff that make other old stuff work...
+#
