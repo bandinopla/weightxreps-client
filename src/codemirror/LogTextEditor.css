@@ -1,0 +1,36 @@
+.CodeMirror-lint-tooltip {
+    z-index: 9999;
+}
+.CodeMirror-hints {
+    z-index: 9999;
+}
+
+.CodeMirror-lint-marker-ymd, .CodeMirror-lint-message-ymd {
+    background-image: url("data:image/x-icon;base64,AAABAAEAEBAAAAEAIAD7AAAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAQDAAAA7d3iUgAAAAFzUkdCAdnJLH8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAqUExURQAAAP///2tra7u7uy0tLSEhIScnJ3d3d3FxcTo6OlJSUrW1tZycnObm5mk4Bv8AAAAOdFJOUwD/////////////////V0rbFAAAAFBJREFUeJxjYIADQSVBQSFFAQYGk1AgCCtgYGgFMUITGBhUwYwABgZNJSDQAjKAagUFpUEM0VBFXAwhpYMQBlwxjNEJNseBgeE6iKFhAHcEALWCE3FQodEEAAAAAElFTkSuQmCC")
+}
+
+.CodeMirror-lint-marker-info, .CodeMirror-lint-message-info{
+    background-image: url("data:image/x-icon;base64,AAABAAEAEBAAAAEAIAARAQAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgDAAAAKC0PUwAAAAFzUkdCAdnJLH8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAABFUExURf//AH9/AL+/AD8/AK+vAN/fAO/vAI+PAG9vAICAAE9PAF9fAM/PAA8PAP//Af//CP//Cf//Bf//A///B///BP//Av//BgZQxRgAAABlSURBVHictY4JDsAgCAQXrEXtoVLt/59atD9o0g0JyQybAPwSYhtn4cWvtBpwA5jxJEuYF2IgRkaijQZACuyYPYiCTLAfs4LE8gJsoxKH4k9/nTnnYrtU1aupojdtQNez3q2beAC4yQLeRUhbWAAAAABJRU5ErkJggg==")
+}
+
+.CodeMirror-lint-mark-info {
+    background-image: url("data:image/x-icon;base64,AAABAAEABQUAAAEAIAB7AAAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAFAAAABQEDAAAAt6G0pgAAAAFzUkdCAdnJLH8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAGUExURf//////AHh+GuEAAAAOSURBVHicY2AAgxMMBgACkgD5+zvRwgAAAABJRU5ErkJggg==")
+}
+
+.CodeMirror-lint-marker-delete-flag, .CodeMirror-lint-message-delete-flag{
+    background-image: url(./fire.png)
+} 
+
+/* //el icono
+"& .CodeMirror-lint-marker-info":{
+    backgroundImage: 'url("data:image/x-icon;base64,AAABAAEAEBAAAAEAIAARAQAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgDAAAAKC0PUwAAAAFzUkdCAdnJLH8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAABFUExURf//AH9/AL+/AD8/AK+vAN/fAO/vAI+PAG9vAICAAE9PAF9fAM/PAA8PAP//Af//CP//Cf//Bf//A///B///BP//Av//BgZQxRgAAABlSURBVHictY4JDsAgCAQXrEXtoVLt/59atD9o0g0JyQybAPwSYhtn4cWvtBpwA5jxJEuYF2IgRkaijQZACuyYPYiCTLAfs4LE8gJsoxKH4k9/nTnnYrtU1aupojdtQNez3q2beAC4yQLeRUhbWAAAAABJRU5ErkJggg==")'
+},
+
+//la linea en el editor
+"& .CodeMirror-lint-mark-info": {
+    backgroundImage: 'url("data:image/x-icon;base64,AAABAAEABQUAAAEAIAB7AAAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAFAAAABQEDAAAAt6G0pgAAAAFzUkdCAdnJLH8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAGUExURf//////AHh+GuEAAAAOSURBVHicY2AAgxMMBgACkgD5+zvRwgAAAABJRU5ErkJggg==")'
+},
+
+"& .CodeMirror-lint-marker-delete-flag": {
+    backgroundImage: `url("${FireIcon}")`
+} */

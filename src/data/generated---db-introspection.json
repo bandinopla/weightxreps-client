@@ -1,0 +1,101 @@
+{
+  "possibleTypes": {
+    "BaseStat": [
+      "Estimated1RM",
+      "Heavyest",
+      "MostVolume"
+    ],
+    "ExecExerciseResponse": [
+      "Exercise",
+      "ConfirmAction"
+    ],
+    "IBy": [
+      "DM",
+      "JComment",
+      "LikeOnDM",
+      "LikeOnJComment",
+      "LikeOnLog",
+      "StartedFollowing"
+    ],
+    "IHasJOwner": [
+      "JComment",
+      "LikeOnJComment",
+      "LikeOnLog"
+    ],
+    "IHasMessageID": [
+      "LikeOnDM",
+      "LikeOnJComment"
+    ],
+    "IHasText": [
+      "DM",
+      "JComment",
+      "LikeOnDM",
+      "LikeOnJComment",
+      "SystemNotification"
+    ],
+    "IMessageRef": [
+      "DM",
+      "JComment"
+    ],
+    "INotification": [
+      "DM",
+      "JComment",
+      "LikeOnDM",
+      "LikeOnJComment",
+      "LikeOnLog",
+      "StartedFollowing",
+      "SystemNotification"
+    ],
+    "ITO": [
+      "DM",
+      "JComment",
+      "LikeOnDM",
+      "LikeOnJComment",
+      "StartedFollowing"
+    ],
+    "JeditorRow": [
+      "JEditorText",
+      "JEditorEBlock",
+      "JEditorDayTag",
+      "JEditorBWTag",
+      "JEditorNewExercise"
+    ],
+    "Notification": [
+      "DM",
+      "JComment",
+      "LikeOnLog",
+      "LikeOnJComment",
+      "LikeOnDM",
+      "StartedFollowing",
+      "SystemNotification"
+    ],
+    "Setting": [
+      "BlockUsersSetting",
+      "CCSetting",
+      "Custom1RMFactorSetting",
+      "DOBSetting",
+      "DeleteAccountSetting",
+      "EmailSetting",
+      "OptionSetting",
+      "RPESetting",
+      "SocialMediasSetting",
+      "SupporterStatus",
+      "UsernameSetting",
+      "VoidSetting"
+    ],
+    "UserSetting": [
+      "UsernameSetting",
+      "EmailSetting",
+      "VoidSetting",
+      "DOBSetting",
+      "CCSetting",
+      "OptionSetting",
+      "SupporterStatus",
+      "Custom1RMFactorSetting",
+      "RPESetting",
+      "DeleteAccountSetting",
+      "BlockUsersSetting",
+      "SocialMediasSetting"
+    ]
+  }
+}

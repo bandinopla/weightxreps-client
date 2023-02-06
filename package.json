@@ -1,0 +1,75 @@
+{
+  "name": "weightxreps-client",
+  "version": "1.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bandinopla/weightxreps-client.git"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.21",
+    "@material-ui/core": "^4.12.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^27.0.0",
+    "@types/node": "^16.4.13",
+    "@types/react": "^17.0.17",
+    "@types/react-dom": "^17.0.9",
+    "apollo-upload-client": "^16.0.0",
+    "codemirror": "^5.62.3",
+    "firebase": "^9.6.11",
+    "firebaseui": "^6.0.1",
+    "graphql": "^15.5.1",
+    "papaparse": "^5.3.1",
+    "react": "^17.0.2",
+    "react-cropper": "^2.1.8",
+    "react-dom": "^17.0.2",
+    "react-firebaseui": "^6.0.0",
+    "react-instagram-embed": "^3.0.0",
+    "react-lorem-ipsum": "^1.4.9",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "react-sizeme": "^3.0.1",
+    "recharts": "^2.1.2",
+    "semver": "^7.3.2",
+    "source-map-explorer": "^2.5.2",
+    "typescript": "^4.3.5",
+    "typewriter-effect": "^2.18.2",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:staging": "set \"REACT_APP_REMOTE_SERVER=staging\" && react-scripts start",
+    "start:production": "set \"REACT_APP_REMOTE_SERVER=production\" && react-scripts start",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build", 
+    "test-build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "version": "node increase-build-number.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "yargs": "^15.4.1"
+  }
+}

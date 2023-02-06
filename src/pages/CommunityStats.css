@@ -1,0 +1,23 @@
+.HEAVYEST {
+    top: 0px;
+    left: 0px;
+    width: 230px;
+    height: 80px;
+    background: url("./index_stats_sprites.png") no-repeat 0px -160px;
+}
+
+.BESTESTIMATED1RM {
+    top: 0px;
+    left: 0px;
+    width: 230px;
+    height: 80px;
+    background: url("./index_stats_sprites.png") no-repeat 0px -80px;
+}
+
+.MOSTCOLUME {
+    top: 0px;
+    left: 0px;
+    width: 230px;
+    height: 80px;
+    background: url("./index_stats_sprites.png") no-repeat 0px 0px;
+}

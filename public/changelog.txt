@@ -1,0 +1,162 @@
+- 2.14.0 : 2023-02-05
+        + Backend open souced!
+        - Removed the "Videos" section, i need to work on that more it was not working i think...
+        
+- 2.13.1 : 2023-02-01
+        * added postimg.cc link parsing...
+        * added parsing of B#W#D# style of description for Block. Week. Day. Example: B1W1D2 = Block 1 Week 1 Day 2.
+
+- 2.13.0 : 2023-01-28
+        + Added the "videos" section
+        
+- 2.12.1 : 2023-01-27
+        + added a link to the personal records section of each exercise next to their names to make it easyer to find. Suggested/Mentioned by @azothriel
+        + added a brief description on how the PRs table is layed out. Implicitly suggested by @azothriel
+        * fixed some bugs in the achievements calculations
+        + added link to changelog section in the about page to make it easyer to see.
+        + added Chinups/Pullups as a recognized exercise to be calculated in the community stats. 
+
+- 2.12.0 :
+        * fixed a bug relating invalid username on signup thanks to @pilerik
+        + Added "Achievements" section.
+
+- 2.11.3 :
+        * updated the data from the SBD stats 
+        * simplifyed the layout a big & reduced banners size.
+        
+- 2.11.2 :
+        * fix: reported by @azothriel : spelling from "espect" -> "expect"
+- 2.11.1 :
+        * fix. reported by @azothriel : when you save a log and just type the exercise name but no reps or sets and then try to edit that log, the exercises are "lost" and you lose that data that was actually used as a placeholder for later use.
+
+- 2.11.0 :
+        + added banner and link to t-shirt store
+        
+- 2.10.1 :
+        + added "nodding guy" gif on workout save >.<
+        * changed backdrop texture of editor (dashed pattern)
+        * added "running since" badge on the index 
+        * new answer on FAQ
+        * updated the fonts on about section to match the rest of the site.
+
+- 2.10.0 :
+        + added/designed some banners and changed some font styles to add a new style to the site 
+        * fixed some texts on the site intro and signup page.
+        + added link to waybackmachine to prove the site was made in 2011
+        * styled the editor window a bit
+        () wish: improve the graphic design of the site
+
+- 2.9.5 :
+        * bug reported by @Bartman: set compression on edit mode was losing data on a particular scenario. 
+        * changelog page line wrap fix.
+        * signup page fontsize fix
+        + added username links in referenced users that reported bugs on the changelog.
+
+- 2.9.4 :
+        * bug reported by @azothriel: the editor closes as soon as you click on the grey area sometimes causing complete data lost unintentionally/by accident.
+
+- 2.9.3 :
+        * fixed the "like" button on the journal (it was working but it was not giving feedback after clicking it)
+        + in comunity stats aded the posibility to see "best of the year".
+
+- 2.9.2 : 
+        * small load time improve. It was taking a bit too long to load.
+
+- 2.9.1 : 
+        * bug fix: Top menu was deforming after clicking "add log" making it go 2 lines. 
+
+- 2.9.0 :
+        + Virtual Gym Access. Work in progress! Let's see how this goes!
+        + global notification banner.
+
+- 2.8.0 : 
+        + Added social media links section in user's profiles. So they can share their social medias.
+        + Highlight effect on the "joined" label of users with more than 5 years in the site. 
+        * Bug fix on settings page. Unsure if it affected anyone, no one reported it, but spoted it and fixed it anyways.
+
+- 2.7.4 : Design/Cosmetic touches
+        * Added more info on the landing page to help new visitors understand better what this site is all about.
+        * fixed bug in versioning script
+        * small touches on the signup page.
+
+- 2.7.3 : Design/Cosmetic touches
+        * added some decorative lines in the background to give some color to the site.
+        * increased the size of the SBD stats on the journal's user card.
+        * changed some colors on the guest index page.
+
+- 2.7.2 : Dark Mode fix
+        * Fixed some colors in the dark mode so now it looks hopefully a bit better.
+        + changelog page. Instead of redirecting to the txt i made a page in the site.
+
+- 2.7.1 : Bug fixes
+        * More code splitting. Trying to make the initial bundle lighter.
+        * Fix in "red guy" banner. It was setting its source on every state change...
+
+- 2.7.0 : "Sign In With" using Firebase + many fixes.
+        + Implemented Firebase's Auth to allow login/signup with more credential providers: Twitter, Github, Phone.
+        + Added a few new illustrations of red lifters.
+        + Added / Improved the terms of service and privacy policy
+        * re-wrote version format to be https://semver.org/ compatible.
+        * several fixes all over the place regarding responsive layout
+        * Did more code splitting optimizations to lower the size of the initial bundle. Still more work is desired...
+
+- 2.6.3 : BUG FIX
+        * @ijzersterk_pouja --> youtube link using "shorts" format was not rendering the video.
+
+- 2.6.2 : Bug fix
+        * @ijzersterk_pouja --> si guarda en fecha no default y usa new exercise tiraba error.
+
+- 2.6.1 :* Varios code splitting y optimizations 
+        + YT video en SBDStats / SBDStats banner en home. 
+        * @Rasmushorslev/ reported Ctrl+Space not working on mac
+
+- 2.6.0 : SBD Stats 
+        + SBD stats section.
+        * several small adjustments / fixes all over the place...
+
+- 2.5.0 : "whos ahead" graph y "following" tab
+        + Graph showing "how's ahead" in the comunity stats.
+        * Oops! restored this tab that was hidden for some reason...
+
+- 2.4.1 : jeditor autocomplete sort enames by use
+        * the autocomplete pop will sort itself by the most used matched exercise instead of just blind alpahetical order.
+
+- 2.4.0 :+ Added sign in with google
+
+- 2.3.2 : Removed restrictions
+        * 2022.01.13 :: user @Markus pidió comentar esto porque usa el sitio tambien para trackear cardio, etc...
+        * Anyone can download their workouts now.
+
+- 2.3.1 : Bug fix 
+        * @Quadzilla::: comment box not showing
+        * @Bartman :: sets compresison bug in edit mode fixed.
+
+- 2.3.0 : change username + darkmode
+        + Setting to allow to change the username 
+        + "Dark mode" (can be improved....)
+
+- 2.2.3 : Fixes 
+        * RPE Table now is wider and breaks the limits of its container to show all 12 columns at the same time.
+        * Fix in inbox notification count, was not acting right...
+        + Prompt/Warning if hit save and no data is found for default date.
+
+- 2.2.2 : About Page 
+        + Links to video of old verison & playlist to developer updates. + small touch in the RPE CVS load module (visual).
+        + Added more info + STACK subsection. 
+
+- 2.2.1 : CVS upload fix
+        * que solo acepte .csv
+        * que tire error si no es un CSV
+
+- 2.2.0 : RPE CVS upload + Side Banner
+        + RPE table allows upload of CSV value
+        * fix en eblock render volume was not showing right unit (@skullengaged)
+        + about page links to videos
+        + side banners and red guy banner
+        * version auto increase on build
+
+- 2.1.0 + indicador de que CTRL+SPACE triggers autocomplete in editor
+        + Linear progress display cuando se esta cargando la session
+        + build number display abajo de todo y script que se actualiza cuando hacer un build
+
+- 2.0.0 : Published version 2! Sep 26, 2021

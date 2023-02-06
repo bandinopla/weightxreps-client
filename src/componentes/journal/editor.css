@@ -1,0 +1,36 @@
+
+.success-true{
+        -webkit-animation:success-anim-color 0.3s ease 0s 1 normal;
+        -moz-animation:success-anim-color 0.3s ease 0s 1 normal;
+        -ms-animation:success-anim-color 0.3s ease 0s 1 normal;
+        animation:success-anim-color 0.3s ease 0s 1 normal;
+        animation-fill-mode: forwards;
+    }
+    
+    @-webkit-keyframes success-anim-color {
+        0%{ background-color:rgba(0,0,0,0.5); }
+        100%{ background-color:#0EAD69; }
+    }
+    
+    @keyframes success-anim-color {
+        0%{ background-color:rgba(0,0,0,0.5); }
+        100%{ background-color:#0EAD69; }
+    }
+
+    .success-false{
+        -webkit-animation:fail-anim-color 0.3s ease 0s 1 normal;
+        -moz-animation:fail-anim-color 0.3s ease 0s 1 normal;
+        -ms-animation:fail-anim-color 0.3s ease 0s 1 normal;
+        animation:fail-anim-color 0.3s ease 0s 1 normal;
+        animation-fill-mode: forwards;
+    }
+    
+    @-webkit-keyframes fail-anim-color {
+        0%{ background-color:rgba(0,0,0,0.5); }
+        100%{ background-color:#E63946; }
+    }
+    
+    @keyframes fail-anim-color {
+        0%{ background-color:rgba(0,0,0,0.5); }
+        100%{ background-color:#E63946; }
+    }

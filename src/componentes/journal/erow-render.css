@@ -1,0 +1,18 @@
+.PR {
+    animation: pulse-animation 0.5s infinite ease-in-out;
+  }
+  
+  @keyframes pulse-animation {
+    0% {
+      opacity: 1;
+    }
+    40% {
+        opacity: 0.2;
+    }
+    60% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+      }
+  }

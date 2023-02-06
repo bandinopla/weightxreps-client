@@ -1,0 +1,31 @@
+name: Repo --> Staging
+
+on:
+  push:
+    branches:
+      - deploy
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: deploy 
+
+      - name: Install dependencies to be able to build
+        run: npm i  
+        
+      - name: Build
+        run: npm run build  
+
+      - name: Upload 
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }} 
+          server-dir: /staging.weightxreps.net/
+          local-dir: ./build/

@@ -1,0 +1,19 @@
+name: Staging --> Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest 
+
+    steps:  
+      - name: Copy from Staging to Production
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          script: | 
+            rsync -av /home/${{ secrets.USER }}/wxr-server-staging/. /home/${{ secrets.USER }}/public_html/weightxreps.net/ 

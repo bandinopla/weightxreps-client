@@ -1,0 +1,112 @@
+.App {
+  text-align: center; 
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/*----------------------------------------------------------*/
+.oneline {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rounded {
+  border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  -moz-border-radius: 4px 4px 4px 4px;
+}
+
+.sha {
+  -webkit-box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 30%);
+    box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 30%);
+}
+
+.link-looking {
+  color:blue !important;
+  text-decoration: underline !important;
+  
+}
+
+/*-----------------------------------------*/
+.rainbow1 { 
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    display: inline-block;   
+}
+.rainbow1.gold {
+    background: rgb(97,84,48);
+background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%, rgba(190,175,101,1) 59%, rgba(103,90,51,1) 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    background-clip: text;
+    animation: rainbowSlide 1s linear infinite;
+}
+.rainbow1.silver {
+    background: rgb(121,144,148);
+background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 49%, rgba(125,149,152,1) 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    background-clip: text;
+    animation: rainbowSlide 2s linear infinite;
+}
+@keyframes rainbowSlide {
+    to {
+        background-position: 200% center;
+      }
+  }
+
+
+
+.app-section-separator:after, 
+.app-section-separator:before {
+    width: 60px;
+    content:"";
+    height:4px;
+    vertical-align: middle; 
+    margin: 0 20px;;
+    background: black;
+    display: inline-block;
+    
+}
+.app-section-separator {
+    text-align: center;
+    display: block;
+}
