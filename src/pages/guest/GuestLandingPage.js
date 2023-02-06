@@ -95,7 +95,7 @@ export const GuestLandingPage = ()=>{
  
  
                             <Typography variant="h6" className={classes.subtitle} >
-                            <strong>Weight (x)For Reps</strong>, is an <a href="https://github.com/bandinopla/weightxreps-server" target="_blank">open-source</a> online training journal system (web & mobile*) that will allow you to keep your training data organized and tracked.
+                            <strong>Weight (x)For Reps</strong>, is an <strong>Open Source</strong> ( <a href="https://github.com/bandinopla/weightxreps-client" target="_blank">Frontend</a> & <a href="https://github.com/bandinopla/weightxreps-server" target="_blank">Backend</a> )  online training journal system (web & mobile*) that will allow you to keep your training data organized and tracked.
 Several charts and graphs will aid you in better undertsanding your training.
 
                             <br/>

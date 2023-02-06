@@ -93,8 +93,14 @@ export const AboutPage = ()=>{
                 <Divider/><br/>
                 <Typography>  
                 <iframe src="https://ghbtns.com/github-btn.html?user=bandinopla&repo=weightxreps-server&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
-<br/><strong>The Backend code</strong> is open source at: <a href="https://github.com/bandinopla/weightxreps-server" alt="Backend Open Source Link" target="_blank">https://github.com/bandinopla/weightxreps-server</a>. You can now help the comunity by improving the code!
+<br/><strong>The Backend code</strong> is open source at: <a href="https://github.com/bandinopla/weightxreps-server" alt="Backend Open Source Link" target="_blank">https://github.com/bandinopla/weightxreps-server</a>. 
                 </Typography>
+                <br/><Divider/><br/>
+                <Typography>  
+                <iframe src="https://ghbtns.com/github-btn.html?user=bandinopla&repo=weightxreps-client&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+<br/><strong>The Frontend code</strong> is open source at: <a href="https://github.com/bandinopla/weightxreps-client" alt="Frontend Open Source Link" target="_blank">https://github.com/bandinopla/weightxreps-client</a>. 
+                </Typography>
+
             </Box>
 
 
