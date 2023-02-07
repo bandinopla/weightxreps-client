@@ -1,3 +1,12 @@
+/**
+ * 
+ * This script is used when i make a change and want to update the
+ * changelog with a version number...
+ * 
+ */
+
+
+
 var fs = require('fs'); 
 const yargs = require('yargs');
 

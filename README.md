@@ -1,19 +1,19 @@
 ![Logo](https://weightxreps.net/logo.png)
 
 # Welcome
-I am thrilled to announce that I am releasing my forntend code to the community as open source. This has been a long-time goal of mine and I am excited to see the impact it will have. 
+I am thrilled to announce that I am releasing my [backend code](https://github.com/bandinopla/weightxreps-server) and [frontend code](https://github.com/bandinopla/weightxreps-client) to the community as open source. This has been a long-time goal of mine and I am excited to see the impact it will have. 
 
 By making the code available to all, I am hoping to attract contributions from other developers that can help enhance the codebase. This will result in a stronger and more reliable code, as well as promote collaboration and creativity within the community. 
 
 I believe that this open source release will be a great step forward for the project and I can't wait to see what the community will create with it.
 
 
-# The Client
+# :sparkles: The Client
 This is the code for the front-end side of http://weightxreps.net 
 
 > Weight For Reps is a training journal logging tool to help you keep track of your weight training. Mostly orientated towards Powerlifting/Weightlifting style of training.
 
-This is a [React App](https://reactjs.org/) that was created with [Create React App](https://create-react-app.dev/) and it uses [Apollo Client](https://www.apollographql.com/docs/react/) to comunicate with the server vía [GraphQL](https://graphql.org/). 
+This is a [React App](https://reactjs.org/) that was created with [Create React App](https://create-react-app.dev/) and it uses [Apollo Client](https://www.apollographql.com/docs/react/) to comunicate with the server vía [GraphQL](https://graphql.org/) using Hooks created with a [GraphQL Code Generator](https://www.npmjs.com/package/@graphql-codegen/cli) by the backend side during development.
 
 > If you are developing both backend and front end, clone both repos into a folder and name each folder `client` and `server`. This is required because the sever [generates code](https://the-guild.dev/graphql/codegen) and goes one level up and expect a client folder to exist... these files will be dynamically created:
     - `generated---db-introspection.json`
@@ -22,7 +22,7 @@ This is a [React App](https://reactjs.org/) that was created with [Create React 
 ---
 
 ## :coffee: Run local dev client
-To run this if [you have the dev server](https://github.com/bandinopla/weightxreps-server) also running in your machine (http://localhost:4000/graphql), run:
+To run this if [you have the dev server](https://github.com/bandinopla/weightxreps-server) also running in your machine ( at localhost:4000/graphql), run:
 
 ```
 npm run start
@@ -32,7 +32,21 @@ If you don't have a local database and want to use the real data from the site, 
 ```
 npm run start:production
 ```
-:warning: NOTE: This will we the same as visiting the site weightxreps.net the data will be all real.
+:warning: NOTE: This will we the same as visiting the site weightxreps.net the data will be all real because the client will point to the production graphql endpoint.
+
+
+---
+## :eyes: Some key stuff to know...
+Some things you need to know to save you some time from understanding the source:
+- `src\data\db.js` creation of the ApolloClient and endpoints.
+- `src\codemirror\LogTextEditor.js` the Workout Editor (uses a custom [Code Mirror](https://codemirror.net/) mode)
+- `src\componentes\journal\editor.js` React Component for the Editor
+- `src\componentes\journal\jparser.js` Text parser to understandable tokens.
+- `src\data\Menu.js` the data from the main menu of the site. 
+- `src\session` code related to handling of the user session.
+- `src\componentes\calendario.js` code for the calendar widget
+- `src\componentes\weight-value.js` widget in charge of showing a weight unit and changed it depending on the user preference setting.
+  
 
 ---
 
