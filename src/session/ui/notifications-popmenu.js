@@ -3,7 +3,7 @@ import Chip from '@material-ui/core/Chip';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSubmenuListener } from "../../componentes/boton-con-submenu";
 import FetchMoreButton from "../../componentes/FetchMoreButton";
 import { Notification } from "../../data/generated---db-types-and-hooks";
@@ -65,6 +65,10 @@ export default function NotificationsPopMenu({ type }) {
     let filteredInbox   = inbox? filtrarInbox(inbox, myID) : null;   
 
     let lastSeenDate = lastSeen ? new Date(lastSeen) : null ; 
+    const lastItemCount = useRef(0);
+
+    const [ fetchMoreFoundAll, setFetchMoreFoundAll ] = useState(false);
+
 
     //#region Calculat enumber of "unseen" notifications
 
@@ -102,6 +106,20 @@ export default function NotificationsPopMenu({ type }) {
 
     //#endregion
 
+    useEffect(()=>{
+        //
+        // lastItemCount is set before hitting the "fetch more" button. 
+        // if the filtered list has no changes, it means there's nothing else to load. 
+        // this is due to the way in which the getInbox / getNotifications logic is set in the server...
+        // since we are compressing items, it can happen that we load an irrelevant item in the context of wanting to obtian "new" items not already in a compression item.
+        //
+        if( !fetchMoreFoundAll && lastItemCount.current>0 && filteredInbox?.length == lastItemCount.current )
+        {
+            setFetchMoreFoundAll(true); /// force redraw
+        }
+ 
+    });
+
  
     useSubmenuListener({ 
         onOpened(){
@@ -131,9 +149,27 @@ export default function NotificationsPopMenu({ type }) {
             return true;
         }
 
-        const last = filteredInbox[filteredInbox.length-1][0];
+        //
+        // how many items we have right now...
+        //
+        lastItemCount.current = filteredInbox.length;
+ 
 
-        return loadOlderNotifications( last._combined? last.notification.when : last.when );
+        const last = filteredInbox[filteredInbox.length-1];
+
+        
+        //
+        // this is the action that fetches mose items...
+        //
+        const res = await loadOlderNotifications( last._combined? last.notification.when : last.when );
+
+        //
+        // se set this to CERO intentionally to make it not be equal to FALSE but still have the same effect...
+        // the "useEffect" we have above will set a flag to TRUE that will hint the "fetch more" button to assume all was found.
+        //
+        setFetchMoreFoundAll(0); //<--- force update
+
+        return res;
 
     }
  
@@ -195,7 +231,7 @@ export default function NotificationsPopMenu({ type }) {
                     { inbox?.length>0 &&
                     <ListItem> 
                         <Box textAlign="center" padding={1} width="100%"> 
-                            <FetchMoreButton fetchMore={ loadOlder } />
+                            <FetchMoreButton fetchMore={ loadOlder } forceHide={ fetchMoreFoundAll }/>
                         </Box>
                     </ListItem> }
 

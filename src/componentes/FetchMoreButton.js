@@ -60,9 +60,9 @@ import HistoryIcon from '@material-ui/icons/History';
 
     return <>
             <ErrorSnackbar trigger={error} vertical="bottom" horizontal="center"/>
-            {!(hide || forceHide) && <Button disabled={ forceLoading || loading } variant="contained" onClick={ handleClick } startIcon={<HistoryIcon/>}>
+            {!(hide || !!forceHide) && <Button disabled={ forceLoading || loading } variant="contained" onClick={ handleClick } startIcon={<HistoryIcon/>}>
                 { forceLoading || loading? <CircularProgress /> : "Load more" } 
             </Button> }
-            { (hide || forceHide) && <CheckIcon /> }
+            { (hide || !!forceHide) && <CheckIcon /> }
             </>
 }
