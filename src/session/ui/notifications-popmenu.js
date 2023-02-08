@@ -43,39 +43,47 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function NotificationsPopMenu() {
+//
+// type: 1 DMs   type 2: Everything else...
+//
+export default function NotificationsPopMenu({ type }) {
 
     const context       = useCurrentSession();
     const classes       = useStyles();
-    const { inbox, loading, error, loadOlderNotifications, setUnseenNotificationsCount } = useInbox();  
     const divRef        = React.createRef();
-    const lastSeen      = useReactiveSetting(context?.userSettings.notificationsLastSeenDate);
+
+
+    const { inbox, loading, error, loadOlderNotifications, setUnseenNotificationsCount } = useInbox(type);  
+    
+    //
+    // i hold in a "setting" the value of the last time this PopMenu was opened.
+    //
+    const setting       = context?.userSettings[ type==1? "inboxLastSeenDate": "notificationsLastSeenDate" ];
+    const lastSeen      = useReactiveSetting( setting );
 
     const myID          = context?.user.id;
     let filteredInbox   = inbox? filtrarInbox(inbox, myID) : null;   
 
     let lastSeenDate = lastSeen ? new Date(lastSeen) : null ; 
 
-    //#region calcular y setear el numero de mensajes no leidos...
+    //#region Calculat enumber of "unseen" notifications
 
+    //
+    // i handle this client side %100 i just check if the last time this UI was opened was older than the message from the newest notification...
+    //
     useEffect( ()=>{
 
 
         let unseen = filteredInbox?.reduce( (val, itm)=>{
-
-            //let itmDate = itm.when instanceof Date? itm.when : new Date(itm.when); 
+ 
             const item = itm._combined? itm.notification : itm;
 
-            let itmDate = new Date( item.when );
-    
-            //console.log( "lastSeen", lastSeen, "item", itm.when, itm )
+            let itmDate = new Date( item.when ); 
     
             if( !lastSeenDate || lastSeenDate<itmDate ) {
-
-                //if( item.by )
+ 
                 if( item.by!=null && (item.by.id!=myID) )
-                {
-                    console.log( item )
+                { 
                     val++;
                 }
                 
@@ -84,8 +92,10 @@ export default function NotificationsPopMenu() {
             return val;
     
         } , 0) || 0;
+ 
     
-        setUnseenNotificationsCount(unseen);
+        let interval = setUnseenNotificationsCount(unseen);
+        return ()=>clearTimeout(interval);
 
     },[filteredInbox]);
 
@@ -96,8 +106,11 @@ export default function NotificationsPopMenu() {
     useSubmenuListener({ 
         onOpened(){
  
-            // setear la fecha de ultima vez que vio notificaciones....
-            context.userSettings.notificationsLastSeenDate( new Date().toUTCString() ); //.toUTCString()
+            //
+            // we opened the notifications UI... that means the user "has" or "will" read them.... anyway....
+            //
+            setting( new Date().toUTCString() ); 
+
             setUnseenNotificationsCount(0);
         },
 
@@ -118,7 +131,7 @@ export default function NotificationsPopMenu() {
             return true;
         }
 
-        const last = filteredInbox.slice(-1)[0];
+        const last = filteredInbox[filteredInbox.length-1][0];
 
         return loadOlderNotifications( last._combined? last.notification.when : last.when );
 

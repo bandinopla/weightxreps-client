@@ -6,8 +6,8 @@
       "MostVolume"
     ],
     "ExecExerciseResponse": [
-      "Exercise",
-      "ConfirmAction"
+      "ConfirmAction",
+      "Exercise"
     ],
     "IBy": [
       "DM",
@@ -54,18 +54,18 @@
       "StartedFollowing"
     ],
     "JeditorRow": [
-      "JEditorText",
-      "JEditorEBlock",
-      "JEditorDayTag",
       "JEditorBWTag",
-      "JEditorNewExercise"
+      "JEditorDayTag",
+      "JEditorEBlock",
+      "JEditorNewExercise",
+      "JEditorText"
     ],
     "Notification": [
       "DM",
       "JComment",
-      "LikeOnLog",
-      "LikeOnJComment",
       "LikeOnDM",
+      "LikeOnJComment",
+      "LikeOnLog",
       "StartedFollowing",
       "SystemNotification"
     ],
@@ -84,18 +84,18 @@
       "VoidSetting"
     ],
     "UserSetting": [
-      "UsernameSetting",
-      "EmailSetting",
-      "VoidSetting",
-      "DOBSetting",
-      "CCSetting",
-      "OptionSetting",
-      "SupporterStatus",
-      "Custom1RMFactorSetting",
-      "RPESetting",
-      "DeleteAccountSetting",
       "BlockUsersSetting",
-      "SocialMediasSetting"
+      "CCSetting",
+      "Custom1RMFactorSetting",
+      "DOBSetting",
+      "DeleteAccountSetting",
+      "EmailSetting",
+      "OptionSetting",
+      "RPESetting",
+      "SocialMediasSetting",
+      "SupporterStatus",
+      "UsernameSetting",
+      "VoidSetting"
     ]
   }
 }
