@@ -1,5 +1,10 @@
+- 2.14.1 : 2023-02-08
+        * improved the session hashing method. ( sadly it will force everyone to login again after i apply this... )
+        * improved the Inbox UI and overall mechanics. Now it is splitted into notifications and direct messages.
+
 - 2.14.0 : 2023-02-05
         + Backend open souced!
+        + Frontend open sourced!
         - Removed the "Videos" section, i need to work on that more it was not working i think...
         
 - 2.13.1 : 2023-02-01
