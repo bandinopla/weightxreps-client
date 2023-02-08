@@ -5,11 +5,14 @@ import {
     gql
 } from "@apollo/client";
 import { parseError } from '../data/db';
-import { useGetInboxQuery } from '../data/generated---db-types-and-hooks';
+import { useGetInboxQuery, useGetNotificationsQuery } from '../data/generated---db-types-and-hooks';
 import { __resolveReferencedUserId } from '../data/type-policies';
 import { useCurrentSession } from './session-handler';
 
+
+
 const $newMessagesCount = makeVar(0);  
+const $newNotificationsCount = makeVar(0);  
 
 
 /** 
@@ -124,6 +127,11 @@ export const inboxTypePolicies = {
                 merge       : mergeNotifications
             },
 
+            getNotifications: { 
+                keyArgs     : false, 
+                merge       : mergeNotifications
+            },
+
             getLogInbox: {
                 keyArgs     : ["logid"],
                 merge       : mergeNotifications
@@ -139,8 +147,17 @@ export const inboxTypePolicies = {
 
  
 
-export const useInbox = ()=>{
-    const  { data, loading, error, fetchMore } = useGetInboxQuery()  //useQuery( GET_INBOX );  
+export const useInbox = type =>{
+ 
+    //
+    // i know this is not optimal... but i had to refactor this.
+    //
+    const DMs  = useGetInboxQuery();
+    const Notifs = useGetNotificationsQuery();
+
+
+    const  { data, loading, error, fetchMore } = type==1? DMs : Notifs ;
+    const propName = type==1? "getInbox" : "getNotifications";
     
  
     //
@@ -148,7 +165,7 @@ export const useInbox = ()=>{
     //
     const checkForNewNotifications = ()=>{
 
-        let newerThan = data?.getInbox?.notifications[0]?.when;   
+        let newerThan = data?.[propName]?.notifications[0]?.when;   
          
         return fetchMore({
             variables: {
@@ -162,7 +179,7 @@ export const useInbox = ()=>{
     //
     const loadOlderNotifications = (when)=>{
 
-        let olderThan = when || data.getInbox.notifications.slice(-1)[0].when;
+        let olderThan = when || data[propName].notifications.slice(-1)[0].when;
  
         if( !olderThan ) {
             return Promise.resolve([]);
@@ -173,11 +190,11 @@ export const useInbox = ()=>{
                 olderThan
             }
         })
-        .then( res => res.data.getInbox?.notifications.length>0 );
+        .then( res => res.data[propName]?.notifications.length>0 );
     } 
  
  
-    let rtrn = data?.getInbox.notifications ;
+    let rtrn = data?.[propName].notifications ;
   
  
     return {
@@ -187,9 +204,13 @@ export const useInbox = ()=>{
             , checkForNewNotifications
             , loadOlderNotifications 
             , setUnseenNotificationsCount: (totalUnseen)=> {
-                //$newMessagesCount(totalUnseen)
-                setTimeout($newMessagesCount, 100, totalUnseen)
-            }
+
+                const rVar = type==1? $newMessagesCount : $newNotificationsCount;
+
+                //rVar(totalUnseen);
+                return setTimeout(rVar, 100, totalUnseen);
+            },
+            propName
         };
 }
 
@@ -197,14 +218,14 @@ export const useInbox = ()=>{
 /**
  * Encargado de buscar nuevos mensajes...
  */
-export const InboxManager = ()=>{
+export const InboxManager = ({ type })=>{
 
     const autoFetchNewer            = true;
     const currentSession            = useCurrentSession();
     const fetchIntervalInSeconds    = 120;
 
     //regularmente pedir los nuevos mensajes...
-    const { inbox, error, checkForNewNotifications } = useInbox();
+    const { inbox, error, checkForNewNotifications, propName } = useInbox(type);
     //console.log("Calling useGetInboxQuery ")
  
 
@@ -221,13 +242,9 @@ export const InboxManager = ()=>{
             clearInterval(interval);
 
             interval = setTimeout( ()=>{
+ 
 
-                console.log("INTERVAL!")
-
-                if( !autoFetchNewer) return;
-
-                    //cargar....
-                    console.log("NEWER THAN: ", inbox.slice(-1)[0].id)  
+                if( !autoFetchNewer) return; 
                      
                     checkForNewNotifications()
                         .then( res => {
@@ -235,7 +252,7 @@ export const InboxManager = ()=>{
                             //
                             // si mo devuelve nada [inbox] no va a cambiar, asi que hay que repetir...
                             //
-                            if( !res.data.getInbox || res.data.getInbox.notifications.length==0 )
+                            if( !res.data[propName] || res.data[propName].notifications.length==0 )
                             {
                                 startTimeout();
                             }
@@ -291,8 +308,10 @@ const LowerBadge = withStyles((theme) => ({
    * @param { ...NotificationsBadgeParams} param0 
    * @returns 
    */
-export const NotificationsBadge = ({children, showOnlyOnMobile})=> {
-    const newMessages = useReactiveVar($newMessagesCount);
+export const NotificationsBadge = ({children, type, showOnlyOnMobile})=> {
+
+    const newMessages = useReactiveVar(type==1? $newMessagesCount : $newNotificationsCount);
+
     const Element = showOnlyOnMobile? LowerBadge : Badge;
 
     return <Element badgeContent={newMessages} color="secondary">

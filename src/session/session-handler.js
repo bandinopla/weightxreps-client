@@ -58,6 +58,7 @@ export const useGetSession = ()=> {
         userSettings = getOrCreateSettingsHandler( data.getSession.user.id, settings=>{
             settings.convertDisplayUnits        = false;
             settings.notificationsLastSeenDate  = null;
+            settings.inboxLastSeenDate          = null;
         });
 
         //

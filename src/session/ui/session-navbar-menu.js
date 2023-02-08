@@ -14,7 +14,7 @@ import { useHistory } from "react-router-dom";
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 import { DarkModeActivatorButton } from '../../componentes/DarkModeActivatorButton';
  
-
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
 export const SessionMenu = ()=> {
 
@@ -38,7 +38,8 @@ export const SessionMenuChilds = ()=> {
     { 
         return <div>
 
-                <InboxManager />  
+                <InboxManager type={1}/>  
+                <InboxManager type={2}/>  
 
 
                 <DarkModeActivatorButton style={{margin:5}} variant="outlined" color="primary"/>
@@ -48,10 +49,18 @@ export const SessionMenuChilds = ()=> {
                     <AddIcon /> 
                 </JEditorButton> 
 
-                <BotonConSubmenu submenu={<NotificationsPopMenu />}>
-                
-                    <NotificationsBadge>
+                <BotonConSubmenu submenu={<NotificationsPopMenu type={2}/>}>
+                    
+                    <NotificationsBadge type={2}>
                         <NotificationsIcon/>
+                    </NotificationsBadge>
+
+                </BotonConSubmenu> 
+
+                <BotonConSubmenu submenu={<NotificationsPopMenu type={1}/>}>
+                
+                    <NotificationsBadge type={1}>
+                        <MailOutlineIcon/>
                     </NotificationsBadge>
 
                 </BotonConSubmenu> 

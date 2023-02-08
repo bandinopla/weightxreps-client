@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -12,73 +13,64 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** YYYYMMDDx where "x" is 0-1 */
   CalendarDayKey: any;
-  /** Exercise set definition... */
   ESet: any;
   JEditorSaveRow: any;
   SBDSlot: any;
   SettingValue: any;
-  /** Timestamp... */
   UTCDate: any;
-  /** The `Upload` scalar type represents a file upload. */
   Upload: any;
-  /** YYYY-MM-DD date... */
   YMD: any;
-  /** YMD with just numbers... */
   YYYYMMDD: any;
 };
 
-
-
-
 export type Achievement = {
   __typename?: 'Achievement';
+  description: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  description: Scalars['String'];
 };
 
 export type AchievementState = {
   __typename?: 'AchievementState';
   aid: Scalars['ID'];
   gotit?: Maybe<Scalars['Boolean']>;
-  when?: Maybe<Scalars['YYYYMMDD']>;
   note?: Maybe<Scalars['String']>;
+  when?: Maybe<Scalars['YYYYMMDD']>;
 };
 
 export enum ActivityFeedType {
-  Global = 'global',
-  Following = 'following'
+  Following = 'following',
+  Global = 'global'
 }
 
 export type BaseStat = {
-  e: Scalars['ID'];
-  w: Weight;
   bw?: Maybe<Weight>;
   by: Scalars['ID'];
+  e: Scalars['ID'];
+  w: Weight;
 };
 
 export type BestEStat = {
   __typename?: 'BestEStat';
-  w: Scalars['Float'];
-  r: Scalars['Int'];
-  lb: Scalars['Int'];
-  when: Scalars['YMD'];
   bw?: Maybe<Scalars['Float']>;
   est1rm?: Maybe<Scalars['Float']>;
+  lb: Scalars['Int'];
+  r: Scalars['Int'];
+  w: Scalars['Float'];
+  when: Scalars['YMD'];
 };
 
 export type BestLift = {
   __typename?: 'BestLift';
-  w: Scalars['Float'];
   e: Exercise;
+  w: Scalars['Float'];
 };
 
 export type BlockUsersSetting = Setting & {
   __typename?: 'BlockUsersSetting';
-  unames?: Maybe<Array<Maybe<Scalars['String']>>>;
   id: Scalars['ID'];
+  unames?: Maybe<Array<Maybe<Scalars['String']>>>;
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
@@ -102,48 +94,48 @@ export type CcSetting = Setting & {
 };
 
 export enum CacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
 }
-
 
 export type CommunityStats = {
   __typename?: 'CommunityStats';
-  title: Scalars['String'];
+  estimated?: Maybe<Array<Maybe<Estimated1Rm>>>;
+  exercises?: Maybe<Array<Maybe<Exercise>>>;
+  heavyest?: Maybe<Array<Maybe<Heavyest>>>;
   scanFrecuency: Scalars['String'];
   timestamp?: Maybe<Scalars['UTCDate']>;
-  heavyest?: Maybe<Array<Maybe<Heavyest>>>;
-  estimated?: Maybe<Array<Maybe<Estimated1Rm>>>;
-  volume?: Maybe<Array<Maybe<MostVolume>>>;
-  exercises?: Maybe<Array<Maybe<Exercise>>>;
+  title: Scalars['String'];
   users?: Maybe<Array<Maybe<User>>>;
+  volume?: Maybe<Array<Maybe<MostVolume>>>;
 };
 
 export type ConfirmAction = {
   __typename?: 'ConfirmAction';
-  message: Scalars['String'];
   id: Scalars['ID'];
+  message: Scalars['String'];
 };
 
 export type Custom1RmFactorSetting = Setting & {
   __typename?: 'Custom1RMFactorSetting';
+  default: Scalars['Int'];
   factor: Scalars['Int'];
   formula?: Maybe<Scalars['String']>;
-  default: Scalars['Int'];
   id: Scalars['ID'];
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
-export type Dm = INotification & IBy & IHasText & IMessageRef & Ito & {
+export type Dm = IBy & IHasText & IMessageRef & INotification & Ito & {
   __typename?: 'DM';
-  id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   by: Scalars['ID'];
-  to: Scalars['ID'];
-  text: Scalars['String'];
-  msgid: Scalars['ID'];
+  id: Scalars['ID'];
   inResponseTo?: Maybe<Scalars['ID']>;
   inResponseToMsg?: Maybe<Scalars['ID']>;
+  isGlobal?: Maybe<Scalars['Boolean']>;
+  msgid: Scalars['ID'];
+  text: Scalars['String'];
+  to: Scalars['ID'];
+  when: Scalars['UTCDate'];
 };
 
 export type DobSetting = Setting & {
@@ -155,8 +147,8 @@ export type DobSetting = Setting & {
 
 export type DeleteAccountSetting = Setting & {
   __typename?: 'DeleteAccountSetting';
-  signature?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  signature?: Maybe<Scalars['String']>;
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
@@ -174,16 +166,15 @@ export type EBlock = {
 
 export type ERef = {
   __typename?: 'ERef';
-  exercise: Exercise;
   best?: Maybe<EBestStats>;
+  exercise: Exercise;
 };
-
 
 export type EblockPreview = {
   __typename?: 'EblockPreview';
   e: Exercise;
-  w?: Maybe<Scalars['Float']>;
   r?: Maybe<Scalars['Int']>;
+  w?: Maybe<Scalars['Float']>;
 };
 
 export type EmailSetting = Setting & {
@@ -195,16 +186,16 @@ export type EmailSetting = Setting & {
 
 export type Estimated1Rm = BaseStat & {
   __typename?: 'Estimated1RM';
-  originalw: Weight;
-  reps: Scalars['Int'];
-  ymd: Scalars['YMD'];
-  e: Scalars['ID'];
-  w: Weight;
   bw?: Maybe<Weight>;
   by: Scalars['ID'];
+  e: Scalars['ID'];
+  originalw: Weight;
+  reps: Scalars['Int'];
+  w: Weight;
+  ymd: Scalars['YMD'];
 };
 
-export type ExecExerciseResponse = Exercise | ConfirmAction;
+export type ExecExerciseResponse = ConfirmAction | Exercise;
 
 export type Exercise = {
   __typename?: 'Exercise';
@@ -215,30 +206,30 @@ export type Exercise = {
 
 export type ExerciseStat = {
   __typename?: 'ExerciseStat';
-  e: Exercise;
   days: Scalars['Int'];
+  e: Exercise;
   reps: Scalars['Int'];
 };
 
 export type FollowersCount = {
   __typename?: 'FollowersCount';
-  total: Scalars['Int'];
   has?: Maybe<Scalars['Boolean']>;
+  total: Scalars['Int'];
 };
 
 export enum Gender {
-  Male = 'MALE',
-  Female = 'FEMALE'
+  Female = 'FEMALE',
+  Male = 'MALE'
 }
 
 export type Heavyest = BaseStat & {
   __typename?: 'Heavyest';
-  ymd: Scalars['YMD'];
-  reps: Scalars['Int'];
-  e: Scalars['ID'];
-  w: Weight;
   bw?: Maybe<Weight>;
   by: Scalars['ID'];
+  e: Scalars['ID'];
+  reps: Scalars['Int'];
+  w: Weight;
+  ymd: Scalars['YMD'];
 };
 
 export type IBy = {
@@ -259,9 +250,9 @@ export type IHasText = {
 };
 
 export type IMessageRef = {
-  msgid: Scalars['ID'];
   inResponseTo?: Maybe<Scalars['ID']>;
   inResponseToMsg?: Maybe<Scalars['ID']>;
+  msgid: Scalars['ID'];
 };
 
 export type INotification = {
@@ -279,17 +270,17 @@ export type Inbox = {
   referencedUsers?: Maybe<Array<User>>;
 };
 
-export type JComment = INotification & IBy & IHasText & IMessageRef & Ito & IHasJOwner & {
+export type JComment = IBy & IHasJOwner & IHasText & IMessageRef & INotification & Ito & {
   __typename?: 'JComment';
-  id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   by: Scalars['ID'];
-  to: Scalars['ID'];
-  text: Scalars['String'];
-  msgid: Scalars['ID'];
+  id: Scalars['ID'];
   inResponseTo?: Maybe<Scalars['ID']>;
   inResponseToMsg?: Maybe<Scalars['ID']>;
   jowner: Scalars['ID'];
+  msgid: Scalars['ID'];
+  text: Scalars['String'];
+  to: Scalars['ID'];
+  when: Scalars['UTCDate'];
   ymd: Scalars['YMD'];
 };
 
@@ -300,10 +291,10 @@ export type JEditorBwTag = {
 
 export type JEditorData = {
   __typename?: 'JEditorData';
-  did?: Maybe<Array<Maybe<JeditorRow>>>;
-  exercises: Array<Maybe<ExerciseStat>>;
-  etags: Array<Maybe<Scalars['String']>>;
   baseBW?: Maybe<Scalars['Float']>;
+  did?: Maybe<Array<Maybe<JeditorRow>>>;
+  etags: Array<Maybe<Scalars['String']>>;
+  exercises: Array<Maybe<ExerciseStat>>;
 };
 
 export type JEditorDayTag = {
@@ -319,20 +310,19 @@ export type JEditorEBlock = {
 
 export type JEditorErow = {
   __typename?: 'JEditorEROW';
-  usebw?: Maybe<Scalars['Int']>;
-  v?: Maybe<Scalars['Float']>;
+  c?: Maybe<Scalars['String']>;
   lb?: Maybe<Scalars['Int']>;
   r?: Maybe<Scalars['Int']>;
-  s?: Maybe<Scalars['Int']>;
-  c?: Maybe<Scalars['String']>;
   rpe?: Maybe<Scalars['Float']>;
+  s?: Maybe<Scalars['Int']>;
+  usebw?: Maybe<Scalars['Int']>;
+  v?: Maybe<Scalars['Float']>;
 };
 
 export type JEditorNewExercise = {
   __typename?: 'JEditorNewExercise';
   newExercise: Scalars['String'];
 };
-
 
 export type JEditorText = {
   __typename?: 'JEditorText';
@@ -341,177 +331,100 @@ export type JEditorText = {
 
 export type JLog = {
   __typename?: 'JLog';
-  id: Scalars['ID'];
-  log?: Maybe<Scalars['String']>;
-  fromMobile?: Maybe<Scalars['Boolean']>;
   bw?: Maybe<Scalars['Float']>;
   eblocks?: Maybe<Array<Maybe<EBlock>>>;
   exercises?: Maybe<Array<Maybe<ERef>>>;
+  fromMobile?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  log?: Maybe<Scalars['String']>;
 };
 
 export type JRangeData = {
   __typename?: 'JRangeData';
-  exercises: Array<Maybe<Exercise>>;
   days?: Maybe<Array<Maybe<JRangeDayData>>>;
+  exercises: Array<Maybe<Exercise>>;
 };
 
 export type JRangeDayData = {
   __typename?: 'JRangeDayData';
-  on?: Maybe<Scalars['YMD']>;
   did?: Maybe<Array<Maybe<EBlock>>>;
+  on?: Maybe<Scalars['YMD']>;
 };
 
-export type JeditorRow = JEditorText | JEditorEBlock | JEditorDayTag | JEditorBwTag | JEditorNewExercise;
+export type JeditorRow = JEditorBwTag | JEditorDayTag | JEditorEBlock | JEditorNewExercise | JEditorText;
 
-export type LikeOnDm = INotification & IBy & Ito & IHasMessageId & IHasText & {
+export type LikeOnDm = IBy & IHasMessageId & IHasText & INotification & Ito & {
   __typename?: 'LikeOnDM';
-  id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   by: Scalars['ID'];
-  to: Scalars['ID'];
+  id: Scalars['ID'];
   msgid: Scalars['ID'];
   text: Scalars['String'];
+  to: Scalars['ID'];
+  when: Scalars['UTCDate'];
 };
 
-export type LikeOnJComment = INotification & IBy & Ito & IHasJOwner & IHasMessageId & IHasText & {
+export type LikeOnJComment = IBy & IHasJOwner & IHasMessageId & IHasText & INotification & Ito & {
   __typename?: 'LikeOnJComment';
-  id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   by: Scalars['ID'];
-  to: Scalars['ID'];
+  id: Scalars['ID'];
   jowner: Scalars['ID'];
-  ymd: Scalars['YMD'];
   msgid: Scalars['ID'];
   text: Scalars['String'];
+  to: Scalars['ID'];
+  when: Scalars['UTCDate'];
+  ymd: Scalars['YMD'];
 };
 
-export type LikeOnLog = INotification & IBy & IHasJOwner & {
+export type LikeOnLog = IBy & IHasJOwner & INotification & {
   __typename?: 'LikeOnLog';
-  id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   by: Scalars['ID'];
+  id: Scalars['ID'];
   jowner: Scalars['ID'];
+  when: Scalars['UTCDate'];
   ymd: Scalars['YMD'];
 };
 
 export enum MessageType {
   Dm = 'DM',
-  Reply = 'REPLY',
+  Global = 'GLOBAL',
   Jcomment = 'JCOMMENT',
-  Global = 'GLOBAL'
+  Reply = 'REPLY'
 }
 
 export type MostVolume = BaseStat & {
   __typename?: 'MostVolume';
-  totalReps: Scalars['Int'];
-  e: Scalars['ID'];
-  w: Weight;
   bw?: Maybe<Weight>;
   by: Scalars['ID'];
+  e: Scalars['ID'];
+  totalReps: Scalars['Int'];
+  w: Weight;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']>;
-  sendMessage?: Maybe<SendMessageResult>;
   deleteMessage?: Maybe<Scalars['Boolean']>;
-  login: Scalars['String'];
-  loginWithGoogle: Scalars['String'];
-  loginWithFirebase: Scalars['String'];
-  forgot: Scalars['Boolean'];
-  signup: Scalars['Boolean'];
-  verifySignup: Scalars['String'];
-  likeMessage: Scalars['ID'];
-  likeJournalLog: Scalars['ID'];
-  follow?: Maybe<Scalars['Boolean']>;
-  saveJEditor?: Maybe<Scalars['Boolean']>;
-  execExercise?: Maybe<ExecExerciseResponse>;
   execBulkExercises?: Maybe<Scalars['Boolean']>;
-  uploadAvatar: Scalars['String'];
-  setSetting?: Maybe<UserSetting>;
+  execExercise?: Maybe<ExecExerciseResponse>;
+  follow?: Maybe<Scalars['Boolean']>;
+  forgot: Scalars['Boolean'];
+  likeJournalLog: Scalars['ID'];
+  likeMessage: Scalars['ID'];
+  login: Scalars['String'];
+  loginWithFirebase: Scalars['String'];
+  loginWithGoogle: Scalars['String'];
+  saveJEditor?: Maybe<Scalars['Boolean']>;
+  sendMessage?: Maybe<SendMessageResult>;
   sendVerificationCode?: Maybe<UserSetting>;
-};
-
-
-export type MutationSendMessageArgs = {
-  message: Scalars['String'];
-  type: MessageType;
-  target: Scalars['ID'];
+  setSetting?: Maybe<UserSetting>;
+  signup: Scalars['Boolean'];
+  uploadAvatar: Scalars['String'];
+  verifySignup: Scalars['String'];
 };
 
 
 export type MutationDeleteMessageArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type MutationLoginArgs = {
-  u: Scalars['String'];
-  p: Scalars['String'];
-};
-
-
-export type MutationLoginWithGoogleArgs = {
-  jwt: Scalars['String'];
-  uname?: Maybe<Scalars['String']>;
-  isf?: Maybe<Scalars['Int']>;
-  usekg?: Maybe<Scalars['Int']>;
-};
-
-
-export type MutationLoginWithFirebaseArgs = {
-  token: Scalars['String'];
-  uname?: Maybe<Scalars['String']>;
-  isf?: Maybe<Scalars['Int']>;
-  usekg?: Maybe<Scalars['Int']>;
-};
-
-
-export type MutationForgotArgs = {
-  uore: Scalars['String'];
-};
-
-
-export type MutationSignupArgs = {
-  uname: Scalars['String'];
-  email: Scalars['String'];
-  pass: Scalars['String'];
-  isf: Scalars['Int'];
-  usekg: Scalars['Int'];
-};
-
-
-export type MutationVerifySignupArgs = {
-  code: Scalars['String'];
-};
-
-
-export type MutationLikeMessageArgs = {
-  target: Scalars['ID'];
-};
-
-
-export type MutationLikeJournalLogArgs = {
-  target: Scalars['ID'];
-};
-
-
-export type MutationFollowArgs = {
-  uid: Scalars['ID'];
-  not?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type MutationSaveJEditorArgs = {
-  rows?: Maybe<Array<Maybe<Scalars['JEditorSaveRow']>>>;
-  defaultDate: Scalars['YMD'];
-};
-
-
-export type MutationExecExerciseArgs = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  confirms?: Maybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -521,30 +434,107 @@ export type MutationExecBulkExercisesArgs = {
 };
 
 
-export type MutationUploadAvatarArgs = {
-  file: Scalars['Upload'];
+export type MutationExecExerciseArgs = {
+  confirms?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationFollowArgs = {
+  not?: InputMaybe<Scalars['Boolean']>;
+  uid: Scalars['ID'];
+};
+
+
+export type MutationForgotArgs = {
+  uore: Scalars['String'];
+};
+
+
+export type MutationLikeJournalLogArgs = {
+  target: Scalars['ID'];
+};
+
+
+export type MutationLikeMessageArgs = {
+  target: Scalars['ID'];
+};
+
+
+export type MutationLoginArgs = {
+  p: Scalars['String'];
+  u: Scalars['String'];
+};
+
+
+export type MutationLoginWithFirebaseArgs = {
+  isf?: InputMaybe<Scalars['Int']>;
+  token: Scalars['String'];
+  uname?: InputMaybe<Scalars['String']>;
+  usekg?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MutationLoginWithGoogleArgs = {
+  isf?: InputMaybe<Scalars['Int']>;
+  jwt: Scalars['String'];
+  uname?: InputMaybe<Scalars['String']>;
+  usekg?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MutationSaveJEditorArgs = {
+  defaultDate: Scalars['YMD'];
+  rows?: InputMaybe<Array<InputMaybe<Scalars['JEditorSaveRow']>>>;
+};
+
+
+export type MutationSendMessageArgs = {
+  message: Scalars['String'];
+  target: Scalars['ID'];
+  type: MessageType;
+};
+
+
+export type MutationSendVerificationCodeArgs = {
+  code: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
 export type MutationSetSettingArgs = {
   id: Scalars['ID'];
-  value?: Maybe<Scalars['SettingValue']>;
+  value?: InputMaybe<Scalars['SettingValue']>;
 };
 
 
-export type MutationSendVerificationCodeArgs = {
-  id: Scalars['ID'];
+export type MutationSignupArgs = {
+  email: Scalars['String'];
+  isf: Scalars['Int'];
+  pass: Scalars['String'];
+  uname: Scalars['String'];
+  usekg: Scalars['Int'];
+};
+
+
+export type MutationUploadAvatarArgs = {
+  file: Scalars['Upload'];
+};
+
+
+export type MutationVerifySignupArgs = {
   code: Scalars['String'];
 };
 
-export type Notification = Dm | JComment | LikeOnLog | LikeOnJComment | LikeOnDm | StartedFollowing | SystemNotification;
+export type Notification = Dm | JComment | LikeOnDm | LikeOnJComment | LikeOnLog | StartedFollowing | SystemNotification;
 
 export type OfficialExercise = {
   __typename?: 'OfficialExercise';
+  coolxbw?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   tag: Scalars['String'];
   variants: Array<Maybe<Scalars['String']>>;
-  coolxbw?: Maybe<Scalars['Float']>;
 };
 
 export type Option = {
@@ -556,132 +546,101 @@ export type Option = {
 export type OptionSetting = Setting & {
   __typename?: 'OptionSetting';
   i?: Maybe<Scalars['Int']>;
-  options?: Maybe<Array<Maybe<Option>>>;
   id: Scalars['ID'];
+  options?: Maybe<Array<Maybe<Option>>>;
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
 export type Pr = {
   __typename?: 'PR';
-  w: Scalars['Float'];
-  r: Scalars['Int'];
-  lb: Scalars['Int'];
-  when: Scalars['YMD'];
   bw?: Maybe<Scalars['Float']>;
+  lb: Scalars['Int'];
+  r: Scalars['Int'];
+  w: Scalars['Float'];
+  when: Scalars['YMD'];
 };
 
 export type PrHistory = {
   __typename?: 'PRHistory';
   exercise: Exercise;
-  totalWorkouts: Scalars['Int'];
-  setsOf?: Maybe<Array<Maybe<RepStat>>>;
   prs?: Maybe<Array<Maybe<Pr>>>;
+  setsOf?: Maybe<Array<Maybe<RepStat>>>;
+  totalWorkouts: Scalars['Int'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  totalJournals: Scalars['Int'];
+  alsoposted?: Maybe<Array<Maybe<User>>>;
+  communityStats?: Maybe<CommunityStats>;
+  downloadLogs?: Maybe<JEditorData>;
+  getAchievements?: Maybe<Array<Maybe<Achievement>>>;
+  getAchievementsStateOf?: Maybe<Array<Maybe<AchievementState>>>;
+  getActiveSupporters?: Maybe<Array<Maybe<Supporter>>>;
+  getActivityFeed?: Maybe<Array<Maybe<UCard>>>;
+  getAllPublicInteractionsInbox?: Maybe<Inbox>;
+  getAnnouncements?: Maybe<Array<Maybe<SystemNotification>>>;
+  getCalendarDays?: Maybe<Array<Maybe<Scalars['CalendarDayKey']>>>;
+  getDate?: Maybe<Scalars['String']>;
+  getExercises?: Maybe<Array<Maybe<ExerciseStat>>>;
+  getFollowersCount: FollowersCount;
   getInbox?: Maybe<Inbox>;
   getLogInbox?: Maybe<Inbox>;
-  getAllPublicInteractionsInbox?: Maybe<Inbox>;
-  getDate?: Maybe<Scalars['String']>;
-  getAnnouncements?: Maybe<Array<Maybe<SystemNotification>>>;
-  getSession?: Maybe<SessionInfo>;
-  getActivityFeed?: Maybe<Array<Maybe<UCard>>>;
-  getFollowersCount: FollowersCount;
-  userInfo: UserInfo;
-  getCalendarDays?: Maybe<Array<Maybe<Scalars['CalendarDayKey']>>>;
-  jday?: Maybe<JLog>;
-  jrange?: Maybe<JRangeData>;
-  jeditor?: Maybe<JEditorData>;
-  downloadLogs?: Maybe<JEditorData>;
-  alsoposted?: Maybe<Array<Maybe<User>>>;
-  getExercises?: Maybe<Array<Maybe<ExerciseStat>>>;
+  getNotifications?: Maybe<Inbox>;
   getPRsOf?: Maybe<PrHistory>;
-  communityStats?: Maybe<CommunityStats>;
+  getSession?: Maybe<SessionInfo>;
+  getSupporters?: Maybe<Array<Maybe<Supporter>>>;
+  getUserSettings: Array<Maybe<UserSetting>>;
+  getVideos?: Maybe<Array<Maybe<Video>>>;
+  jday?: Maybe<JLog>;
+  jeditor?: Maybe<JEditorData>;
+  jrange?: Maybe<JRangeData>;
   officialExercises: Array<Maybe<OfficialExercise>>;
   sbdStats?: Maybe<SbdStats>;
-  getUserSettings: Array<Maybe<UserSetting>>;
-  getSupporters?: Maybe<Array<Maybe<Supporter>>>;
-  getActiveSupporters?: Maybe<Array<Maybe<Supporter>>>;
-  getAchievementsStateOf?: Maybe<Array<Maybe<AchievementState>>>;
-  getAchievements?: Maybe<Array<Maybe<Achievement>>>;
-  getVideos?: Maybe<Array<Maybe<Video>>>;
-};
-
-
-export type QueryGetInboxArgs = {
-  newerThan?: Maybe<Scalars['UTCDate']>;
-  olderThan?: Maybe<Scalars['UTCDate']>;
-  dmsWithUID?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryGetLogInboxArgs = {
-  newerThan?: Maybe<Scalars['UTCDate']>;
-  olderThan?: Maybe<Scalars['UTCDate']>;
-  logid: Scalars['ID'];
-};
-
-
-export type QueryGetAllPublicInteractionsInboxArgs = {
-  newerThan?: Maybe<Scalars['UTCDate']>;
-  olderThan?: Maybe<Scalars['UTCDate']>;
-};
-
-
-export type QueryGetAnnouncementsArgs = {
-  olderThan?: Maybe<Scalars['UTCDate']>;
-  limit: Scalars['Int'];
-};
-
-
-export type QueryGetActivityFeedArgs = {
-  type: ActivityFeedType;
-  olderThan?: Maybe<Scalars['String']>;
-  newerThan?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryGetFollowersCountArgs = {
-  uid: Scalars['ID'];
-  has?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryUserInfoArgs = {
-  uname: Scalars['String'];
-};
-
-
-export type QueryGetCalendarDaysArgs = {
-  uid: Scalars['ID'];
-  from: Scalars['YYYYMMDD'];
-  to: Scalars['YYYYMMDD'];
-};
-
-
-export type QueryJdayArgs = {
-  uid: Scalars['ID'];
-  ymd?: Maybe<Scalars['YMD']>;
-};
-
-
-export type QueryJrangeArgs = {
-  uid: Scalars['ID'];
-  ymd: Scalars['YMD'];
-  range: Scalars['Int'];
-};
-
-
-export type QueryJeditorArgs = {
-  ymd?: Maybe<Scalars['YMD']>;
-  range?: Maybe<Scalars['Int']>;
+  totalJournals: Scalars['Int'];
+  userInfo: UserInfo;
 };
 
 
 export type QueryAlsopostedArgs = {
-  ymd?: Maybe<Scalars['YMD']>;
+  ymd?: InputMaybe<Scalars['YMD']>;
+};
+
+
+export type QueryCommunityStatsArgs = {
+  etype: Scalars['String'];
+  gender?: InputMaybe<Gender>;
+};
+
+
+export type QueryGetAchievementsStateOfArgs = {
+  asOfThisYMD: Scalars['YYYYMMDD'];
+  uid: Scalars['ID'];
+};
+
+
+export type QueryGetActivityFeedArgs = {
+  newerThan?: InputMaybe<Scalars['String']>;
+  olderThan?: InputMaybe<Scalars['String']>;
+  type: ActivityFeedType;
+};
+
+
+export type QueryGetAllPublicInteractionsInboxArgs = {
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+};
+
+
+export type QueryGetAnnouncementsArgs = {
+  limit: Scalars['Int'];
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+};
+
+
+export type QueryGetCalendarDaysArgs = {
+  from: Scalars['YYYYMMDD'];
+  to: Scalars['YYYYMMDD'];
+  uid: Scalars['ID'];
 };
 
 
@@ -690,35 +649,73 @@ export type QueryGetExercisesArgs = {
 };
 
 
+export type QueryGetFollowersCountArgs = {
+  has?: InputMaybe<Scalars['ID']>;
+  uid: Scalars['ID'];
+};
+
+
+export type QueryGetInboxArgs = {
+  dmsWithUID?: InputMaybe<Scalars['ID']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+};
+
+
+export type QueryGetLogInboxArgs = {
+  logid: Scalars['ID'];
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+};
+
+
+export type QueryGetNotificationsArgs = {
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+};
+
+
 export type QueryGetPRsOfArgs = {
   eid: Scalars['ID'];
-  till?: Maybe<Scalars['YMD']>;
+  till?: InputMaybe<Scalars['YMD']>;
 };
 
 
-export type QueryCommunityStatsArgs = {
-  gender?: Maybe<Gender>;
-  etype: Scalars['String'];
-};
-
-
-export type QueryGetAchievementsStateOfArgs = {
+export type QueryJdayArgs = {
   uid: Scalars['ID'];
-  asOfThisYMD: Scalars['YYYYMMDD'];
+  ymd?: InputMaybe<Scalars['YMD']>;
+};
+
+
+export type QueryJeditorArgs = {
+  range?: InputMaybe<Scalars['Int']>;
+  ymd?: InputMaybe<Scalars['YMD']>;
+};
+
+
+export type QueryJrangeArgs = {
+  range: Scalars['Int'];
+  uid: Scalars['ID'];
+  ymd: Scalars['YMD'];
+};
+
+
+export type QueryUserInfoArgs = {
+  uname: Scalars['String'];
 };
 
 export type RpeSetting = Setting & {
   __typename?: 'RPESetting';
   defaults?: Maybe<Array<Maybe<Scalars['SettingValue']>>>;
-  overrides?: Maybe<Array<Maybe<Scalars['SettingValue']>>>;
   id: Scalars['ID'];
+  overrides?: Maybe<Array<Maybe<Scalars['SettingValue']>>>;
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
 export type RepStat = {
   __typename?: 'RepStat';
-  r: Scalars['Int'];
   count: Scalars['Int'];
+  r: Scalars['Int'];
 };
 
 export enum Role {
@@ -726,48 +723,47 @@ export enum Role {
   RegisteredUser = 'REGISTERED_USER'
 }
 
-
 export type SbdStat = {
   __typename?: 'SBDStat';
-  wclass: WeightClass;
   graph?: Maybe<Array<Scalars['SBDSlot']>>;
+  wclass: WeightClass;
 };
 
 export type SbdStats = {
   __typename?: 'SBDStats';
-  total: Scalars['Int'];
   date: Scalars['String'];
   perclass?: Maybe<Array<Maybe<SbdStat>>>;
+  total: Scalars['Int'];
 };
 
 export type SendMessageResult = {
   __typename?: 'SendMessageResult';
   id: Scalars['ID'];
-  when: Scalars['UTCDate'];
-  msgid: Scalars['ID'];
   inResponseTo?: Maybe<Scalars['ID']>;
   inResponseToMsg?: Maybe<Scalars['ID']>;
+  msgid: Scalars['ID'];
+  when: Scalars['UTCDate'];
 };
 
 export type SessionInfo = {
   __typename?: 'SessionInfo';
-  user: User;
   time?: Maybe<Scalars['String']>;
+  user: User;
 };
 
 export type Set = {
   __typename?: 'Set';
-  w: Scalars['Float'];
-  r: Scalars['Float'];
-  s: Scalars['Float'];
-  lb: Scalars['Int'];
-  ubw?: Maybe<Scalars['Int']>;
   c?: Maybe<Scalars['String']>;
-  rpe?: Maybe<Scalars['Float']>;
-  pr?: Maybe<Scalars['Int']>;
-  est1rm: Scalars['Float'];
   eff: Scalars['Float'];
+  est1rm: Scalars['Float'];
   int: Scalars['Float'];
+  lb: Scalars['Int'];
+  pr?: Maybe<Scalars['Int']>;
+  r: Scalars['Float'];
+  rpe?: Maybe<Scalars['Float']>;
+  s: Scalars['Float'];
+  ubw?: Maybe<Scalars['Int']>;
+  w: Scalars['Float'];
 };
 
 export type Setting = {
@@ -775,20 +771,19 @@ export type Setting = {
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
-
 export type SocialMediasSetting = Setting & {
   __typename?: 'SocialMediasSetting';
-  links: Scalars['String'];
   id: Scalars['ID'];
+  links?: Maybe<Array<Maybe<Scalars['String']>>>;
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
-export type StartedFollowing = INotification & IBy & Ito & {
+export type StartedFollowing = IBy & INotification & Ito & {
   __typename?: 'StartedFollowing';
-  id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   by: Scalars['ID'];
+  id: Scalars['ID'];
   to: Scalars['ID'];
+  when: Scalars['UTCDate'];
 };
 
 export type Supporter = {
@@ -799,84 +794,82 @@ export type Supporter = {
 
 export type SupporterStatus = Setting & {
   __typename?: 'SupporterStatus';
-  slvl: Scalars['Float'];
   daysLeftAsActive: Scalars['Int'];
   id: Scalars['ID'];
+  slvl: Scalars['Float'];
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
-export type SystemNotification = INotification & IHasText & {
+export type SystemNotification = IHasText & INotification & {
   __typename?: 'SystemNotification';
-  type?: Maybe<SystemNotificationType>;
   id: Scalars['ID'];
-  when: Scalars['UTCDate'];
   text: Scalars['String'];
+  type?: Maybe<SystemNotificationType>;
+  when: Scalars['UTCDate'];
 };
 
 export enum SystemNotificationType {
   Error = 'error',
-  Warning = 'warning',
-  Info = 'info'
+  Info = 'info',
+  Warning = 'warning'
 }
 
 export type UCard = {
   __typename?: 'UCard';
-  user?: Maybe<User>;
-  posted?: Maybe<Scalars['String']>;
-  when?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
-  media?: Maybe<Scalars['String']>;
-  workoutPreview?: Maybe<Array<Maybe<EblockPreview>>>;
   andXmore?: Maybe<Scalars['Int']>;
   itemsLeftAfterThis?: Maybe<Scalars['Int']>;
+  media?: Maybe<Scalars['String']>;
+  posted?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  when?: Maybe<Scalars['String']>;
+  workoutPreview?: Maybe<Array<Maybe<EblockPreview>>>;
 };
-
-
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['ID'];
-  avatarhash: Scalars['String'];
-  uname: Scalars['String'];
-  cc?: Maybe<Scalars['String']>;
-  slvl?: Maybe<Scalars['Float']>;
-  sok?: Maybe<Scalars['Int']>;
   age?: Maybe<Scalars['Int']>;
+  avatarhash: Scalars['String'];
   bw?: Maybe<Scalars['Float']>;
-  private?: Maybe<Scalars['Int']>;
-  isf?: Maybe<Scalars['Int']>;
-  joined?: Maybe<Scalars['String']>;
-  usekg?: Maybe<Scalars['Int']>;
+  cc?: Maybe<Scalars['String']>;
   custom1RM?: Maybe<Scalars['Int']>;
   est1RMFactor?: Maybe<Scalars['Int']>;
-  jranges?: Maybe<Array<Maybe<Scalars['Int']>>>;
   estimate1RMFormula?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  isf?: Maybe<Scalars['Int']>;
+  joined?: Maybe<Scalars['String']>;
+  jranges?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  private?: Maybe<Scalars['Int']>;
+  slvl?: Maybe<Scalars['Float']>;
   socialLinks?: Maybe<Array<Maybe<Scalars['String']>>>;
+  sok?: Maybe<Scalars['Int']>;
+  uname: Scalars['String'];
+  usekg?: Maybe<Scalars['Int']>;
 };
 
 export type UserInfo = {
   __typename?: 'UserInfo';
-  user: User;
-  daysLogged: Scalars['Int'];
   best3?: Maybe<Array<BestLift>>;
+  daysLogged: Scalars['Int'];
+  user: User;
 };
 
-export type UserSetting = UsernameSetting | EmailSetting | VoidSetting | DobSetting | CcSetting | OptionSetting | SupporterStatus | Custom1RmFactorSetting | RpeSetting | DeleteAccountSetting | BlockUsersSetting | SocialMediasSetting;
+export type UserSetting = BlockUsersSetting | CcSetting | Custom1RmFactorSetting | DobSetting | DeleteAccountSetting | EmailSetting | OptionSetting | RpeSetting | SocialMediasSetting | SupporterStatus | UsernameSetting | VoidSetting;
 
 export type UsernameSetting = Setting & {
   __typename?: 'UsernameSetting';
-  uname: Scalars['String'];
   id: Scalars['ID'];
+  uname: Scalars['String'];
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
 export type Video = {
   __typename?: 'Video';
-  user: User;
-  when: Scalars['String'];
-  posted: Scalars['String'];
   link: Scalars['String'];
   logid: Scalars['ID'];
+  posted: Scalars['String'];
+  user: User;
+  when: Scalars['String'];
 };
 
 export type VoidSetting = Setting & {
@@ -887,24 +880,22 @@ export type VoidSetting = Setting & {
 
 export type Weight = {
   __typename?: 'Weight';
-  v: Scalars['Float'];
   lb: Scalars['Int'];
+  v: Scalars['Float'];
 };
 
 export type WeightClass = {
   __typename?: 'WeightClass';
-  min: Scalars['Float'];
-  max: Scalars['Float'];
-  name: Scalars['String'];
   male: Scalars['Boolean'];
+  max: Scalars['Float'];
+  min: Scalars['Float'];
+  name: Scalars['String'];
 };
-
-
 
 export type GetAchievementsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAchievementsQuery = { __typename?: 'Query', getAchievements?: Maybe<Array<Maybe<{ __typename?: 'Achievement', id: string, description: string, name: string }>>> };
+export type GetAchievementsQuery = { __typename?: 'Query', getAchievements?: Array<{ __typename?: 'Achievement', id: string, description: string, name: string } | null> | null };
 
 export type GetAchievementsStateOfQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -912,56 +903,56 @@ export type GetAchievementsStateOfQueryVariables = Exact<{
 }>;
 
 
-export type GetAchievementsStateOfQuery = { __typename?: 'Query', getAchievementsStateOf?: Maybe<Array<Maybe<{ __typename?: 'AchievementState', aid: string, gotit?: Maybe<boolean>, when?: Maybe<any>, note?: Maybe<string> }>>> };
+export type GetAchievementsStateOfQuery = { __typename?: 'Query', getAchievementsStateOf?: Array<{ __typename?: 'AchievementState', aid: string, gotit?: boolean | null, when?: any | null, note?: string | null } | null> | null };
 
-type BaseFields_Estimated1Rm_Fragment = { __typename?: 'Estimated1RM', e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: Maybe<{ __typename?: 'Weight', v: number, lb: number }> };
+type BaseFields_Estimated1Rm_Fragment = { __typename?: 'Estimated1RM', e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: { __typename?: 'Weight', v: number, lb: number } | null };
 
-type BaseFields_Heavyest_Fragment = { __typename?: 'Heavyest', e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: Maybe<{ __typename?: 'Weight', v: number, lb: number }> };
+type BaseFields_Heavyest_Fragment = { __typename?: 'Heavyest', e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: { __typename?: 'Weight', v: number, lb: number } | null };
 
-type BaseFields_MostVolume_Fragment = { __typename?: 'MostVolume', e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: Maybe<{ __typename?: 'Weight', v: number, lb: number }> };
+type BaseFields_MostVolume_Fragment = { __typename?: 'MostVolume', e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: { __typename?: 'Weight', v: number, lb: number } | null };
 
 export type BaseFieldsFragment = BaseFields_Estimated1Rm_Fragment | BaseFields_Heavyest_Fragment | BaseFields_MostVolume_Fragment;
 
 export type GetOfficialExercisesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetOfficialExercisesQuery = { __typename?: 'Query', officialExercises: Array<Maybe<{ __typename?: 'OfficialExercise', id: string, tag: string, variants: Array<Maybe<string>>, coolxbw?: Maybe<number> }>> };
+export type GetOfficialExercisesQuery = { __typename?: 'Query', officialExercises: Array<{ __typename?: 'OfficialExercise', id: string, tag: string, variants: Array<string | null>, coolxbw?: number | null } | null> };
 
 export type GetSbdStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSbdStatsQuery = { __typename?: 'Query', sbdStats?: Maybe<{ __typename?: 'SBDStats', total: number, date: string, perclass?: Maybe<Array<Maybe<{ __typename?: 'SBDStat', graph?: Maybe<Array<any>>, wclass: { __typename?: 'WeightClass', name: string, max: number, min: number, male: boolean } }>>> }> };
+export type GetSbdStatsQuery = { __typename?: 'Query', sbdStats?: { __typename?: 'SBDStats', total: number, date: string, perclass?: Array<{ __typename?: 'SBDStat', graph?: Array<any> | null, wclass: { __typename?: 'WeightClass', name: string, max: number, min: number, male: boolean } } | null> | null } | null };
 
 export type GetCommunityStatsQueryVariables = Exact<{
   etype: Scalars['String'];
 }>;
 
 
-export type GetCommunityStatsQuery = { __typename?: 'Query', communityStats?: Maybe<{ __typename?: 'CommunityStats', title: string, scanFrecuency: string, timestamp?: Maybe<any>, heavyest?: Maybe<Array<Maybe<{ __typename?: 'Heavyest', ymd: any, reps: number, e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: Maybe<{ __typename?: 'Weight', v: number, lb: number }> }>>>, estimated?: Maybe<Array<Maybe<{ __typename?: 'Estimated1RM', reps: number, ymd: any, e: string, by: string, originalw: { __typename?: 'Weight', lb: number, v: number }, w: { __typename?: 'Weight', v: number, lb: number }, bw?: Maybe<{ __typename?: 'Weight', v: number, lb: number }> }>>>, volume?: Maybe<Array<Maybe<{ __typename?: 'MostVolume', totalReps: number, e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: Maybe<{ __typename?: 'Weight', v: number, lb: number }> }>>>, exercises?: Maybe<Array<Maybe<{ __typename?: 'Exercise', id: string, type?: Maybe<string>, name: string }>>>, users?: Maybe<Array<Maybe<{ __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> }>>> }> };
+export type GetCommunityStatsQuery = { __typename?: 'Query', communityStats?: { __typename?: 'CommunityStats', title: string, scanFrecuency: string, timestamp?: any | null, heavyest?: Array<{ __typename?: 'Heavyest', ymd: any, reps: number, e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: { __typename?: 'Weight', v: number, lb: number } | null } | null> | null, estimated?: Array<{ __typename?: 'Estimated1RM', reps: number, ymd: any, e: string, by: string, originalw: { __typename?: 'Weight', lb: number, v: number }, w: { __typename?: 'Weight', v: number, lb: number }, bw?: { __typename?: 'Weight', v: number, lb: number } | null } | null> | null, volume?: Array<{ __typename?: 'MostVolume', totalReps: number, e: string, by: string, w: { __typename?: 'Weight', v: number, lb: number }, bw?: { __typename?: 'Weight', v: number, lb: number } | null } | null> | null, exercises?: Array<{ __typename?: 'Exercise', id: string, type?: string | null, name: string } | null> | null, users?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null } | null };
 
 export type GetExercisesQueryVariables = Exact<{
   uid: Scalars['ID'];
 }>;
 
 
-export type GetExercisesQuery = { __typename?: 'Query', getExercises?: Maybe<Array<Maybe<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, type?: Maybe<string>, name: string } }>>> };
+export type GetExercisesQuery = { __typename?: 'Query', getExercises?: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, type?: string | null, name: string } } | null> | null };
 
 export type GetPRsOfQueryVariables = Exact<{
   eid: Scalars['ID'];
-  till?: Maybe<Scalars['YMD']>;
+  till?: InputMaybe<Scalars['YMD']>;
 }>;
 
 
-export type GetPRsOfQuery = { __typename?: 'Query', getPRsOf?: Maybe<{ __typename?: 'PRHistory', totalWorkouts: number, exercise: { __typename?: 'Exercise', id: string, type?: Maybe<string>, name: string }, setsOf?: Maybe<Array<Maybe<{ __typename?: 'RepStat', r: number, count: number }>>>, prs?: Maybe<Array<Maybe<{ __typename?: 'PR', w: number, r: number, lb: number, when: any, bw?: Maybe<number> }>>> }> };
+export type GetPRsOfQuery = { __typename?: 'Query', getPRsOf?: { __typename?: 'PRHistory', totalWorkouts: number, exercise: { __typename?: 'Exercise', id: string, type?: string | null, name: string }, setsOf?: Array<{ __typename?: 'RepStat', r: number, count: number } | null> | null, prs?: Array<{ __typename?: 'PR', w: number, r: number, lb: number, when: any, bw?: number | null } | null> | null } | null };
 
 export type ExecExerciseMutationVariables = Exact<{
-  eid?: Maybe<Scalars['ID']>;
-  ename?: Maybe<Scalars['String']>;
-  confirms?: Maybe<Scalars['ID']>;
+  eid?: InputMaybe<Scalars['ID']>;
+  ename?: InputMaybe<Scalars['String']>;
+  confirms?: InputMaybe<Scalars['ID']>;
 }>;
 
 
-export type ExecExerciseMutation = { __typename?: 'Mutation', execExercise?: Maybe<{ __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> } | { __typename?: 'ConfirmAction', message: string, id: string }> };
+export type ExecExerciseMutation = { __typename?: 'Mutation', execExercise?: { __typename?: 'ConfirmAction', message: string, id: string } | { __typename?: 'Exercise', id: string, name: string, type?: string | null } | null };
 
 export type ExecBulkExercisesMutationVariables = Exact<{
   eids: Array<Scalars['ID']> | Scalars['ID'];
@@ -969,40 +960,64 @@ export type ExecBulkExercisesMutationVariables = Exact<{
 }>;
 
 
-export type ExecBulkExercisesMutation = { __typename?: 'Mutation', execBulkExercises?: Maybe<boolean> };
+export type ExecBulkExercisesMutation = { __typename?: 'Mutation', execBulkExercises?: boolean | null };
 
 export type GetFeedQueryVariables = Exact<{
   type: ActivityFeedType;
-  olderThan?: Maybe<Scalars['String']>;
-  newerThan?: Maybe<Scalars['String']>;
+  olderThan?: InputMaybe<Scalars['String']>;
+  newerThan?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetFeedQuery = { __typename?: 'Query', getActivityFeed?: Maybe<Array<Maybe<{ __typename?: 'UCard', when?: Maybe<string>, text?: Maybe<string>, andXmore?: Maybe<number>, posted?: Maybe<string>, media?: Maybe<string>, itemsLeftAfterThis?: Maybe<number>, user?: Maybe<{ __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> }>, workoutPreview?: Maybe<Array<Maybe<{ __typename?: 'EblockPreview', r?: Maybe<number>, w?: Maybe<number>, e: { __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> } }>>> }>>> };
+export type GetFeedQuery = { __typename?: 'Query', getActivityFeed?: Array<{ __typename?: 'UCard', when?: string | null, text?: string | null, andXmore?: number | null, posted?: string | null, media?: string | null, itemsLeftAfterThis?: number | null, user?: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null, workoutPreview?: Array<{ __typename?: 'EblockPreview', r?: number | null, w?: number | null, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null> | null } | null> | null };
+
+type NotificationFields_Dm_Fragment = { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null };
+
+type NotificationFields_JComment_Fragment = { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string };
+
+type NotificationFields_LikeOnDm_Fragment = { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string };
+
+type NotificationFields_LikeOnJComment_Fragment = { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string };
+
+type NotificationFields_LikeOnLog_Fragment = { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string };
+
+type NotificationFields_StartedFollowing_Fragment = { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string };
+
+type NotificationFields_SystemNotification_Fragment = { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null };
+
+export type NotificationFieldsFragment = NotificationFields_Dm_Fragment | NotificationFields_JComment_Fragment | NotificationFields_LikeOnDm_Fragment | NotificationFields_LikeOnJComment_Fragment | NotificationFields_LikeOnLog_Fragment | NotificationFields_StartedFollowing_Fragment | NotificationFields_SystemNotification_Fragment;
 
 export type GetInboxQueryVariables = Exact<{
-  olderThan?: Maybe<Scalars['UTCDate']>;
-  newerThan?: Maybe<Scalars['UTCDate']>;
-  dmsWithUID?: Maybe<Scalars['ID']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+  dmsWithUID?: InputMaybe<Scalars['ID']>;
 }>;
 
 
-export type GetInboxQuery = { __typename?: 'Query', getInbox?: Maybe<{ __typename?: 'Inbox', referencedUsers?: Maybe<Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> }>>, notifications?: Maybe<Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: Maybe<string>, inResponseToMsg?: Maybe<string>, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: Maybe<string>, inResponseToMsg?: Maybe<string>, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: Maybe<SystemNotificationType> }>> }> };
+export type GetInboxQuery = { __typename?: 'Query', getInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
+
+export type GetNotificationsQueryVariables = Exact<{
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+}>;
+
+
+export type GetNotificationsQuery = { __typename?: 'Query', getNotifications?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type GetAnnouncementsQueryVariables = Exact<{
-  olderThan?: Maybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
   limit: Scalars['Int'];
 }>;
 
 
-export type GetAnnouncementsQuery = { __typename?: 'Query', getAnnouncements?: Maybe<Array<Maybe<{ __typename: 'SystemNotification', id: string, when: any, text: string, variant?: Maybe<SystemNotificationType> }>>> };
+export type GetAnnouncementsQuery = { __typename?: 'Query', getAnnouncements?: Array<{ __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null } | null> | null };
 
 export type GetUserInfoQueryVariables = Exact<{
   userInfoUname: Scalars['String'];
 }>;
 
 
-export type GetUserInfoQuery = { __typename?: 'Query', userInfo: { __typename?: 'UserInfo', daysLogged: number, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: Maybe<string>, slvl?: Maybe<number>, sok?: Maybe<number>, age?: Maybe<number>, bw?: Maybe<number>, private?: Maybe<number>, isf?: Maybe<number>, joined?: Maybe<string>, usekg?: Maybe<number>, custom1RM?: Maybe<number>, est1RMFactor?: Maybe<number>, jranges?: Maybe<Array<Maybe<number>>>, estimate1RMFormula?: Maybe<string>, socialLinks?: Maybe<Array<Maybe<string>>> }, best3?: Maybe<Array<{ __typename?: 'BestLift', w: number, e: { __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> } }>> } };
+export type GetUserInfoQuery = { __typename?: 'Query', userInfo: { __typename?: 'UserInfo', daysLogged: number, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null }, best3?: Array<{ __typename?: 'BestLift', w: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } }> | null } };
 
 export type GetCalendarDaysQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -1011,24 +1026,24 @@ export type GetCalendarDaysQueryVariables = Exact<{
 }>;
 
 
-export type GetCalendarDaysQuery = { __typename?: 'Query', getCalendarDays?: Maybe<Array<Maybe<any>>> };
+export type GetCalendarDaysQuery = { __typename?: 'Query', getCalendarDays?: Array<any | null> | null };
 
 export type JDayQueryVariables = Exact<{
   uid: Scalars['ID'];
-  ymd?: Maybe<Scalars['YMD']>;
+  ymd?: InputMaybe<Scalars['YMD']>;
 }>;
 
 
-export type JDayQuery = { __typename?: 'Query', jday?: Maybe<{ __typename?: 'JLog', id: string, log?: Maybe<string>, fromMobile?: Maybe<boolean>, bw?: Maybe<number>, eblocks?: Maybe<Array<Maybe<{ __typename?: 'EBlock', eid: string, sets: Array<Maybe<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: Maybe<number>, c?: Maybe<string>, rpe?: Maybe<number>, pr?: Maybe<number>, est1rm: number, eff: number, int: number }>> }>>>, exercises?: Maybe<Array<Maybe<{ __typename?: 'ERef', exercise: { __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> }, best?: Maybe<{ __typename?: 'EBestStats', eff?: Maybe<{ __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: Maybe<number>, est1rm?: Maybe<number> }>, int: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: Maybe<number> } }> }>>> }> };
+export type JDayQuery = { __typename?: 'Query', jday?: { __typename?: 'JLog', id: string, log?: string | null, fromMobile?: boolean | null, bw?: number | null, eblocks?: Array<{ __typename?: 'EBlock', eid: string, sets: Array<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: number | null, c?: string | null, rpe?: number | null, pr?: number | null, est1rm: number, eff: number, int: number } | null> } | null> | null, exercises?: Array<{ __typename?: 'ERef', exercise: { __typename?: 'Exercise', id: string, name: string, type?: string | null }, best?: { __typename?: 'EBestStats', eff?: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: number | null, est1rm?: number | null } | null, int: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: number | null } } | null } | null> | null } | null };
 
 export type AlsoPostedQueryVariables = Exact<{
-  ymd?: Maybe<Scalars['YMD']>;
+  ymd?: InputMaybe<Scalars['YMD']>;
 }>;
 
 
-export type AlsoPostedQuery = { __typename?: 'Query', alsoposted?: Maybe<Array<Maybe<{ __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> }>>> };
+export type AlsoPostedQuery = { __typename?: 'Query', alsoposted?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null };
 
-export type JeditorDataFieldsFragment = { __typename?: 'JEditorData', etags: Array<Maybe<string>>, baseBW?: Maybe<number>, exercises: Array<Maybe<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> } }>>, did?: Maybe<Array<Maybe<{ __typename?: 'JEditorText', text?: Maybe<string> } | { __typename?: 'JEditorEBlock', e?: Maybe<number>, sets?: Maybe<Array<Maybe<{ __typename?: 'JEditorEROW', usebw?: Maybe<number>, v?: Maybe<number>, c?: Maybe<string>, s?: Maybe<number>, r?: Maybe<number>, lb?: Maybe<number>, rpe?: Maybe<number> }>>> } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorBWTag', bw?: Maybe<number> } | { __typename?: 'JEditorNewExercise' }>>> };
+export type JeditorDataFieldsFragment = { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | null> | null };
 
 export type GetJRangeQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -1037,36 +1052,36 @@ export type GetJRangeQueryVariables = Exact<{
 }>;
 
 
-export type GetJRangeQuery = { __typename?: 'Query', jrange?: Maybe<{ __typename?: 'JRangeData', exercises: Array<Maybe<{ __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> }>>, days?: Maybe<Array<Maybe<{ __typename?: 'JRangeDayData', on?: Maybe<any>, did?: Maybe<Array<Maybe<{ __typename?: 'EBlock', eid: string, sets: Array<Maybe<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: Maybe<number>, c?: Maybe<string>, rpe?: Maybe<number>, pr?: Maybe<number>, est1rm: number, eff: number, int: number }>> }>>> }>>> }> };
+export type GetJRangeQuery = { __typename?: 'Query', jrange?: { __typename?: 'JRangeData', exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type?: string | null } | null>, days?: Array<{ __typename?: 'JRangeDayData', on?: any | null, did?: Array<{ __typename?: 'EBlock', eid: string, sets: Array<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: number | null, c?: string | null, rpe?: number | null, pr?: number | null, est1rm: number, eff: number, int: number } | null> } | null> | null } | null> | null } | null };
 
 export type GetJEditorDataQueryVariables = Exact<{
-  ymd?: Maybe<Scalars['YMD']>;
-  range?: Maybe<Scalars['Int']>;
+  ymd?: InputMaybe<Scalars['YMD']>;
+  range?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetJEditorDataQuery = { __typename?: 'Query', jeditor?: Maybe<{ __typename?: 'JEditorData', etags: Array<Maybe<string>>, baseBW?: Maybe<number>, exercises: Array<Maybe<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> } }>>, did?: Maybe<Array<Maybe<{ __typename?: 'JEditorText', text?: Maybe<string> } | { __typename?: 'JEditorEBlock', e?: Maybe<number>, sets?: Maybe<Array<Maybe<{ __typename?: 'JEditorEROW', usebw?: Maybe<number>, v?: Maybe<number>, c?: Maybe<string>, s?: Maybe<number>, r?: Maybe<number>, lb?: Maybe<number>, rpe?: Maybe<number> }>>> } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorBWTag', bw?: Maybe<number> } | { __typename?: 'JEditorNewExercise' }>>> }> };
+export type GetJEditorDataQuery = { __typename?: 'Query', jeditor?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | null> | null } | null };
 
 export type SaveJEditorMutationVariables = Exact<{
-  rows?: Maybe<Array<Maybe<Scalars['JEditorSaveRow']>> | Maybe<Scalars['JEditorSaveRow']>>;
+  rows?: InputMaybe<Array<InputMaybe<Scalars['JEditorSaveRow']>> | InputMaybe<Scalars['JEditorSaveRow']>>;
   defaultDate: Scalars['YMD'];
 }>;
 
 
-export type SaveJEditorMutation = { __typename?: 'Mutation', saveJEditor?: Maybe<boolean> };
+export type SaveJEditorMutation = { __typename?: 'Mutation', saveJEditor?: boolean | null };
 
 export type DownloadLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DownloadLogsQuery = { __typename?: 'Query', downloadLogs?: Maybe<{ __typename?: 'JEditorData', etags: Array<Maybe<string>>, baseBW?: Maybe<number>, exercises: Array<Maybe<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: Maybe<string> } }>>, did?: Maybe<Array<Maybe<{ __typename?: 'JEditorText', text?: Maybe<string> } | { __typename?: 'JEditorEBlock', e?: Maybe<number>, sets?: Maybe<Array<Maybe<{ __typename?: 'JEditorEROW', usebw?: Maybe<number>, v?: Maybe<number>, c?: Maybe<string>, s?: Maybe<number>, r?: Maybe<number>, lb?: Maybe<number>, rpe?: Maybe<number> }>>> } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorBWTag', bw?: Maybe<number> } | { __typename?: 'JEditorNewExercise' }>>> }> };
+export type DownloadLogsQuery = { __typename?: 'Query', downloadLogs?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | null> | null } | null };
 
 export type GetFollowersQueryVariables = Exact<{
   of: Scalars['ID'];
-  has?: Maybe<Scalars['ID']>;
+  has?: InputMaybe<Scalars['ID']>;
 }>;
 
 
-export type GetFollowersQuery = { __typename?: 'Query', getFollowersCount: { __typename?: 'FollowersCount', has?: Maybe<boolean>, total: number } };
+export type GetFollowersQuery = { __typename?: 'Query', getFollowersCount: { __typename?: 'FollowersCount', has?: boolean | null, total: number } };
 
 export type LikeMessageMutationVariables = Exact<{
   target: Scalars['ID'];
@@ -1084,28 +1099,28 @@ export type LikeJournalLogMutation = { __typename?: 'Mutation', likeJournalLog: 
 
 export type FollowMutationVariables = Exact<{
   uid: Scalars['ID'];
-  not?: Maybe<Scalars['Boolean']>;
+  not?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type FollowMutation = { __typename?: 'Mutation', follow?: Maybe<boolean> };
+export type FollowMutation = { __typename?: 'Mutation', follow?: boolean | null };
 
 export type GetLogInboxQueryVariables = Exact<{
-  olderThan?: Maybe<Scalars['UTCDate']>;
-  newerThan?: Maybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
   logid: Scalars['ID'];
 }>;
 
 
-export type GetLogInboxQuery = { __typename?: 'Query', getLogInbox?: Maybe<{ __typename?: 'Inbox', referencedUsers?: Maybe<Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> }>>, notifications?: Maybe<Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: Maybe<string>, inResponseToMsg?: Maybe<string>, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: Maybe<string>, inResponseToMsg?: Maybe<string>, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: Maybe<SystemNotificationType> }>> }> };
+export type GetLogInboxQuery = { __typename?: 'Query', getLogInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type GetPublicInteractionsInboxQueryVariables = Exact<{
-  olderThan?: Maybe<Scalars['UTCDate']>;
-  newerThan?: Maybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
 }>;
 
 
-export type GetPublicInteractionsInboxQuery = { __typename?: 'Query', getAllPublicInteractionsInbox?: Maybe<{ __typename?: 'Inbox', referencedUsers?: Maybe<Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> }>>, notifications?: Maybe<Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: Maybe<string>, inResponseToMsg?: Maybe<string>, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: Maybe<string>, inResponseToMsg?: Maybe<string>, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: Maybe<SystemNotificationType> }>> }> };
+export type GetPublicInteractionsInboxQuery = { __typename?: 'Query', getAllPublicInteractionsInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type SendMessageMutationVariables = Exact<{
   message: Scalars['String'];
@@ -1114,19 +1129,19 @@ export type SendMessageMutationVariables = Exact<{
 }>;
 
 
-export type SendMessageMutation = { __typename?: 'Mutation', sendMessage?: Maybe<{ __typename?: 'SendMessageResult', id: string, when: any, msgid: string }> };
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage?: { __typename?: 'SendMessageResult', id: string, when: any, msgid: string } | null };
 
 export type DeleteMessageMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteMessageMutation = { __typename?: 'Mutation', deleteMessage?: Maybe<boolean> };
+export type DeleteMessageMutation = { __typename?: 'Mutation', deleteMessage?: boolean | null };
 
 export type GetSessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSessionQuery = { __typename?: 'Query', getSession?: Maybe<{ __typename?: 'SessionInfo', time?: Maybe<string>, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: Maybe<string>, slvl?: Maybe<number>, sok?: Maybe<number>, age?: Maybe<number>, bw?: Maybe<number>, private?: Maybe<number>, isf?: Maybe<number>, joined?: Maybe<string>, usekg?: Maybe<number>, custom1RM?: Maybe<number>, est1RMFactor?: Maybe<number>, jranges?: Maybe<Array<Maybe<number>>>, estimate1RMFormula?: Maybe<string>, socialLinks?: Maybe<Array<Maybe<string>>> } }> };
+export type GetSessionQuery = { __typename?: 'Query', getSession?: { __typename?: 'SessionInfo', time?: string | null, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null } } | null };
 
 export type SignupMutationVariables = Exact<{
   uname: Scalars['String'];
@@ -1163,9 +1178,9 @@ export type ForgotMutation = { __typename?: 'Mutation', forgot: boolean };
 
 export type LoginWithGoogleMutationVariables = Exact<{
   jwt: Scalars['String'];
-  uname?: Maybe<Scalars['String']>;
-  isf?: Maybe<Scalars['Int']>;
-  usekg?: Maybe<Scalars['Int']>;
+  uname?: InputMaybe<Scalars['String']>;
+  isf?: InputMaybe<Scalars['Int']>;
+  usekg?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -1173,78 +1188,78 @@ export type LoginWithGoogleMutation = { __typename?: 'Mutation', loginWithGoogle
 
 export type LoginWithFirebaseMutationVariables = Exact<{
   token: Scalars['String'];
-  uname?: Maybe<Scalars['String']>;
-  isf?: Maybe<Scalars['Int']>;
-  usekg?: Maybe<Scalars['Int']>;
+  uname?: InputMaybe<Scalars['String']>;
+  isf?: InputMaybe<Scalars['Int']>;
+  usekg?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type LoginWithFirebaseMutation = { __typename?: 'Mutation', loginWithFirebase: string };
 
-type SettingsFields_BlockUsersSetting_Fragment = { __typename?: 'BlockUsersSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_BlockUsersSetting_Fragment = { __typename?: 'BlockUsersSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_CcSetting_Fragment = { __typename?: 'CCSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_CcSetting_Fragment = { __typename?: 'CCSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_Custom1RmFactorSetting_Fragment = { __typename?: 'Custom1RMFactorSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_Custom1RmFactorSetting_Fragment = { __typename?: 'Custom1RMFactorSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_DobSetting_Fragment = { __typename?: 'DOBSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_DobSetting_Fragment = { __typename?: 'DOBSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_DeleteAccountSetting_Fragment = { __typename?: 'DeleteAccountSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_DeleteAccountSetting_Fragment = { __typename?: 'DeleteAccountSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_EmailSetting_Fragment = { __typename?: 'EmailSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_EmailSetting_Fragment = { __typename?: 'EmailSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_OptionSetting_Fragment = { __typename?: 'OptionSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_OptionSetting_Fragment = { __typename?: 'OptionSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_RpeSetting_Fragment = { __typename?: 'RPESetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_RpeSetting_Fragment = { __typename?: 'RPESetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_SocialMediasSetting_Fragment = { __typename?: 'SocialMediasSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_SocialMediasSetting_Fragment = { __typename?: 'SocialMediasSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_SupporterStatus_Fragment = { __typename?: 'SupporterStatus', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_SupporterStatus_Fragment = { __typename?: 'SupporterStatus', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_UsernameSetting_Fragment = { __typename?: 'UsernameSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_UsernameSetting_Fragment = { __typename?: 'UsernameSetting', id: string, waitingCodeToChange?: boolean | null };
 
-type SettingsFields_VoidSetting_Fragment = { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingsFields_VoidSetting_Fragment = { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null };
 
 export type SettingsFieldsFragment = SettingsFields_BlockUsersSetting_Fragment | SettingsFields_CcSetting_Fragment | SettingsFields_Custom1RmFactorSetting_Fragment | SettingsFields_DobSetting_Fragment | SettingsFields_DeleteAccountSetting_Fragment | SettingsFields_EmailSetting_Fragment | SettingsFields_OptionSetting_Fragment | SettingsFields_RpeSetting_Fragment | SettingsFields_SocialMediasSetting_Fragment | SettingsFields_SupporterStatus_Fragment | SettingsFields_UsernameSetting_Fragment | SettingsFields_VoidSetting_Fragment;
 
-type SettingFields_UsernameSetting_Fragment = { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_BlockUsersSetting_Fragment = { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_EmailSetting_Fragment = { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_CcSetting_Fragment = { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null };
 
-type SettingFields_VoidSetting_Fragment = { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_Custom1RmFactorSetting_Fragment = { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_DobSetting_Fragment = { __typename?: 'DOBSetting', dob?: Maybe<any>, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_DobSetting_Fragment = { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_CcSetting_Fragment = { __typename?: 'CCSetting', cc?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean>, ccs?: Maybe<Array<Maybe<{ __typename?: 'CC', cc: string, name: string }>>> };
+type SettingFields_DeleteAccountSetting_Fragment = { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_OptionSetting_Fragment = { __typename?: 'OptionSetting', i?: Maybe<number>, id: string, waitingCodeToChange?: Maybe<boolean>, options?: Maybe<Array<Maybe<{ __typename?: 'Option', i: number, name: string }>>> };
+type SettingFields_EmailSetting_Fragment = { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_SupporterStatus_Fragment = { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_OptionSetting_Fragment = { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null };
 
-type SettingFields_Custom1RmFactorSetting_Fragment = { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: Maybe<string>, default: number, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_RpeSetting_Fragment = { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_RpeSetting_Fragment = { __typename?: 'RPESetting', defaults?: Maybe<Array<Maybe<any>>>, overrides?: Maybe<Array<Maybe<any>>>, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_SocialMediasSetting_Fragment = { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_DeleteAccountSetting_Fragment = { __typename?: 'DeleteAccountSetting', signature?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_SupporterStatus_Fragment = { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_BlockUsersSetting_Fragment = { __typename?: 'BlockUsersSetting', unames?: Maybe<Array<Maybe<string>>>, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_UsernameSetting_Fragment = { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null };
 
-type SettingFields_SocialMediasSetting_Fragment = { __typename?: 'SocialMediasSetting', links: string, id: string, waitingCodeToChange?: Maybe<boolean> };
+type SettingFields_VoidSetting_Fragment = { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null };
 
-export type SettingFieldsFragment = SettingFields_UsernameSetting_Fragment | SettingFields_EmailSetting_Fragment | SettingFields_VoidSetting_Fragment | SettingFields_DobSetting_Fragment | SettingFields_CcSetting_Fragment | SettingFields_OptionSetting_Fragment | SettingFields_SupporterStatus_Fragment | SettingFields_Custom1RmFactorSetting_Fragment | SettingFields_RpeSetting_Fragment | SettingFields_DeleteAccountSetting_Fragment | SettingFields_BlockUsersSetting_Fragment | SettingFields_SocialMediasSetting_Fragment;
+export type SettingFieldsFragment = SettingFields_BlockUsersSetting_Fragment | SettingFields_CcSetting_Fragment | SettingFields_Custom1RmFactorSetting_Fragment | SettingFields_DobSetting_Fragment | SettingFields_DeleteAccountSetting_Fragment | SettingFields_EmailSetting_Fragment | SettingFields_OptionSetting_Fragment | SettingFields_RpeSetting_Fragment | SettingFields_SocialMediasSetting_Fragment | SettingFields_SupporterStatus_Fragment | SettingFields_UsernameSetting_Fragment | SettingFields_VoidSetting_Fragment;
 
 export type GetSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSettingsQuery = { __typename?: 'Query', getUserSettings: Array<Maybe<{ __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'DOBSetting', dob?: Maybe<any>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'CCSetting', cc?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean>, ccs?: Maybe<Array<Maybe<{ __typename?: 'CC', cc: string, name: string }>>> } | { __typename?: 'OptionSetting', i?: Maybe<number>, id: string, waitingCodeToChange?: Maybe<boolean>, options?: Maybe<Array<Maybe<{ __typename?: 'Option', i: number, name: string }>>> } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: Maybe<string>, default: number, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'RPESetting', defaults?: Maybe<Array<Maybe<any>>>, overrides?: Maybe<Array<Maybe<any>>>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'DeleteAccountSetting', signature?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'BlockUsersSetting', unames?: Maybe<Array<Maybe<string>>>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'SocialMediasSetting', links: string, id: string, waitingCodeToChange?: Maybe<boolean> }>> };
+export type GetSettingsQuery = { __typename?: 'Query', getUserSettings: Array<{ __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null> };
 
 export type SetSettingMutationVariables = Exact<{
   id: Scalars['ID'];
-  value?: Maybe<Scalars['SettingValue']>;
+  value?: InputMaybe<Scalars['SettingValue']>;
 }>;
 
 
-export type SetSettingMutation = { __typename?: 'Mutation', setSetting?: Maybe<{ __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'DOBSetting', dob?: Maybe<any>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'CCSetting', cc?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean>, ccs?: Maybe<Array<Maybe<{ __typename?: 'CC', cc: string, name: string }>>> } | { __typename?: 'OptionSetting', i?: Maybe<number>, id: string, waitingCodeToChange?: Maybe<boolean>, options?: Maybe<Array<Maybe<{ __typename?: 'Option', i: number, name: string }>>> } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: Maybe<string>, default: number, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'RPESetting', defaults?: Maybe<Array<Maybe<any>>>, overrides?: Maybe<Array<Maybe<any>>>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'DeleteAccountSetting', signature?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'BlockUsersSetting', unames?: Maybe<Array<Maybe<string>>>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'SocialMediasSetting', links: string, id: string, waitingCodeToChange?: Maybe<boolean> }> };
+export type SetSettingMutation = { __typename?: 'Mutation', setSetting?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
 
 export type SendVerificatonCodeMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1252,26 +1267,26 @@ export type SendVerificatonCodeMutationVariables = Exact<{
 }>;
 
 
-export type SendVerificatonCodeMutation = { __typename?: 'Mutation', sendVerificationCode?: Maybe<{ __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'DOBSetting', dob?: Maybe<any>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'CCSetting', cc?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean>, ccs?: Maybe<Array<Maybe<{ __typename?: 'CC', cc: string, name: string }>>> } | { __typename?: 'OptionSetting', i?: Maybe<number>, id: string, waitingCodeToChange?: Maybe<boolean>, options?: Maybe<Array<Maybe<{ __typename?: 'Option', i: number, name: string }>>> } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: Maybe<string>, default: number, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'RPESetting', defaults?: Maybe<Array<Maybe<any>>>, overrides?: Maybe<Array<Maybe<any>>>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'DeleteAccountSetting', signature?: Maybe<string>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'BlockUsersSetting', unames?: Maybe<Array<Maybe<string>>>, id: string, waitingCodeToChange?: Maybe<boolean> } | { __typename?: 'SocialMediasSetting', links: string, id: string, waitingCodeToChange?: Maybe<boolean> }> };
+export type SendVerificatonCodeMutation = { __typename?: 'Mutation', sendVerificationCode?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
 
 export type GetSupportersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSupportersQuery = { __typename?: 'Query', getSupporters?: Maybe<Array<Maybe<{ __typename?: 'Supporter', when?: Maybe<string>, user: { __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> } }>>> };
+export type GetSupportersQuery = { __typename?: 'Query', getSupporters?: Array<{ __typename?: 'Supporter', when?: string | null, user: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } } | null> | null };
 
 export type GetActiveSupportersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetActiveSupportersQuery = { __typename?: 'Query', getActiveSupporters?: Maybe<Array<Maybe<{ __typename?: 'Supporter', when?: Maybe<string>, user: { __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> } }>>> };
+export type GetActiveSupportersQuery = { __typename?: 'Query', getActiveSupporters?: Array<{ __typename?: 'Supporter', when?: string | null, user: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } } | null> | null };
 
-export type UserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: Maybe<string>, slvl?: Maybe<number>, sok?: Maybe<number>, age?: Maybe<number>, bw?: Maybe<number>, private?: Maybe<number>, isf?: Maybe<number>, joined?: Maybe<string>, usekg?: Maybe<number>, custom1RM?: Maybe<number>, est1RMFactor?: Maybe<number>, jranges?: Maybe<Array<Maybe<number>>>, estimate1RMFormula?: Maybe<string>, socialLinks?: Maybe<Array<Maybe<string>>> };
+export type UserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null };
 
-export type BriefUserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> };
+export type BriefUserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null };
 
 export type GetVideosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetVideosQuery = { __typename?: 'Query', getVideos?: Maybe<Array<Maybe<{ __typename?: 'Video', when: string, posted: string, logid: string, link: string, user: { __typename?: 'User', id: string, avatarhash: string, joined?: Maybe<string>, private?: Maybe<number>, uname: string, cc?: Maybe<string>, isf?: Maybe<number>, sok?: Maybe<number>, slvl?: Maybe<number> } }>>> };
+export type GetVideosQuery = { __typename?: 'Query', getVideos?: Array<{ __typename?: 'Video', when: string, posted: string, logid: string, link: string, user: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } } | null> | null };
 
 export const BaseFieldsFragmentDoc = gql`
     fragment BaseFields on BaseStat {
@@ -1285,6 +1300,42 @@ export const BaseFieldsFragmentDoc = gql`
     lb
   }
   by
+}
+    `;
+export const NotificationFieldsFragmentDoc = gql`
+    fragment NotificationFields on Notification {
+  __typename
+  ... on INotification {
+    id
+    when
+  }
+  ... on IHasJOwner {
+    jowner
+    ymd
+  }
+  ... on IBy {
+    by
+  }
+  ... on ITO {
+    to
+  }
+  ... on IHasMessageID {
+    msgid
+  }
+  ... on IMessageRef {
+    msgid
+    inResponseTo
+    inResponseToMsg
+  }
+  ... on IHasText {
+    text
+  }
+  ... on SystemNotification {
+    variant: type
+  }
+  ... on DM {
+    isGlobal
+  }
 }
     `;
 export const JeditorDataFieldsFragmentDoc = gql`
@@ -1866,39 +1917,12 @@ export const GetInboxDocument = gql`
       ...BriefUserFields
     }
     notifications {
-      __typename
-      ... on INotification {
-        id
-        when
-      }
-      ... on IHasJOwner {
-        jowner
-        ymd
-      }
-      ... on IBy {
-        by
-      }
-      ... on ITO {
-        to
-      }
-      ... on IHasMessageID {
-        msgid
-      }
-      ... on IMessageRef {
-        msgid
-        inResponseTo
-        inResponseToMsg
-      }
-      ... on IHasText {
-        text
-      }
-      ... on SystemNotification {
-        variant: type
-      }
+      ...NotificationFields
     }
   }
 }
-    ${BriefUserFieldsFragmentDoc}`;
+    ${BriefUserFieldsFragmentDoc}
+${NotificationFieldsFragmentDoc}`;
 
 /**
  * __useGetInboxQuery__
@@ -1929,6 +1953,48 @@ export function useGetInboxLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetInboxQueryHookResult = ReturnType<typeof useGetInboxQuery>;
 export type GetInboxLazyQueryHookResult = ReturnType<typeof useGetInboxLazyQuery>;
 export type GetInboxQueryResult = Apollo.QueryResult<GetInboxQuery, GetInboxQueryVariables>;
+export const GetNotificationsDocument = gql`
+    query GetNotifications($olderThan: UTCDate, $newerThan: UTCDate) {
+  getNotifications(olderThan: $olderThan, newerThan: $newerThan) {
+    referencedUsers {
+      ...BriefUserFields
+    }
+    notifications {
+      ...NotificationFields
+    }
+  }
+}
+    ${BriefUserFieldsFragmentDoc}
+${NotificationFieldsFragmentDoc}`;
+
+/**
+ * __useGetNotificationsQuery__
+ *
+ * To run a query within a React component, call `useGetNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotificationsQuery({
+ *   variables: {
+ *      olderThan: // value for 'olderThan'
+ *      newerThan: // value for 'newerThan'
+ *   },
+ * });
+ */
+export function useGetNotificationsQuery(baseOptions?: Apollo.QueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, options);
+      }
+export function useGetNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, options);
+        }
+export type GetNotificationsQueryHookResult = ReturnType<typeof useGetNotificationsQuery>;
+export type GetNotificationsLazyQueryHookResult = ReturnType<typeof useGetNotificationsLazyQuery>;
+export type GetNotificationsQueryResult = Apollo.QueryResult<GetNotificationsQuery, GetNotificationsQueryVariables>;
 export const GetAnnouncementsDocument = gql`
     query GetAnnouncements($olderThan: UTCDate, $limit: Int!) {
   getAnnouncements(olderThan: $olderThan, limit: $limit) {

@@ -19,6 +19,7 @@ import { useCurrentSession } from '../../session-handler';
 import { DialogTitleWithCloseBtn } from '../../../componentes/DialogTitleWithCloseBtn';
 import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import SystemNotificationItem from '../notifications-popmenu-items/SystemNotificationItem';
+import { Alert } from '@material-ui/lab';
 const useStyles = makeStyles((theme) => ({
     
     msgBox: { 
@@ -335,7 +336,16 @@ export function DMsWindow()
                                 
                                         <DirectMessageItem when={msg.when} whenExtra={whenExtra}>
                                             <div className="usr-text">
-                                                <UnameTag {...msg.by} inline/>: { userTextToParsedUI(msg.text)} 
+                                                <UnameTag {...msg.by} inline/>: 
+
+                                                    { msg.isGlobal?<Alert severity="info" className="sha">
+                                                                        <Typography variant="body2">
+                                                                            <strong>(Sent to everyone)</strong> {userTextToParsedUI(msg.text)}
+                                                                        </Typography> 
+                                                                    </Alert>
+                                                                
+                                                                : userTextToParsedUI(msg.text) } 
+
                                             </div>
                                         </DirectMessageItem>
                                     </div>;
