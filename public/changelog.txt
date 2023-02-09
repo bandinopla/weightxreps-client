@@ -1,3 +1,6 @@
+- 2.15.0 : 2023-02-09
+        + Donate vía Twitter. Hold a tweet online for X amount of time and get Y amount of days as supporter.
+
 - 2.14.1 : 2023-02-08
         * improved the session hashing method. ( sadly it will force everyone to login again after i apply this... )
         * improved the Inbox UI and overall mechanics. Now it is splitted into notifications and direct messages.
