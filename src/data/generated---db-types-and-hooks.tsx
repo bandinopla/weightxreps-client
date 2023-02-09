@@ -404,6 +404,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']>;
   deleteMessage?: Maybe<Scalars['Boolean']>;
+  deleteTweet?: Maybe<Scalars['Boolean']>;
   execBulkExercises?: Maybe<Scalars['Boolean']>;
   execExercise?: Maybe<ExecExerciseResponse>;
   follow?: Maybe<Scalars['Boolean']>;
@@ -417,6 +418,7 @@ export type Mutation = {
   sendMessage?: Maybe<SendMessageResult>;
   sendVerificationCode?: Maybe<UserSetting>;
   setSetting?: Maybe<UserSetting>;
+  setTweet?: Maybe<Scalars['Boolean']>;
   signup: Scalars['Boolean'];
   uploadAvatar: Scalars['String'];
   verifySignup: Scalars['String'];
@@ -424,6 +426,11 @@ export type Mutation = {
 
 
 export type MutationDeleteMessageArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type MutationDeleteTweetArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
@@ -509,6 +516,12 @@ export type MutationSetSettingArgs = {
 };
 
 
+export type MutationSetTweetArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  type?: InputMaybe<TweetType>;
+};
+
+
 export type MutationSignupArgs = {
   email: Scalars['String'];
   isf: Scalars['Int'];
@@ -589,6 +602,8 @@ export type Query = {
   getPRsOf?: Maybe<PrHistory>;
   getSession?: Maybe<SessionInfo>;
   getSupporters?: Maybe<Array<Maybe<Supporter>>>;
+  getTwitterChallenges?: Maybe<Array<Maybe<TweetChallenge>>>;
+  getTwitterChallengesStates?: Maybe<Array<Maybe<TweetState>>>;
   getUserSettings: Array<Maybe<UserSetting>>;
   getVideos?: Maybe<Array<Maybe<Video>>>;
   jday?: Maybe<JLog>;
@@ -812,6 +827,26 @@ export enum SystemNotificationType {
   Error = 'error',
   Info = 'info',
   Warning = 'warning'
+}
+
+export type TweetChallenge = {
+  __typename?: 'TweetChallenge';
+  description: Scalars['String'];
+  title: Scalars['String'];
+  type: TweetType;
+};
+
+export type TweetState = {
+  __typename?: 'TweetState';
+  fecha: Scalars['UTCDate'];
+  granted?: Maybe<Scalars['Boolean']>;
+  status?: Maybe<Scalars['String']>;
+  tweet: Scalars['ID'];
+  type: TweetType;
+};
+
+export enum TweetType {
+  AsDonation = 'AS_DONATION'
 }
 
 export type UCard = {
@@ -1278,6 +1313,31 @@ export type GetActiveSupportersQueryVariables = Exact<{ [key: string]: never; }>
 
 
 export type GetActiveSupportersQuery = { __typename?: 'Query', getActiveSupporters?: Array<{ __typename?: 'Supporter', when?: string | null, user: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } } | null> | null };
+
+export type GetTwitterChallengesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTwitterChallengesQuery = { __typename?: 'Query', getTwitterChallenges?: Array<{ __typename?: 'TweetChallenge', description: string, title: string, type: TweetType } | null> | null };
+
+export type GetTwitterChallengesStatusesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTwitterChallengesStatusesQuery = { __typename?: 'Query', getTwitterChallengesStates?: Array<{ __typename?: 'TweetState', fecha: any, granted?: boolean | null, status?: string | null, tweet: string, type: TweetType } | null> | null };
+
+export type SetTweetMutationVariables = Exact<{
+  tweetID?: InputMaybe<Scalars['ID']>;
+  type?: InputMaybe<TweetType>;
+}>;
+
+
+export type SetTweetMutation = { __typename?: 'Mutation', setTweet?: boolean | null };
+
+export type DeleteTweetMutationVariables = Exact<{
+  tweetID?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type DeleteTweetMutation = { __typename?: 'Mutation', deleteTweet?: boolean | null };
 
 export type UserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null };
 
@@ -3140,6 +3200,143 @@ export function useGetActiveSupportersLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetActiveSupportersQueryHookResult = ReturnType<typeof useGetActiveSupportersQuery>;
 export type GetActiveSupportersLazyQueryHookResult = ReturnType<typeof useGetActiveSupportersLazyQuery>;
 export type GetActiveSupportersQueryResult = Apollo.QueryResult<GetActiveSupportersQuery, GetActiveSupportersQueryVariables>;
+export const GetTwitterChallengesDocument = gql`
+    query GetTwitterChallenges {
+  getTwitterChallenges {
+    description
+    title
+    type
+  }
+}
+    `;
+
+/**
+ * __useGetTwitterChallengesQuery__
+ *
+ * To run a query within a React component, call `useGetTwitterChallengesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTwitterChallengesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTwitterChallengesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTwitterChallengesQuery(baseOptions?: Apollo.QueryHookOptions<GetTwitterChallengesQuery, GetTwitterChallengesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTwitterChallengesQuery, GetTwitterChallengesQueryVariables>(GetTwitterChallengesDocument, options);
+      }
+export function useGetTwitterChallengesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTwitterChallengesQuery, GetTwitterChallengesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTwitterChallengesQuery, GetTwitterChallengesQueryVariables>(GetTwitterChallengesDocument, options);
+        }
+export type GetTwitterChallengesQueryHookResult = ReturnType<typeof useGetTwitterChallengesQuery>;
+export type GetTwitterChallengesLazyQueryHookResult = ReturnType<typeof useGetTwitterChallengesLazyQuery>;
+export type GetTwitterChallengesQueryResult = Apollo.QueryResult<GetTwitterChallengesQuery, GetTwitterChallengesQueryVariables>;
+export const GetTwitterChallengesStatusesDocument = gql`
+    query GetTwitterChallengesStatuses {
+  getTwitterChallengesStates {
+    fecha
+    granted
+    status
+    tweet
+    type
+  }
+}
+    `;
+
+/**
+ * __useGetTwitterChallengesStatusesQuery__
+ *
+ * To run a query within a React component, call `useGetTwitterChallengesStatusesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTwitterChallengesStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTwitterChallengesStatusesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTwitterChallengesStatusesQuery(baseOptions?: Apollo.QueryHookOptions<GetTwitterChallengesStatusesQuery, GetTwitterChallengesStatusesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTwitterChallengesStatusesQuery, GetTwitterChallengesStatusesQueryVariables>(GetTwitterChallengesStatusesDocument, options);
+      }
+export function useGetTwitterChallengesStatusesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTwitterChallengesStatusesQuery, GetTwitterChallengesStatusesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTwitterChallengesStatusesQuery, GetTwitterChallengesStatusesQueryVariables>(GetTwitterChallengesStatusesDocument, options);
+        }
+export type GetTwitterChallengesStatusesQueryHookResult = ReturnType<typeof useGetTwitterChallengesStatusesQuery>;
+export type GetTwitterChallengesStatusesLazyQueryHookResult = ReturnType<typeof useGetTwitterChallengesStatusesLazyQuery>;
+export type GetTwitterChallengesStatusesQueryResult = Apollo.QueryResult<GetTwitterChallengesStatusesQuery, GetTwitterChallengesStatusesQueryVariables>;
+export const SetTweetDocument = gql`
+    mutation SetTweet($tweetID: ID, $type: TweetType) {
+  setTweet(id: $tweetID, type: $type)
+}
+    `;
+export type SetTweetMutationFn = Apollo.MutationFunction<SetTweetMutation, SetTweetMutationVariables>;
+
+/**
+ * __useSetTweetMutation__
+ *
+ * To run a mutation, you first call `useSetTweetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTweetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTweetMutation, { data, loading, error }] = useSetTweetMutation({
+ *   variables: {
+ *      tweetID: // value for 'tweetID'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useSetTweetMutation(baseOptions?: Apollo.MutationHookOptions<SetTweetMutation, SetTweetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetTweetMutation, SetTweetMutationVariables>(SetTweetDocument, options);
+      }
+export type SetTweetMutationHookResult = ReturnType<typeof useSetTweetMutation>;
+export type SetTweetMutationResult = Apollo.MutationResult<SetTweetMutation>;
+export type SetTweetMutationOptions = Apollo.BaseMutationOptions<SetTweetMutation, SetTweetMutationVariables>;
+export const DeleteTweetDocument = gql`
+    mutation DeleteTweet($tweetID: ID) {
+  deleteTweet(id: $tweetID)
+}
+    `;
+export type DeleteTweetMutationFn = Apollo.MutationFunction<DeleteTweetMutation, DeleteTweetMutationVariables>;
+
+/**
+ * __useDeleteTweetMutation__
+ *
+ * To run a mutation, you first call `useDeleteTweetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTweetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTweetMutation, { data, loading, error }] = useDeleteTweetMutation({
+ *   variables: {
+ *      tweetID: // value for 'tweetID'
+ *   },
+ * });
+ */
+export function useDeleteTweetMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTweetMutation, DeleteTweetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTweetMutation, DeleteTweetMutationVariables>(DeleteTweetDocument, options);
+      }
+export type DeleteTweetMutationHookResult = ReturnType<typeof useDeleteTweetMutation>;
+export type DeleteTweetMutationResult = Apollo.MutationResult<DeleteTweetMutation>;
+export type DeleteTweetMutationOptions = Apollo.BaseMutationOptions<DeleteTweetMutation, DeleteTweetMutationVariables>;
 export const GetVideosDocument = gql`
     query GetVideos {
   getVideos {

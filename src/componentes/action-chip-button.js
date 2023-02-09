@@ -16,7 +16,7 @@ import { parseError } from "../data/db";
  * @param {ActionChipButtonParams} param0 
  * @returns 
  */
-export const ActionChipButton = ({ IconClass, label, labelWhenSending, executeAction })=>{
+export const ActionChipButton = ({ IconClass, label, labelWhenSending, executeAction, size = "small" })=>{
  
     const [error, setError] = useState();
     const [busy, setBusy]   = useState(false);
@@ -32,11 +32,11 @@ export const ActionChipButton = ({ IconClass, label, labelWhenSending, executeAc
 
 
  
-    return <><Chip icon={busy? <CircularProgress size={10}/> : <IconClass fontSize="small"/> }
+    return <><Chip icon={busy? <CircularProgress size={10}/> : <IconClass fontSize={size}/> }
                 label={busy? labelWhenSending : label} 
                 variant="outlined"
                 clickable
-                size="small"
+                size={size}
                 onClick={onClick}
                 disabled={busy}
             />
