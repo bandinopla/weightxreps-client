@@ -152,8 +152,8 @@ export const useInbox = type =>{
     //
     // i know this is not optimal... but i had to refactor this.
     //
-    const DMs  = useGetInboxQuery();
-    const Notifs = useGetNotificationsQuery();
+    const DMs  = useGetInboxQuery({ notifyOnNetworkStatusChange:true });
+    const Notifs = useGetNotificationsQuery({ notifyOnNetworkStatusChange:true });
 
 
     const  { data, loading, error, fetchMore } = type==1? DMs : Notifs ;

@@ -65,9 +65,9 @@ const authLink = setContext((_, { headers }) => {
 	return { headers: newHeaders };
 });
 
-const errorLink = onError(
-	({ operation, graphQLErrors, networkError, response, forward }) => {}
-);
+// const errorLink = onError(
+// 	({ operation, graphQLErrors, networkError, response, forward }) => {}
+// );
 
 let typePolicies = mergeObjects([
 	BaseTypePolicies,
@@ -81,7 +81,7 @@ let typePolicies = mergeObjects([
 ]);
 
 const client = new ApolloClient({
-	link: from([errorLink, authLink, httpLink]), //authLink.concat(httpLink),
+	link: from([ authLink, httpLink]), //authLink.concat(httpLink),
 	cache: new InMemoryCache({
 		typePolicies,
 		possibleTypes: generatedIntrospection.possibleTypes,

@@ -72,29 +72,9 @@ export const useGetSession = ()=> {
 
     const { data, loading, error, client, refetch }      =  useGetSessionQuery({ notifyOnNetworkStatusChange:true });   
 
-    const logout = ()=>{ 
+    const logout = async ()=>{  
 
-        //
-        // Updateing the Apollo's Client cache... 
-        //
-        client.writeQuery({
-            query: gql`
-                query GetSession {
-                    getSession {
-                        user {
-                            ...UserFields
-                        }
-                        time
-                    }
-                } 
-                ${UserFieldsFragmentDoc}
-            `,
-            data: { 
-                getSession : null
-            },
-          });
-
-        reload(false); 
+        return reload(false); 
         
     }  
 
@@ -102,7 +82,7 @@ export const useGetSession = ()=> {
      * 
      * @param {string|boolean|undefined} newToken FALSE=logout, "abc"=set session token and refetch, null=refetch
      */
-    const reload = newToken => {
+    const reload = async newToken => {
 
         if( newToken===false )
         {
@@ -112,8 +92,12 @@ export const useGetSession = ()=> {
         {
             localStorage.setItem( SESSION_TOKEN, newToken );
         }
-
-        return refetch();  
+ 
+        
+        return await client.resetStore()
+                            .catch(e => {
+                                // ignore errors... most likely "you are not logged in" errors...
+                            });
     }
   
     return { 
