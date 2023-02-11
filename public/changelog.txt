@@ -1,3 +1,8 @@
+- 2.15.1 : 2023-02-11
+        * Fix Firebase Login bug (forgot to add column in database)
+        * Refactor code to get the client's session better...
+        * Twitter challenge possible bugfix (not tested but spotted)
+
 - 2.15.0 : 2023-02-09
         + Donate vía Twitter. Hold a tweet online for X amount of time and get Y amount of days as supporter.
 
