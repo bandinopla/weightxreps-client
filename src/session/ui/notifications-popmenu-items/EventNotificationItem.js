@@ -8,12 +8,10 @@ import TextQuote from "./TextQuote";
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import { UserTypedText } from "../../../componentes/user-typed-text";
 import { useHistory } from "react-router-dom";
-import { useSubmenuListener } from "../../../componentes/boton-con-submenu";
-import { useCurrentSession } from "../../session-handler";
+import { useSubmenuListener } from "../../../componentes/boton-con-submenu";  
 
 export default function EventNotificationItem({ data, myId }){
-
-    const session       = useCurrentSession();
+ 
     const history       = useHistory();
     const closeMenu     = useSubmenuListener();
 

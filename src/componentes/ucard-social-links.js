@@ -1,14 +1,14 @@
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useRef } from "react";
 import { updateUserCachedData } from "../cache/clean-cache";
-import { useSetSettingMutation } from "../data/generated---db-types-and-hooks";
-import { useCurrentSession } from "../session/session-handler";
+import { useSetSettingMutation } from "../data/generated---db-types-and-hooks"; 
 import { OpenConfirmModal } from "./Dialog";
 import LinkOutlinedIcon from '@material-ui/icons/LinkOutlined';
+import { useGetSession } from "../session/session-handler";
 
 export const SocialLinks = ({ user, urls }) => {
 
-    const session       = useCurrentSession();
+    const {session}       = useGetSession();
     const inputRef      = useRef()   
     const faviconUrl    = url=>`https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`//url.replace(/(^.*\.com)\/.*/,"$1/favicon.ico")
     const [setSetting]  = useSetSettingMutation()

@@ -18,8 +18,7 @@ import { TableSortLabel } from "@material-ui/core";
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
-import { useCurrentSession } from "../../session/session-handler";
+import CloseIcon from '@material-ui/icons/Close'; 
 import Checkbox from '@material-ui/core/Checkbox';
 import { ActionChipButton } from "../action-chip-button";
 import MergeTypeIcon from '@material-ui/icons/MergeType';
@@ -32,6 +31,7 @@ import DeleteSharpIcon from '@material-ui/icons/DeleteSharp';
 import OperationBackdrop from "../backdrop";
 import { parseError } from "../../data/db";
 import { DialogTitleWithCloseBtn } from "../DialogTitleWithCloseBtn";
+import { useGetSession } from "../../session/session-handler";
 function Alert2(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -88,7 +88,7 @@ export const EditExerciseButton = ({ exercise, ...rest })=>{
 
     const open          = useReactiveVar($open);
     const jowner        = useContext(JOwnerContext);
-    const session       = useCurrentSession();
+    const { session }      = useGetSession();
 
     if( jowner.id!=session?.user.id ) return "";
 
@@ -98,7 +98,7 @@ export const EditExerciseButton = ({ exercise, ...rest })=>{
 export const ExercisesModal = ()=>{
     const open          = useReactiveVar($open); 
     const jowner        = useContext(JOwnerContext);
-    const session       = useCurrentSession();
+    const { session }      = useGetSession();
     const myId          = session?.user.id;
 
     const handleClose   = ()=>$open(false);
@@ -125,10 +125,7 @@ export const ExercisesModal = ()=>{
 
 const ExercisesListView = ({ jowner, myId, onClose })=> {
 
-    const classes       = useStyles();
-    //const jowner        = useContext(JOwnerContext);
-    //const session       = useCurrentSession();
-    //const myId          = session?.user.id;
+    const classes       = useStyles(); 
     const imTheOwner    = myId == jowner.id;
 
     const [rowsPerPage, setRowsPerPage]                 = useState(25); 
@@ -352,7 +349,7 @@ const FilterByTermInput = ({onChange, showClear})=>{
 const BulkActions = ({ selection, closeOnBlur, onClose })=>{
 
     const classes   = useStyles();
-    const session                           = useCurrentSession();
+    const {session}                           = useGetSession();
 
     const [renameAction, setRenameAction]   = useState(); 
     const [mergeAction, setMergeAction]     = useState(); 

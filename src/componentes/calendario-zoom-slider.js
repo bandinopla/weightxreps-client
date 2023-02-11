@@ -4,8 +4,8 @@ import Slider from '@material-ui/core/Slider';
 
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import { JOwnerContext } from '../pages/journal-context';
-import { useCurrentSession } from '../session/session-handler';
+import { JOwnerContext } from '../pages/journal-context'; 
+import { useGetSession } from '../session/session-handler';
 
 
 const marks = [
@@ -40,7 +40,7 @@ export default function CalendarioZoomSlider({ currentSelection, onSelect }) {
 
     const [value, setValue] = useState( 0 );
     const jowner = useContext(JOwnerContext);
-    const current = useCurrentSession();
+    const { session:current } = useGetSession();
     
     const myMarks = useMemo( ()=>{
 

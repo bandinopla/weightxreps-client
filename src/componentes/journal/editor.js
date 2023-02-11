@@ -10,8 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeVar, useReactiveVar } from "@apollo/client";
 import "./editor.css";
 import CheckIcon from '@material-ui/icons/Check';
-import ErrorIcon from '@material-ui/icons/Error';
-import { useCurrentSession } from "../../session/session-handler";
+import ErrorIcon from '@material-ui/icons/Error'; 
 import { OpenTutorial, TutorialModal } from "./editor-tutorial"; //
 import NoddingGuySrc from "../../banners/nodding-guy.gif";
 
@@ -19,6 +18,7 @@ import {
     useHistory
 } from "react-router-dom";
 import { OpenConfirmModal } from "../Dialog";
+import { useGetSession } from "../../session/session-handler";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -38,7 +38,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
 
     const getDoc        = useRef();
     const showDocError  = useRef(); 
-    const session       = useCurrentSession();
+    const {session }      = useGetSession();
     const history       = useHistory();
 
     const [saveEditor, {client}]    = useSaveJEditorMutation();

@@ -842,11 +842,13 @@ export type TweetState = {
   granted?: Maybe<Scalars['Boolean']>;
   status?: Maybe<Scalars['String']>;
   tweet: Scalars['ID'];
+  tweet_username?: Maybe<Scalars['String']>;
   type: TweetType;
 };
 
 export enum TweetType {
-  AsDonation = 'AS_DONATION'
+  AsDonation = 'AS_DONATION',
+  AsDonation2 = 'AS_DONATION2'
 }
 
 export type UCard = {
@@ -1322,7 +1324,7 @@ export type GetTwitterChallengesQuery = { __typename?: 'Query', getTwitterChalle
 export type GetTwitterChallengesStatusesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTwitterChallengesStatusesQuery = { __typename?: 'Query', getTwitterChallengesStates?: Array<{ __typename?: 'TweetState', fecha: any, granted?: boolean | null, status?: string | null, tweet: string, type: TweetType } | null> | null };
+export type GetTwitterChallengesStatusesQuery = { __typename?: 'Query', getTwitterChallengesStates?: Array<{ __typename?: 'TweetState', fecha: any, granted?: boolean | null, status?: string | null, tweet: string, type: TweetType, tweet_username?: string | null } | null> | null };
 
 export type SetTweetMutationVariables = Exact<{
   tweetID?: InputMaybe<Scalars['ID']>;
@@ -3244,6 +3246,7 @@ export const GetTwitterChallengesStatusesDocument = gql`
     status
     tweet
     type
+    tweet_username
   }
 }
     `;

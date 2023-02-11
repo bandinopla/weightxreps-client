@@ -15,8 +15,8 @@ import { OpenConfirmModal } from "../componentes/Dialog";
 import ErrorSnackbar from "../componentes/ErrorSnackbar";
 import { trackLoginWith } from "../componentes/google-tracker";
 import { parseError } from "../data/db";
-import { useLoginWithFirebaseMutation } from "../data/generated---db-types-and-hooks";
-import { setSessionToken } from "../session/session-handler";
+import { useLoginWithFirebaseMutation } from "../data/generated---db-types-and-hooks"; 
+import { useGetSession } from "../session/session-handler";
 import { OneOf } from "./SignupAndLogin";
 
 // Your web app's Firebase configuration
@@ -41,13 +41,16 @@ const auth  = app.auth(); //getAuth(app);
 let firebaseUiDeletion = Promise.resolve();
 
 
-export default function FirebaseLoginPage() {
-    const ref                   = useRef();
-    const [token, setToken]     = useState();
-    const [login, { data, loading, error, client }] = useLoginWithFirebaseMutation();
+export default function FirebaseLoginPage() 
+{
+    const ref                   = useRef(); 
+    const { session, reload }   = useGetSession();
+
+    const [login, { data, loading, error, client }] = useLoginWithFirebaseMutation({ notifyOnNetworkStatusChange:true });
     const [opError, setOpError] = useState();
-    const getAccSetupValues     = useRef();
-    const history               = useHistory();
+    const getAccSetupValues     = useRef(); 
+    const [ accessToken, setAccessToken ] = useState(); // used just to force component redraw...
+    const loadingOperation = useRef(); 
 
     //
     // Firebase UI setup
@@ -58,37 +61,24 @@ export default function FirebaseLoginPage() {
         // This can happen if you unmount/remount the element quickly.
         await firebaseUiDeletion;
 
-        const ui    = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
-        console.log("CREATE LOGIN UI")
+        const ui    = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth); 
 
-        ui.reset(); //ig signin flow = popup
+        ui.reset(); //ig signin flow = popup 
+
+
+        // const unsub = auth.onAuthStateChanged( user => { 
  
-
-
-        const unsub = auth.onAuthStateChanged( user => {
-            console.log("AUTH STATE CHANGE: ", user)
-            if( !user && token )// 
-            {
-                ui.reset();
-            }
-
-            if( user && !token ) 
-            { //is logged...
-                auth.currentUser.getIdToken(false).then( token => {  
-                    setToken(token);
-                });
-            }
-        });
-
+        //     if( user ) 
+        //     {  
+        //         // auth.currentUser
+        //         //     .getIdToken(false)
+        //         //     .then( setAccessToken ); 
+        //     }
+        // }); 
 
 
         ui.start(ref.current, {
-            signInOptions: [
-            //     {
-            //         provider: EmailAuthProvider.PROVIDER_ID,
-            //         // Whether the display name should be displayed in the Sign Up page.
-            //         requireDisplayName: false, 
-            //     },  
+            signInOptions: [ 
                 {
                     provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                     scopes:["email"]
@@ -114,21 +104,18 @@ export default function FirebaseLoginPage() {
 
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
 
-                    console.log("LOGIN SUCCESS:", authResult)
-                    var user = authResult.user;
-                    var credential = authResult.credential;
-                    var isNewUser = authResult.additionalUserInfo.isNewUser;
-                    var providerId = authResult.additionalUserInfo.providerId;
-                    var operationType = authResult.operationType;
-                    var idToken = authResult.user.accessToken;
-
+                    // console.log("LOGIN SUCCESS:", authResult)
+                    // var user = authResult.user;
+                    // var credential = authResult.credential;
+                    // var isNewUser = authResult.additionalUserInfo.isNewUser;
+                    // var providerId = authResult.additionalUserInfo.providerId;
+                    // var operationType = authResult.operationType;
+                    // var idToken = authResult.user.accessToken; 
+                    // accessToken.current = authResult.user.accessToken;
+                    console.log("LOAGUEADOS CON FIREBASE", authResult.user)
                     
-                    
 
-                    // auth.currentUser.getIdToken(false).then( token => { 
-                    //     console.log("AUTH RESULT", authResult)
-                    //     setToken(token);
-                    // });
+                    auth.currentUser.getIdToken(false).then( callLogin );
 
                     
 
@@ -144,11 +131,7 @@ export default function FirebaseLoginPage() {
                     return false;// Avoid redirects after sign-in.
                 },
 
-                signInFailure: (error) => {
-
-                    console.log("ERROR",error)
-                    setOpError(error.message)
-                } 
+                signInFailure: (error) => setOpError(error.message) 
 
 
             },
@@ -163,60 +146,59 @@ export default function FirebaseLoginPage() {
             // Privacy policy url.
             privacyPolicyUrl: '/privacy-policy'
         });
-
-
  
 
         return async () => {
 
             await firebaseUiDeletion;
-            unsub(); 
+            //unsub(); 
             firebaseUiDeletion = ui.delete();
             await firebaseUiDeletion;
             console.log("DELETE LOGIN UI");
         }
 
-    }, [token]);
+    }, [ accessToken ]);
 
+
+    // //
+    // // trigger the loading op...
+    // //
+    // useEffect(()=>{
+
+    //     if( accessToken && !loadingOperation.current )
+    //     {
+    //         loadingOperation.current = callLogin(accessToken);
+    //     }
+
+
+    // }, [accessToken])
 
 
     const logoutFromFirebase = async () => {
-
-        console.log("LOGOUT FROM FIREBASE ", token);
-        try{
-            await auth.currentUser.delete(); //delete the user
-        }
-        catch(e) {
-            //shh....
-        }
-        
-        setToken(null);
+        loadingOperation.current = null;
+        setAccessToken(null); //await auth.currentUser.delete() ;
     }
 
 
-    const callLogin = accSetupValues => {
+    const callLogin = (token, accSetupValues) => {
 
-        login({ variables: { token, ...accSetupValues } })
+        return login({ variables: { token, ...accSetupValues } })
+ 
 
-            //.then(res=>auth.signOut.then(res)) //LOGOUT de firebase
-
-            .then(res => {
-
-                console.log("LOGIN")
-                return logoutFromFirebase().then(()=>{
-
-                    console.log("LOGIN RESULT: " + res.data.loginWithFirebase);
-                    trackLoginWith("Firebase");
-                    setSessionToken(res.data.loginWithFirebase, client);
-                    history.push("/"); 
-                });
+            .then(res => { 
                 
-                //logoutFromFirebase();
+                return logoutFromFirebase().then(()=>{
+ 
+                    trackLoginWith("Firebase"); 
+
+                    reload( res.data.loginWithFirebase );
+                     
+                }); 
+
             })
 
             .catch(e => {
-
-                console.log("ERROR", { elError:e })
+ 
                 var errorCode = parseError(e);
 
                 if (errorCode.indexOf('PICK-UNAME') == 0) 
@@ -233,32 +215,25 @@ export default function FirebaseLoginPage() {
                             logoutFromFirebase();
                         },
                         onConfirm   : () => { 
-                            callLogin( getAccSetupValues.current() );
+                            callLogin( token, getAccSetupValues.current() );
                         }, 
                         verb:"Create Account",
                         fullWidth:true
                     });
                 }
                 else 
-                { 
-                    console.error(e)
+                {  
                     logoutFromFirebase();
                     setOpError(errorCode);
                 }
             })
             ;
 
-    }
-
-    //
-    // si hay credencial, call login...
-    //
-    useEffect(() => token && callLogin(), [token]);
-
-    //useEffect(()=>opError && auth.currentUser.delete(),[opError]);
-
+    }  
+ 
 
     return <Paper elevation={2} square style={{ padding: 30 }}>
+        {accessToken}
                 <OperationBackdrop open={loading} />
                 <ErrorSnackbar trigger={ opError } vertical="bottom" horizontal="center" onClose={() => setOpError(null)} />
  

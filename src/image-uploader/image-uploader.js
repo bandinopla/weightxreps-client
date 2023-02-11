@@ -9,14 +9,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import ErrorSnackbar from '../componentes/ErrorSnackbar';
-import { parseError } from '../data/db';
-import { useCurrentSession } from '../session/session-handler';
+import { parseError } from '../data/db'; 
 /**
  * https://www.apollographql.com/docs/apollo-server/data/file-uploads/
  * https://github.com/jaydenseric/apollo-upload-client 
  * https://github.com/jaydenseric/graphql-upload <--- Upload scalar & handler 
  */
 import { $avatarUpdated } from '../utils/useUpdatedAvatarHash';
+import { useGetSession } from '../session/session-handler';
 
 
 const MUTATION = gql`
@@ -28,7 +28,7 @@ const MUTATION = gql`
 
 export const ImageUploadButton = ()=>{
 
-    const session                       = useCurrentSession();
+    const {session}                       = useGetSession();
     const [upload]                      = useMutation(MUTATION);
     const [image, setImage]             = useState();
     const cropper                       = useRef();

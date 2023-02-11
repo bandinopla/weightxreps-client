@@ -1,7 +1,6 @@
 import { Box, Button, ButtonGroup, CircularProgress, Container, FormControl, FormHelperText, Grid, Input, makeStyles, Paper, Snackbar, Typography } from '@material-ui/core';
 import { useEffect, useRef, useState, createContext, useContext } from 'react';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { useCurrentSession } from '../session/session-handler';
+import SettingsIcon from '@material-ui/icons/Settings'; 
 import { UAvatarFromUserQL } from '../componentes/uavatar';
 import { ImageUploadButton } from '../image-uploader/image-uploader';
 import { useGetSettingsQuery, useSendVerificatonCodeMutation, useSetSettingMutation } from '../data/generated---db-types-and-hooks';
@@ -27,6 +26,7 @@ import { clearJdayAndJRangeOf, updateUserCachedData } from '../cache/clean-cache
 import { useHistory } from "react-router-dom";
 import { PasswordInput } from '../componentes/PasswordInput';
 import { DownloadWidget } from './download-logs-widget';
+import { useGetSession } from '../session/session-handler';
 
 export const useSettingsStyles = makeStyles( theme=>({
     input: {
@@ -51,10 +51,8 @@ export const useSettingsStyles = makeStyles( theme=>({
 export const CurrentUserContext = createContext({ id:0 });
 
 export default function() {
-    
-    const classes                   = useSettingsStyles();
-    const session                   = useCurrentSession();
-    const history                   = useHistory();
+     
+    const {session}                  = useGetSession(); 
     const [expanded, setExpanded]   = useState(false);
     const { data:settings, loading, error } = useGetSettingsQuery();
 
@@ -463,7 +461,7 @@ const BlockedUsersWidget = ({setting}) => {
 const DeleteAccountWidget = ({setting}) => {
 
     const history           = useHistory();
-    const currentSession    = useCurrentSession();
+    const { session, logout }    = useGetSession();
     
     const onGetValue = async txt => {
         if( txt!=setting.signature )
@@ -478,8 +476,7 @@ const DeleteAccountWidget = ({setting}) => {
     {
         alert("bye bye! T_T");
 
-        currentSession.logout();
-        history.push("/");
+        logout();
         return "bye bye!";
     }
 

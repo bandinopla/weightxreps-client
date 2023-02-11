@@ -14,10 +14,10 @@ import { trackLoginWith } from "../componentes/google-tracker";
 import { PasswordInput } from "../componentes/PasswordInput";
 import { parseError } from "../data/db";
 import { useForgotMutation, useSignupMutation, useVerifySignupMutation } from "../data/generated---db-types-and-hooks";
-import { setSessionToken, useCurrentSession, useLogin } from "../session/session-handler";
+import {  useGetSession, useLogin } from "../session/session-handler";
 import { isEmail } from "../utils/utils";
 import FirebaseLoginPage from "./FirebaseLoginPage";
-import { SectionTitle } from "./guest/GuestLandingPage";
+import { SectionTitle } from "./guest/GuestLandingPage"; 
 
 const useStyles = makeStyles((theme) => ({
     root: {  
@@ -59,7 +59,8 @@ const parseAndSetError = e => {
 
 export const SignupPage = () => {
 
-    const history = useHistory();
+    
+    const { reload } = useGetSession();
     const classes = useStyles();
     const [error, setError] = useState();
     const [busy, setBusy] = useState();
@@ -185,15 +186,12 @@ export const SignupPage = () => {
         //
         // success?
         //
-        if (token) {
+        if (token) 
+        { 
+            await reload(token.data.verifySignup);
+
             trackLoginWith("WxR");
-            //
-            setSuccess(true);
-            setTimeout(() => {
-
-
-                setSessionToken(token.data.verifySignup, client);
-            }, 3000);
+            setSuccess(true); 
         }
 
     }
@@ -357,13 +355,14 @@ const SuccessBackdrop = ({ open, label, then }) => {
 
 export const LoginPage = () => {
 
+    const { session } = useGetSession();
     const classes = useStyles();
     const [error, setError] = useState();
     const [busy, setBusy] = useState();
     const unameInput = useRef();
     const passInput = useRef();
     const disableInputs = busy;
-    const [login] = useLogin();
+    const login = useLogin();
     const [forgot] = useForgotMutation();
     const [tempPass, setTempPass] = useState();
     const theme = useTheme()
@@ -403,9 +402,9 @@ export const LoginPage = () => {
     }
 
     const execLogin = async () => {
-        var u = unameInput.current.value.trim();
-        var p = passInput.current.value;
 
+        var u = unameInput.current.value.trim();
+        var p = passInput.current.value; 
 
 
         if (u.length == 0) {
@@ -414,26 +413,28 @@ export const LoginPage = () => {
         else if (p.length == 0) {
             setError({ id: "pass", error: "What's your password?" });
         }
-        else {
+        else 
+        {
             setBusy(true);
             setError(null);
 
             trackLoginWith("WxR");
 
-            try {
-                var tok = await login(u, p);
+            try 
+            {
+                await login(u, p);
             }
-            catch (e) {
-                setError(parseAndSetError(e));
-                setBusy(false);
+            catch (e) 
+            {
+                setError(parseAndSetError(e)); 
             }
+
+            setBusy(false);
         }
     }
-
+ 
     return <PageLayout>
-
-        {/* <LoginWithGoogle/>
-            <ORdivider/> */}
+ 
 
             <SectionTitle line1="CLASSIC" line2="SIGN IN" color={theme.GREEN_COLOR}/>
 
@@ -540,13 +541,13 @@ const PageLayout = ({ children }) => {
 
     const classes = useStyles();
     const history = useHistory();
-    const currentSession = useCurrentSession();
+    const { session:currentSession} = useGetSession();
     const theme = useTheme();
 
     useEffect(() => {
 
         if (currentSession?.user.id > 0) {
-            history.push("/");
+            history.push("/");  
         }
 
     }, [currentSession]);

@@ -7,8 +7,8 @@ import {
 	Paper,
 	Typography,
 } from "@material-ui/core";
-import TwitterChallenges from "../componentes/twitter-to-donate/TwitterChallenges";
-import { useCurrentSession } from "../session/session-handler";
+import TwitterChallenges from "../componentes/twitter-to-donate/TwitterChallenges"; 
+import { useGetSession } from "../session/session-handler";
 
 const useStyles = makeStyles((theme) => ({
 	logo: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const DonatePage = () => {
 	const classes = useStyles();
-	const session = useCurrentSession();
+	const { session } = useGetSession();
 
 	return (
 		<Container style={{ minHeight: "80vh" }}>

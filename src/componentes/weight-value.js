@@ -1,4 +1,4 @@
-import { useCurrentSession, useReactiveSetting } from '../session/session-handler';
+import {  useGetSession, useReactiveSetting } from '../session/session-handler';
 
 
 export const kg2lb = kg => round( kg*2.204623 ,1);
@@ -19,7 +19,7 @@ export const kg2lb = kg => round( kg*2.204623 ,1);
 export default function WeightValue( props )
 {  
     //let {session, userSettings} = useGetSession(); 
-    const session                 = useCurrentSession();
+    const { session }                 = useGetSession();
     const changeValue             = useReactiveSetting( session?.userSettings?.convertDisplayUnits );   
     const sessionUseKg            = session?.user?.usekg;
     //

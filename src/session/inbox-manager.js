@@ -7,7 +7,7 @@ import {
 import { parseError } from '../data/db';
 import { useGetInboxQuery, useGetNotificationsQuery } from '../data/generated---db-types-and-hooks';
 import { __resolveReferencedUserId } from '../data/type-policies';
-import { useCurrentSession } from './session-handler';
+import { useGetSession } from './session-handler';
 
 
 
@@ -221,7 +221,7 @@ export const useInbox = type =>{
 export const InboxManager = ({ type })=>{
 
     const autoFetchNewer            = true;
-    const currentSession            = useCurrentSession();
+    const { session:currentSession}            = useGetSession();
     const fetchIntervalInSeconds    = 120;
 
     //regularmente pedir los nuevos mensajes...

@@ -11,9 +11,9 @@ import PageLoadError from './PageLoadError';
 import { useHistory } from "react-router-dom";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SignalWifi1BarIcon from '@material-ui/icons/SignalWifi1Bar';
-import UnameTag from "../componentes/uname";
-import { useCurrentSession } from "../session/session-handler";
+import UnameTag from "../componentes/uname"; 
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import { useGetSession } from '../session/session-handler';
 
 
 const $holder = document.createElement('div');
@@ -306,7 +306,7 @@ const ActiveSupportersBanner = ()=>{
 
 const ActivityFeedTabs = ({ current }) => {
     // global o following
-    const session = useCurrentSession();
+    const { session } = useGetSession();
     let history = useHistory();
 
     const isA = current=="global";

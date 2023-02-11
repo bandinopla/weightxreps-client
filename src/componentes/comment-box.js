@@ -7,7 +7,7 @@ import { useSendMessageMutation } from '../data/generated---db-types-and-hooks';
 import { ifDark } from '../MainTheme';
 import { JOwnerContext } from '../pages/journal-context';
 import { updateCachedNotificationsArray } from '../session/inbox-manager';
-import { useCurrentSession } from '../session/session-handler';
+import {  useGetSession } from '../session/session-handler';
 import ErrorSnackbar from './ErrorSnackbar';
 import { JDayContext } from './journal/jday-context';
 
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
  */ 
 export default function CommentBox({ dmWith, outlined, replyingToThisMsg, verb="Send Message", placeholder="Type message here...", onCancel, onPosted, actionsAlwaysVisible, focusOnMount }) 
 {
-    const session                       = useCurrentSession();
+    const {session}                       = useGetSession();
     const jowner                        = useContext(JOwnerContext);
     const jdayContext                   = useContext(JDayContext);
     const classes                       = useStyles();

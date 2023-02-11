@@ -5,14 +5,14 @@ import { useContext, useState } from 'react';
 import { ActionChipButton } from './action-chip-button';
 import { UserTypedText } from './user-typed-text';
 import ConfirmationPrompt from './confirmation-prompt';
-import { useCurrentSession } from '../session/session-handler';
+import {  useGetSession } from '../session/session-handler';
 import { JDayContext } from './journal/jday-context';
 
  
 
 export const DeleteMyMessage = ({ msg }) => {
     
-    const session                           = useCurrentSession();
+    const {session}                           = useGetSession();
     const jdayContext                       = useContext(JDayContext);
 
     const [deleteMessage]                   = useDeleteMessageMutation();

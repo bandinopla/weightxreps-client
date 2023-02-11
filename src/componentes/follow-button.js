@@ -2,7 +2,7 @@ import { Button, CircularProgress } from "@material-ui/core"
 import { useContext, useState } from "react";
 import { GetFollowersDocument, useFollowMutation, useGetFollowersQuery } from "../data/generated---db-types-and-hooks";
 import { JOwnerContext } from "../pages/journal-context";
-import { useCurrentSession } from "../session/session-handler";
+import {  useGetSession } from "../session/session-handler";
 
 import "./follow-button.css";
 
@@ -12,7 +12,7 @@ import "./follow-button.css";
 export const FollowButton = ()=>{
 
     const jowner                    = useContext( JOwnerContext );
-    const session                   = useCurrentSession();
+    const {session}                   = useGetSession();
     const canFollow                 = jowner.id != session?.user?.id;
     const { data, loading, error }  = useGetFollowersQuery({
         variables: {

@@ -3,13 +3,13 @@ import { useContext, useState } from "react";
 import { useGetLogInboxQuery, useLikeJournalLogMutation, useLikeMessageMutation } from "../data/generated---db-types-and-hooks";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { updateCachedNotificationsArray } from "../session/inbox-manager";
-import { ActionChipButton } from "./action-chip-button";
-import { useCurrentSession } from "../session/session-handler";
+import { ActionChipButton } from "./action-chip-button"; 
 import { JDayContext } from "./journal/jday-context";
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ThumbUpSharpIcon from '@material-ui/icons/ThumbUpSharp';
 import { JOwnerContext } from "../pages/journal-context";
+import { useGetSession } from "../session/session-handler";
 
 /**
  * en "msg" pasarle la referencia a un comentario devuelto por Inbox.notifications
@@ -17,7 +17,7 @@ import { JOwnerContext } from "../pages/journal-context";
  */
 export const LikeThisButton = ({ msg, unlike }) => {
     
-    const session               = useCurrentSession();
+    const { session }              = useGetSession();
     const jdayContext           = useContext(JDayContext);
     const _type                 = msg.__typename;
     const myId                  = session?.user.id;
@@ -158,7 +158,7 @@ export const LikeJournalButton = ({...rest})=>{
 
 export const LikeJournalButtonOLD = ({ ...rest })=>{
 
-    const session                   = useCurrentSession();
+    const {session}                   = useGetSession();
     const jowner                    = useContext(JOwnerContext);
     const log                       = useContext(JDayContext);
     const logid                     = log?.id;
@@ -227,7 +227,7 @@ export const LikeJournalButtonManual = ({ jownerID, logid, logYMD, ...rest })=>{
  
 
 
-    const session                   = useCurrentSession(); 
+    const {session}                   = useGetSession(); 
   
     const myId                      = session?.user.id;
     const {data, error, loading, refetch}    = useGetLogInboxQuery({ variables: { logid } });

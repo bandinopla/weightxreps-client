@@ -14,12 +14,12 @@ import FetchMoreButton from '../../../componentes/FetchMoreButton';
 import CommentBox from '../../../componentes/comment-box';
 import { LikeThisButton } from '../../../componentes/like-button';
 import { DeleteMyMessage } from '../../../componentes/delete-message-button';
-import { userTextToParsedUI } from '../../../componentes/user-text-to-parsed-tags';
-import { useCurrentSession } from '../../session-handler';
+import { userTextToParsedUI } from '../../../componentes/user-text-to-parsed-tags'; 
 import { DialogTitleWithCloseBtn } from '../../../componentes/DialogTitleWithCloseBtn';
 import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import SystemNotificationItem from '../notifications-popmenu-items/SystemNotificationItem';
 import { Alert } from '@material-ui/lab';
+import { useGetSession } from '../../session-handler';
 const useStyles = makeStyles((theme) => ({
     
     msgBox: { 
@@ -64,7 +64,7 @@ export function openDMWindow( other ) {
 }
 
 export function OpenDMButton( { otherUser, label, Icon, ...rest } ) {
-    const session                       = useCurrentSession(); 
+    const { session }                  = useGetSession(); 
  
     if( !session )
     {
@@ -79,7 +79,7 @@ export function OpenDMButton( { otherUser, label, Icon, ...rest } ) {
 export function DMsWindow() 
 {
     const classes  = useStyles();
-    const sessionContext                            = useCurrentSession();
+    const { session:sessionContext }                = useGetSession();
     const [open, setOpen]                           = React.useState(false);
     const [other, setOther]                         = React.useState();
     const [yaViTodo]                                = React.useState(new Map());

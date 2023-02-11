@@ -19,14 +19,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import QuestionAnswerOutlinedIcon from '@material-ui/icons/QuestionAnswerOutlined';
 import UnameTag from "../uname";
 import { LikeThisButton } from "../like-button";
-import { DeleteMyMessage } from "../delete-message-button";
-import { useCurrentSession } from "../../session/session-handler";
+import { DeleteMyMessage } from "../delete-message-button"; 
 import CommentBox from "../comment-box";
 import { ReplyToMessage } from "../reply-to-message";
 import { JOwnerContext } from '../../pages/journal-context';
 
 
 import "./jcomments.css";
+import { useGetSession } from "../../session/session-handler";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,7 +71,7 @@ const findTopicStarter = ( notif, arr, justFirstParent ) => {
 export default function JComments({ logid }) {
 
     const classes = useStyles();
-    const session = useCurrentSession();
+    const {session} = useGetSession();
     const jowner = useContext (JOwnerContext);
     const imTheJowner = session?.user.id == jowner.id;
 
@@ -160,7 +160,7 @@ export default function JComments({ logid }) {
 
 const JComment = ({ comment:c })=>{
     const classes       = useStyles();
-    const session       = useCurrentSession();
+    const {session}       = useGetSession();
     const isComment     = c.__typename=='JComment';
     const isNew         = isComment && c.by.id==session?.user.id && (new Date() - c.when<60000);
 
@@ -207,7 +207,7 @@ const JComment = ({ comment:c })=>{
 
 const JCommentWhenAndActions = ({ msg:c })=>{
     
-    const session       = useCurrentSession();
+    const {session}       = useGetSession();
     const yaLeDimosLike = c.likes?.find(itm=>itm.by.id==session.user.id);    
 
     return <>&nbsp;— <TimeAgoDisplay time={c.when}/> &nbsp;&nbsp;

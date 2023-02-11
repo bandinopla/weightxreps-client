@@ -33,8 +33,9 @@ const createSettingProxy = prefix => {
     return new Proxy( {}, {
         get (target, prop) {
 
-            if( !(prop in target) )
+            if( !(prop in target) && typeof prop=='string')
             {
+                console.log("WTF", prop, target )
                 target[prop] = _makeVar( prop ); //Reactive variable
             }
 
@@ -47,6 +48,7 @@ const createSettingProxy = prefix => {
                 // lo guardamos en el local storage...
                 //storage.setItem(prefix+"::"+prop, JSON.stringify( value ) );
 
+                console.log("$$ target=", target)
                 if( !(prop in target) )
                 {
                     target[prop] = _makeVar(prop, value);

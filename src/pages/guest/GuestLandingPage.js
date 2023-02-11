@@ -3,8 +3,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Typewriter from 'typewriter-effect';
-import { useCurrentSession } from "../../session/session-handler";
+//import Typewriter from 'typewriter-effect'; 
 import FeatureCard from "./FeatureCard";
 
 //
@@ -13,6 +12,7 @@ import ErowsImg from "./img/erows.jpg";
 import ZoomImg from "./img/zoom-stats.jpg";
 import PRsImg from "./img/prs.jpg";
 import SinceBadgeSrc from "../../banners/since-badge.png";
+import { useGetSession } from "../../session/session-handler";
 
 const useStyles = makeStyles( theme=>({
 
@@ -68,7 +68,7 @@ export const SectionTitle = ({ line1, line2, color }) => {
 
 export const GuestLandingPage = ()=>{
 
-    const session = useCurrentSession();
+    const { session } = useGetSession();
     const history = useHistory();
     const classes = useStyles();
     const theme = useTheme();
@@ -206,18 +206,18 @@ const CallOutLine = ({ children })=>{
 }
 
 
-const TypeWritterText = ()=>{
-    const classes = useStyles();
-    return <div className={ classes.typewritterBanner}><Typewriter 
-                    options={{
-                        strings: [ "Track your <strong>progress</strong>", 
-                                    'Evaluate your <strong>overall volume</strong>',
-                                    "Log your <strong>workouts</strong>"],
-                        autoStart: true,
-                        loop: true,
-                    }}
-            /></div>;
-}
+// const TypeWritterText = ()=>{
+//     const classes = useStyles();
+//     return <div className={ classes.typewritterBanner}><Typewriter 
+//                     options={{
+//                         strings: [ "Track your <strong>progress</strong>", 
+//                                     'Evaluate your <strong>overall volume</strong>',
+//                                     "Log your <strong>workouts</strong>"],
+//                         autoStart: true,
+//                         loop: true,
+//                     }}
+//             /></div>;
+// }
 
 
 const OpenTutorialVideo = ({ children, ...rest }) => {

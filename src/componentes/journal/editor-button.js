@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { JOwnerContext } from "../../pages/journal-context";
-import { useCurrentSession } from "../../session/session-handler";
+import { JOwnerContext } from "../../pages/journal-context"; 
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import { Button, ButtonGroup, Dialog, Typography } from "@material-ui/core";
@@ -14,6 +13,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { OpenDMButton } from "../../session/ui/dms-window/dm-window";
 import { todayAsYMD } from "../../utils/utils";
 import { SectionTitle } from "../../pages/guest/GuestLandingPage";
+import { useGetSession } from "../../session/session-handler";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +32,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     //cargar on click....
     const classes = useStyles();
     const saveTriggerRef            = useRef();
-    const session                   = useCurrentSession();
+    const {session}                   = useGetSession();
     const jowner                    = useContext(JOwnerContext); 
     const [open, setOpen]           = useState(false);
     const [loading, setLoading]     = useState(false);

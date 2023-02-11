@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 import ReplyIcon from '@material-ui/icons/Reply';
-import { useContext, useState } from 'react';
-import { useCurrentSession } from '../session/session-handler';
+import { useContext, useState } from 'react'; 
+import { useGetSession } from '../session/session-handler';
 import { ActionChipButton } from './action-chip-button';
 import CommentBox from './comment-box';
 import ConfirmationPrompt from './confirmation-prompt';
@@ -12,7 +12,7 @@ import { userTextToParsedUI } from './user-text-to-parsed-tags';
 
 export const ReplyToMessage = ({ msg }) => {
     
-    const session                           = useCurrentSession();
+    const {session}                           = useGetSession();
     const jdayContext                       = useContext(JDayContext); 
     const [action, setAction]   = useState();
 

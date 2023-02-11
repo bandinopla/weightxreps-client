@@ -1,8 +1,7 @@
 import { Box, Button } from "@material-ui/core";
 import { useContext, useMemo, useState } from "react"; 
 import { useGetJRangeQuery } from "../../data/generated---db-types-and-hooks";
-import { JOwnerContext } from "../../pages/journal-context";
-import { useCurrentSession } from "../../session/session-handler";
+import { JOwnerContext } from "../../pages/journal-context"; 
 import { date2NiceString, ymd2date } from "../../utils/utils";
 import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import JRangeTable from "./jrange-table";
@@ -85,8 +84,7 @@ const $colors = ["e63946" ,"a8dadc","457b9d","1d3557","264653","2a9d8f","e9c46a"
  */
 export default function JRange({ match:{ params } }) {
 
-    const jowner                = useContext(JOwnerContext);
-    const session               = useCurrentSession();
+    const jowner                = useContext(JOwnerContext); 
     //const changeUnitValue       = useReactiveSetting( session?.userSettings?.convertDisplayUnits ); 
     const range                 = Number( params.range.substr(1));
     const  ymd                  = params.ymd;

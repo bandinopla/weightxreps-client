@@ -23,8 +23,8 @@ import { InfoDialog } from "../componentes/Dialog";
 import { JDayContentHeader } from "../componentes/journal/jday-header";
 import UnameTag from "../componentes/uname";
 import WeightValue from "../componentes/weight-value";
-import { useGetCommunityStatsLazyQuery, useGetOfficialExercisesQuery } from "../data/generated---db-types-and-hooks";
-import { useCurrentSession } from "../session/session-handler";
+import { useGetCommunityStatsLazyQuery, useGetOfficialExercisesQuery } from "../data/generated---db-types-and-hooks"; 
+import { useGetSession } from "../session/session-handler";
 import { OpenDMButton } from "../session/ui/dms-window/dm-window";
 import "./CommunityStats.css";
 import { PageLoadIndicator } from "./page-loader-ui";
@@ -436,7 +436,7 @@ const StatsFilterControls = ({ busy, gender, period, etype, data:officialExercis
 const ExplainHowToParticipate = ({ exercises, children })=>{
 
     const [open, setOpen] = useState();
-    const session = useCurrentSession();
+    const { session } = useGetSession();
 
     return <>
  
@@ -493,7 +493,7 @@ const ExplainHowToParticipate = ({ exercises, children })=>{
 
 const WhosAheadGraph = ({ data }) => {
 
-    const session = useCurrentSession();
+    const {session} = useGetSession();
     if( !data || data.heavyest.length<2 ) return "";
 
     const First     = data.heavyest[0].w;

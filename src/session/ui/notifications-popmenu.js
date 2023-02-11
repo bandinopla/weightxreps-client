@@ -15,7 +15,7 @@ import SystemNotificationItem from "./notifications-popmenu-items/SystemNotifica
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { parseError } from "../../data/db";
 import Alert from '@material-ui/lab/Alert';
-import { useCurrentSession, useReactiveSetting } from "../session-handler";
+import {  useGetSession, useReactiveSetting } from "../session-handler";
 
  
 const useStyles = makeStyles((theme) => ({
@@ -48,9 +48,9 @@ const useStyles = makeStyles((theme) => ({
 //
 export default function NotificationsPopMenu({ type }) {
 
-    const context       = useCurrentSession();
-    const classes       = useStyles();
-    const divRef        = React.createRef();
+    const { session, userSettings }     = useGetSession();
+    const classes                       = useStyles();
+    const divRef                        = React.createRef();
 
 
     const { inbox, loading, error, loadOlderNotifications, setUnseenNotificationsCount } = useInbox(type);  
@@ -58,10 +58,10 @@ export default function NotificationsPopMenu({ type }) {
     //
     // i hold in a "setting" the value of the last time this PopMenu was opened.
     //
-    const setting       = context?.userSettings[ type==1? "inboxLastSeenDate": "notificationsLastSeenDate" ];
+    const setting       = userSettings?.[ type==1? "inboxLastSeenDate": "notificationsLastSeenDate" ];
     const lastSeen      = useReactiveSetting( setting );
 
-    const myID          = context?.user.id;
+    const myID          = session?.user.id;
     let filteredInbox   = inbox? filtrarInbox(inbox, myID) : null;   
 
     let lastSeenDate = lastSeen ? new Date(lastSeen) : null ; 
@@ -135,7 +135,7 @@ export default function NotificationsPopMenu({ type }) {
         onClosed() { 
             //...
         }
-    }, [context]);
+    }, [ session ]);
 
 
     //

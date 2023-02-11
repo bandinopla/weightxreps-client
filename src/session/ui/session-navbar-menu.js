@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import { useGetSession, useCurrentSession } from "../session-handler";
+import { useGetSession } from "../session-handler";
 import UAvatar from "../../componentes/uavatar";
 import { UserSessionSubmenu } from './user-navbar-popmenu';
 
@@ -16,13 +16,8 @@ import { DarkModeActivatorButton } from '../../componentes/DarkModeActivatorButt
  
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
-export const SessionMenu = ()=> {
-
-    const { session , userSettings, logout } = useGetSession(); 
-
-    return <SessionMenuChilds/>
-
-}
+export const SessionMenu = ()=> <SessionMenuChilds/>;
+ 
 
 
 
@@ -31,11 +26,11 @@ export const SessionMenu = ()=> {
  */
 export const SessionMenuChilds = ()=> {
  
-    const session = useCurrentSession(); 
+    const { session, userSettings, logout } = useGetSession(); 
     const history = useHistory();   
 
     if( session )
-    { 
+    {  
         return <div>
 
                 <InboxManager type={1}/>  
@@ -65,7 +60,7 @@ export const SessionMenuChilds = ()=> {
 
                 </BotonConSubmenu> 
 
-                <BotonConSubmenu submenu={<UserSessionSubmenu user={session.user} userSettings={session.userSettings} logout={session.logout}/>}>
+                <BotonConSubmenu submenu={<UserSessionSubmenu user={session.user} userSettings={userSettings} logout={logout}/>}>
                     
                     <NotificationsBadge showOnlyOnMobile>
                         <UAvatar variant="circular" uid={session.user.id} hash={session.user.avatarhash}/>

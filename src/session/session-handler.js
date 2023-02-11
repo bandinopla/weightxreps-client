@@ -1,28 +1,67 @@
-import { useEffect, useState } from 'react';
-import { makeVar } from '@apollo/client';
-import { parseError } from "../data/db";
-import { useReactiveVar } from '@apollo/client';
-import { getOrCreateSettingsHandler } from '../utils/local-storage-settings';
-import { ReactiveVar } from '@apollo/client';
-
-import { useGetSessionQuery, useLoginMutation } from '../data/generated---db-types-and-hooks';
+import { useEffect, useState } from 'react'; 
+import { getOrCreateSettingsHandler } from '../utils/local-storage-settings'; 
+import { useGetSessionQuery, useLoginMutation, UserFieldsFragmentDoc } from '../data/generated---db-types-and-hooks'; 
+import { gql } from '@apollo/client';
 
 
-const $token                 = makeVar( localStorage.getItem("token") ); 
-const $currentSession        = makeVar();
+const SESSION_TOKEN = 'token'; 
+
+
+var UID = 0;
+var SETTINGS;
+
+export const SessionPolicies = {
+
+    SessionInfo: {
+        fields: {
+            user: {
+                read( user,  a ) {
+
+                    if(user)
+                    {
+                        UID = parseInt( user.__ref.split(":")[1] );  //<-- i could cache.readFragment but im Mr. Optimization guy....
+
+                        SETTINGS = getOrCreateSettingsHandler( UID, settings=>{
+                            settings.convertDisplayUnits        = false;
+                            settings.notificationsLastSeenDate  = null;
+                            settings.inboxLastSeenDate          = null;
+                        });
+                    }
+                    else 
+                    {
+                        UID = 0;
+                        SETTINGS = null;
+                    }
+
+                    
+                    
+                    // este es el current logged in user. 
+                    // Return the cached name, transformed to upper case 
+                    // const result = a.cache.readFragment({
+                    //     id: a.cache.identify(user),
+                    //     fragment: gql`
+                    //       fragment UserDummy on User {
+                    //         id 
+                    //         uname
+                    //       }
+                    //     `,
+                    //   });
+ 
+                    return user;
+                  }
+            }
+        }
+    } 
+
+} 
 
 
 //export const getAuthorizationHeaderValue = ()=> $token() || "" ;
 
 export const getAuthorizationHeaders = ()=> {
-    let token = $token();
 
-    if(!token)
-        return null;
-
-    return {
-        authorization: `Bearer ${token}`
-    }
+    let     token = localStorage.getItem(SESSION_TOKEN);  
+    return  token ? { authorization: `Bearer ${token}` } : null;
 };
 
 
@@ -31,82 +70,62 @@ export const getAuthorizationHeaders = ()=> {
 
 export const useGetSession = ()=> {
 
-    const { data, loading, error, client }      = useGetSessionQuery();
-    let userSettings; 
+    const { data, loading, error, client, refetch }      =  useGetSessionQuery({ notifyOnNetworkStatusChange:true });   
 
-    const logout = ()=>{
-
-        localStorage.removeItem("token");
-        $token(false); 
-        
-        window.open("/","_self");
-
-        /*
-        client.resetStore().catch(e=>{
-            //ignroe errors...
-        });
-        */
-        
-    }
-
-    //aca meter el localstore settings...
-    if( data?.getSession )
-    {
-        //-------------------------------------------------
-        //     U S E R   L O C A L   S E T T I N G S
-        //-------------------------------------------------
-        userSettings = getOrCreateSettingsHandler( data.getSession.user.id, settings=>{
-            settings.convertDisplayUnits        = false;
-            settings.notificationsLastSeenDate  = null;
-            settings.inboxLastSeenDate          = null;
-        });
+    const logout = ()=>{ 
 
         //
-        // setear la reactive var solo si cambio el UID
+        // Updateing the Apollo's Client cache... 
         //
-        //if( $currentSession()?.user.id!=data.getSession.user.id )
-        //{
-            //
-            // { user, userSettings }
-            //
-            // $currentSession({ 
-            //     user: data.getSession.user,
-            //     userSettings
-            // });
+        client.writeQuery({
+            query: gql`
+                query GetSession {
+                    getSession {
+                        user {
+                            ...UserFields
+                        }
+                        time
+                    }
+                } 
+                ${UserFieldsFragmentDoc}
+            `,
+            data: { 
+                getSession : null
+            },
+          });
 
-            setTimeout( $currentSession, 100, { 
-                user: data.getSession.user,
-                userSettings,
-                logout
-            });
-        //}
+        reload(false); 
+        
     }  
-    else 
-    {
-        setTimeout( $currentSession, 100, null ); 
+
+    /**
+     * 
+     * @param {string|boolean|undefined} newToken FALSE=logout, "abc"=set session token and refetch, null=refetch
+     */
+    const reload = newToken => {
+
+        if( newToken===false )
+        {
+            localStorage.removeItem( SESSION_TOKEN ); 
+        }
+        else if( typeof newToken == 'string' )
+        {
+            localStorage.setItem( SESSION_TOKEN, newToken );
+        }
+
+        return refetch();  
     }
-     
-    
   
-    return { session            : data && data.getSession
-            , userSettings
-            
+    return { 
+             session            : data && data.getSession 
             , loadingSession    : loading
-            , sessionError      : error && parseError(error)
-            , logout             
+            , sessionError      : error  
+            , userSettings      : SETTINGS
+            , reload
+            , logout       
+                
         } 
-}
-
-/**
- * hook para quienes el session object pero no quieren tenes que lidiar con el loading state o error state.
- * @returns {{ user:{id:number, uname:string, __etc }, userSettings:{ [key:string]:ReactiveVar }, logout:()=>void } | null}
- */
-export const useCurrentSession = () => {
-    const csess = useReactiveVar($currentSession); 
-    return  csess;
-}
-
-
+}  
 
 /**
  * Acepta un ReactiveVar como parametro. Cuando se detecta una ReactiveVar se suscribe a su onNextChange event. 
@@ -142,57 +161,28 @@ export const useReactiveSetting = reactiveSettingOrNot => {
     return value;
 }
 
-
-
-// ------------------ LOGIN
-// const DO_LOGIN = gql`
-//     mutation DoLogin($u:String!, $p:String!) {
-//         login( u:$u, p:$p ) 
-//     }
-// `;
+ 
 
 export const useLogin = ()=> {
- 
-    const token = useReactiveVar($token);
-    const [ doLogin, { data, loading, error, client }] = useLoginMutation() ;// useMutation( DO_LOGIN ); 
- 
-    //var loginWasOk = localStorage.getItem("token") !=null;
   
+    const { session, reload } = useGetSession();
+    const [ doLogin, { data, loading, error, client }] = useLoginMutation() ; 
+   
 
-    const _doLogin = (u, p)=>{
-         
-        return doLogin({ variables:{ u, p } })
-                        .then( ({data})=>{
-                            
-                            if( data?.login )
-                            { 
-                                console.log("LOGIN!!!");
- 
-                                return setSessionToken(data.login,client);
-                                //localStorage.setItem( "token", data.login ); 
-                                //$token(data.login); 
-                                //client.resetStore().catch(e=>console.error(e)); //triggers un refetch de todos los queries...
-                            }
+    const _doLogin = async (u, p)=>{
 
-                        });
+        const result = await doLogin({ variables:{ u, p } });
+
+        if( result.data?.login )
+        {  
+            return await reload( result.data.login ); 
+        }
+        else 
+        {
+            throw new Error("Unespected response...");
+        }
     };
 
-    return [ _doLogin
-            , {
-                loginWasOk      : token    , 
-                loadingLogin    : loading, 
-                loginError      : error && parseError(error) 
-            } ];
+    return _doLogin;
 }
-
-
-/**
- * Setea el token de session y reinicia el cache...
- * @param {string} token 
- */
-export const setSessionToken = (token, client) => {
-    localStorage.setItem( "token", token ); 
-    $token(token); 
-    client.resetStore().catch(e=>console.error(e)); 
-    return token;
-}
+ 
