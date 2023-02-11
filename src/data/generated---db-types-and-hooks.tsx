@@ -1324,7 +1324,7 @@ export type GetTwitterChallengesQuery = { __typename?: 'Query', getTwitterChalle
 export type GetTwitterChallengesStatusesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTwitterChallengesStatusesQuery = { __typename?: 'Query', getTwitterChallengesStates?: Array<{ __typename?: 'TweetState', fecha: any, granted?: boolean | null, status?: string | null, tweet: string, type: TweetType, tweet_username?: string | null } | null> | null };
+export type GetTwitterChallengesStatusesQuery = { __typename?: 'Query', getTwitterChallengesStates?: Array<{ __typename?: 'TweetState', fecha: any, granted?: boolean | null, status?: string | null, tweet: string, type: TweetType } | null> | null };
 
 export type SetTweetMutationVariables = Exact<{
   tweetID?: InputMaybe<Scalars['ID']>;
@@ -3246,7 +3246,6 @@ export const GetTwitterChallengesStatusesDocument = gql`
     status
     tweet
     type
-    tweet_username
   }
 }
     `;
