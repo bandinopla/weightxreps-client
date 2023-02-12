@@ -19,8 +19,8 @@ export const kg2lb = kg => round( kg*2.204623 ,1);
 export default function WeightValue( props )
 {  
     //let {session, userSettings} = useGetSession(); 
-    const { session }                 = useGetSession();
-    const changeValue             = useReactiveSetting( session?.userSettings?.convertDisplayUnits );   
+    const { session, userSettings }                 = useGetSession();
+    const changeValue             = useReactiveSetting( userSettings?.convertDisplayUnits );   
     const sessionUseKg            = session?.user?.usekg;
     //
     // unit original en que se escribio este valor....
