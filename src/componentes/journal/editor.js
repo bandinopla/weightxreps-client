@@ -1,6 +1,5 @@
-import { Backdrop, CircularProgress, LinearProgress, makeStyles, Typography } from "@material-ui/core";
-import MuiAlert from '@material-ui/lab/Alert';
-import { useEffect, useRef } from "react";
+import { LinearProgress } from "@material-ui/core";
+import { useRef } from "react";
 import { LogTextEditor, convertJEditorData2Text } from "../../codemirror/LogTextEditor";
 import { parseError } from "../../data/db";
 import { useGetJEditorDataQuery, useSaveJEditorMutation } from "../../data/generated---db-types-and-hooks";
@@ -9,20 +8,20 @@ import { AsciiSpinner } from "../ascii-spinner";
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeVar, useReactiveVar } from "@apollo/client";
 import "./editor.css";
-import CheckIcon from '@material-ui/icons/Check';
-import ErrorIcon from '@material-ui/icons/Error'; 
+
 import { OpenTutorial, TutorialModal } from "./editor-tutorial"; //
-import NoddingGuySrc from "../../banners/nodding-guy.gif";
+import Alert from "@material-ui/lab/Alert";
 
 import {
     useHistory
 } from "react-router-dom";
 import { OpenConfirmModal } from "../Dialog";
 import { useGetSession } from "../../session/session-handler";
+import { OpenJeditorSaveBackdrop } from "./editor-save-backdrop";
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+// function Alert(props) {
+//     return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 const $jeditorError     = makeVar();
 const $jeditorIsBusy    = makeVar(false);
@@ -40,6 +39,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
     const showDocError  = useRef(); 
     const {session }      = useGetSession();
     const history       = useHistory();
+    const saveError = useReactiveVar($jeditorError);
 
     const [saveEditor, {client}]    = useSaveJEditorMutation();
     
@@ -49,6 +49,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
         },
 
         fetchPolicy:"network-only"
+        ,onCompleted: ()=>$jeditorError(null)
     });
 
     if( !session )
@@ -62,6 +63,8 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
      */
     //TODO: jeditor SAVE
     const save = async ( yesIknow )=>{ 
+
+        $jeditorError(null);
 
         try
         {  
@@ -130,43 +133,50 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
             } 
  
 
-            //
-            // enviarlo al server...
-            //
-            $jeditorIsBusy(true);  
+
+            await OpenJeditorSaveBackdrop( async ()=>{  
+        
+
+                    var saveOp    = await saveEditor({
+                        variables: {
+                            rows: doc,
+                            defaultDate: ymd
+                        }
+                    });
+
+                    
+                    if( !saveOp.data?.saveJEditor )
+                    {
+                        throw new Error("Unespected error...");
+                    }
+                    
+                    
+
+                    //
+                    // borrar cache....
+                    //
+                    try
+                    {
+                        await client.resetStore(); 
+                    }
+                    catch( e )
+                    {
+                        // weird... anyway...
+                        window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self");
+                        return;
+                    }  
+
+                    onClose();
+                    
+                     
+                    if ( redirect )
+                    {
+                        //ir al ultimo dia cargado...  
+                        history.push("/journal/"+session.user.uname+"/"+__ymd);
+                    }
+
+            });// OpenJeditorSaveBackdrop
             
-
-            /////////const defaultDate = todayAsYMD(); 
- 
-
-            var resp    = await saveEditor({
-                variables: {
-                    rows: doc,
-                    defaultDate: ymd
-                }
-            });
-
-            
-            
-            
-
-            //
-            // borrar cache....
-            //
-            var what = await client.resetStore(); 
-
-            
-            $jeditorIsBusy({ success:true, then:()=>{
-
-                onClose(); 
-
-                if ( redirect )
-                {
-                    //ir al ultimo dia cargado...  
-                    history.push("/journal/"+session.user.uname+"/"+__ymd);
-                }
-
-            } });
 
             
  
@@ -176,8 +186,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
         // error!
         //
         catch(e) 
-        {
-            $jeditorIsBusy({ success:false });
+        { 
 
             const err = parseError(e);
 
@@ -224,85 +233,10 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
 
     onLoaded();
 
-    return <>
-        <JeditorSaveBackdrop/>
-        <JeditorErrorMessage /> 
+    return <> 
         <LogTextEditor defaultYMD={ymd} usekg={ session.user.usekg } value={data.jeditor.did} exercises={data.jeditor.exercises} tags={data.jeditor.etags} getDocRef={getDoc} getShowErrorRef={showDocError}/>
+        { saveError && <Alert severity="error">{parseError(saveError)}</Alert> }
     </>
 }
 
 
-
-const useBackdropStyles = makeStyles((theme) => ({
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
-    },
-  })); 
-
-const JeditorSaveBackdrop = ()=>{
-    const classes       = useBackdropStyles();
-    const opStatus      = useReactiveVar($jeditorIsBusy);
-
-    useEffect( ()=>{
-
-        if( opStatus.success != null )
-        {
-            if( opStatus.success==false )
-            {
-                $jeditorIsBusy(false);
-                return;
-            }
-
-            var interval = setTimeout( ()=>{
-
-                opStatus.then && opStatus.then();
-                $jeditorIsBusy(false);
-
-            }, 2000 );
-        }
-
-        return ()=>clearInterval(interval)
-
-    } ,[opStatus]);//onerror="this.onerror=null;this.src='https://i.giphy.com/rY93u9tQbybks.gif';" //
-
-    return <Backdrop className={ classes.backdrop + (opStatus.success!=null? " success-"+opStatus.success.toString() : "" ) } open={ opStatus } >
-
-        <div style={{display:"none"}}><img src={ NoddingGuySrc } alt=""/></div>
-        
-        { opStatus==true? <CircularProgress color="inherit" /> 
-        : opStatus.success? <div> 
-                                <img src={ NoddingGuySrc } alt="" style={{ borderRadius:180 }}/>
-                                 <Typography variant="h2"> <CheckIcon fontSize="large"/> GOOD JOB!</Typography>
-                                </div>
-                            : opStatus.success==false? <ErrorIcon fontSize="large"/> : "" }
-    </Backdrop>
-}
-
-
-/**
- * Snackbar que se activa con la reactive var $jsonEditorError
- */
-const JeditorErrorMessage = ()=>{
-
-    const error = useReactiveVar($jeditorError);
-
-    const handleClose = ()=>$jeditorError(null);
-
-    return ( 
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            open={error!=null}
-            autoHideDuration={6000}
-            onClose={handleClose} 
-            
-          >
-               <Alert onClose={handleClose} severity="error">
-                    {error}
-                </Alert>
-          </Snackbar> 
-      );
-}

@@ -30,6 +30,7 @@ import ChangelogPage from './pages/ChangelogPage';
 import { GLobalNotificationSpace } from './componentes/GLobalNotification';
 import { MainBanner } from './banners/SideBanners';
 import VideosPage from './pages/Videos';
+import { JeditorSaveBackdrop } from './componentes/journal/editor-save-backdrop';
 //import { SBDStatsPage } from './pages/SBDStatsPage';
  
 //import JournalBase from "./pages/journal-base";
@@ -68,6 +69,7 @@ function App() {
                 <GLobalNotificationSpace />
                 <Home/>
                 <DialogModalListener/>
+                <JeditorSaveBackdrop/>
                 <Route path="/" component={TrackPageView}/>
  
                 <Suspense fallback={<LinearProgress />}>
