@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
         width           : '100%', 
         marginBottom: theme.spacing(1),
         border:"0px solid none",
-        padding:20,
+        padding:30,
         color: ifDark(theme, theme.palette.primary.main ,"blue") , 
-        fontSize:"15px",
+        fontSize:"20px",
         maxWidth:"100%",
         minWidth:"100%",
         backgroundColor: ifDark(theme, "#333","white")

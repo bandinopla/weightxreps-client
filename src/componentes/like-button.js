@@ -188,8 +188,6 @@ export const LikeJournalButtonOLD = ({ ...rest })=>{
                 target: (leDiLike?"x":"")+log.id 
             },
 
-            refetchQueries:refetch,
-
             update: updateCachedNotificationsArray( ({ likeJournalLog }) => ({
 
                 [cacheFieldId]: leDiLike?
@@ -254,8 +252,6 @@ export const LikeJournalButtonManual = ({ jownerID, logid, logYMD, ...rest })=>{
             variables: {
                 target: (leDiLike?"x":"")+logid 
             },
-
-            refetchQueries:refetch,
 
             update: updateCachedNotificationsArray( ({ likeJournalLog }) => ({
 

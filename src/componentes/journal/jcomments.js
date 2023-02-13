@@ -139,7 +139,7 @@ export default function JComments({ logid }) {
 //{ parsedTags2render(c.comment) }
     return <div className={classes.root}>
 
-        {!imTheJowner && session?.user.id>0 && <><CommentBox verb="Comment" placeholder="Add a public comment to this log..."/><br/></> }
+        {!imTheJowner && session?.user.id>0 && <><CommentBox verb="Comment" placeholder="Add a comment..."/><br/></> }
         
              
         { !notifications && <Typography variant="caption">No comments...</Typography>}
