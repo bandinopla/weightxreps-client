@@ -73,7 +73,7 @@ export const JeditorSaveBackdrop = ()=>{
 
     useEffect(()=>{
 
-        var interval = shouldBeOpen? setInterval( ()=>$jeditorSaveState({}), 3000 ) : 0;
+        var interval = shouldBeOpen? setInterval( ()=>$jeditorSaveState({}), 2500 ) : 0;
 
         return ()=>clearInterval(interval);
 
