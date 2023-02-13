@@ -1,3 +1,6 @@
+- 2.15.2 : 2023-02-13
+        * Fix bug journals, the first comment or like, once sent, was not being added/showed after sending it.
+
 - 2.15.1 : 2023-02-11
         * Fix Firebase Login bug (forgot to add column in database)
         * Refactor code to get the client's session better...
