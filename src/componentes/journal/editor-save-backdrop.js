@@ -1,13 +1,11 @@
 import { makeVar, useReactiveVar } from "@apollo/client";
 import { makeStyles } from "@material-ui/core";
 import NoddingGuySrc from "../../banners/nodding-guy.gif";
-import CheckIcon from '@material-ui/icons/Check';
 import ErrorIcon from '@material-ui/icons/Error';
 import { Backdrop, CircularProgress, Typography } from "@material-ui/core";
-import {useEffect} from 'react'
-import { Alert } from "@material-ui/lab";
-import { parseError } from "../../data/db";
-
+import { useEffect } from 'react';
+import { Fireworks } from 'fireworks/lib/react';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 const $jeditorSaveState    = makeVar({ loading:false, error:null, success:null });
 
 const useBackdropStyles = makeStyles((theme) => ({
@@ -42,8 +40,9 @@ export const OpenJeditorSaveBackdrop = async ( task ) => {
 
     $jeditorSaveState({
         loading: false,
-        success: !error
-    }); 
+        success: !error 
+    });  
+     
 
     if( error )
     {
@@ -59,6 +58,18 @@ export const JeditorSaveBackdrop = ()=>{
     const data                  = useReactiveVar($jeditorSaveState);
     const shouldBeOpen          = data.loading || typeof data.success == 'boolean';
 
+    let fxProps = {
+        count: 1 ,
+        interval: 200,
+        colors: ['#14FA96','#0FBA70' ],
+        bubbleSizeMaximum:2,
+
+        calc: (props, i) => ({
+          ...props,
+          x: window.innerWidth / 2 + Math.random()*300*(Math.random()>0.5?-1:1),
+          y: window.innerHeight / 2 + Math.random()*300*(Math.random()>0.5?-1:1)
+        })
+      }
 
     useEffect(()=>{
 
@@ -79,7 +90,10 @@ export const JeditorSaveBackdrop = ()=>{
         { data.loading? <CircularProgress color="inherit" /> 
         : data.success? <div>  
                             <img src={ NoddingGuySrc } alt="" style={{ borderRadius:180 }}/>
-                            <Typography variant="h2"> <CheckIcon fontSize="large"/> GOOD JOB!</Typography>
+                            <Typography variant="h2" className="flikrAnim">
+                                 Good Job! <ThumbUpIcon style={{ fontSize:50 }}/>
+                                 </Typography>
+                            <Fireworks {...fxProps} />
                         </div>
         : data.error? <ErrorIcon fontSize="large"/>  
         : "" }

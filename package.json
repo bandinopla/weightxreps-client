@@ -22,6 +22,7 @@
     "codemirror": "^5.62.3",
     "firebase": "^9.6.11",
     "firebaseui": "^6.0.1",
+    "fireworks": "^2.2.7",
     "graphql": "^15.5.1",
     "papaparse": "^5.3.1",
     "react": "^17.0.2",
