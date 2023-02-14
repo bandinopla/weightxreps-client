@@ -420,6 +420,7 @@ export type Mutation = {
   setSetting?: Maybe<UserSetting>;
   setTweet?: Maybe<Scalars['Boolean']>;
   signup: Scalars['Boolean'];
+  unsubFromEmails?: Maybe<Scalars['Boolean']>;
   uploadAvatar: Scalars['String'];
   verifySignup: Scalars['String'];
 };
@@ -528,6 +529,11 @@ export type MutationSignupArgs = {
   pass: Scalars['String'];
   uname: Scalars['String'];
   usekg: Scalars['Int'];
+};
+
+
+export type MutationUnsubFromEmailsArgs = {
+  token?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -842,7 +848,6 @@ export type TweetState = {
   granted?: Maybe<Scalars['Boolean']>;
   status?: Maybe<Scalars['String']>;
   tweet: Scalars['ID'];
-  tweet_username?: Maybe<Scalars['String']>;
   type: TweetType;
 };
 
@@ -1305,6 +1310,13 @@ export type SendVerificatonCodeMutationVariables = Exact<{
 
 
 export type SendVerificatonCodeMutation = { __typename?: 'Mutation', sendVerificationCode?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
+
+export type UnsubFromEmailsMutationVariables = Exact<{
+  token?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UnsubFromEmailsMutation = { __typename?: 'Mutation', unsubFromEmails?: boolean | null };
 
 export type GetSupportersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3128,6 +3140,37 @@ export function useSendVerificatonCodeMutation(baseOptions?: Apollo.MutationHook
 export type SendVerificatonCodeMutationHookResult = ReturnType<typeof useSendVerificatonCodeMutation>;
 export type SendVerificatonCodeMutationResult = Apollo.MutationResult<SendVerificatonCodeMutation>;
 export type SendVerificatonCodeMutationOptions = Apollo.BaseMutationOptions<SendVerificatonCodeMutation, SendVerificatonCodeMutationVariables>;
+export const UnsubFromEmailsDocument = gql`
+    mutation UnsubFromEmails($token: String) {
+  unsubFromEmails(token: $token)
+}
+    `;
+export type UnsubFromEmailsMutationFn = Apollo.MutationFunction<UnsubFromEmailsMutation, UnsubFromEmailsMutationVariables>;
+
+/**
+ * __useUnsubFromEmailsMutation__
+ *
+ * To run a mutation, you first call `useUnsubFromEmailsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubFromEmailsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubFromEmailsMutation, { data, loading, error }] = useUnsubFromEmailsMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useUnsubFromEmailsMutation(baseOptions?: Apollo.MutationHookOptions<UnsubFromEmailsMutation, UnsubFromEmailsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnsubFromEmailsMutation, UnsubFromEmailsMutationVariables>(UnsubFromEmailsDocument, options);
+      }
+export type UnsubFromEmailsMutationHookResult = ReturnType<typeof useUnsubFromEmailsMutation>;
+export type UnsubFromEmailsMutationResult = Apollo.MutationResult<UnsubFromEmailsMutation>;
+export type UnsubFromEmailsMutationOptions = Apollo.BaseMutationOptions<UnsubFromEmailsMutation, UnsubFromEmailsMutationVariables>;
 export const GetSupportersDocument = gql`
     query GetSupporters {
   getSupporters {

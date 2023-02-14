@@ -109,6 +109,13 @@ export default function() {
                                 <EmailChangeWidget setting={ settings.getUserSettings.find(s=>s.id=='email')}/>
                             </SettingDiv>
 
+                            <SettingDiv title="Allow Emails" desc="Do you allow recieving emails in your inbox?">
+                                <OptionsWidget successMessage="Emails notifications setting applied" hint="Do you want to recieve emails when/if someone sends you a message or comment?" 
+                                                setting={ settings.getUserSettings.find(s=>s.id=='emails-allowed')} 
+                                                />
+                            </SettingDiv> 
+
+
                             <SettingDiv title="Change Password" desc="Change it once in a while just to stay somewhat safe...">
                                 <PasswordChangeWidget setting={ settings.getUserSettings.find(s=>s.id=='password')}/>
                             </SettingDiv>

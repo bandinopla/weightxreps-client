@@ -1,6 +1,7 @@
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import { Alert } from '@material-ui/lab';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { parseError } from '../data/db';
 import { useSendMessageMutation } from '../data/generated---db-types-and-hooks';
@@ -85,6 +86,7 @@ export default function CommentBox({ dmWith, outlined, replyingToThisMsg, verb="
         inResponseToMsg : null,
         by              : session.user.id,
         to              : dmWith,
+        isGlobal        : false
     }
 
     //
@@ -136,6 +138,7 @@ export default function CommentBox({ dmWith, outlined, replyingToThisMsg, verb="
 
     const _onCancel = ()=>{
         txtRef.current.value="";
+        setError(null);
         setShowEditor(false);
         onCancel && onCancel();
     }
@@ -205,7 +208,8 @@ export default function CommentBox({ dmWith, outlined, replyingToThisMsg, verb="
                                             placeholder={placeholder}
                                             />
 
-                        <ErrorSnackbar trigger={error} horizontal="center"/>
+                        {/* <ErrorSnackbar trigger={error} horizontal="center"/> */}
+                        { error && <Alert severity='error'>{error}</Alert>}
 
                         { (actionsAlwaysVisible || showEditor) && <Box textAlign="right">
 

@@ -31,6 +31,7 @@ import { GLobalNotificationSpace } from './componentes/GLobalNotification';
 import { MainBanner } from './banners/SideBanners';
 import VideosPage from './pages/Videos';
 import { JeditorSaveBackdrop } from './componentes/journal/editor-save-backdrop';
+import UnsubFromEmails from './pages/Unsub-from-emails';
 //import { SBDStatsPage } from './pages/SBDStatsPage';
  
 //import JournalBase from "./pages/journal-base";
@@ -78,6 +79,7 @@ function App() {
                         <Route path="/settings" component={SettingsPage} />
 
                         <Route path="/about" component={AboutPage}/> 
+                        <Route path="/unsub" component={UnsubFromEmails}/> 
                         <Route path="/videos" component={VideosPage}/> 
                         <Route path="/faq" component={HelpPage}/> 
                         <Route path="/terms-of-service" component={TermsOfServicePage}/> 
