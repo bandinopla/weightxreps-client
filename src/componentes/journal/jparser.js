@@ -56,7 +56,7 @@ export const parseJlog = (text2parse, eblocks, execises, bw, usekg ) => {
         //, _newlineMatcher
         
         , { match:/^EBLOCK:(\d+)/, block: m=>_buildEblockData( Number(m[1]), eblockCopy, execises, bw, usekg ) }
-        , { match:/^B(\d+)W(\d+)D(\d+)\b/, block: m=>({ type:TYPE.BlockWeekDay, B:m[1], W:m[2], D:m[3] }) }
+        , { match:/^(?:B(\d+))?W(\d+)D(\d+)\b/, block: m=>({ type:TYPE.BlockWeekDay, B:m[1], W:m[2], D:m[3] }) }
     ]; 
 
     return text2tags( text2parse, tags ); 
