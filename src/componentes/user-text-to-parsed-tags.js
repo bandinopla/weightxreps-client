@@ -39,7 +39,7 @@ export const parsedTags2render = tags => tags.map( (tag,i) => {
 
         case TAGTYPE.BlockWeekDay:
             element = <Typography variant="h4" style={{textTransform:"capitalize", marginBottom:10}}>
-                            { tag.B && <><b>Block <Num>{ tag.B }</Num></b></> } 
+                            { tag.B && <><b>Block <Num>{ tag.B }</Num> </b></> } 
                             <b>Week <Num>{ tag.W }</Num> Day <Num>{ tag.D }</Num> </b> 
                             <Divider/>
                         </Typography>
