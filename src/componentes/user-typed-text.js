@@ -17,5 +17,6 @@ export const UserTypedText = ({ text, short })=> {
         return <strong style={{color:"red"}}>[deleted]</strong>;
     }
 
-    return <div style={{whiteSpace:"break-spaces", wordBreak:"break-word"}}>{ short? shortText(text) : text }</div>;
+    //whiteSpace:"break-spaces", wordBreak:"break-word"
+    return <div style={{ fontFamily:"'Azeret Mono', monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word" }}>{ short? shortText(text) : text }</div>;
 }

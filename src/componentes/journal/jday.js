@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 //------
 import SmartphoneIcon from '@material-ui/icons/Smartphone';
 import { Alert } from '@material-ui/lab';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { parseError } from '../../data/db';
 import { useJDayQuery } from '../../data/generated---db-types-and-hooks';
 import { JOwnerContext } from '../../pages/journal-context';
@@ -53,6 +53,10 @@ export const JDay = ()=>{
     const { loading, data, error}               = useJDayQuery({ variables:{ uid:jowner.id, ymd } }) //useQuery( GET_JDAY, { variables:{ uname, ymd } });
     const date                                  = ymd2date (ymd);
 
+    const log = useMemo ( 
+        ()=> data?.jday && parseJlog( data.jday.log, data.jday.eblocks, data.jday.exercises, data.jday.bw, jowner.usekg, data.jday.utags, data.jday.utagsValues )
+        ,  [ data?.jday ] )
+
 
     if( loading )
     {
@@ -63,7 +67,6 @@ export const JDay = ()=>{
       return <Alert severity="error">{parseError(error)}</Alert>;
     }
 
-    const log                                   = data?.jday && parseJlog( data.jday.log, data.jday.eblocks, data.jday.exercises, data.jday.bw, jowner.usekg );  
 
    
  

@@ -1,3 +1,11 @@
+- 2.16.0 : 2023-02-23
+        + feature requested by @asambol : Custom user defined tags. 
+        * Bug fixes (found during feature implementation) 
+            - backdrop, if error, was appearing. It shouldn't.
+            - calendar dates range was missing a few days on the search.
+            - emails were not showing the name of the sender on the body.
+        * made the journal logs monospaced, to allow show ascii art or format text with spaces. 
+
 - 2.15.3 : 2023-02-14
         * Comments box fix/tweak
         * Re-enabled the sending of emails when a message is sent and the option to unsub from this, both from the settings and within the email (unsub link)

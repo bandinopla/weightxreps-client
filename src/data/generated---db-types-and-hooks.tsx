@@ -295,6 +295,7 @@ export type JEditorData = {
   did?: Maybe<Array<Maybe<JeditorRow>>>;
   etags: Array<Maybe<Scalars['String']>>;
   exercises: Array<Maybe<ExerciseStat>>;
+  utags?: Maybe<Array<Maybe<UTag>>>;
 };
 
 export type JEditorDayTag = {
@@ -329,6 +330,13 @@ export type JEditorText = {
   text?: Maybe<Scalars['String']>;
 };
 
+export type JEditorUTag = {
+  __typename?: 'JEditorUTag';
+  tag?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
 export type JLog = {
   __typename?: 'JLog';
   bw?: Maybe<Scalars['Float']>;
@@ -337,12 +345,17 @@ export type JLog = {
   fromMobile?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   log?: Maybe<Scalars['String']>;
+  utags?: Maybe<Array<Maybe<UTag>>>;
+  utagsValues?: Maybe<Array<Maybe<UTagValue>>>;
 };
 
 export type JRangeData = {
   __typename?: 'JRangeData';
   days?: Maybe<Array<Maybe<JRangeDayData>>>;
   exercises: Array<Maybe<Exercise>>;
+  from?: Maybe<Scalars['YMD']>;
+  to?: Maybe<Scalars['YMD']>;
+  utags?: Maybe<UTagsUsed>;
 };
 
 export type JRangeDayData = {
@@ -351,7 +364,7 @@ export type JRangeDayData = {
   on?: Maybe<Scalars['YMD']>;
 };
 
-export type JeditorRow = JEditorBwTag | JEditorDayTag | JEditorEBlock | JEditorNewExercise | JEditorText;
+export type JeditorRow = JEditorBwTag | JEditorDayTag | JEditorEBlock | JEditorNewExercise | JEditorText | UTagValue;
 
 export type LikeOnDm = IBy & IHasMessageId & IHasText & INotification & Ito & {
   __typename?: 'LikeOnDM';
@@ -864,8 +877,32 @@ export type UCard = {
   posted?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
+  utags?: Maybe<UTagsUsed>;
   when?: Maybe<Scalars['String']>;
   workoutPreview?: Maybe<Array<Maybe<EblockPreview>>>;
+};
+
+export type UTag = {
+  __typename?: 'UTag';
+  automatic?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+};
+
+export type UTagValue = {
+  __typename?: 'UTagValue';
+  id?: Maybe<Scalars['ID']>;
+  logid?: Maybe<Scalars['ID']>;
+  tagid: Scalars['ID'];
+  type: Scalars['String'];
+  value: Scalars['String'];
+  ymd?: Maybe<Scalars['YMD']>;
+};
+
+export type UTagsUsed = {
+  __typename?: 'UTagsUsed';
+  tags?: Maybe<Array<Maybe<UTag>>>;
+  values?: Maybe<Array<Maybe<UTagValue>>>;
 };
 
 export type User = {
@@ -1011,7 +1048,7 @@ export type GetFeedQueryVariables = Exact<{
 }>;
 
 
-export type GetFeedQuery = { __typename?: 'Query', getActivityFeed?: Array<{ __typename?: 'UCard', when?: string | null, text?: string | null, andXmore?: number | null, posted?: string | null, media?: string | null, itemsLeftAfterThis?: number | null, user?: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null, workoutPreview?: Array<{ __typename?: 'EblockPreview', r?: number | null, w?: number | null, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null> | null } | null> | null };
+export type GetFeedQuery = { __typename?: 'Query', getActivityFeed?: Array<{ __typename?: 'UCard', when?: string | null, text?: string | null, andXmore?: number | null, posted?: string | null, media?: string | null, itemsLeftAfterThis?: number | null, user?: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null, workoutPreview?: Array<{ __typename?: 'EblockPreview', r?: number | null, w?: number | null, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null> | null, utags?: { __typename?: 'UTagsUsed', tags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, values?: Array<{ __typename?: 'UTagValue', id?: string | null, tagid: string, type: string, value: string } | null> | null } | null } | null> | null };
 
 type NotificationFields_Dm_Fragment = { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null };
 
@@ -1076,7 +1113,7 @@ export type JDayQueryVariables = Exact<{
 }>;
 
 
-export type JDayQuery = { __typename?: 'Query', jday?: { __typename?: 'JLog', id: string, log?: string | null, fromMobile?: boolean | null, bw?: number | null, eblocks?: Array<{ __typename?: 'EBlock', eid: string, sets: Array<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: number | null, c?: string | null, rpe?: number | null, pr?: number | null, est1rm: number, eff: number, int: number } | null> } | null> | null, exercises?: Array<{ __typename?: 'ERef', exercise: { __typename?: 'Exercise', id: string, name: string, type?: string | null }, best?: { __typename?: 'EBestStats', eff?: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: number | null, est1rm?: number | null } | null, int: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: number | null } } | null } | null> | null } | null };
+export type JDayQuery = { __typename?: 'Query', jday?: { __typename?: 'JLog', id: string, log?: string | null, fromMobile?: boolean | null, bw?: number | null, eblocks?: Array<{ __typename?: 'EBlock', eid: string, sets: Array<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: number | null, c?: string | null, rpe?: number | null, pr?: number | null, est1rm: number, eff: number, int: number } | null> } | null> | null, exercises?: Array<{ __typename?: 'ERef', exercise: { __typename?: 'Exercise', id: string, name: string, type?: string | null }, best?: { __typename?: 'EBestStats', eff?: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: number | null, est1rm?: number | null } | null, int: { __typename?: 'BestEStat', w: number, r: number, lb: number, when: any, bw?: number | null } } | null } | null> | null, utags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, utagsValues?: Array<{ __typename?: 'UTagValue', id?: string | null, tagid: string, type: string, value: string, logid?: string | null } | null> | null } | null };
 
 export type AlsoPostedQueryVariables = Exact<{
   ymd?: InputMaybe<Scalars['YMD']>;
@@ -1085,7 +1122,7 @@ export type AlsoPostedQueryVariables = Exact<{
 
 export type AlsoPostedQuery = { __typename?: 'Query', alsoposted?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null };
 
-export type JeditorDataFieldsFragment = { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | null> | null };
+export type JeditorDataFieldsFragment = { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, utags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | { __typename?: 'UTagValue', tagid: string, type: string, value: string } | null> | null };
 
 export type GetJRangeQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -1094,7 +1131,7 @@ export type GetJRangeQueryVariables = Exact<{
 }>;
 
 
-export type GetJRangeQuery = { __typename?: 'Query', jrange?: { __typename?: 'JRangeData', exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type?: string | null } | null>, days?: Array<{ __typename?: 'JRangeDayData', on?: any | null, did?: Array<{ __typename?: 'EBlock', eid: string, sets: Array<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: number | null, c?: string | null, rpe?: number | null, pr?: number | null, est1rm: number, eff: number, int: number } | null> } | null> | null } | null> | null } | null };
+export type GetJRangeQuery = { __typename?: 'Query', jrange?: { __typename?: 'JRangeData', from?: any | null, to?: any | null, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type?: string | null } | null>, days?: Array<{ __typename?: 'JRangeDayData', on?: any | null, did?: Array<{ __typename?: 'EBlock', eid: string, sets: Array<{ __typename?: 'Set', w: number, r: number, s: number, lb: number, ubw?: number | null, c?: string | null, rpe?: number | null, pr?: number | null, est1rm: number, eff: number, int: number } | null> } | null> | null } | null> | null, utags?: { __typename?: 'UTagsUsed', tags?: Array<{ __typename?: 'UTag', id?: string | null, name: string, automatic?: boolean | null } | null> | null, values?: Array<{ __typename?: 'UTagValue', tagid: string, ymd?: any | null, type: string, value: string } | null> | null } | null } | null };
 
 export type GetJEditorDataQueryVariables = Exact<{
   ymd?: InputMaybe<Scalars['YMD']>;
@@ -1102,7 +1139,7 @@ export type GetJEditorDataQueryVariables = Exact<{
 }>;
 
 
-export type GetJEditorDataQuery = { __typename?: 'Query', jeditor?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | null> | null } | null };
+export type GetJEditorDataQuery = { __typename?: 'Query', jeditor?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, utags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | { __typename?: 'UTagValue', tagid: string, type: string, value: string } | null> | null } | null };
 
 export type SaveJEditorMutationVariables = Exact<{
   rows?: InputMaybe<Array<InputMaybe<Scalars['JEditorSaveRow']>> | InputMaybe<Scalars['JEditorSaveRow']>>;
@@ -1115,7 +1152,7 @@ export type SaveJEditorMutation = { __typename?: 'Mutation', saveJEditor?: boole
 export type DownloadLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DownloadLogsQuery = { __typename?: 'Query', downloadLogs?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | null> | null } | null };
+export type DownloadLogsQuery = { __typename?: 'Query', downloadLogs?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, utags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | { __typename?: 'UTagValue', tagid: string, type: string, value: string } | null> | null } | null };
 
 export type GetFollowersQueryVariables = Exact<{
   of: Scalars['ID'];
@@ -1423,6 +1460,10 @@ export const JeditorDataFieldsFragmentDoc = gql`
     days
     reps
   }
+  utags {
+    id
+    name
+  }
   etags
   baseBW
   did {
@@ -1446,6 +1487,11 @@ export const JeditorDataFieldsFragmentDoc = gql`
     }
     ... on JEditorDayTag {
       on
+    }
+    ... on UTagValue {
+      tagid
+      type
+      value
     }
   }
 }
@@ -1951,6 +1997,18 @@ export const GetFeedDocument = gql`
     posted
     media
     itemsLeftAfterThis
+    utags {
+      tags {
+        id
+        name
+      }
+      values {
+        id
+        tagid
+        type
+        value
+      }
+    }
   }
 }
     ${BriefUserFieldsFragmentDoc}`;
@@ -2237,6 +2295,17 @@ export const JDayDocument = gql`
         }
       }
     }
+    utags {
+      id
+      name
+    }
+    utagsValues {
+      id
+      tagid
+      type
+      value
+      logid
+    }
   }
 }
     `;
@@ -2307,6 +2376,8 @@ export type AlsoPostedQueryResult = Apollo.QueryResult<AlsoPostedQuery, AlsoPost
 export const GetJRangeDocument = gql`
     query GetJRange($uid: ID!, $ymd: YMD!, $range: Int!) {
   jrange(uid: $uid, ymd: $ymd, range: $range) {
+    from
+    to
     exercises {
       id
       name
@@ -2329,6 +2400,19 @@ export const GetJRangeDocument = gql`
           eff
           int
         }
+      }
+    }
+    utags {
+      tags {
+        id
+        name
+        automatic
+      }
+      values {
+        tagid
+        ymd
+        type
+        value
       }
     }
   }

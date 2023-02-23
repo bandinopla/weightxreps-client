@@ -11,14 +11,13 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import Barra from "./barras";
 import Ename from './ename';
+import { previewTextToNode } from './journal/jparser';
 import TimeAgoDisplay, { date2timeago } from './TimeAgoDisplay';
 import UAvatar from './uavatar';
 import { SocialLinks } from './ucard-social-links';
 import Uname from "./uname";
 import WeightValue from './weight-value';
 
-
-const randomImg = ()=>`https://weightxreps.net/root/useravatar/u_${ Math.round(1+Math.random()*6000) }.jpg`;  
 
 const useStyles = makeStyles( theme => ({
      
@@ -74,7 +73,7 @@ const MiniUserStats = ({ userdata:u, extraRows } ) => (<div className="ustats">
 
 
 
-export default function({ data:{ user, media, text, when }, url, extraRows=[], ymd, injournal, minimal, children, noClickable=false }) {
+export default function({ data:{ user, media, text, when, utags }, url, extraRows=[], ymd, injournal, minimal, children, noClickable=false }) {
  
     const classes           = useStyles();
     const history           = useHistory(); 
@@ -115,7 +114,7 @@ export default function({ data:{ user, media, text, when }, url, extraRows=[], y
                             { !breve && <>
                             
                                 { media && <img className="rounded" src={media}/> }
-                                { text && <CardPreviewText value={text} />} 
+                                { text && <CardPreviewText value={text} utags={utags}/>} 
 
                             </>}
 
@@ -148,7 +147,7 @@ export const UcardErow = ({ type, ename, weight, reps}) => (<div>
         <div style={{textAlign:"center"}}><Barra weight={weight} reps={reps}/></div>
 </div>);
 
-const CardPreviewText = ({ value })=> (<Paper className="textPreview"><Typography variant="body2">{value}</Typography></Paper>);
+const CardPreviewText = ({ value, utags })=> (<Paper className="textPreview"><Typography variant="body2">{ previewTextToNode(value, utags) }</Typography></Paper>);
 
 const JoinedTag = ({ label, years}) => {
 
