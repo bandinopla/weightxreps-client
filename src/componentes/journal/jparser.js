@@ -1,3 +1,5 @@
+import { parsedTags2render } from "../user-text-to-parsed-tags";
+import { TagTokenMatcher } from "./tags";
 
 export const TYPE = {
     TEXT: 0,
@@ -8,7 +10,8 @@ export const TYPE = {
      EBLOCK:5,
      NEWLINE:6,
      POSTIMGCC:7,
-     BlockWeekDay: 8
+     BlockWeekDay: 8,
+     TAG:9
 }
 
 const _urlTagMatcher = { match:/^(?:http(?:s?):\/\/(?:www\.)?)[\S]+/, block: m=>({ type:TYPE.LINK, url:m[0] }) };
@@ -27,10 +30,20 @@ const parseErowComment = comment => {
 export const parseUserComment = comment => parseErowComment(comment);
  
 
+export const previewTextToNode = ( textPreview, utags ) => { 
 
-export const parseJlog = (text2parse, eblocks, execises, bw, usekg ) => { 
+    return parsedTags2render( text2tags( textPreview, utags? [ TagTokenMatcher( utags.tags, utags.values ) ] : [] )); 
+}
 
-    let eblockCopy  = eblocks.slice(0); //lo copiamos porque lo vamos a modificar
+export const parseJlog = (text2parse, eblocks, execises, bw, usekg, userTags, utagsValues ) => { 
+
+    let eblockCopy  = eblocks.slice(0); //lo copiamos porque lo vamos a modificar 
+    
+    //
+    // replace TABS with spaces
+    //
+    text2parse = text2parse.replace(/\t/g, " ".repeat(4));
+   
 
     let tags = [ 
     
@@ -56,7 +69,9 @@ export const parseJlog = (text2parse, eblocks, execises, bw, usekg ) => {
         //, _newlineMatcher
         
         , { match:/^EBLOCK:(\d+)/, block: m=>_buildEblockData( Number(m[1]), eblockCopy, execises, bw, usekg ) }
+        , TagTokenMatcher( userTags, utagsValues )
         , { match:/^(?:B(\d+))?W(\d+)D(\d+)\b/, block: m=>({ type:TYPE.BlockWeekDay, B:m[1], W:m[2], D:m[3] }) }
+    
     ]; 
 
     return text2tags( text2parse, tags ); 
@@ -71,6 +86,8 @@ const text2tags = (text2parse, tags) => {
 
     while( i<text2parse.length )
     {
+        let oldi = i;
+
         //ver qué matchea...
         for (let index = 0; index < tags.length; index++) {
             const tag = tags[index];
@@ -78,19 +95,36 @@ const text2tags = (text2parse, tags) => {
             let m = text2parse.substr(i).match( tag.match );
 
             if( m )
-            {
+            { 
                 i += m[0].length;
+
                 if( m[0].length==1 )
                 {
                     i-=1;
                 }
+
                 rtrn.push( tag.block(m) ); 
+
+                // //
+                // // delete spaces
+                // //
+                // m = text2parse.substr(i).match( /^\s+/ );
+                // i += m[0].length ;
+
 
                 lastTextBlock = null;
                 continue;
             }  
+            else 
+            {
+                console.log("Nothing matches:: ", text2parse.substr(i , 30))
+            }
         }
 
+        if( oldi!=i )
+        {
+            continue;
+        }
          
         if( rtrn.length==0 || !lastTextBlock ) {
 

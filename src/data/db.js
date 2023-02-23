@@ -1,14 +1,12 @@
 import {
 	ApolloClient,
 	ApolloProvider,
-	createHttpLink,
 	from,
 	InMemoryCache,
 } from "@apollo/client";
 
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
-import { onError } from "@apollo/client/link/error";
 import { inboxTypePolicies } from "../session/inbox-manager";
 import {
 	getAuthorizationHeaders,
@@ -29,6 +27,7 @@ import { CommunityStatsPolicy } from "./community-stats-policy";
 import { JEditorPolicy } from "./jeditor-policy";
 import { SettingsTypePolicy } from "./SettingsTypePolicies";
 import { trackError } from "../componentes/google-tracker";
+import { UTagsPolicy } from "../componentes/journal/tags";
 
 //   const httpLink = createHttpLink({
 //     uri:"http://localhost:4000/graphql",
@@ -78,6 +77,7 @@ let typePolicies = mergeObjects([
 	CommunityStatsPolicy,
 	SettingsTypePolicy,
 	SessionPolicies,
+    UTagsPolicy
 ]);
 
 const client = new ApolloClient({
@@ -85,6 +85,14 @@ const client = new ApolloClient({
 	cache: new InMemoryCache({
 		typePolicies,
 		possibleTypes: generatedIntrospection.possibleTypes,
+
+        // dataIdFromObject(responseObject) {
+        //     switch (responseObject.__typename) 
+        //     { 
+        //       case 'UTagValue': return null; //return `UTagValue:${responseObject.tagid}:${responseObject.logid || responseObject.ymd}`;
+        //       default: return defaultDataIdFromObject(responseObject);
+        //     }
+        //   }
 	}),
 });
 
@@ -98,7 +106,7 @@ export const parseError = (error) => {
 	var rtrn;
 
 	if (typeof error == "string") {
-		rtrn = "[!]" + error;
+		rtrn = "Oops! " + error;
 	} else if (error.networkError) {
 		let m =
 			error.networkError.result?.errors[0].message ||

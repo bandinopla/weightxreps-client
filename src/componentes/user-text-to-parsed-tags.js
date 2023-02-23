@@ -2,6 +2,8 @@ import { Box, Divider, Typography, useTheme } from "@material-ui/core";
 import InstagramEmbedder from "./instagram-embedder";
 import Eblock from "./journal/erow-render";
 import { parseUserComment, TYPE as TAGTYPE } from "./journal/jparser";
+import { JournalTagValue } from "./journal/tags";
+import { UserTypedText } from "./user-typed-text";
  
 
 export const userTextToParsedUI = text => {
@@ -32,6 +34,11 @@ export const parsedTags2render = tags => tags.map( (tag,i) => {
         case TAGTYPE.NEWLINE:
             element = <br/>;
             break;
+
+        case TAGTYPE.TAG:
+            element = <JournalTagValue value={tag.value} utag={tag.utag}/>
+            break;
+
         /*
         case TYPE.TIK:
             element = <TikTokEmbed videoID={ tag.tiktok } username={tag.user}/>;
@@ -77,9 +84,9 @@ export const parsedTags2render = tags => tags.map( (tag,i) => {
     {
         return null;
     }
-
-    return <div key={i} style={{display:"inline", whiteSpace:"break-spaces", wordBreak:"break-word"}}>
-                { element? element : <Typography component="span">{ tag.text }</Typography>}
+//<Typography component="span" style={{fontFamily:"monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word"}}>{ tag.text }</Typography>}
+    return <div key={i} style={{display:"inline"}}>
+                { element? element : <UserTypedText text={tag.text} /> } 
             </div> ;
 
 } ) ;

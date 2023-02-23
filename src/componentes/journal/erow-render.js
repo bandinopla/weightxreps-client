@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
      //
      root: {
           
-          margin:"5px 0"
+          margin:"15px 0"
           , marginBottom: theme.spacing(3)
           , backgroundColor: theme.erow.bgColor
           

@@ -58,7 +58,8 @@
       "JEditorDayTag",
       "JEditorEBlock",
       "JEditorNewExercise",
-      "JEditorText"
+      "JEditorText",
+      "UTagValue"
     ],
     "Notification": [
       "DM",

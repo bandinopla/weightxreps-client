@@ -5,9 +5,16 @@ import "codemirror/addon/hint/show-hint.css";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/lib/codemirror.css";
 import { useEffect, useMemo, useRef } from "react";
+import { jEditorTagTokenToString } from "../componentes/journal/tags";
 import { kg2lb } from "../componentes/weight-value";
 import { dateToYMD, ymd2date } from "../utils/utils";
 import "./LogTextEditor.css";
+import { TAG_CODEMIRROR_TOKENS, TAG_STYLES } from "./tag-parsing";
+import { getUserAvailableTagTypes, TAG_START_OF_DEFINITION_REGEXP } from "../user-tags/data-types";
+import Fuse from 'fuse.js' 
+
+  
+const searcher = new Fuse([], { findAllMatches:true })
 
 
 require('codemirror/addon/hint/show-hint');
@@ -18,8 +25,8 @@ require('codemirror/addon/fold/foldgutter');
 
 
 const _errorCSS = {
-    //background:"white",
-    color:"red",
+    background:"red",
+    color:"white !important",
     fontWeight:"bold"
 };
 const $monthName= ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -92,7 +99,7 @@ const useStyles = makeStyles( theme=>({
         //     fontSize:"10px",
         //     top:"-5px"
         // },
-
+        ...TAG_STYLES
 
     }
 
@@ -797,18 +804,6 @@ const JLogTokenizer = config => {
                 state.currentSet    = { erow:true };
                 state.rows = [ ...state.rows, state.currentSet];
  
-
-                // if( !state.lastEblock.erows[state.erowIndex] )
-                // {    
-                //     state.lastEblock.erows.push({ w:0, r:1, s:1, c:"" });
-                // }
-
-                // const erow = state.lastEblock.erows.slice(-1);
-
-                // state.lastEblock.erows[state.erowIndex].rpe = null;
-                // state.lastEblock.erows[state.erowIndex].line = stream.lineOracle.line;
- 
- 
                 return "erow";
             }
         },
@@ -852,10 +847,14 @@ const JLogTokenizer = config => {
                 set.rpe     = state.erowRPE; //<--- puede ser un array
                 set.line    = state.erowLine ;
             }
-        }
+        },
+
+
+
+        ...TAG_CODEMIRROR_TOKENS(config)
     } 
 
-    const _token = (id, endOfLineToken) => {
+    const _token = (id, endOfLineToken, exitAfterFirstMatch ) => {
         
         const parts     = id.split(" ");
         var tokenReg    = new RegExp( "^"+ parts.map( p=>tokens[p].reg?.source.replace("^","") ).join("")+"\\s*$","i" );
@@ -919,7 +918,9 @@ const JLogTokenizer = config => {
                     state.activeToken = { token: this.tokenChilds.bind(this, parts.slice(0)) };
                     return state.activeToken.token( stream, state );
                 } 
-            }
+            },
+
+            exitAfterFirstMatch
         }
 
         return id;
@@ -939,7 +940,13 @@ const JLogTokenizer = config => {
                     _token("erow: W S x R C", "end-of-erow"),
                     _token("erow: W C", "end-of-erow"),
                     "error-if-no-erow-0"
-                 ]] 
+                 ]],
+
+        ["TAG", [
+
+            ...getUserAvailableTagTypes().map(key=>_token(`TAG_NAME: ${key}`,"/tag")) ,
+            "error-if-no-tag-set"
+        ]]
     ];
  
  
@@ -1155,80 +1162,54 @@ function synonyms(cm, option) {
      
         var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
         var start = cursor.ch, end = cursor.ch;
+        var optionsToSuggest = [];
 
         // exercises = [ {e, days, reps} ]
         var hints = option.exercises; //.map( e=>"#"+e.name );
 
         // si estamos dentro de un "ename row", ofrecer autocomplete de tags... 
+        console.log( "SYNON", line, start )
+
+        /**
+         * fill enames: first symbol in line is "#" or no "#" in line
+         * fill etags: index of # is not the first in the line
+         * fill utags: first token in line is "tag"
+         */
+
+        var m;
+
+        //if( m = line.match(/^(\s*tag +)([^:\n]*)/) )
+        if( m = line.match( new RegExp( `(${TAG_START_OF_DEFINITION_REGEXP.source})([^:\n]*)`,"i" ) ) )
+        {
+            // tag name mode
+            start   = m[1].length;
+            end     = start + m[2].length;
+
+            optionsToSuggest = option.utags.map( utag=>utag.name ); 
  
-
-        //
-        // va en reversa hasta encontrar el primer "not a space" symbol
-        //
-        while (start && /[\S]/.test(line.charAt(start - 1))) --start
-
-        //
-        // avanza hasta encontrar el primer espacio...
-        //
-        while (end < line.length && /\w/.test(line.charAt(end))) ++end
-
-        //
-        // si se encontro el simbolo...
-        //
-        if( line.indexOf("#")!=-1 )
-        {  
-            //
-            // si el "#" no es el primero en la linea... es un TAG entonces...
-            //
-            if( line.charAt(start)=="#" && start>line.indexOf("#") )
-            {
-                hints = option.tags;
-            }
-            else 
-            {
-                start   = 0;
-                end     = line.length;
-            }
-            
-        } 
-
-        var word = line.slice(start, end).toLowerCase(); 
-
-        //
-        // sort list... Puede que hints sea un array de string o un array de <ExerciseStat> (see schema)
-        // obtener los items que contengan el string...
-        //
-        var list = hints.filter( h=>{
-
-            var str = typeof h == "string"? h : h.e.name;
-            return str.toLowerCase().indexOf(word)>-1;
-
-        });
-
-
-        //
-        // sort...
-        //
-        if( list[0]?.e ) //<--- array de <ExerciseStat>
-        {
-            list.sort( (a,b)=>{
-
-                //del que tenga mas días....
-                return b.days - a.days; //el que hayas hecho mas días gana...
-
-            });
-
-            //ahora ponerle solo los nombres...
-            list = list.map( itm=>"#"+itm.e.name );
         }
-        else //<--- asumo es un array de strings...
+        else if( (m=line.substr(0,start).lastIndexOf("#")) != line.indexOf("#") )
         {
-            list.sort( (a,b)=>a.length-b.length ); //de string mas corto al mas grande...
+            // etags
+            start = m;
+            end = start + line.substr(start).replace(/^(\S+).*$/,"$1").length;
+            optionsToSuggest = option.tags; 
+        }
+        else 
+        {
+            //enames
+            start = 0;
+            end = line.length; 
+            optionsToSuggest = option.exercises.map( e=>"#"+e.e.name );  
         }
 
-        
 
-          return {      list  ,
+        searcher.setCollection( optionsToSuggest ); 
+        const searchPattern = line.substr(start, start+end );
+
+
+ 
+        return {        list    : searchPattern.trim()==""? optionsToSuggest : searcher.search( searchPattern ).map(res=>res.item),
                         from    : CodeMirror.Pos(cursor.line, start),
                         to      : CodeMirror.Pos(cursor.line, end) } 
 }
@@ -1248,7 +1229,7 @@ const _setToString = (set, usekg) => {
 /**
  * Un editor highlighteado solo para leer.
  */
-export const StaticLogHighlighter = ({ exercises, tags, initialValue })=>{
+export const StaticLogHighlighter = ({ exercises, tags, utags, initialValue, lines })=>{
 
     const classes       = useStyles();
     const txt           = useRef();
@@ -1260,6 +1241,7 @@ export const StaticLogHighlighter = ({ exercises, tags, initialValue })=>{
             mode:  {
                 name:"wxr-editor", 
                 tags, 
+                utags,
                 exercises,//<- existing enames
                 defaultYMD:"2020-01-01"
             }, 
@@ -1268,7 +1250,9 @@ export const StaticLogHighlighter = ({ exercises, tags, initialValue })=>{
             lineNumbers: true,  
             //hintOptions: {hint: synonyms, exercises, tags }, 
             gutters: ["CodeMirror-lint-markers","CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-            lint: __lintEditor
+            lint: __lintEditor,
+            lineWrapping: true,
+            lineHeight: lines
 
         });
 
@@ -1309,7 +1293,7 @@ const __lintEditor = {
     }
 };
 
-export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD })=> {
+export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags })=> {
 
     const classes       = useStyles();
     const txt           = useRef();
@@ -1327,7 +1311,7 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
 
         if( !value ) return "";
 
-        return __convertJEditorDataToText(value, usekg);
+        return __convertJEditorDataToText(value, usekg, utags);
 
     }, [value] );
 
@@ -1341,11 +1325,13 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
                 name:"wxr-editor", 
                 tags, 
                 exercises,//<- existing enames
+                utags, //<-- user defined tags
                 defaultYMD
             }, 
             foldGutter: true, 
             lineNumbers: true,  
-            hintOptions: {hint: synonyms, exercises, tags }, 
+            tabSize: 4,
+            hintOptions: {hint: synonyms, exercises, tags, utags }, 
 
             //
             // esto es para que se muestren los "markers" en el costado del editor
@@ -1503,7 +1489,7 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
 
 
 // TODO: jeditor data to text
-const __convertJEditorDataToText = (value, usekg) => {
+const __convertJEditorDataToText = (value, usekg, utags) => {
 
         if(!Array.isArray(value))
         {
@@ -1517,6 +1503,10 @@ const __convertJEditorDataToText = (value, usekg) => {
 
             switch( datum.__typename )
             {
+                case "UTagValue": 
+                    out.push( jEditorTagTokenToString(datum, utags) );
+                    break;
+
                 case "JEditorBWTag": // viene en KILOS
                     console.log("BW TAG!!!", usekg, datum.bw)
                     out.push( "@ "+  ( !usekg? kg2lb(datum.bw) : datum.bw )  +" bw" );

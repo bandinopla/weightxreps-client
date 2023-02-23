@@ -1,91 +1,30 @@
-import { Box, Button } from "@material-ui/core";
-import { useContext, useMemo, useState } from "react"; 
+import { Box, Button, Divider, Paper, Typography } from "@material-ui/core";
+import { useContext, useMemo, useState } from "react";
 import { useGetJRangeQuery } from "../../data/generated---db-types-and-hooks";
-import { JOwnerContext } from "../../pages/journal-context"; 
+import { JOwnerContext } from "../../pages/journal-context";
 import { date2NiceString, ymd2date } from "../../utils/utils";
 import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import JRangeTable from "./jrange-table";
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert } from "@material-ui/lab";
 import { parseError } from "../../data/db";
-import { JRangeGraph } from "./jrange--chart";
 import { JEditorButton } from "./editor-button";
-
-//#region mock data
-const mockEx        = [];
-const someExercise  = ()=> {
-
-    if( mockEx.length && Math.random()>0.2 )
-    {
-        return mockEx[ Math.floor(Math.random()*mockEx.length) ];
-    }
-
-    const eid = Math.round( Math.random()*1000 );
-    var e = {
-        id  : eid,
-        name: "Exercise-"+eid,
-        type: [null, null,"SQ", null, null, null, "BP", null, "DL"][  Math.floor(Math.random()*9) ],
-        best: {
-          ynt: 150+100*Math.random(),
-          eff: 180+100*Math.random(),
-        }
-    }
-
-    mockEx.push(e);
-    return e;
-}
-
-/**
- * @type {[{ on:Date, did:[ {exercise:{id:number, name:String, type:string|null }, w:number, r:number, s:number } ] }]}
- */
-const mockData = new Array(100).fill(0).map( _=>({
-                        exercise:someExercise(),
-                        w: 100+100*Math.random(),
-                        r: 1+Math.floor(Math.random()*10),
-                        s: 1+Math.floor(Math.random()*10),
-                        when: new Date( new Date().valueOf()- Math.round(1814400000*3*Math.random()) ) 
-                    }) )
-
-                    //agrupar por fecha...
-                    .reduce( (out, erow)=>{
-
-                        let f = new Date(Date.UTC( erow.when.getFullYear(),erow.when.getMonth(),erow.when.getDate(), 0, 0, 0, 0  ));
-                        let found = out.find( day=>day.on.valueOf()==f.valueOf() );
-                        if(!found) {
-                            found = { on:f, did:[] };
-                            out.push(found);
-                        }
-
-                        found.did.push(erow);
-                        return out;
-                    } ,[]) 
-
-                    .sort( (a,b)=>a.on-b.on )
-                    ;
+import { colorPaletteForChart } from "../../utils/getColorPaletteForChart";
+import { JRangeSetsChart } from "./jrange-chart";
+import { JRangeUTags } from "./jrange-utags";
+import { StaticLogHighlighter } from "../../codemirror/LogTextEditor";
+import { getExampleUTagsLog } from "../../codemirror/tag-parsing";
+import { TAG_PREFIX } from "../../user-tags/data-types";
  
  
-
-//#endregion
-
-
-/**
- * Color para cuando haya mas ejerciciso que el numero de colores en la paleta oficial.
- */
-const $OTHER_COLOR = "ccc";
-
-/**
- * Paleta de colores del chart
- */
-const $colors = ["e63946" ,"a8dadc","457b9d","1d3557","264653","2a9d8f","e9c46a","f4a261","e76f51"];
-
+ 
 
 /**
  * Componente que rendea la pagina de STATS de un "jrange"
  */
 export default function JRange({ match:{ params } }) {
 
-    const jowner                = useContext(JOwnerContext); 
-    //const changeUnitValue       = useReactiveSetting( session?.userSettings?.convertDisplayUnits ); 
+    const jowner                = useContext(JOwnerContext);  
     const range                 = Number( params.range.substr(1));
     const  ymd                  = params.ymd;
     const niceDate              = useMemo(()=>date2NiceString(ymd2date (ymd)) ,[ ymd ]);
@@ -94,7 +33,7 @@ export default function JRange({ match:{ params } }) {
       uid   : jowner.id ,
       ymd,
       range 
-    } }) //{ data:mockData };  
+    } }) 
 
 
     //
@@ -102,49 +41,67 @@ export default function JRange({ match:{ params } }) {
     // crear items por agrupacion.
     //
     const data = useMemo(()=>{
+ 
 
       if( rawData?.jrange?.days )
       { 
-          // TAG -> exercise
+          // TAG -> Exercise
           const tag2exercise    = new Map();
 
           // EID -> [ eTag, eTag, ... ]
           const eid2tags        = new Map();
 
-          const eid2e           = new Map();
-
-          rawData.jrange.exercises.forEach( e=>eid2e.set(e.id, e) );
-
+          // EID -> Exercise
+          const eid2e           = new Map(); /*--->*/ rawData.jrange.exercises.forEach( e=>eid2e.set(e.id, e) );
+ 
+           
           //
           // CREAR**
           // ir dia por dia para identificar exercises que usen TAGS y crear un nuevo "exercise" que
           // represente ese grupo.
           //
           var days = rawData.jrange.days.map( day => {
-
-            //e : eid2e.get(erow.eid)
+ 
             var did = day.did
             
+            //
+            // here we "open" up the eblocks and put all sets into the "did" array...
+            //
             .reduce( (sets, eblock)=>{
 
                 const e = eid2e.get(eblock.eid);
-                eblock.sets.forEach( set=>sets.push({ ...set, e }) );
+                eblock.sets.forEach( set=>sets.push({ ...set, e }) ); //<--- add reference to the exercise.
                 return sets;
             } ,[])
 
+            //
+            // Create "fake" exercises representing the agrupations per tag. So all exercises with a specific tag will create a
+            // new exercise with the name of that tag to aggregate all the set's data.
+            //
             .reduce( (out, erow)=>{  
 
               //
               // si es "official" siempre se asume el tag implicito del "type"
               //
               const ename = erow.e.name + (erow.e.type? " #"+erow.e.type:""); 
+        
 
               //
               // extraer los tags de este exercise...
               //
               const tags = eid2tags.get(erow.e.id) || ename.match(/(#\w+)/gi)?.reduce( (_tags, _tag)=>{
 
+                
+
                 _tag = _tag.toLowerCase(); 
+
+                //
+                // prevent adding the same tag more than once......... -_-
+                //
+                if( _tags.find(t=>t.id==_tag) )
+                {
+                    return _tags;
+                }
 
                 //
                 // creamos un "fake" exercise para cada TAG
@@ -178,11 +135,11 @@ export default function JRange({ match:{ params } }) {
 
                 return _tags;
 
-              } ,[]); 
-
+              } ,[]);  
 
               //
-              // si hay TAGS
+              // If this exercise was tagged, add this set as part of that "group"
+              // this will allow us to group stats of diferent exercises into a single group.
               //
               tags?.forEach( tag=>{
  
@@ -193,8 +150,11 @@ export default function JRange({ match:{ params } }) {
 
               });
 
-
+              //
+              // the set as is...
+              //
               out.push(erow);
+
               return out;
 
             } ,[]); 
@@ -205,27 +165,11 @@ export default function JRange({ match:{ params } }) {
               did
             }
           });
-
-          //
-          // DELETE** los TAGS creados si tienen solo 1 item en ellos...
-          //
-          //#region  quitar TAGS que agrupen 1 solo exercise
-          const eids2remove = [];
-
-          for (const [tag, eTag] of tag2exercise) {
-            if( eTag.eids.length<2 )
-            {
-              //quitarlo!!
-              eids2remove.push(tag);
-            }
-          }
-
-          if( eids2remove.length )
-          {
-              days.forEach( day=>{
-                day.did = day.did.filter( erow=>eids2remove.indexOf(erow.e.id)<0 );
-              });
-          }
+ 
+          //#region  REMOVE GROUPS WITH ONLY 1 ITEM
+          days.forEach( day=>{
+                day.did = day.did.filter( did=>!did.e.isTag || did.e.eids.length>1 )
+          })
           //#endregion
 
 
@@ -244,6 +188,38 @@ export default function JRange({ match:{ params } }) {
     },[rawData]);
 
 
+    const { from, to }                          = useMemo(()=>(rawData?.jrange && ({
+        from: ymd2date( rawData?.jrange.from ).valueOf(), 
+        to  : ymd2date( rawData?.jrange.to ).valueOf()
+    })) || {},[rawData]);
+
+
+    //
+    // to be used by reference lines to visualize each sunday in the range
+    //
+    const sundays = useMemo(()=>{
+
+        const startValue = from;
+        const endValue = to;
+        const sundays = [];
+        const start = new Date(startValue);
+        const end = new Date(endValue);
+        const oneDay = 24 * 60 * 60 * 1000; // milliseconds in one day
+
+        // Get the Sunday for the start date
+        let sunday = new Date(start);
+        sunday.setDate(sunday.getDate() + (7 - sunday.getDay()) % 7);
+
+        // Iterate over all the Sundays between the start and end dates
+        while (sunday <= end) {
+            sundays.push(sunday.valueOf());
+            sunday.setTime(sunday.getTime() + 7 * oneDay);
+        }
+
+        return sundays;
+
+    },[from, to])
+
 
     const removeZoom = ev => jowner.gotoYMD(ymd);  
 
@@ -255,7 +231,11 @@ export default function JRange({ match:{ params } }) {
     /**
      * @type {Map<number, string>}
      */
-    const eid2color       = useMemo( ()=>data?.jrange?.days.reduce( (map, day)=>{
+    const eid2color       = useMemo( ()=>{ 
+
+                                    let getColor = colorPaletteForChart();
+        
+                                    return data?.jrange?.days.reduce( (map, day)=>{
 
                                                 //
                                                 // acumular el volume de cada eid. (el mas volumen es el mas importante...)
@@ -283,12 +263,12 @@ export default function JRange({ match:{ params } }) {
                                       //
                                       .reduce( (map, itm, i)=>{
 
-                                          map.set( itm[0], $colors[i] || $OTHER_COLOR  );
+                                                 map.set( itm[0], getColor().substr(1) ); //$colors[i] || $OTHER_COLOR
                                           return map;
 
                                       },new Map())
 
-                                      ,[data]); 
+                                    },[data]); 
 
     /**
      * utility function para poder mantener un valor actualizado con el maximo. 
@@ -400,9 +380,9 @@ export default function JRange({ match:{ params } }) {
     //
     // siempre seleccionar uno...
     //
-    if( !selectedEIDs.length && tableData )
+    if( !selectedEIDs.length && tableData?.length )
     {
-      setSeletedEIDs([ tableData[0].exercise.id ]);
+        setSeletedEIDs([ tableData[0].exercise.id ]);
     }
 
     if( loading ) {
@@ -426,19 +406,51 @@ export default function JRange({ match:{ params } }) {
                       -- <strong>{ days }</strong> days with <strong>workouts</strong> found.
                 </JDayContentHeader>
 
-              { data.jrange && <>
+              { data.jrange && <> 
+
+                                { tableData.length>0 && <>
+                                        {/* <JRangeGraph data={data} eid2color={eid2color} selectedEids={selectedEIDs}  from={from} to={to}/> */}
+                                        <JRangeSetsChart selectedEids={selectedEIDs} data={data} from={from} to={to} eid2color={eid2color.get.bind(eid2color)} sundays={sundays}/>
+            
+                                            {/*La tabla*/}
+                                            <Box marginTop={1}>
+                                            <JRangeTable selectedEids={selectedEIDs} onSelectAllClick={toggleSelectAll} onSelect={onSelectRow} data={tableData} />
+                                            </Box>
+
+
+                                            <br/>
+                                            <Divider/>
+                                            <br/>
+                                </>}
                               
+                                <Typography variant="h3">Tags</Typography> 
 
-                              {/* El chart! 
-                              <PieChart data={graphDataFiltered}/> 
-                              */}
+                                { rawData?.jrange.utags?.values.length ?
+                                    <>
+                                    <Typography gutterBottom variant="subtitle1">During this period these are the tags that were defined:</Typography>
+                                    <JRangeUTags data={rawData} from={from} to={to} sundays={sundays}/>  
+                                    </>
+                                    :
+                                    <Typography variant="subtitle1">
+                                        No tags were used during this period.
+                                    </Typography>
+                                }
 
-                              <JRangeGraph data={data} eid2color={eid2color} selectedEids={selectedEIDs} />
- 
-                              {/*La tabla*/}
-                              <Box marginTop={1}>
-                                <JRangeTable selectedEids={selectedEIDs} onSelectAllClick={toggleSelectAll} onSelect={onSelectRow} data={tableData} />
-                              </Box>
+                                <Alert severity="info" style={{marginTop:30}}>
+
+                                    <Typography variant="subtitle1">
+                                    <strong>How to create a TAG?</strong> To create a tag, when you log a workout, type, on a new line, `{TAG_PREFIX}` followed by a space and the name you want to give to the tag, then ":" and the value of the tag. Example:<br/>
+                                    </Typography>
+                                    <Box marginTop={1} marginBottom={5} >
+                                        <Paper elevation={2}>
+                                            <StaticLogHighlighter initialValue={ getExampleUTagsLog() } tags={[]} utags={[]} exercises={[]} />
+                                        </Paper>
+                                    </Box>
+                                </Alert>
+                              
+                              
+                              
+                              
               </>}
           </div>;
 }

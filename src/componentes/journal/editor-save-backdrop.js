@@ -56,7 +56,7 @@ export const JeditorSaveBackdrop = ()=>{
 
     const classes               = useBackdropStyles();  
     const data                  = useReactiveVar($jeditorSaveState);
-    const shouldBeOpen          = data.loading || typeof data.success == 'boolean';
+    const shouldBeOpen          = data.loading || data.success;
 
     let fxProps = {
         count: 1 ,

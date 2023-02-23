@@ -5,7 +5,6 @@ import { parseError } from "../../data/db";
 import { useGetJEditorDataQuery, useSaveJEditorMutation } from "../../data/generated---db-types-and-hooks";
 import { todayAsYMD } from "../../utils/utils";
 import { AsciiSpinner } from "../ascii-spinner";
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeVar, useReactiveVar } from "@apollo/client";
 import "./editor.css";
 
@@ -84,7 +83,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
                 //
                 // se encontró un token de texto o eblock y no es del default date...
                 //
-                if( (!out || out==ymd) && (token.hasOwnProperty("eid") || token.hasOwnProperty("text")) )
+                if( (!out || out==ymd) && (token.hasOwnProperty("eid") || token.hasOwnProperty("text") || token.hasOwnProperty("tag") ) )
                 {  
                     usedDefaultDate = true;
                 } 
@@ -226,7 +225,15 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
     onLoaded();
 
     return <> 
-        <LogTextEditor defaultYMD={ymd} usekg={ session.user.usekg } value={data.jeditor.did} exercises={data.jeditor.exercises} tags={data.jeditor.etags} getDocRef={getDoc} getShowErrorRef={showDocError}/>
+        <LogTextEditor  defaultYMD={ymd} 
+                        usekg={ session.user.usekg } 
+                        value={data.jeditor.did} 
+                        exercises={data.jeditor.exercises} 
+                        tags={data.jeditor.etags} 
+                        getDocRef={getDoc} 
+                        getShowErrorRef={showDocError}
+                        utags={data.jeditor.utags}
+                        />
         { saveError && <Alert severity="error">{parseError(saveError)}</Alert> }
     </>
 }

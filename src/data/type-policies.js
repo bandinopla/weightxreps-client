@@ -18,8 +18,7 @@ export const __resolveReferencedUserId = {
 
 export const __resolveReferencedExerciseId = {
     read( current, { cache } ) {  
-
-        console.log("Find e:", current)
+ 
         return cache.readFragment({
             id: 'Exercise:'+current, 
             fragment: gql`fragment ExerciseFields on Exercise {
