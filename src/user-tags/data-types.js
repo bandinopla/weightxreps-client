@@ -82,7 +82,7 @@ export const TYPES = {
         value2editor        : v=>`${v} sec`,
     },
 
-    "TAG_TIME_hhmmss": {
+    "TAG_TIME_hms": {
         kindOf              : "TAG_TIME_h",
         reg                 : /^\s*(?:(\d+):)?(\d+):(\d+)/i,
         example             : ["Rest between sets (MMSS): 3:24","Workout duration (HHMMSS): 1:20:00"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
