@@ -18,5 +18,5 @@ export const UserTypedText = ({ text, short })=> {
     }
 
     //whiteSpace:"break-spaces", wordBreak:"break-word"
-    return <div style={{ fontFamily:"'Azeret Mono', monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word" }}>{ short? shortText(text) : text }</div>;
+    return <div style={{ display:"inline", fontFamily:"'Azeret Mono', monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word" }}>{ short? shortText(text) : text }</div>;
 }

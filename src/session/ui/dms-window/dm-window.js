@@ -336,7 +336,7 @@ export function DMsWindow()
                                 
                                         <DirectMessageItem when={msg.when} whenExtra={whenExtra}>
                                             <div className="usr-text">
-                                                <UnameTag {...msg.by} inline/>: 
+                                                <UnameTag {...msg.by} inline/>:&nbsp; &nbsp;
 
                                                     { msg.isGlobal?<Alert severity="info" className="sha">
                                                                         <Typography variant="body2">

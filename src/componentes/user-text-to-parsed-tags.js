@@ -24,7 +24,7 @@ const Num = ({ children }) => {
 
 
 // TODO: parsed TAGS to Render
-export const parsedTags2render = tags => tags.map( (tag,i) => {
+export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
 
     
     let element;
@@ -86,7 +86,7 @@ export const parsedTags2render = tags => tags.map( (tag,i) => {
     }
 //<Typography component="span" style={{fontFamily:"monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word"}}>{ tag.text }</Typography>}
     return <div key={i} style={{display:"inline"}}>
-                { element? element : <UserTypedText text={tag.text} /> } 
+                { element? element : <UserTypedText text={ trimTexts? tag.text.trim() : tag.text } /> } 
             </div> ;
 
 } ) ;
