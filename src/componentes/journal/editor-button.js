@@ -13,7 +13,8 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { OpenDMButton } from "../../session/ui/dms-window/dm-window";
 import { todayAsYMD } from "../../utils/utils";
 import { SectionTitle } from "../../pages/guest/GuestLandingPage";
-import { useGetSession } from "../../session/session-handler";
+import { useGetSession } from "../../session/session-handler"; 
+import Alert from "@material-ui/lab/Alert"; 
 
 
 const useStyles = makeStyles((theme) => ({
@@ -110,17 +111,19 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
 
                         <SectionTitle line1={"GOOD JOB! Consistency is key!"} line2="LOG A WORKOUT ↴"/>
 
-                        <ButtonGroup size="small" variant="outlined" >
-                        <Button onClick={ ()=>Editor.OpenTutorial() } startIcon={<HelpOutlineIcon/>}>Need Help?</Button>
+                        <div style={{textAlign:"center"}}>
+                        <ButtonGroup variant="outlined" >
+                        <Button onClick={ ()=>Editor.OpenTutorial() } startIcon={<HelpOutlineIcon/>}>Tutorial / Example</Button>
                         <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> 
                         </ButtonGroup>
+                        </div>
 
                     </DialogTitle> 
 
                         <DialogContentText>
-                            <Typography variant="caption" style={{paddingLeft:20}}>
-                                To trigger the auto-complete hit <strong>CTRL+SPACE</strong> on a new line. 
-                            </Typography>
+                            <Alert severity="info">
+                            To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>CMD+SPACE</strong>  on a new line. 
+                            </Alert> 
                         </DialogContentText>
 
                         <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
