@@ -75,12 +75,12 @@ const typesForCodeMirror = ()=>{
 
                         if( typeof state.tagValue!='string' )
                         {
-                            throw new Error("Invalid tag value, it must be a string!");
+                            throw new Error(`tag ${key} generated an invalid tag value, it must be a string!`);
                         }
 
                         if( state.tagValue.length>12 )
                         {
-                            throw new Error("Max length of a tag value is 12, you typed: "+state.tagValue.length );
+                            throw new Error(`Max length of a tag value is 12, tag ${key} generated a value of ${state.tagValue.length} characters.` );
                         }
                     }
                     catch(e)

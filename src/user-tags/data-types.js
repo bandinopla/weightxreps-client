@@ -261,6 +261,10 @@ const typedesc2description = new Map();
 //
 Object.keys(TYPES).forEach(key=>{
 
+    if( key.length>12 ) {
+        throw new Error("Hey! Keys must be 12 characters or less!! this is because the DB stores this in a VARCHAR(12)")
+    }
+
     TYPES[key].key = key;
 
     if( TYPES[key].kindOf )
