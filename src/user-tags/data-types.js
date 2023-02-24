@@ -88,14 +88,14 @@ export const TYPES = {
         example             : ["Rest between sets (MMSS): 3:24","Workout duration (HHMMSS): 1:20:00"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
         editor2value        : m=>[ m[1] ?? '0',m[2], m[3]] .join("|"),
 
-        value2number        : val=>{
+        value2editor        : val=>{
 
             const [ HH, MM, SS] = val.split("|");
 
             return `${ parseInt(HH)>0? HH.padStart(2, '0') + ":" : ""}${ MM.padStart(2, '0') }:${ SS.padStart(2, '0') }`;
         },
  
-        value2editor        : val=>{
+        value2number        : val=>{
 
             const [ HH, MM, SS] = val.split("|").map(d=>parseInt(d));
             return HH*3600000 + MM*60000 + SS*1000;
