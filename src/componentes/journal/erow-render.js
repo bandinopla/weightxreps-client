@@ -215,7 +215,7 @@ export default function Eblock({ data }){
                         </div> 
                     </div>
 
-                { set.c && <div className={classes.ecom}><SubdirectoryArrowRightIcon fontSize="small"/>{ parsedTags2render(set.c) }</div> }
+                { set.c && <div className={classes.ecom}><SubdirectoryArrowRightIcon fontSize="small"/>{ parsedTags2render(set.c.trim()) }</div> }
                 </div>
                 
                 )) }
