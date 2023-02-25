@@ -110,7 +110,7 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays  }) 
                                     {
                                         ...utag,
                                         baseType,
-                                        canBeCharted: utagValues[0].canBeCharted(),
+                                        canBeCharted: utagValues.find( tval=>tval.baseType==baseType ).canBeCharted(),
 
                                         //
                                         // values of this utag & baseType
