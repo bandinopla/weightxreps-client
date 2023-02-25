@@ -197,15 +197,19 @@ export const TYPES = {
 
     
     "TAG_RANK": {
-        reg          : /^\s*\d+\/\s*\d+/,
+        reg          : /^\s*\d+(?:\.\d)?\/\s*\d+/,
         dataTypeDesc : "Rank",
         description  : "Rank a particular aspect on an arbitraty scale",
-        example      : ["Stress: 4/10","Pain: 5/10", "Will to live: 3/100"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"),
+        example      : ["Stress: 4.5/10","Pain: 5/10", "Will to live: 50/100"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"),
         editor2value : m=>m[0].replace(/\s/,""), 
         value2number : v => {
             const [ rank, outOf ] = v.split("/").map(l=>parseInt(l));
             return rank / outOf;
-        } 
+        },
+        components2value: c => {
+            let outOf = 10;
+            return `${ (c*outOf).toFixed(1) }/${outOf}`;
+        }
     }, 
 
 
