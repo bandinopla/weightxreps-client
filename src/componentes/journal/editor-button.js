@@ -1,20 +1,23 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { JOwnerContext } from "../../pages/journal-context"; 
+import { JOwnerContext } from "../../pages/journal-context";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import { Button, ButtonGroup, Dialog, Typography } from "@material-ui/core";
+import { Button, ButtonGroup, Dialog, Grid, Typography } from "@material-ui/core";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import { OpenDMButton } from "../../session/ui/dms-window/dm-window";
 import { todayAsYMD } from "../../utils/utils";
 import { SectionTitle } from "../../pages/guest/GuestLandingPage";
-import { useGetSession } from "../../session/session-handler"; 
-import Alert from "@material-ui/lab/Alert"; 
+import { useGetSession } from "../../session/session-handler";
+import Alert from "@material-ui/lab/Alert";
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import RestoreIcon from '@material-ui/icons/Restore';
+import TimerIcon from '@material-ui/icons/Timer';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import LoadCopyOfWorkoutModal, { OpenLoadCopyOfWorkoutModal } from "./editor-copy-journal";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +92,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
             </Button>
 
             <TutorialModal/>
+            <LoadCopyOfWorkoutModal/>
             <Backdrop className={classes.backdrop} open={loading} >
                 <CircularProgress color="inherit" />
             </Backdrop>
@@ -111,12 +115,6 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
 
                         <SectionTitle line1={"GOOD JOB! Consistency is key!"} line2="LOG A WORKOUT ↴"/>
 
-                        <div style={{textAlign:"center"}}>
-                        <ButtonGroup variant="outlined" >
-                        <Button onClick={ ()=>Editor.OpenTutorial() } startIcon={<HelpOutlineIcon/>}>Tutorial / Example</Button>
-                        <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> 
-                        </ButtonGroup>
-                        </div>
 
                     </DialogTitle> 
 
@@ -130,12 +128,32 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                          
 
                         <DialogActions>
-                            <Button size="large" onClick={handleClose} color="primary" variant="outlined">
-                                Cancel
-                            </Button>
-                            <Button size="large"  disabled={!hasLoaded} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained">
-                                Save
-                            </Button>
+
+                            <Grid container>
+                                <Grid item xs={6}>
+                                    <ButtonGroup variant="outlined" >
+                                        <Button onClick={ ()=>Editor.OpenTutorial() } startIcon={<MenuBookIcon/>}>HELP</Button>
+                                        {/* <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> */}
+                                        <Button color="primary" variant="contained" startIcon={<RestoreIcon/>} onClick={OpenLoadCopyOfWorkoutModal}>
+                                            copy
+                                        </Button>
+                                        {/* <Button color="primary" startIcon={<TimerIcon/>}>
+                                            stopwatch
+                                        </Button> */}
+                                    </ButtonGroup>
+                                </Grid>
+                                <Grid item xs={6} style={{ textAlign:"right"}}>
+
+                                    <ButtonGroup >
+                                        <Button  onClick={handleClose} color="primary" variant="outlined">
+                                            Cancel
+                                        </Button>
+                                        <Button disabled={!hasLoaded} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained" startIcon={<SaveAltIcon/>}>
+                                            Save
+                                        </Button>
+                                    </ButtonGroup>
+                                </Grid>
+                            </Grid> 
                         </DialogActions>
                 </Dialog>
       

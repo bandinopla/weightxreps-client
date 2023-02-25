@@ -1,5 +1,5 @@
 import { LinearProgress } from "@material-ui/core";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { LogTextEditor, convertJEditorData2Text } from "../../codemirror/LogTextEditor";
 import { parseError } from "../../data/db";
 import { useGetJEditorDataQuery, useSaveJEditorMutation } from "../../data/generated---db-types-and-hooks";
@@ -39,6 +39,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
     const {session }      = useGetSession();
     const history       = useHistory();
     const saveError = useReactiveVar($jeditorError);
+    const [jeditorData, setJeditorData] = useState();
 
     const [saveEditor, {client}]    = useSaveJEditorMutation();
     
@@ -47,8 +48,27 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
             ymd, range
         },
 
-        fetchPolicy:"network-only"
-        ,onCompleted: ()=>$jeditorError(null)
+        //fetchPolicy:"network-only",
+        onCompleted: ( data )=> {
+            $jeditorError(null);
+            setJeditorData( data )
+        }
+    });
+ 
+
+
+    useEffect(()=>{
+
+        const onEventData = (event) => { 
+
+            console.log("LOAD EDUITORRR", event.detail)
+            setJeditorData( event.detail )
+        }
+
+        window.addEventListener('jeditor:data', onEventData);
+
+        return ()=>window.removeEventListener('jeditor:data', onEventData )
+
     });
 
     if( !session )
@@ -206,17 +226,17 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
  
     }
 
-    if( loading )
+    if( error ) { 
+        return <Alert severity="error">{parseError(error)}</Alert>;
+    }
+
+    if( loading || !jeditorData )
     {
         return <div>
             <LinearProgress/>
             <AsciiSpinner label="Loading Editor's data..."/>
             </div>;
     }  
-
-    if( error ) { 
-        return <Alert severity="error">{parseError(error)}</Alert>;
-    }
 
     //--
     saveTrigger.current = save;
@@ -227,12 +247,12 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
     return <> 
         <LogTextEditor  defaultYMD={ymd} 
                         usekg={ session.user.usekg } 
-                        value={data.jeditor.did} 
-                        exercises={data.jeditor.exercises} 
-                        tags={data.jeditor.etags} 
+                        value={jeditorData.jeditor.did} 
+                        exercises={jeditorData.jeditor.exercises} 
+                        tags={jeditorData.jeditor.etags} 
                         getDocRef={getDoc} 
                         getShowErrorRef={showDocError}
-                        utags={data.jeditor.utags}
+                        utags={jeditorData.jeditor.utags}
                         />
         { saveError && <Alert severity="error">{parseError(saveError)}</Alert> }
     </>

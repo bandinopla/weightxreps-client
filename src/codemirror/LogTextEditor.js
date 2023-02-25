@@ -1301,11 +1301,12 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
     const classes       = useStyles();
     const txt           = useRef();
     const save          = useRef();  
+    const cmirror       = useRef();
 
     /**
      * Si value es un array, se asume lo devolvió el backend, por lo que lo convertimos a string...
      */
-    const initialValue  = useMemo( ()=>{ 
+    const valueAsText  = useMemo( ()=>{ 
 
         if( typeof value == 'string' )
         {
@@ -1346,6 +1347,10 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
             //
             lint: __lintEditor
           }); 
+
+          //
+          cmirror.current = myCodeMirror;
+          //
 
           getShowErrorRef.current = (line, error)=>{
 
@@ -1483,10 +1488,20 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
 
     }, []);
 
+
+    useEffect( ()=>{
+
+        if( cmirror.current )
+        {
+            cmirror.current.setValue(valueAsText);
+        }
+
+    }, [valueAsText]);
+
     
 
     return <div className={classes.root}>
-        <textarea ref={txt} autoFocus  defaultValue={initialValue}></textarea> 
+        <textarea ref={txt} autoFocus  defaultValue={valueAsText}></textarea> 
     </div>
 }
 

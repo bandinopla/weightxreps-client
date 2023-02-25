@@ -98,10 +98,10 @@ const HOY           = new Date().valueOf();
 const calStatus     = makeVar(null);
  
 
-export default function({ ymd, rangeHighlight }) {
+export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
     const jowner    = useContext( JOwnerContext );
-    const WEEKS     = 12;
+    const WEEKS     = widthInWeeks ?? 12;
     const DAYS      = 7; 
     const date      = ymd2date(ymd); //new Date( ymd.substr(0,4), Number(ymd.substr(5,2))-1, ymd.substr(8) ); 
     
@@ -118,8 +118,17 @@ export default function({ ymd, rangeHighlight }) {
         rangeDateStart = d.valueOf();
     }
 
-    const onClick = dayKey => {
-        jowner.gotoYMD( dayKey.toString().replace(/(\d{4})(\d{2})(\d{2})/,"$1-$2-$3") );
+    const onClick = (dayKey, hasData) => {
+
+        const ymd = dayKey.toString().replace(/(\d{4})(\d{2})(\d{2})/,"$1-$2-$3");
+
+        if( onClickDay )
+        {
+            onClickDay( ymd, hasData )
+            return;
+        }
+        
+        jowner.gotoYMD( ymd  );
     }
 
     const calcRange = (center, leftOffset, rightOffset) => {
@@ -373,7 +382,7 @@ function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick }) {
 
 const Cell = ({ ymd, hasData, num, month, pinned, highlighted, onClick })=>(
     //onClick(ymd)
-    <ButtonBase key={ymd} focusRipple onClick={()=>onClick(ymd)} className={"cell m"+(month%2)+" " + ( hasData && "hasData")+" "+(pinned && " pinned")+" "+(highlighted && " highlighted") }>
+    <ButtonBase key={ymd} focusRipple onClick={()=>onClick(ymd, hasData)} className={"cell m"+(month%2)+" " + ( hasData && "hasData")+" "+(pinned && " pinned")+" "+(highlighted && " highlighted") }>
          {num} 
     </ButtonBase>);
 
