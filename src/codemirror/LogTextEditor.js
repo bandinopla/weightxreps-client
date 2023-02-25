@@ -949,6 +949,75 @@ const JLogTokenizer = config => {
         ]]
     ];
  
+
+    const match = (stream, state) => {
+
+        if( state.activeToken )
+        { 
+            const cls = state.activeToken.token(stream, state);  
+
+            if( cls )
+            {
+                //
+                // si hay childs, y ocurrió un match, reseteamos el counter... para loopearlos y poder volver a reecontrar otro token igual
+                //
+                if( state.tokenChilds?.length )
+                { 
+                    state.tokenChildIndex = 0;
+                } 
+
+                return cls;
+            }
+            else 
+            { 
+                //if has childs... etc...
+                if( state.tokenChilds?.length )
+                {    
+                    if( state.tokenChildIndex<state.tokenChilds.length )
+                    {  
+                        state.activeToken = tokens[ state.tokenChilds[state.tokenChildIndex] ];
+                        state.tokenChildIndex++; 
+
+                        //
+                        // loop back
+                        //
+                        return match( stream, state);
+                    }   
+                } 
+
+                state.activeToken = null;
+                state.tokenChilds = null;
+                    
+                }
+            }
+
+        //
+        // buscar un token hasta que matchee...
+        //
+        for (let i = 0; i < schema.length; i++) 
+        {
+            const tokenName = schema[i][0]; 
+            const token     = tokens[ tokenName ];
+
+            const cls = token.token(stream, state);
+
+            if( cls )
+            {
+                //
+                // activeToken queda ahi hasta que no matchee nada...
+                //
+                state.activeToken       = token;
+
+                //
+                // si tiene childs... recordarlos (para loopearlos)
+                //
+                state.tokenChilds       = schema[i][1]?.slice(0);
+                state.tokenChildIndex   = 0;
+                return cls;
+            }
+        }
+
+    }
  
 
 
@@ -965,70 +1034,16 @@ const JLogTokenizer = config => {
         }),
 
         token(stream, state) {
- 
- 
-            if( state.activeToken )
-            { 
-                const cls = state.activeToken.token(stream, state);  
-
-                if( cls )
-                {
-                    //
-                    // si hay childs, y ocurrió un match, reseteamos el counter... para loopearlos y poder volver a reecontrar otro token igual
-                    //
-                    if( state.tokenChilds?.length )
-                    { 
-                        state.tokenChildIndex = 0;
-                    } 
-
-
-
-                    return cls;
-                }
-                else 
-                { 
-                    //if has childs... etc...
-                    if( state.tokenChilds?.length )
-                    {    
-                        if( state.tokenChildIndex<state.tokenChilds.length )
-                        {  
-                            state.activeToken = tokens[ state.tokenChilds[state.tokenChildIndex] ];
-                            state.tokenChildIndex++; 
-                            return;
-                        }   
-                    } 
-
-                    state.activeToken = null; 
-                    state.tokenChilds = null;  
-                    
-                }
-            }
 
             //
-            // buscar un token hasta que matchee...
-            //
-            for (let i = 0; i < schema.length; i++) 
+            // had to recode this because this hardcoded value... https://github.com/codemirror/codemirror5/blob/658bff7c56b7829aeabb8a914be5ca728d8aba0b/src/line/highlight.js#L161
+            // 
+            let cls = match(stream, state);
+
+            if( cls )
             {
-                const tokenName = schema[i][0]; 
-                const token     = tokens[ tokenName ];
-
-                const cls = token.token(stream, state);
-
-                if( cls )
-                {
-                    //
-                    // activeToken queda ahi hasta que no matchee nada...
-                    //
-                    state.activeToken       = token;
-
-                    //
-                    // si tiene childs... recordarlos (para loopearlos)
-                    //
-                    state.tokenChilds       = schema[i][1]?.slice(0);
-                    state.tokenChildIndex   = 0;
-                    return cls;
-                }
-            }
+                return cls;
+            } 
 
 
             //
@@ -1047,18 +1062,6 @@ const JLogTokenizer = config => {
                 state.textSoFar = (state.textSoFar || "") + "\n"+ (stream.match(/^.*/,true)?.[0] || "")  ; //la linea entera 
                 state.lastTextRow.text = state.textSoFar.trim();
             } 
-
-            // var ch = stream.next();
-
-            // if( !state.lastTextRow || !state.rows.slice(-1)[0].text )
-            // {
-            //     state.lastTextRow = { text:ch };
-            //     state.rows.push(state.lastTextRow);
-            // }
-            // else 
-            // {
-            //     state.lastTextRow.text += ch;
-            // }
 
             return null;
         }

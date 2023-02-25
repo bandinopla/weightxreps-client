@@ -195,6 +195,19 @@ export const TYPES = {
         },
     },  
 
+    
+    "TAG_RANK": {
+        reg          : /^\s*\d+\/\s*\d+/,
+        dataTypeDesc : "Rank",
+        description  : "Rank a particular aspect on an arbitraty scale",
+        example      : ["Stress: 4/10","Pain: 5/10", "Will to live: 3/100"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"),
+        editor2value : m=>m[0].replace(/\s/,""), 
+        value2number : v => {
+            const [ rank, outOf ] = v.split("/").map(l=>parseInt(l));
+            return rank / outOf;
+        } 
+    }, 
+
 
     "TAG_INT": {
         reg          : /^\s*(\d+(?:\.\d+)?)/,
@@ -223,6 +236,8 @@ export const TYPES = {
         value2editor    : v=>v,
         value2view      : v=>v
     },
+
+
 }
 
 

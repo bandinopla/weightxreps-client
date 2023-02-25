@@ -1,3 +1,8 @@
+- 2.16.3 : 2023-02-25
+        + Added "rank" user tag format. Forgot it, thanks to @asambol for noticing it!
+        * fixed journal parsing. I reported the issue to CodeMirror : https://github.com/codemirror/codemirror5/issues/7023
+        * prefixed the tag type in the tag's value Chip component to be able to see the type of data it was interpreted.
+
 - 2.16.2 : 2023-02-24
         * Bugfix reported by @asambol : tag type ID was too long and DB was cutting it... 
 

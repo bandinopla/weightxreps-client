@@ -16,7 +16,7 @@ export const JournalTagValue = ({ value:utagValue, utag })=>{
    
   
         return <Box marginTop={1} marginBottom={1} fontSize="1.1em">
-                <Tooltip title={ utagValue.$type.description }>
+                <Tooltip title={ `( ${ utagValue.$type.dataTypeDesc } ) ${utagValue.$type.description}` }>
                 <Chip 
                     label={ <>{utag.name} : <div style={{display:"inline", color:"blue", fontWeight:"bold"}}>{ utagValue.toView() }</div></> } 
                     variant="outlined"
