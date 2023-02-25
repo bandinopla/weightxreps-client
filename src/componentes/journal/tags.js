@@ -15,7 +15,7 @@ export const JournalTagValue = ({ value:utagValue, utag })=>{
     }  
    
   
-        return <Box marginTop={1} marginBottom={1} fontSize="1.1em">
+        return <Box marginTop={1} marginBottom={1} fontSize="1.1em" display={"inline"}>
                 <Tooltip title={ `( ${ utagValue.$type.dataTypeDesc } ) ${utagValue.$type.description}` }>
                 <Chip 
                     label={ <>{utag.name} : <div style={{display:"inline", color:"blue", fontWeight:"bold"}}>{ utagValue.toView() }</div></> } 
@@ -46,7 +46,7 @@ export const TagTokenMatcher = ( userTags, utagsValues ) => {
                     const tval = values.find( tval=>tval.id==m[1] );
         
                     return {    type      : TYPE.TAG, // token type
-                                utag    : userTags.find(utag=>utag.id==tval.tagid),
+                                utag    : tval? userTags.find(utag=>utag.id==tval.tagid) : null,
                                 value   : tval
                             } 
                 }

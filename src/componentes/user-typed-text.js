@@ -13,6 +13,11 @@ const shortText = txt => {
  */
 export const UserTypedText = ({ text, short })=> {
 
+    if( text.trim()=="|" )
+    {
+        return "";
+    }
+
     if( !text || text.trim().length==0 ) {
         return <strong style={{color:"red"}}>[deleted]</strong>;
     }
