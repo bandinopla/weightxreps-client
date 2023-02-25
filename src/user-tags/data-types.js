@@ -100,6 +100,21 @@ export const TYPES = {
             const [ HH, MM, SS] = val.split("|").map(d=>parseInt(d));
             return HH*3600000 + MM*60000 + SS*1000;
         },
+
+        components2value: milliseconds => {
+
+            const seconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = seconds % 60;
+          
+            const padZero = (value) => (value < 10 ? `0${value}` : value);
+            const formattedHours = padZero(hours);
+            const formattedMinutes = padZero(minutes);
+            const formattedSeconds = padZero(remainingSeconds);
+          
+            return `${formattedHours}|${formattedMinutes}|${formattedSeconds}`;
+        }
     },
 
 
