@@ -42,7 +42,7 @@ const aspects = [
     }
 ]
 
-export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2color, sundays  }) {
+export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2color, sundays, onClickX  }) {
 
     const data      = jeditorData?.jrange?.days;
     const [aspectsON, setAspectsON] = useState(aspects.map((_,i)=>i));
@@ -139,7 +139,7 @@ export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2
         
         <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
-                <ComposedChart data={ [ ] }> 
+                <ComposedChart data={ [ ] } onClick={onClickX}> 
                     <CartesianGrid stroke="#f5f5f5" />
 
                     {/* <XAxis dataKey="ymd" type="category" allowDuplicatedCategory={false}/> */}
@@ -147,7 +147,8 @@ export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2
                                         scale="time" 
                                         domain={[ from, to ]} 
                                         type="number" 
-                                        tickFormatter={ date => dateToYMD( new Date(date) ) }  />
+                                        tickFormatter={ date => dateToYMD( new Date(date) ) } 
+                                         />
 
                     <YAxis yAxisId="left"/> 
                     <YAxis yAxisId="right" orientation="right" />

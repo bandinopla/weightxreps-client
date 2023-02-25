@@ -11,7 +11,7 @@ const shortText = txt => {
 /**
  * Todo texto escrito por el usuario debería pasar por acá
  */
-export const UserTypedText = ({ text, short })=> {
+export const UserTypedText = ({ text, short, noWrap })=> {
 
     if( text.trim()=="|" )
     {
@@ -23,5 +23,5 @@ export const UserTypedText = ({ text, short })=> {
     }
 
     //whiteSpace:"break-spaces", wordBreak:"break-word"
-    return <div style={{ display:"inline", fontFamily:"'Azeret Mono', monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word" }}>{ short? shortText(text) : text }</div>;
+    return <div style={{ display:"inline", fontFamily:"'Azeret Mono', monospace",whiteSpace: noWrap? "nowrap" : "pre-wrap", wordBreak:"normal", wordWrap:"break-word" }}>{ short? shortText(text) : text }</div>;
 }

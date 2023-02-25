@@ -14,5 +14,14 @@ export const RPEChip = ({value})=>{
         9.5:"#F94144",
         10:"#E63946"
     }
-    return <Chip size="small" label={ value+ " RPE"} style={{backgroundColor:colors[value], color:"white", marginLeft:3}}/>;
+
+    let roundedNum = Math.round( Number(value)  * 2) / 2;  
+
+    if( roundedNum<6 )
+    {
+        roundedNum = value;
+        colors[roundedNum] = '#2E95D3';
+    }
+
+    return <Chip size="small" label={ value+ " RPE"} style={{backgroundColor:colors[roundedNum], color:"white", marginLeft:3}}/>;
 }

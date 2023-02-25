@@ -62,7 +62,7 @@ export default function WeightValue( props )
     //kg = #09c
     //lbs = #cc6800 
 
-    return <>{props.prefix||""}{round(w,1)} <b style={{color: unit=='kg'? '#09c':'#cc6800', fontSize:"0.9em", display:props.nounit?"none":"inline" }}>{unit+(unit != originalUnit?"*":"")}</b></>; 
+    return <div style={{display:"inline", whiteSpace:"nowrap"}}>{props.prefix||""}{round(w,1)} <b style={{color: unit=='kg'? '#09c':'#cc6800', fontSize:"0.9em", display:props.nounit?"none":"inline" }}>{unit+(unit != originalUnit?"*":"")}</b></div>; 
 }
 
 

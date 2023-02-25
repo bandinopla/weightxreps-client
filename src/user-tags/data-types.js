@@ -1,9 +1,22 @@
 
 import { RPEChip } from "../componentes/RPE-Chip";
 import {TagBW} from "./to-view/TAG_BW";
+import TAG_RANK_toView from "./to-view/TAG_RANK";
+
+// icons
+import AccessibilityNewRoundedIcon from '@material-ui/icons/AccessibilityNewRounded'; //BW
+import FlashOnRoundedIcon from '@material-ui/icons/FlashOnRounded'; //FPE
+import TimerRoundedIcon from '@material-ui/icons/TimerRounded'; //duration
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded'; //blood
+import StarHalfRoundedIcon from '@material-ui/icons/StarHalfRounded'; //rank
+import ShowChartRoundedIcon from '@material-ui/icons/ShowChartRounded'; //int  
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import { UserTypedText } from "../componentes/user-typed-text";
 
 export const TAG_PREFIX = "@";
 export const TAG_START_OF_DEFINITION_REGEXP = new RegExp(`^\\s*${TAG_PREFIX}\\s*`,"i")
+
+
 
 /**
  * TYPES is an object where each key is the ID of the type of data that a tag can hold.
@@ -15,6 +28,7 @@ export const TYPES = {
         dataTypeDesc    : "Bodyweight",
         description     : "(Automatic) Bodyweight of the day",
         value2view      : v=><TagBW value={ parseInt(v)/1000 } />, 
+        icon            : AccessibilityNewRoundedIcon
     }, 
     
 
@@ -26,6 +40,7 @@ export const TYPES = {
         editor2value : m=>m[1],  
         value2view   : v=><RPEChip value={parseFloat(v)}/>, 
         value2editor : v=>`RPE ${v}`,
+        icon         : FlashOnRoundedIcon
     },
 
     "TAG_RPE2": {
@@ -38,6 +53,7 @@ export const TYPES = {
     "TAG_TIME_h": {
         reg                 : /^\s*(\d+(?:\.\d+)?)\s*hs?/i,
         dataTypeDesc        : "Duration",
+        icon                : TimerRoundedIcon,
         description         : "Tag the duration of something...",
         example             : `${TAG_PREFIX} Workout duration (in hours): 1.5h`,
 
@@ -121,6 +137,7 @@ export const TYPES = {
     //MAP = (2/3) * diastolic pressure + (1/3) * systolic pressure
     "TAG_BLOOD": {
         reg          : /^\s*(\d+)\s*-\s*(\d+)/i,
+        icon         : FavoriteRoundedIcon,
         dataTypeDesc : "Blood Pressure",
         description  : "Track blood pressure values (diastolic-systolic)",
         example      :  ["Blood Pressure: 120-80","Blood Pressure (short format): 12-8"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") , 
@@ -214,6 +231,7 @@ export const TYPES = {
     "TAG_RANK": {
         reg          : /^\s*\d+(?:\.\d)?\/\s*\d+/,
         dataTypeDesc : "Rank",
+        icon         : StarHalfRoundedIcon,
         description  : "Rank a particular aspect on an arbitraty scale",
         example      : ["Stress: 4.5/10","Pain: 5/10", "Will to live: 50/100"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"),
         editor2value : m=>m[0].replace(/\s/,""), 
@@ -224,6 +242,9 @@ export const TYPES = {
         components2value: c => {
             let outOf = 10;
             return `${ (c*outOf).toFixed(1) }/${outOf}`;
+        },
+        value2view(v) { 
+            return <TAG_RANK_toView value={ this.value2number(v) }/> 
         }
     }, 
 
@@ -231,6 +252,7 @@ export const TYPES = {
     "TAG_INT": {
         reg          : /^\s*(\d+(?:\.\d+)?)/,
         dataTypeDesc : "Number",
+        icon         : ShowChartRoundedIcon,
         description  : "Tag a numeric value",
         example      : ["Steps: 65","Liters of water: 3.2"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"),
         editor2value : m=>m[1], 
@@ -240,6 +262,7 @@ export const TYPES = {
         reg             : /^(.*)/i,
         example         : ["Feel like: shit","mood: grumpy"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"), 
         dataTypeDesc    : "Short Text",
+        icon            : ChatBubbleIcon,
         canBeCharted    : false,
         description     : "Tag a an arbitrary aspect. 12 Characters max. The graph will be flat and will only serve to show the value.",
         editor2value    : m=>{
@@ -253,7 +276,7 @@ export const TYPES = {
 
         },
         value2editor    : v=>v,
-        value2view      : v=>v
+        value2view      : v=><UserTypedText text={v} noWrap/>
     },
 
 

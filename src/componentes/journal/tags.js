@@ -1,10 +1,7 @@
 import { Box, Chip, Tooltip } from "@material-ui/core";
 import { UTagValue } from "../../user-tags/UTagValue";
 import { TYPE } from "./jparser";
-import {TAG_PREFIX} from "../../user-tags/data-types";
-
-
-
+import { TAG_PREFIX } from "../../user-tags/data-types"; 
  
 
 export const JournalTagValue = ({ value:utagValue, utag })=>{
@@ -13,15 +10,18 @@ export const JournalTagValue = ({ value:utagValue, utag })=>{
     {
         return "";
     }  
+
+    const Icon = utagValue.$type.icon;
    
   
-        return <Box marginTop={1} marginBottom={1} fontSize="1.1em" display={"inline"}>
+        return <Box marginTop={1} marginBottom={1} fontSize="1.1em">
                 <Tooltip title={ `( ${ utagValue.$type.dataTypeDesc } ) ${utagValue.$type.description}` }>
                 <Chip 
-                    label={ <>{utag.name} : <div style={{display:"inline", color:"blue", fontWeight:"bold"}}>{ utagValue.toView() }</div></> } 
+                    label={ <> {utag.name} : <div style={{display:"inline", verticalAlign:"middle", color:"blue", fontWeight:"bold"}}>{ utagValue.toView() }</div></> } 
                     variant="outlined"
                     style={{ background:"white", maxWidth:"100%"}}
                     color="primary"
+                    icon={<Icon style={{color:"#666"}}/>}
                 />
                 </Tooltip>
                 </Box> ;

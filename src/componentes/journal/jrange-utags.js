@@ -16,7 +16,7 @@ import { date2NiceString, dateToYMD, ymd2date } from "../../utils/utils";
 import { UTagValue } from "../../user-tags/UTagValue";
 import TagTypeChip from "../../user-tags/TagTypeChip";
 
-export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays  }) {
+export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays, onClickX  }) {
  
     const data                                  = jeditorRangeQueryData?.jrange?.utags;  
     const [selectedTagIds, setSelectedTagIds]   = useState([])
@@ -201,8 +201,16 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays  }) 
 
     const tableColumns = useMemo(()=>[
         {
+            label:"",
+            value : row =>{
+                const Icon = row.values[0].$type.icon;
+                return <Icon style={{color:"#555"}}/>
+            } // 
+        },
+        {
             label:"Type",
-            value: row => <TagTypeChip type={row.values[0].$type.dataTypeDesc}/> 
+            align: "left",
+            value: row =><TagTypeChip type={row.values[0].$type.dataTypeDesc}/>
         },
         {
             label:"Name",
@@ -260,14 +268,15 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays  }) 
                 {renderChart && 
                 <div style={{ width: "100%", height: 200 }}>
                     <ResponsiveContainer >
-                        <ComposedChart data={ [ ] }> 
+                        <ComposedChart data={ [ ] } onClick={ onClickX }> 
                             <CartesianGrid stroke="#f5f5f5" />
 
                             <XAxis dataKey="time" 
                                     scale="time" 
                                     domain={[ from, to]} 
                                     type="number" 
-                                    tickFormatter={ x => dateToYMD( new Date(x) ) }  />
+                                    tickFormatter={ x => dateToYMD( new Date(x) ) }  
+                                    />
 
                             <YAxis yAxisId="left" padding={{ top: 10 }} /> 
 
@@ -307,7 +316,7 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays  }) 
                             <PaletteIcon/>
                         </TableCell> 
 
-                        { tableColumns.map( (col,i)=>(<TableCell key={col.label} align={ "center"}>
+                        { tableColumns.map( (col,i)=>(<TableCell key={col.label} align={ col.align ?? "center"}>
                                 {/* <TableSortLabel active={ true }
                                                 direction={ "asc" } 
                                                 >{ col.label }</TableSortLabel> */}
@@ -340,7 +349,7 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays  }) 
                         {tableColumns.map( col=>{
                         
 
-                            return <TableCell key={col.id} align="center">
+                            return <TableCell key={col.id} align={ col.align ?? "center"}>
 
                                     { col.value(row) }
 
@@ -381,7 +390,8 @@ const CustomTooltip = ({ active, payload, label, selectedTagIds, series }) => {
                                             name        : serie.name,
                                             color       : serie.color,
                                             valueNode   : _datum.tagValue.toView(),
-                                            typeOfData  : _datum.tagValue.$type.dataTypeDesc
+                                            typeOfData  : _datum.tagValue.$type.dataTypeDesc,
+                                            Icon        : <_datum.tagValue.$type.icon/>
                                         }) ); 
         } );
 
@@ -390,14 +400,17 @@ const CustomTooltip = ({ active, payload, label, selectedTagIds, series }) => {
               <Box padding={1} border="3px solid #444">
                   <Typography variant="h6">{ date2NiceString( new Date(label) ) }</Typography> 
               <TableContainer component={Paper}>
-                <Table size="small">
+                <Table size="small" padding="checkbox">
                   <TableHead>
                       <TableRow>
                         <TableCell padding="checkbox">
                                 <PaletteIcon/>
                             </TableCell> 
+                            <TableCell></TableCell>
+                            <TableCell>Type</TableCell>
+
                           <TableCell>Name</TableCell>
-                          <TableCell>Type</TableCell>
+                          
                           <TableCell>Value</TableCell> 
                       </TableRow>
                   </TableHead>
@@ -408,13 +421,19 @@ const CustomTooltip = ({ active, payload, label, selectedTagIds, series }) => {
                                 <StopRoundedIcon style={{ color:row.color }}/>
                             </TableCell> 
 
+                            <TableCell align="right"> 
+                            { row.Icon }
+                          </TableCell>
+
+                          <TableCell align="left"> 
+                            <TagTypeChip type={row.typeOfData}/>
+                          </TableCell>
+
                           <TableCell component="th" scope="row" style={{maxWidth:200}} className="oneline">
                                 { row.name }
                           </TableCell>
 
-                          <TableCell> 
-                            <TagTypeChip type={row.typeOfData}/>
-                          </TableCell>
+                          
                           <TableCell>{row.valueNode}</TableCell>
                            
                       </TableRow> ) }

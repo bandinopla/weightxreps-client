@@ -2,7 +2,7 @@ import { Box, Button, Divider, Paper, Typography } from "@material-ui/core";
 import { useContext, useMemo, useState } from "react";
 import { useGetJRangeQuery } from "../../data/generated---db-types-and-hooks";
 import { JOwnerContext } from "../../pages/journal-context";
-import { date2NiceString, ymd2date } from "../../utils/utils";
+import { date2NiceString, dateToYMD, ymd2date } from "../../utils/utils";
 import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import JRangeTable from "./jrange-table";
 import CloseIcon from '@material-ui/icons/Close';
@@ -377,6 +377,15 @@ export default function JRange({ match:{ params } }) {
       }
     }
 
+    const onClickX = ev => { 
+
+        const time = ev?.activeLabel;
+        if( time )
+        { 
+            jowner.gotoYMD( dateToYMD( new Date(time) ) );
+        } 
+    }
+
     //
     // siempre seleccionar uno...
     //
@@ -410,7 +419,7 @@ export default function JRange({ match:{ params } }) {
 
                                 { tableData.length>0 && <>
                                         {/* <JRangeGraph data={data} eid2color={eid2color} selectedEids={selectedEIDs}  from={from} to={to}/> */}
-                                        <JRangeSetsChart selectedEids={selectedEIDs} data={data} from={from} to={to} eid2color={eid2color.get.bind(eid2color)} sundays={sundays}/>
+                                        <JRangeSetsChart selectedEids={selectedEIDs} data={data} from={from} to={to} eid2color={eid2color.get.bind(eid2color)} sundays={sundays}  onClickX={onClickX}/>
             
                                             {/*La tabla*/}
                                             <Box marginTop={1}>
@@ -428,7 +437,7 @@ export default function JRange({ match:{ params } }) {
                                 { rawData?.jrange.utags?.values.length ?
                                     <>
                                     <Typography gutterBottom variant="subtitle1">During this period these are the tags that were defined:</Typography>
-                                    <JRangeUTags data={rawData} from={from} to={to} sundays={sundays}/>  
+                                    <JRangeUTags data={rawData} from={from} to={to} sundays={sundays} onClickX={onClickX}/>  
                                     </>
                                     :
                                     <Typography variant="subtitle1">
