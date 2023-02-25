@@ -1,3 +1,6 @@
+- 2.17.0 : 2023-02-25
+        + Implemented "copy log as template", idea suggested by @bartman
+
 - 2.16.4 : 2023-02-25
         * click on line charts sends you to the date clicked 
         * RPE chip fix to allow showing a wider range of values 
