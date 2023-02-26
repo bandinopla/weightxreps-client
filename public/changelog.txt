@@ -1,3 +1,6 @@
+- 2.18.2 : 2023-02-26
+        * bug fix . Reported by @asambol : Editor was behaving weird when copy & pasting chunks of texts.
+
 - 2.18.1 : 2023-02-26
         * added user tag format variation: 1h 25m  | format idea by @asambol
 

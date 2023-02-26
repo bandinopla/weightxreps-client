@@ -1369,7 +1369,14 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
           //
           getDocRef.current = ()=>{
            
-                const doc = myCodeMirror.getStateAfter(); 
+                const cm = myCodeMirror;
+
+                //
+                //  trigger a re-parsing of the entire doc. 
+                //
+                cm.getDoc().setValue( cm.getDoc().getValue() );
+
+                const doc = cm.getStateAfter(); 
 
                 if( doc.errors?.filter(e=>!e.severity || e.severity=='error').length ) 
                 {
