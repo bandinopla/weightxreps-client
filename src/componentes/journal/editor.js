@@ -3,12 +3,10 @@ import { useRef, useEffect, useState } from "react";
 import { LogTextEditor, convertJEditorData2Text } from "../../codemirror/LogTextEditor";
 import { parseError } from "../../data/db";
 import { useGetJEditorDataQuery, useSaveJEditorMutation } from "../../data/generated---db-types-and-hooks";
-import { todayAsYMD } from "../../utils/utils";
 import { AsciiSpinner } from "../ascii-spinner";
 import { makeVar, useReactiveVar } from "@apollo/client";
 import "./editor.css";
-
-import { OpenTutorial, TutorialModal } from "./editor-tutorial"; //
+import { TutorialModal } from "./editor-tutorial"; //
 import Alert from "@material-ui/lab/Alert";
 
 import {
@@ -17,17 +15,13 @@ import {
 import { OpenConfirmModal } from "../Dialog";
 import { useGetSession } from "../../session/session-handler";
 import { OpenJeditorSaveBackdrop } from "./editor-save-backdrop";
-
-// function Alert(props) {
-//     return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
-
-const $jeditorError     = makeVar();
-const $jeditorIsBusy    = makeVar(false);
-const $defaultYMD       = todayAsYMD();
+import LoadCopyOfWorkoutModal from "./editor-copy-journal";
  
 
-export { OpenTutorial, TutorialModal } ; //tutorialNamespace...
+const $jeditorError     = makeVar(); 
+ 
+
+export { TutorialModal, LoadCopyOfWorkoutModal } ; //tutorialNamespace...
 export { convertJEditorData2Text }; 
  
 
@@ -69,7 +63,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
 
         return ()=>window.removeEventListener('jeditor:data', onEventData )
 
-    });
+    }, []);
 
     if( !session )
     {
