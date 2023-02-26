@@ -9,7 +9,7 @@ function TAG_RANK_toView({ value }) {
     const stars     = new Array(total).fill(0); 
     const halfVal   = (1/total)*0.5;
 
-    return stars.map((_,i)=> { 
+    return <div style={{ whiteSpace:"nowrap", display:"inline-block" }}>{ stars.map((_,i)=> { 
         let starVal = (i+1)/total;
 
         return value>starVal? <StarRoundedIcon/> 
@@ -17,7 +17,7 @@ function TAG_RANK_toView({ value }) {
                value>=starVal-halfVal? <StarHalfRoundedIcon/>
                 : 
             <StarBorderRoundedIcon/>
-    })
+    }) }</div>
 }
 
 export default TAG_RANK_toView;

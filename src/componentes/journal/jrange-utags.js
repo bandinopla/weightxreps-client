@@ -230,7 +230,7 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays, onC
         },
         {
             label:"Avg",
-            value: row=>row.canBeCharted ? <>~{  row.totalVal.div(row.days).toView() }</> : "---"
+            value: row=>row.canBeCharted ? <div style={{ whiteSpace:"nowrap"}}>~{  row.totalVal.div(row.days).toView() }</div> : "---"
         }
     ],[]);
 
