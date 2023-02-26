@@ -88,6 +88,21 @@ export const TYPES = {
         }
     },
 
+    "TAG_TIME_hm": {
+        kindOf              : "TAG_TIME_h",
+        reg                 : /^\s*(?:(\d+)\s*hs?\s*)?(\d+)\s*m(?:in)?/i,
+        example             : ["Session duration: 2h25m","Time on the bike: 1h 15m", "Abs: 30min"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
+        editor2value        : m=>(m[1]??"0")+"|"+m[2]+"|0",
+
+        value2number        : val=>TYPES.TAG_TIME_hms.value2number(val), 
+        components2value    : c=>TYPES.TAG_TIME_hms.components2value(c), 
+
+        value2editor        : val=>{
+            const [ HH, MM ] = val.split("|").map(v=>parseInt(v));
+            return (HH>0? HH+"h" : "") + (MM>0? MM+"m" : "");
+        },
+    },
+
     "TAG_TIME_sec": {
         kindOf              : "TAG_TIME_h",
         reg                 : /^\s*(\d+(?:\.\d+)?)\s*s(?:ec)?/i,
