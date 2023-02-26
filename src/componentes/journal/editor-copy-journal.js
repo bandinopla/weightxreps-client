@@ -14,30 +14,21 @@ import { parseError } from "../../data/db";
 import CloseIcon from '@material-ui/icons/Close';
 
 const $openModal = makeVar(false);
+ 
 
-export const OpenLoadCopyOfWorkoutModal = () => { 
-	$openModal (true);
-};
-
-
-export const LoadCopyOfWorkoutModal = () => {
-	const open = useReactiveVar($openModal);
-
-	const handleClose = () => {
-		$openModal(false);
-	};
+export const LoadCopyOfWorkoutModal = ({ openState }) => {
+ 
  
     return (
-        <Dialog fullScreen open={open}>
-          <DialogContent style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            {/* Contents of the dialog */}
-            <ModalContents/>
+        <Dialog fullScreen open={ openState[0] }>
+          <DialogContent style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}> 
+            <ModalContents onClose={ ()=>openState[1](false) }/>
           </DialogContent>
         </Dialog>
       );
-};
+}; 
 
-function ModalContents() {
+function ModalContents({ onClose }) {
 
     const jdayContext = useContext(JDayContext);
     const session = useGetSession();
@@ -74,13 +65,13 @@ function ModalContents() {
              
             setTimeout( ()=>window.dispatchEvent(jeditorDataEvent), 0 );
     
-            $openModal(false);
+            close();
             return "";
         }
 
     }, [data]);
 
-    const close = ()=>$openModal(false);
+    const close = ()=>onClose();
 
     const gotoYMD = function (ymd, hasData){
         if( hasData )

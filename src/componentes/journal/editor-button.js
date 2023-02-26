@@ -17,7 +17,9 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import RestoreIcon from '@material-ui/icons/Restore';
 import TimerIcon from '@material-ui/icons/Timer';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
-import LoadCopyOfWorkoutModal, { OpenLoadCopyOfWorkoutModal } from "./editor-copy-journal";
+import CloseIcon from '@material-ui/icons/Close';
+
+import { JEditorStopwatch } from "./editor-stopwatch";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,11 +38,14 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     //cargar on click....
     const classes = useStyles();
     const saveTriggerRef            = useRef();
-    const {session}                   = useGetSession();
+    const {session}                 = useGetSession();
     const jowner                    = useContext(JOwnerContext); 
     const [open, setOpen]           = useState(false);
     const [loading, setLoading]     = useState(false);
     const [hasLoaded, setHasLoaded] = useState(false);
+    const copyModalState            = useState(false);
+    const helpModalState            = useState(false);
+    const stopwatchState            = useState(false);
     const theme = useTheme()
 
     useEffect(()=>{
@@ -77,10 +82,13 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     const BtnIcon = wouldBeNewLog? AddIcon : EditIcon;
     var JEditor = ()=>"";
     var TutorialModal = JEditor;
+    var LoadCopyOfWorkoutModal = JEditor;
 
-    if( Editor!=null ) {
+    if( Editor!=null ) 
+    {
         JEditor = Editor.JEditor;
         TutorialModal = Editor.TutorialModal;
+        LoadCopyOfWorkoutModal = Editor.LoadCopyOfWorkoutModal;
     }
 
 
@@ -91,8 +99,9 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                 {children || ( wouldBeNewLog?"New Log" :"Edit") } 
             </Button>
 
-            <TutorialModal/>
-            <LoadCopyOfWorkoutModal/>
+            <TutorialModal openState={helpModalState}/>
+            <LoadCopyOfWorkoutModal openState={copyModalState}/>
+            
             <Backdrop className={classes.backdrop} open={loading} >
                 <CircularProgress color="inherit" />
             </Backdrop>
@@ -123,23 +132,25 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                             To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>CMD+SPACE</strong>  on a new line. 
                             </Alert> 
                         </DialogContentText>
+                        <JEditorStopwatch openState={stopwatchState}/>
+                        
 
                         <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
                          
 
                         <DialogActions>
-
+                            
                             <Grid container>
                                 <Grid item xs={6}>
                                     <ButtonGroup variant="outlined" >
-                                        <Button onClick={ ()=>Editor.OpenTutorial() } startIcon={<MenuBookIcon/>}>HELP</Button>
+                                        <Button onClick={ ()=>helpModalState[1](true) } startIcon={<MenuBookIcon/>}>HELP</Button>
                                         {/* <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> */}
-                                        <Button color="primary" variant="contained" startIcon={<RestoreIcon/>} onClick={OpenLoadCopyOfWorkoutModal}>
+                                        <Button color="primary" variant="contained" startIcon={<RestoreIcon/>} onClick={ ()=>copyModalState[1](true) }>
                                             copy
                                         </Button>
-                                        {/* <Button color="primary" startIcon={<TimerIcon/>}>
+                                        <Button color="primary" startIcon={ stopwatchState[0]? <CloseIcon/> : <TimerIcon/> }  onClick={()=>stopwatchState[1](!stopwatchState[0])}>
                                             stopwatch
-                                        </Button> */}
+                                        </Button>
                                     </ButtonGroup>
                                 </Grid>
                                 <Grid item xs={6} style={{ textAlign:"right"}}>

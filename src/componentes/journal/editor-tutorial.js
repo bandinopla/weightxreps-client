@@ -1,12 +1,7 @@
-import { makeVar, useReactiveVar } from "@apollo/client";
 import {
-	Box,
-	Button,
-	Chip,
-	Divider,
-	Grid,
-	Paper,
-	Typography,
+    Box, Grid,
+    Paper,
+    Typography
 } from "@material-ui/core";
 import { useState } from "react";
 import { StaticLogHighlighter } from "../../codemirror/LogTextEditor";
@@ -14,12 +9,7 @@ import { getExampleUTagsLog } from "../../codemirror/tag-parsing";
 
 import { InfoDialog } from "../Dialog";
 
-const $openTutorial = makeVar(false);
-
-export const OpenTutorial = () => {
-	console.log("OPEN TUTORIAL");
-	$openTutorial(true);
-};
+ 
 
 export const TutorialContents = () => {
 	const [show, setSHow] = useState(false);
@@ -130,19 +120,15 @@ ${ getExampleUTagsLog() }`;
 	);
 };
 
-export const TutorialModal = () => {
-	const open = useReactiveVar($openTutorial);
-
-	const handleClose = () => {
-		$openTutorial(false);
-	};
+export const TutorialModal = ({ openState }) => {
+ 
 
 	return (
 		<InfoDialog
 			scroll="body"
-			open={open}
+			open={ openState[0] }
 			title="Tutorial / Example"
-			onClose={handleClose}
+			onClose={()=>openState[1](false)}
 			info={<TutorialContents />}
 			fullScreen
 		/>
