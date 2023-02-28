@@ -1,6 +1,8 @@
 import { makeVar, useReactiveVar } from "@apollo/client";
 import { createTheme } from "@material-ui/core";
 import { ThemeProvider } from '@material-ui/core/styles';
+import { useGetSession, useReactiveSetting } from "./session/session-handler";
+import { applyPaletteColorsToTheme, useColorThemeManager } from "./styles/palettes";
 
 
 
@@ -9,7 +11,7 @@ const PINK_COLOR = "#FE007E";
 const GREEN_COLOR = "#00E597";
 const RED_COLOR = "#DF0019";
 
-const BaseTheme = {
+export const BaseTheme = {
 
     PINK_COLOR,
     GREEN_COLOR,
@@ -55,7 +57,8 @@ const BaseTheme = {
     supporterUcard: {
       gold: {
         border:"1px solid #dbc26f",
-        background:"linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(227,228,182,1) 100%)"
+        background:"linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(227,228,182,1) 100%)",
+        color:"#333 !important"
       }
     },
 
@@ -245,10 +248,20 @@ export const DarkTheme = {
 
 export const ThemeSwitcher = ({ children })=>{
 
-    const darkON = useReactiveVar(DarkModeOn); 
-    const theme = createTheme( darkON? DarkTheme : MainTheme);
-    //!
-    return <ThemeProvider theme={theme}>{children}</ThemeProvider>; 
+    const { getTheme }  = useColorThemeManager();  
+    const mode          = useDarkModeOn()
+
+ 
+    // const session       = useGetSession();   
+    // const colors        = useReactiveSetting( session?.userSettings?.colorScheme, 'ThemeSwitcher' ); 
+    // const theme         = applyPaletteColorsToTheme( colors, createTheme( MainTheme ) );
+
+    // // //!
+    // //return <div className={darkON?"dark":""}><ThemeProvider theme={theme} >{children}</ThemeProvider></div>; 
+    // console.log("45656666",  currentScheme?.backgroundColor ) 
+
+    return  <ThemeProvider theme={ getTheme(mode) }>{children}</ThemeProvider> ;  
+ 
 }
 
 export const useDarkModeOn = ()=>{

@@ -39,6 +39,7 @@ import UnsubFromEmails from './pages/Unsub-from-emails';
 
 
 const JournalBase = lazy(() => import(/* webpackChunkName: "jbase" */'./pages/journal-base'));
+const ColorThemePage = lazy(() => import(/* webpackChunkName: "color" */'./pages/ColorThemePage'));
 
 const LoginPage =  lazy(() => import(/* webpackChunkName: "login-page" */'./pages/LoginPage'));
 const SignupPage = lazy(() => import(/* webpackChunkName: "signup-page" */'./pages/SignupPage'));
@@ -60,9 +61,11 @@ function App() {
   return (<>
 
     
-    <ThemeSwitcher>
-      <CssBaseline />
+    
+      
       <DBProvider>  
+        <ThemeSwitcher>
+            <CssBaseline />
               <Router> 
                 <NavBar /> 
                 {/* <Toolbar />   */}
@@ -77,6 +80,7 @@ function App() {
                     <Switch>
                         {/* <Route path="/settings" children={()=><SettingsPage/>} /> */}
                         <Route path="/settings" component={SettingsPage} />
+                        <Route path="/color" component={ColorThemePage} />
 
                         <Route path="/about" component={AboutPage}/> 
                         <Route path="/unsub" component={UnsubFromEmails}/> 
@@ -117,9 +121,9 @@ function App() {
                     </Typography>
                 </Box> 
 
-           
+            </ThemeSwitcher>
         </DBProvider>
-    </ThemeSwitcher>
+    
 
  
     

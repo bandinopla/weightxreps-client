@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
           
           margin:"15px 0"
           , marginBottom: theme.spacing(3)
-          , backgroundColor: theme.erow.bgColor
+          , backgroundColor: theme.ucardBgColor 
           
            
           ,"& .wxr": {
@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
               , maxWidth: "100%"
               , flexGrow:0
               , fontSize:"1.2em"
-              , "& b":{ color: theme.erow.RepSetColor }
+              , "& b":{ color: theme.palette.primary.main }
               , "& .w": {
-                  color: theme.erow.weightColor
+                  color: theme.palette.primary.main
               }
           }
 
@@ -57,13 +57,25 @@ const useStyles = makeStyles((theme) => ({
           "& .PR-bar": { backgroundColor: theme.PR_Bar_color }
  
      },
+ 
 
-     bestINT: { 
-         "& *":{ color: theme.int_color +" !important", ...effintLink } 
-     },
+     effIntLink: {
+        
+        fontWeight:"bold",
+        cursor:"pointer",
+        
+        
 
-     bestEFF: { 
-        "& *":{ color: theme.eff_color +" !important", ...effintLink} 
+        "& *":{
+            color: theme.palette.primary.contrastText +" !important",
+            backgroundColor: theme.palette.primary.main+" !important",
+            padding: "0 2px",
+            textDecoration:"underline",
+            borderRadius: 5,
+    
+            "&:hover": { background:"yellow"}
+        }
+        
      },
 
      erow: {
@@ -120,24 +132,29 @@ const useStyles = makeStyles((theme) => ({
          }
      },
 
-     ecom: {
-         backgroundColor: ifDark(theme,"#000","#Fff") 
-         , padding:"5px 10px"
-         , color:ifDark(theme,"#ccc","#666") 
+     ecom: { 
+        ...theme.dataCell
+         , padding:"5px 10px" 
+         , margin:"0 10px"
+         , borderRadius: 3
+         , boxShadow:"2px 1px 5px rgba(0,0,0,0.5)"
+         , "& svg": {
+            color: theme.dataCell.color
+         }
      },
 
      stat: {
          overflow:"hidden",
          marginBottom:theme.spacing(1),
-         marginTop: -theme.spacing(1),
-
-
+         marginTop: -theme.spacing(1), 
 
          "& > div": {
              float:"left",
              paddingRight:10
          },
-         "& b": {color:"#fe6600"}
+         "& b": { 
+            color: theme.palette.secondary.main
+         }
      },
 
      missing: {
@@ -176,8 +193,8 @@ export default function Eblock({ data }){
                         <Stat label="VOL" value={<WeightValue value={data.stats.vol} inkg={ !data.sets[0].lb }/>}/>
                         <Stat label="REPS" value={data.stats.reps}/>
                         <Stat label="SETS" value={data.stats.sets}/>
-                        <BestEffOrInt className={classes.bestEFF}  label="B.Eff." data={ data.exerciseRef.best?.eff } /> 
-                        <BestEffOrInt className={classes.bestINT}  label="B.Int." data={ data.exerciseRef.best?.int } /> 
+                        <BestEffOrInt className={classes.effIntLink}  label="B.Eff." data={ data.exerciseRef.best?.eff } /> 
+                        <BestEffOrInt className={classes.effIntLink}  label="B.Int." data={ data.exerciseRef.best?.int } /> 
                     </div>
                 </Box>
                 <Divider variant="middle" style={{marginBottom:10, marginTop:-5}}/>

@@ -57,29 +57,34 @@ const useStyles = makeStyles( theme => ({
        },
 
        "& .cell": { 
-            background: theme.calendario.cellM0BgColor ,
+            background: theme.palette.background.default,//theme.calendario.cellM0BgColor ,
+            filter: "invert(11%)",
             height:"100%",
             width:"100%"
             ,borderRadius:2
 
             , "&.m1": {
-                background: theme.calendario.cellM1BgColor
+                //background: theme.calendario.cellM1BgColor
+                filter: "invert(21%)",
             }
        },
 
        "& .hasData" : {
-           background: theme.calendario.hasDataColor+ " !important",
-           color:"white"
+           background: theme.dataCell.background,  //theme.calendario.hasDataColor+ " !important",
+           color:theme.dataCell.color
        },
 
        "& .pinned": {
-           background:theme.calendario.cellPinned + " !important",
-           color:"black"
+           background:theme.palette.primary.main + " !important",
+           color:theme.palette.primary.contrastText+ " !important",
+           filter: "none !important"
        },
 
        "& .highlighted": {
-            background:"#4788EE !important",
-            opacity:0.5,
+            background:theme.palette.secondary.main + " !important",
+            color: theme.palette.secondary.contrastText+ " !important",
+            filter: "none !important",
+            opacity:0.7,
             "&.hasData": {
                 opacity:1
             }
@@ -87,7 +92,10 @@ const useStyles = makeStyles( theme => ({
     },
 
     menu: {
-        paddingLeft:"10%" 
+        paddingLeft:"10%" ,
+        "& svg": {
+            color: theme.palette.text.primary
+        }
     }
  
   }));
@@ -286,7 +294,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
 
 
-function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick }) {
+export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick }) {
 
     const classes = useStyles();
  

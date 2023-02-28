@@ -1,7 +1,6 @@
-import { Box, Button, ButtonGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
-import { useContext, useMemo, useState } from "react"; 
+import { Box, Button, ButtonGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@material-ui/core";
+import { useMemo, useState } from "react";
 import { CartesianGrid, ComposedChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { colorPaletteForChart } from "../../utils/getColorPaletteForChart";
 import { date2NiceString, dateToYMD, ymd2date } from "../../utils/utils";
 import Ename from "../ename";
 import WeightValue from "../weight-value";
@@ -44,12 +43,9 @@ const aspects = [
 
 export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2color, sundays, onClickX  }) {
 
+    const theme     = useTheme()
     const data      = jeditorData?.jrange?.days;
-    const [aspectsON, setAspectsON] = useState(aspects.map((_,i)=>i));
-
-
-
-    
+    const [aspectsON, setAspectsON] = useState(aspects.map((_,i)=>i)); 
  
 
     const series    = useMemo(()=>{
@@ -139,8 +135,8 @@ export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2
         
         <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
-                <ComposedChart data={ [ ] } onClick={onClickX}> 
-                    <CartesianGrid stroke="#f5f5f5" />
+                <ComposedChart data={ [ ] } onClick={onClickX} > 
+                    <CartesianGrid strokeDasharray="2 1" vertical={false} stroke={theme.backgroundColorOnTop}/>
 
                     {/* <XAxis dataKey="ymd" type="category" allowDuplicatedCategory={false}/> */}
                     <XAxis dataKey="ymdToTime" 
@@ -148,12 +144,13 @@ export function JRangeSetsChart({ data:jeditorData, from, to, selectedEids, eid2
                                         domain={[ from, to ]} 
                                         type="number" 
                                         tickFormatter={ date => dateToYMD( new Date(date) ) } 
+                                        stroke={theme.palette.text.primary}
                                          />
 
-                    <YAxis yAxisId="left"/> 
-                    <YAxis yAxisId="right" orientation="right" />
+                    <YAxis yAxisId="left"  stroke={theme.palette.text.primary}/> 
+                    <YAxis yAxisId="right" orientation="right" stroke={theme.palette.text.primary}/>
 
-                    { sundays.map( x=><ReferenceLine yAxisId="left" x={x} stroke="#ccc" /> )}
+                    { sundays.map( x=><ReferenceLine yAxisId="left" x={x} stroke={ theme.referenceLineColor }/> )}
 
                     {/* <Tooltip cursor={{ stroke: 'red', strokeWidth: 2 }} /> */}
                     <Tooltip content={<CustomTooltip selectedEids={selectedEids} aspectsON={aspectsON} series={filtered}/>} />

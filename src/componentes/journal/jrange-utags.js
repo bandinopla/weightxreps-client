@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PaletteIcon from '@material-ui/icons/Palette';
-import { Box, Checkbox, Typography } from '@material-ui/core';
+import { Box, Checkbox, Typography, useTheme } from '@material-ui/core';
 import StopRoundedIcon from '@material-ui/icons/StopRounded';
 import { colorPaletteForChart } from "../../utils/getColorPaletteForChart";
 import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, ReferenceLine } from "recharts";
@@ -19,6 +19,7 @@ import TagTypeChip from "../../user-tags/TagTypeChip";
 export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays, onClickX  }) {
  
     const data                                  = jeditorRangeQueryData?.jrange?.utags;  
+    const theme                                 = useTheme();
     const [selectedTagIds, setSelectedTagIds]   = useState([])
     const tableRowsData                         = useMemo( ()=>{
         
@@ -269,18 +270,18 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays, onC
                 <div style={{ width: "100%", height: 200 }}>
                     <ResponsiveContainer >
                         <ComposedChart data={ [ ] } onClick={ onClickX }> 
-                            <CartesianGrid stroke="#f5f5f5" />
-
+                        <CartesianGrid strokeDasharray="2 1" vertical={false} stroke={theme.backgroundColorOnTop}/>
                             <XAxis dataKey="time" 
                                     scale="time" 
                                     domain={[ from, to]} 
                                     type="number" 
                                     tickFormatter={ x => dateToYMD( new Date(x) ) }  
+                                    stroke={theme.palette.text.primary}
                                     />
 
-                            <YAxis yAxisId="left" padding={{ top: 10 }} /> 
+                            <YAxis yAxisId="left" padding={{ top: 10 }} domain={[0,1]} stroke={theme.palette.text.primary}/> 
 
-                            { sundays.map( (x,i)=><ReferenceLine key={i} yAxisId="left" x={x} stroke="#ccc" /> )}
+                            { sundays.map( (x,i)=><ReferenceLine key={i} yAxisId="left" x={x} strokeWidth={2}  stroke={theme.referenceLineColor}/> )}
                              
                             <Tooltip content={<CustomTooltip selectedTagIds={selectedTagIds} series={tableRowsData}/>} />
                              
@@ -293,6 +294,7 @@ export function JRangeUTags({ data:jeditorRangeQueryData, from, to, sundays, onC
                                                                 data={ tag.graphSerie }
                                                                 connectNulls
                                                                 stroke={tag.color} 
+                                                                strokeWidth={2}
                                     ></Line> ) } 
 
                                     
