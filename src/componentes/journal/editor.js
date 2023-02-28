@@ -42,7 +42,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
             ymd, range
         },
 
-        //fetchPolicy:"network-only",
+        fetchPolicy:"network-only",
         onCompleted: ( data )=> {
             $jeditorError(null);
             setJeditorData( data )
