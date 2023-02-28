@@ -1,3 +1,4 @@
+import { useTheme } from '@material-ui/core';
 import {  useGetSession, useReactiveSetting } from '../session/session-handler';
 
 
@@ -22,6 +23,7 @@ export default function WeightValue( props )
     const { session, userSettings }                 = useGetSession();
     const changeValue             = useReactiveSetting( userSettings?.convertDisplayUnits );   
     const sessionUseKg            = session?.user?.usekg;
+    const theme                   = useTheme();
     //
     // unit original en que se escribio este valor....
     //
@@ -62,7 +64,8 @@ export default function WeightValue( props )
     //kg = #09c
     //lbs = #cc6800 
 
-    return <div style={{display:"inline", whiteSpace:"nowrap"}}>{props.prefix||""}{round(w,1)} <b style={{color: unit=='kg'? '#09c':'#cc6800', fontSize:"0.9em", display:props.nounit?"none":"inline" }}>{unit+(unit != originalUnit?"*":"")}</b></div>; 
+    return <div style={{display:"inline", whiteSpace:"nowrap"}}>
+                <span style={{color:theme.palette.primary.main}}>{props.prefix||""}{round(w,1)}</span> <b style={{color: unit=='kg'? theme.palette.secondary.main : theme.palette.secondary.main, fontSize:"0.9em", display:props.nounit?"none":"inline" }}>{unit+(unit != originalUnit?"*":"")}</b></div>; 
 }
 
 

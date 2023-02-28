@@ -1,3 +1,6 @@
+- 2.19.0 : 2023-02-28
+        + added a color scheme editor. To allow users pick their own colors in case they want it. 
+
 - 2.18.2 : 2023-02-26
         * bug fix . Reported by @asambol : Editor was behaving weird when copy & pasting chunks of texts.
 

@@ -23,25 +23,19 @@ const useStyles = makeStyles( theme=>({
     calloutLine: {
         backgroundColor:"#00BBF9",
         textAlign:"center",
-        padding:"0 10px",
-        "& *": { color:"#fefefe0", fontWeight:"bold" }
+        padding:"0 10px", 
     },
 
     typewritterBanner: {
         display:"inline",
         textShadow: "2px 2px 2px #A5A5A5",
-        "& strong": {
-            color:"#df0019"
-        }
+ 
     },
 
     subtitle: {
         margin:"30px 0",
         color:"#7d7c83",
-        
-        "& strong": {
-            color: "#000"
-        }
+         
     },
 
     SecondSection: { 

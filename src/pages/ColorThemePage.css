@@ -1,0 +1,24 @@
+.rainbowBG {
+    background: linear-gradient(to right, #ff0000, #ff5500, #ffaa00, #ffff00, #aaff00, #55ff00, #00ff00, #00ff55, #00ffaa, #00ffff, #00aaff, #0055ff, #0000ff, #5500ff, #aa00ff, #ff00ff, #ff0000);
+    background-size: 200% auto; /* Set the initial size of the gradient to twice the width of the screen */
+    animation: gradient-scroll 5s linear infinite; /* Use the "gradient-scroll" animation with a duration of 30 seconds, linear timing function, and infinite repeat */
+  }
+  
+  @keyframes gradient-scroll {
+    0% {
+      background-position: 0 0; /* Start the gradient at the left edge of the screen */
+    }
+    100% {
+      background-position: -200% 0; /* Move the gradient to the right edge of the screen */
+    }
+  }
+  
+.pulse {
+    animation: pulseSize 0.5s linear infinite;
+}
+
+@keyframes pulseSize {
+    0%{ transform: scale(1); }
+    50%{ transform: scale(0.95); }
+    100%{ transform: scale(1); }
+}

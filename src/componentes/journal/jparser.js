@@ -115,10 +115,6 @@ const text2tags = (text2parse, tags) => {
                 lastTextBlock = null;
                 continue;
             }  
-            else 
-            {
-                console.log("Nothing matches:: ", text2parse.substr(i , 30))
-            }
         }
 
         if( oldi!=i )

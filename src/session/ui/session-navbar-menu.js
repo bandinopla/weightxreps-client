@@ -37,7 +37,7 @@ export const SessionMenuChilds = ()=> {
                 <InboxManager type={2}/>  
 
 
-                <DarkModeActivatorButton style={{margin:5}} variant="outlined" color="primary"/>
+                <DarkModeActivatorButton style={{margin:5}} variant="outlined" />
                 <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global" style={{margin:5}}/>
 
                 <JEditorButton redirect variant="outlined" color="primary" style={{margin:5}}>
@@ -76,6 +76,7 @@ export const SessionMenuChilds = ()=> {
 
     return <> 
 
+            <DarkModeActivatorButton style={{marginRight:15}} variant="outlined"  />
             <Button color="inherit" onClick={ ()=>history.push("/login")  } style={{marginRight:10}}>Sign In</Button> 
             <Button onClick={ ()=>history.push("/signup") } variant="contained" color="primary">Create Account</Button> 
              

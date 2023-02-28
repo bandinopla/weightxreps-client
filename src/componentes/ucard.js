@@ -31,13 +31,15 @@ const useStyles = makeStyles( theme => ({
 
     root: {
         margin:5,
-        marginBottom:5
+        marginBottom:5,
+        backgroundColor: theme.ucardBgColor
+        
 
         ,"& .ustats": {
             margin:"5px 0",
             fontSize:"0.9em",
             "& > div": {
-                borderBottom:"1px dotted #ccc",
+                borderBottom:"1px dotted "+theme.referenceLineColor,
                 overflow:"hidden",
                 fontSize:"1em",
                 padding:"2px 0"
@@ -48,9 +50,8 @@ const useStyles = makeStyles( theme => ({
         },
 
         "& .textPreview": {
-            backgroundColor:"#333",
-            padding:"5px !important",
-            color:"white", 
+            ...theme.dataCell, 
+            padding:"5px !important", 
             marginBottom:10
         },
 

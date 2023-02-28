@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles( theme => ({
        
     isSpecial: { 
-        color: theme.ename.officialColor ,
+        color: theme.palette.primary.main,
         fontWeight:"bold"
     },
 

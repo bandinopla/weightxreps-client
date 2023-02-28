@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'; 
+import { useEffect, useLayoutEffect, useState } from 'react'; 
 import { getOrCreateSettingsHandler } from '../utils/local-storage-settings'; 
 import { useGetSessionQuery, useLoginMutation, UserFieldsFragmentDoc } from '../data/generated---db-types-and-hooks'; 
 import { gql } from '@apollo/client';
@@ -117,30 +117,12 @@ export const useGetSession = ()=> {
  * @param {()=>void|null} reactiveSettingOrNot Una ReactiveVar o null.
  * @returns {any} El resultado de la reactive variable
  */
-export const useReactiveSetting = reactiveSettingOrNot => {
+export const useReactiveSetting = (reactiveSettingOrNot, name) => { 
+       
+    var value       = reactiveSettingOrNot? reactiveSettingOrNot() : undefined;  
+    var setValue    = useState(value)[1];  
 
-    var value       = reactiveSettingOrNot? reactiveSettingOrNot() : undefined; 
-    var setValue    = useState(value)[1]; 
-
-    useEffect(function () {
-
-        if( reactiveSettingOrNot==null ) 
-        {
-            return;
-        } 
-
-        var probablySameValue = reactiveSettingOrNot();
-
-        if (value !== probablySameValue) 
-        {
-            setValue(probablySameValue);
-        }
-        else 
-        {
-            return reactiveSettingOrNot.onNextChange(setValue); //devuelve la unsubscribe function
-        }
-
-    }, [value]);
+    useEffect( ()=>reactiveSettingOrNot?.onNextChange( setValue ) ); 
 
     return value;
 }

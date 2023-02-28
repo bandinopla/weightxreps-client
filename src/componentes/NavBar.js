@@ -37,19 +37,19 @@ const useStyles = makeStyles((theme) => ({
   },
   menuBtn: { 
       paddingRight:25,
-      color: ifDark(theme, "#ccc" , "#666"),
+      //color: ifDark(theme, "#ccc" , "#666"),
       textDecoration:"none"
   },
   menuBtnAnchor: {
     textDecoration:"none"
   },
   statsBtn: {
-    color: theme.ename.officialColor
+    color: theme.palette.primary.main
   },
   logo: {
       maxWidth:200,
       paddingRight:10,
-      backgroundColor: theme.logoBgColor
+      //backgroundColor: theme.logoBgColor
   }
 }));
 

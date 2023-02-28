@@ -202,7 +202,7 @@ export default function({ match:{  path, url, params:{ uname } } }) {
         );
 };
 
-const Best3Lifts = ({ data, usekg }) =>{ 
+export const Best3Lifts = ({ data, usekg }) =>{ 
 
     if( data.length==0 ) {
         return "";

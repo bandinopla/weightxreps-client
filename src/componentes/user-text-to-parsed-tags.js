@@ -22,6 +22,11 @@ const Num = ({ children }) => {
     return <span style={{color:theme.palette.secondary.main}}>{ children }</span>
 }
 
+const Link = ({ url })=>{
+    const theme = useTheme(); //<a href={ url} target="_blank">
+    return <a href={ url} target="_blank"><span style={{ color: theme.palette.primary.main,   }}> { url}  </span></a> ;
+}
+
 
 // TODO: parsed TAGS to Render
 export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
@@ -69,7 +74,7 @@ export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
             break;
 
         case TAGTYPE.LINK:
-            element = <a href={tag.url} target="_blank">{tag.url}</a>
+            element = <Link url={tag.url}/>; //<a href={tag.url} target="_blank">{tag.url}</a>
             break;
 
         case TAGTYPE.EBLOCK:

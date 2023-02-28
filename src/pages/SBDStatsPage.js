@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Chip, Container, Divider, FormControl, FormHelperText, Grid, Input, InputBase, InputLabel, LinearProgress, makeStyles, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@material-ui/core";
+import { Box, Button, ButtonGroup, Chip, Container, Divider, FormControl, FormHelperText, Grid, Input, InputBase, InputLabel, LinearProgress, makeStyles, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useTheme } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, ComposedChart, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
@@ -334,6 +334,7 @@ export default SBDStatsPage;
 
 const CatChart = ({ series, inlbs }) => {
 
+    const theme = useTheme();
     //const graphData = useMemo( ()=>data.graph.map( (values,i)=>({ weight:i*5, squats:values[0], benches:values[1], deadlifts:values[2] }) ), [data]);
 
     const getWeight = (data)=>inlbs? data.weight*2.204623 : data.weight;
@@ -373,7 +374,7 @@ const CatChart = ({ series, inlbs }) => {
                     <div  style={{  height:200, padding:"10px 0" }}>
                     <ResponsiveContainer>
                     <LineChart>
-                        <CartesianGrid strokeDasharray="1 1" />
+                        <CartesianGrid strokeDasharray="1 1" stroke={ theme.referenceLineColor}/>
                         <XAxis dataKey={getWeight} type="number" />
                         <YAxis /> 
                         <Tooltip formatter={(value, name, props)=>value+" Lifts"} labelFormatter={(v)=>(Math.ceil( getWeight({weight:v})/5 )*5)+" "+(inlbs?"Lbs":"Kg") }/>
