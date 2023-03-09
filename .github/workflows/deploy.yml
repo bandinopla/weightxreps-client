@@ -19,3 +19,12 @@ jobs:
 
       - name: Run script
         run: bun build
+
+      - name: Upload 
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }} 
+          server-dir: /staging.weightxreps.net/
+          local-dir: ./build/
