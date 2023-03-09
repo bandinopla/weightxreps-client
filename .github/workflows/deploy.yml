@@ -18,7 +18,7 @@ jobs:
         run: bun install 
 
       - name: Run script
-        run: bun run build
+        run: CI=false bun run build
 
       - name: Upload 
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
