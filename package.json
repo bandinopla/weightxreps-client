@@ -47,7 +47,7 @@
     "start": "react-scripts start",
     "start:staging": "set \"REACT_APP_REMOTE_SERVER=staging\" && react-scripts start",
     "start:production": "set \"REACT_APP_REMOTE_SERVER=production\" && react-scripts start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test-build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
