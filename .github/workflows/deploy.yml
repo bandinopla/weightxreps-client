@@ -5,32 +5,17 @@ on:
  
 jobs:
   deploy:
-    runs-on: ubuntu-latest 
-
-    strategy:
-      matrix:
-        node-version: [14.x]
+    runs-on: ubuntu-latest  
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Setup Bun Runtime
+        uses: antongolub/action-setup-bun@v1 
 
       - name: Install dependencies to be able to build
-        run: npm i  
-        
-      - name: Build
-        run: CI=false npm run build  
+        run: bun install 
 
-      - name: Upload 
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.PASS }} 
-          server-dir: /staging.weightxreps.net/
-          local-dir: ./build/
+      - name: Run script
+        run: bun build
