@@ -1322,7 +1322,7 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
     useEffect( ()=>{
 
         var myCodeMirror = CodeMirror.fromTextArea(txt.current,{ 
-            extraKeys       : { "Ctrl-Space": "autocomplete", "Cmd-Space":"autocomplete" }, //"'#'": "autocomplete", 
+            extraKeys       : { "Ctrl-Space": "autocomplete", "Cmd-Space":"autocomplete", "Shift-Space":"autocomplete"},// "'#'": "autocomplete" }, 
             lineWrapping    :true, 
 
             mode:  {
