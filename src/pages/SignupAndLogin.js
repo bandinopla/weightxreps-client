@@ -311,22 +311,22 @@ export const SignupPage = () => {
                     <FormHelperText>{error.error}</FormHelperText>
                 </FormControl></Box>}
 
-                {!waiting && <ActionButton execAction={createAccount} color="primary" variant="contained">Create Account</ActionButton>}
+                {!waiting && <ActionButton execAction={createAccount} color="primary" variant="contained" size="large">Create Account</ActionButton>}
                 {waiting && <Box>
                     {/* <FormControlWithError  error={error} errid="code" helperText="Check your email, we sent you a code!">
                                             <InputLabel>Type the verification code</InputLabel>
                                             <Input inputRef={codeRef} disabled={verifying}/> 
                                         </FormControlWithError>  */}
 
-                    <ButtonGroup>
+                    <ButtonGroup size="large">
                         <ActionButton execAction={verifyCode} disabled={verifying} color="primary" variant="contained">Verify Code</ActionButton>
                         <Button onClick={abortEverything} disabled={verifying}>cancel</Button>
                     </ButtonGroup>
                 </Box>}
 
                 <br /><br />
-                <Typography variant="caption">
-                    Already a member? <Link to="/login">Login</Link>
+                <Typography variant="h6">
+                    Already a member? <Link to="/login">Login &gt;&gt;</Link>
                 </Typography>
                 <br /><br />
 
@@ -468,16 +468,16 @@ export const LoginPage = () => {
                     <FormHelperText>{error.error}</FormHelperText>
                 </FormControl></Box>}
 
-                <ButtonGroup>
-                    <ActionButton execAction={execForgot} disabled={disableInputs}>Forgot my password!</ActionButton>
+                <ButtonGroup  size="large">
+                    <ActionButton execAction={execForgot} disabled={disableInputs}>Forgot my password</ActionButton>
                     <ActionButton execAction={execLogin} color="primary" disabled={disableInputs} variant="contained">Sign In</ActionButton>
                 </ButtonGroup>
 
                 {tempPass != null && <Alert severity="info">A new <strong>temporary password</strong> was created and sent to {tempPass.indexOf("@") > 0 ? <strong>{tempPass}</strong> : <>the email associated with <strong>{tempPass}</strong></>}. Use that password to login.</Alert>}
 
                 <br /><br />
-                <Typography variant="caption">
-                    New here? <Link to="/signup">Signup</Link>
+                <Typography variant="h6">
+                    New here? <Link to="/signup">Create Account</Link>
                 </Typography>
                 <br /><br />
 
@@ -567,6 +567,12 @@ const PageLayout = ({ children }) => {
             
             spacing={4}
         >
+            
+
+            <Grid item md={6}>
+                {children}
+            </Grid>
+
             <Grid item md={6}>
              
 
@@ -574,10 +580,6 @@ const PageLayout = ({ children }) => {
 
                 <FirebaseLoginPage />
             
-            </Grid>
-
-            <Grid item md={6}>
-                {children}
             </Grid>
 
         </Grid>

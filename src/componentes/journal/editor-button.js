@@ -14,13 +14,12 @@ import { SectionTitle } from "../../pages/guest/GuestLandingPage";
 import { useGetSession } from "../../session/session-handler";
 import Alert from "@material-ui/lab/Alert";
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import RestoreIcon from '@material-ui/icons/Restore';
 import TimerIcon from '@material-ui/icons/Timer';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { JEditorStopwatch } from "./editor-stopwatch";
-
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -38,6 +37,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     //cargar on click....
     const classes = useStyles();
     const saveTriggerRef            = useRef();
+    const hintTriggerRef            = useRef();
     const {session}                 = useGetSession();
     const jowner                    = useContext(JOwnerContext); 
     const [open, setOpen]           = useState(false);
@@ -66,6 +66,13 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     const handleClose = ()=>{
         setOpen(false)
     };
+
+    const onClickAddExercise = ev => {
+ 
+        ev.stopPropagation();
+        ev.preventDefault();
+        hintTriggerRef.current && hintTriggerRef.current();
+    }
 
     const loadEditor = async ()=>{ 
  
@@ -119,33 +126,61 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                     }}
                 >
                     <DialogTitle>
-                        <Typography style={{float:"right"}} variant="caption">editor v2.0</Typography>
 
+                        <div className="desktop-view">
+                            <Typography style={{float:"right"}} variant="caption">editor v2.0</Typography> 
+                            <SectionTitle line1={"GOOD JOB! Consistency is key!"} line2="LOG A WORKOUT ↴"/>
+                        </div>
 
-                        <SectionTitle line1={"GOOD JOB! Consistency is key!"} line2="LOG A WORKOUT ↴"/>
-
+                        <div className="mobile-view" style={{textAlign:"right"}}>
+                            <Button onClick={onClickAddExercise} variant="outlined" style={{marginRight:20}}>+ Exercise</Button>
+                            <Button  onClick={handleClose} color="primary" startIcon={<CloseIcon/>}>
+                                         Close
+                                        </Button>
+                        </div>
 
                     </DialogTitle> 
 
-                        <DialogContentText>
-                            <Alert severity="info">
-                            To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>CMD+SPACE</strong>  on a new line. 
-                            </Alert> 
-                        </DialogContentText>
+
+                        <div className="desktop-view">
+                            <DialogContentText>
+                                <Alert severity="info">
+                                To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>CMD+SPACE</strong>  on a new line. 
+                                </Alert> 
+                            </DialogContentText>
+                        </div>
+
+
                         <JEditorStopwatch openState={stopwatchState}/>
                         
 
-                        <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
+                        <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} hintTriggerRef={hintTriggerRef} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
                          
 
                         <DialogActions>
                             
+                            <div className="mobile-view">
+                                <ButtonGroup variant="outlined" >
+                                    <Button onClick={ ()=>helpModalState[1](true) } ><MenuBookIcon/></Button>
+                                    <Button color="primary"  onClick={ ()=>copyModalState[1](true) }> <FileCopyIcon/> </Button>
+                                    {/* <Button color="primary" onClick={()=>stopwatchState[1](!stopwatchState[0])}>
+                                        { stopwatchState[0]? <CloseIcon/> : <TimerIcon/> } 
+                                        </Button>  */}
+                                 </ButtonGroup>
+                                &nbsp;&nbsp;
+                                 <ButtonGroup variant="outlined" >
+                                    <Button disabled={!hasLoaded} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained" >
+                                        <SaveAltIcon/>
+                                        </Button> </ButtonGroup>
+                            </div>
+
+                            <div className="desktop-view">
                             <Grid container>
                                 <Grid item xs={6}>
                                     <ButtonGroup variant="outlined" >
                                         <Button onClick={ ()=>helpModalState[1](true) } startIcon={<MenuBookIcon/>}>HELP</Button>
                                         {/* <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> */}
-                                        <Button color="primary" variant="contained" startIcon={<RestoreIcon/>} onClick={ ()=>copyModalState[1](true) }>
+                                        <Button color="primary" variant="contained" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
                                             copy
                                         </Button>
                                         <Button color="primary" startIcon={ stopwatchState[0]? <CloseIcon/> : <TimerIcon/> }  onClick={()=>stopwatchState[1](!stopwatchState[0])}>
@@ -165,6 +200,9 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                                     </ButtonGroup>
                                 </Grid>
                             </Grid> 
+                            </div>
+
+
                         </DialogActions>
                 </Dialog>
       

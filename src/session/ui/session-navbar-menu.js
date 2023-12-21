@@ -8,13 +8,13 @@ import AddIcon from '@material-ui/icons/Add';
 import { InboxManager, NotificationsBadge } from '../inbox-manager';
 import NotificationsPopMenu from './notifications-popmenu';
 import { BotonConSubmenu } from '../../componentes/boton-con-submenu';
-import { DMsWindow, OpenDMButton } from './dms-window/dm-window'; 
+import { DMsWindow } from './dms-window/dm-window';
 import { JEditorButton } from '../../componentes/journal/editor-button';
 import { useHistory } from "react-router-dom";
-import RssFeedIcon from '@material-ui/icons/RssFeed';
 import { DarkModeActivatorButton } from '../../componentes/DarkModeActivatorButton';
  
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import ExitToApp from "@material-ui/icons/ExitToApp"; 
 
 export const SessionMenu = ()=> <SessionMenuChilds/>;
  
@@ -33,16 +33,20 @@ export const SessionMenuChilds = ()=> {
     {  
         return <div>
 
+<DarkModeActivatorButton style={{margin:5}} variant="outlined" />
+
                 <InboxManager type={1}/>  
                 <InboxManager type={2}/>  
 
 
-                <DarkModeActivatorButton style={{margin:5}} variant="outlined" />
+                {/* 
                 <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global" style={{margin:5}}/>
-
-                <JEditorButton redirect variant="outlined" color="primary" style={{margin:5}}>
-                    <AddIcon /> 
-                </JEditorButton> 
+*/}
+                <div className="desktop-view inline">
+                    <JEditorButton redirect variant="outlined" color="primary" style={{margin:5}}>
+                        <AddIcon /> 
+                    </JEditorButton>  
+                </div>
 
                 <BotonConSubmenu submenu={<NotificationsPopMenu type={2}/>}>
                     
@@ -61,10 +65,8 @@ export const SessionMenuChilds = ()=> {
                 </BotonConSubmenu> 
 
                 <BotonConSubmenu submenu={<UserSessionSubmenu user={session.user} userSettings={userSettings} logout={logout}/>}>
-                    
-                    <NotificationsBadge showOnlyOnMobile>
-                        <UAvatar variant="circular" uid={session.user.id} hash={session.user.avatarhash}/>
-                    </NotificationsBadge>
+                     
+                        <UAvatar variant="circular" uid={session.user.id} hash={session.user.avatarhash}/> 
 
                 </BotonConSubmenu>
 
@@ -77,8 +79,23 @@ export const SessionMenuChilds = ()=> {
     return <> 
 
             <DarkModeActivatorButton style={{marginRight:15}} variant="outlined"  />
-            <Button color="inherit" onClick={ ()=>history.push("/login")  } style={{marginRight:10}}>Sign In</Button> 
-            <Button onClick={ ()=>history.push("/signup") } variant="contained" color="primary">Create Account</Button> 
+
+
+            <div className="desktop-view">
+                <Button color="inherit" onClick={ ()=>history.push("/login")  } style={{marginRight:10}}>
+                     Sign In 
+                </Button>  
+                <Button onClick={ ()=>history.push("/signup") } variant="contained" color="primary">
+                     Create Account  
+                </Button> 
+            </div>
+
+            <div className="mobile-view">
+                <Button onClick={ ()=>history.push("/login")  } variant="contained" color="primary">
+                     <ExitToApp/>
+                </Button> 
+            </div>
+            
              
             
         </>;

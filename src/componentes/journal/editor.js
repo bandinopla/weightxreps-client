@@ -26,7 +26,7 @@ export { convertJEditorData2Text };
  
 
 //2020-01-18
-export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }) => {
+export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLoaded, redirect }) => {
 
     const getDoc        = useRef();
     const showDocError  = useRef(); 
@@ -246,6 +246,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, onLoaded, redirect }
                         tags={jeditorData.jeditor.etags} 
                         getDocRef={getDoc} 
                         getShowErrorRef={showDocError}
+                        hintTriggerRef={hintTriggerRef}
                         utags={jeditorData.jeditor.utags}
                         />
         { saveError && <Alert severity="error">{parseError(saveError)}</Alert> }

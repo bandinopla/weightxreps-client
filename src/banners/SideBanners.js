@@ -4,7 +4,7 @@ import Tipo from "./red-guy.png";
 import Gif from "./side-banner.gif";
 import TipoNavidad from "./red-guy-navidad.png";
 import TipoNewYear from "./red-guy-newyear.png";
-import MainBannerSrc from "./main-banner.png";
+import MainBannerSrc from "./main-banner-athletes.png";
 import MainBanner2Src from "./big-banner-2.png";
 import StoreBannerSrc from "./store-banner.png";
 
@@ -56,7 +56,7 @@ const Banner = ({ src }) => {
 			style={{
 				marginTop: -8,
 				position: "relative",
-				maxHeight: 383,
+				maxHeight: 283,
 				textAlign: "center",
 				cursor: "pointer",
 			}}
@@ -69,8 +69,9 @@ const Banner = ({ src }) => {
 					left: 0,
 					width: "50%",
 					height: "100%",
-					backgroundImage: `repeating-linear-gradient(41deg, ${theme.PINK_COLOR} 0, ${theme.PINK_COLOR} 1px, transparent 0, transparent 50%)`,
-					backgroundSize: "11px 11px",
+					//backgroundImage: `repeating-linear-gradient(41deg, ${theme.PINK_COLOR} 0, ${theme.PINK_COLOR} 2px, transparent 0, transparent 50%)`,
+					//backgroundSize: "12px 12px",
+                    background:"#eee"
 				}}
 			></div>
 			<div
@@ -81,12 +82,13 @@ const Banner = ({ src }) => {
 					left: "50%",
 					width: "50%",
 					height: "100%",
-					backgroundImage: `repeating-linear-gradient(41deg, ${theme.GREEN_COLOR} 0, ${theme.GREEN_COLOR} 1px, transparent 0, transparent 50%)`,
-					backgroundSize: "11px 11px",
+					//backgroundImage: `repeating-linear-gradient(41deg, ${theme.GREEN_COLOR} 0, ${theme.GREEN_COLOR} 1px, transparent 0, transparent 50%)`,
+					//backgroundSize: "11px 11px",
+                    background:"#eee"
 				}}
 			></div>
 
-			<img className="sha" src={src} style={{ maxWidth: "100%", transform:"" }} />
+			<img className="sha" src={src} style={{ maxWidth: "100%", maxHeight:283, transform:"" }} />
             
 		</div>
 	);
@@ -99,7 +101,7 @@ export const MainBanner = () => {
     return  <Banner src={MainBannerSrc} />;
 }
 
-export const MainBanner2 = () => <Banner src={MainBanner2Src} />;
+export const MainBanner2 = () => <Banner src={MainBannerSrc} />;
 export const StoreBanner = () => (
 	<div
 		onClick={()=>window.open("https://www.redbubble.com/shop/ap/128010572?ref=studio-promote","_blank")}

@@ -1,3 +1,9 @@
+- 2.19.3 : 2023-12-21
+        * changed the ganner for some AI generated models representing each sport this site is best suited for.
+
+- 2.19.2 : 2023-12-21
+        * Brief modifications to make the website a tiny little bit more "friendly" on a mobile browser......
+
 - 2.19.1 : 2023-08-04
         * @Sheepwarrior asked for another method to trigger the autocomplete since on the ipad the CMD+Space triggers the search command. So added SHIFT+SPACE 
 

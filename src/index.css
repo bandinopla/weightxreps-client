@@ -11,3 +11,36 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* Media query for mobile */
+@media only screen and (max-width: 768px) {
+    /* Styles for screens up to 768px wide (mobile) */
+    .desktop-view {
+      display: none; /* Hide desktop view on mobile */
+    }
+  
+    .mobile-view {
+      display: block; /* Show mobile view on mobile */
+    }
+
+    .mobile-view.inline {
+        display: inline; /* Show mobile view on mobile */
+    }
+  }
+  
+  /* Media query for desktop */
+  @media only screen and (min-width: 769px) {
+    /* Styles for screens 769px and wider (desktop) */
+    .mobile-view {
+      display: none; /* Hide mobile view on desktop */
+    }
+  
+    .desktop-view {
+      display: block; /* Show desktop view on desktop */
+    }
+
+    .desktop-view.inline {
+        display: inline; /* Show desktop view on desktop */
+      }
+  }

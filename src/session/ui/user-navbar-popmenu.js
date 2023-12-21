@@ -18,7 +18,8 @@ import { Button, ButtonGroup, Typography } from "@material-ui/core";
 import { NotificationsBadge } from "../inbox-manager";
 import Hidden from '@material-ui/core/Hidden';
 import { useSubmenuListener } from "../../componentes/boton-con-submenu";
-
+import { JEditorButton } from "../../componentes/journal/editor-button";
+import AddIcon from '@material-ui/icons/Add';
 
 // user: es un objeto que vino del server...
 export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
@@ -39,6 +40,14 @@ export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
  
                     <List style={{padding:0}}> 
                         <Divider />
+
+                        <div className="mobile-view" style={{ overflow:"hidden"}}>
+                            <JEditorButton redirect variant="contained" color="primary" style={{padding:5 }} fullWidth>
+                                <AddIcon /> Log new workout
+                            </JEditorButton> 
+                        </div>
+
+                        <Divider/>
                         <ListItem> 
                             {/* <ListItemText primary={ <span>Display <b>{wunit(0)}</b> as <b>{wunit(1)}</b></span>} />
                             <ListItemSecondaryAction>

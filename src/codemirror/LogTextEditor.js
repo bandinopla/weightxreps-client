@@ -1296,12 +1296,12 @@ const __lintEditor = {
     }
 };
 
-export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags })=> {
+export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags, hintTriggerRef })=> {
 
     const classes       = useStyles();
     const txt           = useRef();
     const save          = useRef();  
-    const cmirror       = useRef();
+    const cmirror       = useRef();  
 
     /**
      * Si value es un array, se asume lo devolvió el backend, por lo que lo convertimos a string...
@@ -1347,6 +1347,15 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
             //
             lint: __lintEditor
           }); 
+
+        ////CodeMirror.commands.autocomplete(myCodeMirror, null, { completeSingle: false })
+ 
+        if( hintTriggerRef )
+        {  
+            hintTriggerRef.current = ()=> { 
+                CodeMirror.commands.autocomplete(myCodeMirror, null, { completeSingle: false })
+            };
+        }
 
           //
           cmirror.current = myCodeMirror;
@@ -1487,14 +1496,20 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
           // on dismount...
           //
           return ()=>{
+ 
+            if( hintTriggerRef )
+            {
+                hintTriggerRef.current = null;
+            }
+
                 getDocRef.current = null;
                 getShowErrorRef.current = null;
-                myCodeMirror.toTextArea(); //<---- destroy CM instance
-                
+                myCodeMirror.toTextArea(); //<---- destroy CM instance 
           }
 
     }, []);
 
+    
 
     useEffect( ()=>{
 
