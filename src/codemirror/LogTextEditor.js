@@ -12,6 +12,7 @@ import "./LogTextEditor.css";
 import { TAG_CODEMIRROR_TOKENS, TAG_STYLES } from "./tag-parsing";
 import { getUserAvailableTagTypes, TAG_START_OF_DEFINITION_REGEXP } from "../user-tags/data-types";
 import Fuse from 'fuse.js' 
+import { inspect } from "util";
 
   
 const searcher = new Fuse([], { findAllMatches:true })
@@ -1543,7 +1544,7 @@ const __convertJEditorDataToText = (value, usekg, utags) => {
 
             switch( datum.__typename )
             {
-                case "UTagValue": 
+                case "UTagValue":  
                     out.push( jEditorTagTokenToString(datum, utags) );
                     break;
 
@@ -1703,6 +1704,6 @@ const __convertJEditorDataToText = (value, usekg, utags) => {
 }
  
 
-export const convertJEditorData2Text = (data, usekg) => {
-    return __convertJEditorDataToText( data, usekg );
+export const convertJEditorData2Text = (data, usekg, utags) => {
+    return __convertJEditorDataToText( data, usekg, utags );
 }

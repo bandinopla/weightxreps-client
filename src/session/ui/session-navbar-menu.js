@@ -8,11 +8,12 @@ import AddIcon from '@material-ui/icons/Add';
 import { InboxManager, NotificationsBadge } from '../inbox-manager';
 import NotificationsPopMenu from './notifications-popmenu';
 import { BotonConSubmenu } from '../../componentes/boton-con-submenu';
-import { DMsWindow } from './dms-window/dm-window';
+import { DMsWindow, OpenDMButton } from './dms-window/dm-window';
 import { JEditorButton } from '../../componentes/journal/editor-button';
 import { useHistory } from "react-router-dom";
 import { DarkModeActivatorButton } from '../../componentes/DarkModeActivatorButton';
- 
+import RssFeedIcon from '@material-ui/icons/RssFeed';
+
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import ExitToApp from "@material-ui/icons/ExitToApp"; 
 
@@ -39,10 +40,11 @@ export const SessionMenuChilds = ()=> {
                 <InboxManager type={2}/>  
 
 
-                {/* 
-                <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global" style={{margin:5}}/>
-*/}
+                
+                
+
                 <div className="desktop-view inline">
+                    <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global" style={{margin:5}}/>
                     <JEditorButton redirect variant="outlined" color="primary" style={{margin:5}}>
                         <AddIcon /> 
                     </JEditorButton>  

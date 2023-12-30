@@ -20,7 +20,7 @@ export const DownloadWidget = ({ user })=>{
         const {convertJEditorData2Text} = await import(/* webpackChunkName: "jeditor2" */'../componentes/journal/editor');
         var c = document.createElement("a");
         c.download = "my-logs-up-to--"+ dateToYMD( new Date() ) +".txt"; 
-        var text    = convertJEditorData2Text( data.downloadLogs.did, user.usekg );
+        var text    = convertJEditorData2Text( data.downloadLogs.did, user.usekg, data.downloadLogs.utags );
 
         var t = new Blob([ text ], { type: "text/plain" });
         c.href = window.URL.createObjectURL(t);

@@ -1,3 +1,7 @@
+- 2.19.4 : 2023-12-30
+        * restore "send global message" button that I removed by accident on the last update... :)
+        * Bug FIX: @campertug reported that the download journal was not working. Indeed, it had a but, my bad! 
+
 - 2.19.3 : 2023-12-21
         * changed the ganner for some AI generated models representing each sport this site is best suited for.
 

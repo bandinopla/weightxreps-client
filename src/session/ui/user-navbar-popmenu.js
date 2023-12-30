@@ -20,6 +20,8 @@ import Hidden from '@material-ui/core/Hidden';
 import { useSubmenuListener } from "../../componentes/boton-con-submenu";
 import { JEditorButton } from "../../componentes/journal/editor-button";
 import AddIcon from '@material-ui/icons/Add';
+import { OpenDMButton } from "./dms-window/dm-window";
+import RssFeedIcon from '@material-ui/icons/RssFeed';
 
 // user: es un objeto que vino del server...
 export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
@@ -41,7 +43,11 @@ export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
                     <List style={{padding:0}}> 
                         <Divider />
 
+                        
+
                         <div className="mobile-view" style={{ overflow:"hidden"}}>
+                            <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global"  fullWidth/>
+
                             <JEditorButton redirect variant="contained" color="primary" style={{padding:5 }} fullWidth>
                                 <AddIcon /> Log new workout
                             </JEditorButton> 
