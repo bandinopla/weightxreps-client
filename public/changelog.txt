@@ -1,5 +1,5 @@
 - 2.19.5 : 2024-01-11
-        * Bugfix in SBD Stats section: unit convertion from KG to LB 
+        * Bugfix in SBD Stats section: unit convertion from KG to LB: https://github.com/bandinopla/weightxreps-client/issues/20
         * Updated lifts data
 
 - 2.19.4 : 2023-12-30
