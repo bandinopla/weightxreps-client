@@ -360,7 +360,7 @@ const CatChart = ({ series, inlbs }) => {
                      <div style={{ fontSize:"1.3em"}}><Divider style={{margin:"10px 0", overflow:"hidden"}}/>
 
                                             { serie.params?.estimated? "~" : ""}
-                                            { serie.params?.weight>0 && <strong><WeightValue inkg={inlbs?0:1} value={ serie.params.weight*(inlbs? LBS2KG : 1) }/>!!</strong> }
+                                            { serie.params?.weight>0 && <strong><WeightValue inkg={inlbs?0:1} value={ serie.params.weight*(inlbs? LBS2KG : 1) }/></strong> }
                                             { serie.params?.bw>0 && <> @ <strong>{serie.params.bw}</strong></>}
 
 

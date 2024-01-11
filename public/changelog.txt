@@ -1,3 +1,7 @@
+- 2.19.5 : 2024-01-11
+        * Bugfix in SBD Stats section: unit convertion from KG to LB 
+        * Updated lifts data
+
 - 2.19.4 : 2023-12-30
         * restore "send global message" button that I removed by accident on the last update... :)
         * Bug FIX: @campertug reported that the download journal was not working. Indeed, it had a but, my bad! 
