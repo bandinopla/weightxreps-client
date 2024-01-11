@@ -360,7 +360,7 @@ const CatChart = ({ series, inlbs }) => {
                      <div style={{ fontSize:"1.3em"}}><Divider style={{margin:"10px 0", overflow:"hidden"}}/>
 
                                             { serie.params?.estimated? "~" : ""}
-                                            { serie.params?.weight>0 && <strong><WeightValue inkg={inlbs?0:1} value={ serie.params.weight*(inlbs? LBS2KG : 1) }/></strong> }
+                                            { serie.params?.weight>0 && <strong><WeightValue inkg={inlbs?0:1} value={ serie.params.weight*(inlbs? LBS2KG : 1) }/>!!</strong> }
                                             { serie.params?.bw>0 && <> @ <strong>{serie.params.bw}</strong></>}
 
 
@@ -377,7 +377,7 @@ const CatChart = ({ series, inlbs }) => {
                         <CartesianGrid strokeDasharray="1 1" stroke={ theme.referenceLineColor}/>
                         <XAxis dataKey={getWeight} type="number" />
                         <YAxis /> 
-                        <Tooltip formatter={(value, name, props)=>value+" Lifts"} labelFormatter={(v)=>(Math.ceil( getWeight({weight:v})/5 )*5)+" "+(inlbs?"Lbs":"Kg") }/>
+                        <Tooltip formatter={(value, name, props)=>value+" Lifts"} labelFormatter={(v)=>(Math.ceil( v/5 )*5)+" "+(inlbs?"Lbs!!":"Kg") }/>
                         <Legend />
  
                                 <Line connectNulls dot={false} strokeWidth={2} 
