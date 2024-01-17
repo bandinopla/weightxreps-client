@@ -1,3 +1,7 @@
+- 2.20.0 : 2024-01-17
+        + Added posibility to download the logs directly to Dropbox and Google Drive.
+        * Changed the position of the "download logs" box in the settings to the top of the settings.
+
 - 2.19.5 : 2024-01-11
         * Bugfix in SBD Stats section: unit convertion from KG to LB: https://github.com/bandinopla/weightxreps-client/issues/20
         * Updated lifts data

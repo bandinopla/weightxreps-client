@@ -1549,7 +1549,7 @@ const __convertJEditorDataToText = (value, usekg, utags) => {
                     break;
 
                 case "JEditorBWTag": // viene en KILOS
-                    console.log("BW TAG!!!", usekg, datum.bw)
+                    //console.log("BW TAG!!!", usekg, datum.bw)
                     out.push( "@ "+  ( !usekg? kg2lb(datum.bw) : datum.bw )  +" bw" );
                     break;
 
@@ -1657,7 +1657,7 @@ const __convertJEditorDataToText = (value, usekg, utags) => {
                         .forEach( set=> {
  
 
-                            console.log("********",set)
+                            //console.log("********",set)
 
                             //
                             // nos fijamos si es una version "W,W,W" o solo "W"

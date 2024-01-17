@@ -27,6 +27,7 @@ import { useHistory } from "react-router-dom";
 import { PasswordInput } from '../componentes/PasswordInput';
 import { DownloadWidget } from './download-logs-widget';
 import { useGetSession } from '../session/session-handler';
+import { SettingDiv } from '../componentes/setting-div';
 
 export const useSettingsStyles = makeStyles( theme=>({
     input: {
@@ -87,6 +88,10 @@ export default function() {
                             { loading && <AsciiSpinner label="Loading settings..."/>}
 
                 { settings && <>
+                            <SettingDiv title="Download logs" desc="Download all your logs..."> 
+                                <DownloadWidget user={session?.user}/>
+                            </SettingDiv>
+
                             <SettingDiv title="Change profile picture" desc="Change your avatar...">
                                 <Grid container>
                                     <Grid item md={3}> 
@@ -179,11 +184,7 @@ export default function() {
                             </SettingDiv>
 
 
-                            <SettingDiv title="Download logs" desc="Download all your logs...">
-
-                                 
-                                <DownloadWidget user={session?.user}/>
-                            </SettingDiv>
+                            
 
 
                             <SettingDiv title="Delete Account" desc="Delete all data and destroy account!">
@@ -212,25 +213,25 @@ const MustBeSOK = ({ user, extra="" })=>{
 //             </Box>
 // }
 
-const $settingsPanelOpen = makeVar(false);
+// const $settingsPanelOpen = makeVar(false);
 
-const SettingDiv = ({title, desc, children})=>{
+// const SettingDiv = ({title, desc, children})=>{
 
-    const expanded  = useReactiveVar($settingsPanelOpen);
-    const classes   = useSettingsStyles();
+//     const expanded  = useReactiveVar($settingsPanelOpen);
+//     const classes   = useSettingsStyles();
 
-    return <Accordion expanded={expanded === title} onChange={ (event, isExpanded)=>$settingsPanelOpen(isExpanded? title : null) }>
-                <AccordionSummary
-                expandIcon={<ExpandMoreIcon />} 
-                >
-                <Typography className={classes.heading}>{ title }</Typography>
-                <Typography className={classes.secondaryHeading}>{ desc || "..." }</Typography>
-                </AccordionSummary>
-                <AccordionDetails style={{ flexDirection:"column"}}>
-                    {children}
-                </AccordionDetails>
-            </Accordion>
-}
+//     return <Accordion expanded={expanded === title} onChange={ (event, isExpanded)=>$settingsPanelOpen(isExpanded? title : null) }>
+//                 <AccordionSummary
+//                 expandIcon={<ExpandMoreIcon />} 
+//                 >
+//                 <Typography className={classes.heading}>{ title }</Typography>
+//                 <Typography className={classes.secondaryHeading}>{ desc || "..." }</Typography>
+//                 </AccordionSummary>
+//                 <AccordionDetails style={{ flexDirection:"column"}}>
+//                     {children}
+//                 </AccordionDetails>
+//             </Accordion>
+// }
 
 
 

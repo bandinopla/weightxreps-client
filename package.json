@@ -20,6 +20,7 @@
     "@types/react-dom": "^17.0.9",
     "apollo-upload-client": "^16.0.0",
     "codemirror": "^5.62.3",
+    "dropbox": "^10.34.0",
     "firebase": "^9.6.11",
     "firebaseui": "^6.0.1",
     "fireworks": "^2.2.7",
