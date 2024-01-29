@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { JOwnerContext } from "../../pages/journal-context";
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import { Button, ButtonGroup, Dialog, Grid, Typography } from "@material-ui/core";
+import { Button, ButtonGroup, Dialog, DialogContent, Grid, Typography } from "@material-ui/core";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -20,6 +20,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { JEditorStopwatch } from "./editor-stopwatch";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import { ActionButton } from "../action-button";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -82,7 +83,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     }
 
     const openEditor = async ()=>{
-         await loadEditor();
+         await loadEditor(); 
          setOpen(true)
     }
 
@@ -102,9 +103,9 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     
 
 
-    return <><Button startIcon={<BtnIcon/>} {...rest} onClick={()=>openEditor()}>
+    return <><ActionButton startIcon={<BtnIcon/>} {...rest} execAction={openEditor}>
                 {children || ( wouldBeNewLog?"New Log" :"Edit") } 
-            </Button>
+            </ActionButton> 
 
             <TutorialModal openState={helpModalState}/>
             <LoadCopyOfWorkoutModal openState={copyModalState}/>
@@ -117,18 +118,16 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
             <Dialog
                     open={open}
                     // onClose={handleClose}
-                    scroll="paper" 
-                    fullWidth
-                    maxWidth="sm"
+                    scroll="body"
+                    fullScreen
                     style={{
                         backgroundImage:`repeating-linear-gradient(45deg, #ffffff 0, #ffffff 1px, transparent 0, transparent 50%)`, backgroundSize:"5px 5px"
-                         
+                        ,margin:10
                     }}
                 >
                     <DialogTitle>
 
                         <div className="desktop-view">
-                            <Typography style={{float:"right"}} variant="caption">editor v2.0</Typography> 
                             <SectionTitle line1={"GOOD JOB! Consistency is key!"} line2="LOG A WORKOUT ↴"/>
                         </div>
 
@@ -142,10 +141,11 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                     </DialogTitle> 
 
 
+                    <DialogContent dividers={true}>
                         <div className="desktop-view">
                             <DialogContentText>
                                 <Alert severity="info">
-                                To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>CMD+SPACE</strong>  on a new line. 
+                                To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>⌘+SPACE</strong>  on a new line. 
                                 </Alert> 
                             </DialogContentText>
                         </div>
@@ -155,12 +155,12 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                         
 
                         <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} hintTriggerRef={hintTriggerRef} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
-                         
+                    </DialogContent>
 
                         <DialogActions>
                             
                             <div className="mobile-view">
-                                <ButtonGroup variant="outlined" >
+                                <ButtonGroup variant="outlined" size="large">
                                     <Button onClick={ ()=>helpModalState[1](true) } ><MenuBookIcon/></Button>
                                     <Button color="primary"  onClick={ ()=>copyModalState[1](true) }> <FileCopyIcon/> </Button>
                                     {/* <Button color="primary" onClick={()=>stopwatchState[1](!stopwatchState[0])}>
@@ -168,30 +168,30 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                                         </Button>  */}
                                  </ButtonGroup>
                                 &nbsp;&nbsp;
-                                 <ButtonGroup variant="outlined" >
+                                 <ButtonGroup variant="outlined" size="large">
                                     <Button disabled={!hasLoaded} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained" >
                                         <SaveAltIcon/>
                                         </Button> </ButtonGroup>
                             </div>
 
                             <div className="desktop-view">
-                            <Grid container>
+                            <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    <ButtonGroup variant="outlined" >
+                                    <ButtonGroup variant="outlined" size="large">
                                         <Button onClick={ ()=>helpModalState[1](true) } startIcon={<MenuBookIcon/>}>HELP</Button>
                                         {/* <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> */}
-                                        <Button color="primary" variant="contained" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
-                                            copy
+                                        <Button className="oneline" color="primary" variant="contained" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
+                                            Load copy of...
                                         </Button>
                                         <Button color="primary" startIcon={ stopwatchState[0]? <CloseIcon/> : <TimerIcon/> }  onClick={()=>stopwatchState[1](!stopwatchState[0])}>
                                             stopwatch
                                         </Button>
                                     </ButtonGroup>
-                                </Grid>
-                                <Grid item xs={6} style={{ textAlign:"right"}}>
+                                </Grid> 
+                                <Grid item xs={6} style={{ textAlign:"right" }}>
 
-                                    <ButtonGroup >
-                                        <Button  onClick={handleClose} color="primary" variant="outlined">
+                                    <ButtonGroup size="large">
+                                        <Button startIcon={<CloseIcon/>}  onClick={handleClose} color="primary" variant="outlined">
                                             Cancel
                                         </Button>
                                         <Button disabled={!hasLoaded} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained" startIcon={<SaveAltIcon/>}>

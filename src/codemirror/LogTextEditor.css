@@ -21,6 +21,10 @@
     background-image: url(./fire.png)
 } 
 
+.CodeMirror { 
+    font-size: 20px; 
+    }
+
 /* //el icono
 "& .CodeMirror-lint-marker-info":{
     backgroundImage: 'url("data:image/x-icon;base64,AAABAAEAEBAAAAEAIAARAQAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgDAAAAKC0PUwAAAAFzUkdCAdnJLH8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAABFUExURf//AH9/AL+/AD8/AK+vAN/fAO/vAI+PAG9vAICAAE9PAF9fAM/PAA8PAP//Af//CP//Cf//Bf//A///B///BP//Av//BgZQxRgAAABlSURBVHictY4JDsAgCAQXrEXtoVLt/59atD9o0g0JyQybAPwSYhtn4cWvtBpwA5jxJEuYF2IgRkaijQZACuyYPYiCTLAfs4LE8gJsoxKH4k9/nTnnYrtU1aupojdtQNez3q2beAC4yQLeRUhbWAAAAABJRU5ErkJggg==")'

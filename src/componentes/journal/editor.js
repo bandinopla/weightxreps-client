@@ -1,4 +1,4 @@
-import { LinearProgress } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 import { useRef, useEffect, useState } from "react";
 import { LogTextEditor, convertJEditorData2Text } from "../../codemirror/LogTextEditor";
 import { parseError } from "../../data/db";
@@ -37,19 +37,18 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
 
     const [saveEditor, {client}]    = useSaveJEditorMutation();
     
-    const { data, loading, error }  = useGetJEditorDataQuery({
+    const { data, loading, error, refetch }  = useGetJEditorDataQuery({
         variables: {
             ymd, range
         },
 
         fetchPolicy:"network-only",
+        notifyOnNetworkStatusChange:true,
         onCompleted: ( data )=> {
             $jeditorError(null);
             setJeditorData( data )
         }
     });
- 
-
 
     useEffect(()=>{
 
@@ -220,17 +219,21 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
  
     }
 
-    if( error ) { 
-        return <Alert severity="error">{parseError(error)}</Alert>;
-    }
-
     if( loading || !jeditorData )
     {
         return <div>
             <LinearProgress/>
-            <AsciiSpinner label="Loading Editor's data..."/>
+            <AsciiSpinner label="Loading data..."/>
             </div>;
     }  
+
+    if( error ) {  
+        return <Alert severity="error" action={
+            <Button color="inherit" size="small" onClick={()=>refetch()}>
+              RETRY
+            </Button>
+          }>{parseError(error)}</Alert>;
+    }
 
     //--
     saveTrigger.current = save;

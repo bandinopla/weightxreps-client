@@ -1,3 +1,8 @@
+- 2.20.1 : 2024-01-29
+        * Made the web log editor bigger instead of a small modal. 
+        * Added loading indicator on the "edit log buttons" to show a spinner when the editor itself is loading.
+        * Improved the editor's feedback UI a bit.
+
 - 2.20.0 : 2024-01-17
         + Added posibility to download the logs directly to Dropbox and Google Drive.
         * Changed the position of the "download logs" box in the settings to the top of the settings.
