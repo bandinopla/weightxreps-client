@@ -1,3 +1,6 @@
+- 2.20.2 : 2024-01-29
+        * bug fix: the "copy logs of" button was not working correclty. 
+
 - 2.20.1 : 2024-01-29
         * Made the web log editor bigger instead of a small modal. 
         * Added loading indicator on the "edit log buttons" to show a spinner when the editor itself is loading.

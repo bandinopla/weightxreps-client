@@ -46,7 +46,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
         notifyOnNetworkStatusChange:true,
         onCompleted: ( data )=> {
             $jeditorError(null);
-            setJeditorData( data )
+            !jeditorData && setJeditorData( data )
         }
     });
 
