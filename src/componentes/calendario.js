@@ -11,12 +11,14 @@ import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useGetCalendarDaysQuery } from '../data/generated---db-types-and-hooks';
 import { JOwnerContext } from '../pages/journal-context';
 import { ymd2date } from '../utils/utils';
 import { AsciiSpinner } from './ascii-spinner';
-
+import { useGetSession, useReactiveSetting } from "../session/session-handler";
+import DownArrow from '@material-ui/icons/ArrowDropDown';
+import UpArrow from '@material-ui/icons/ArrowDropUp';
 
 
 const LEFT_ICON     = SkipPreviousIcon;
@@ -109,6 +111,15 @@ const calStatus     = makeVar(null);
 export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
     const jowner    = useContext( JOwnerContext );
+    const { userSettings }  = useGetSession(); 
+    const firstDayOfWeek    = useReactiveSetting( userSettings?.firstDayOfWeek );  
+
+    const changeFDOW = userSettings ? n => {
+        console.log(userSettings?.firstDayOfWeek)
+        userSettings?.firstDayOfWeek(n)
+    } : null; 
+
+    const $startDay = firstDayOfWeek || 0;
     const WEEKS     = widthInWeeks ?? 12;
     const DAYS      = 7; 
     const date      = ymd2date(ymd); //new Date( ymd.substr(0,4), Number(ymd.substr(5,2))-1, ymd.substr(8) ); 
@@ -146,13 +157,13 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
         d.setDate( d.getDate()+Math.round(leftOffset) ); 
 
         //que el primer dia sea un domingo....
-        d.setDate( d.getDate()-d.getDay() );
+        d.setDate( d.getDate()-d.getDay() + $startDay );
 
         let from = d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); //d.valueOf();
 
         d.setDate( d.getDate()+ Math.abs(Math.round(leftOffset)) + Math.round(rightOffset) );
 
-        d.setDate( d.getDate()+ ( 7 - d.getDay()) ); //y que termine un sabado
+        d.setDate( d.getDate()+ ( 7 - d.getDay() + $startDay ) ); //y que termine un sabado
 
         let to = d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
 
@@ -203,7 +214,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
         let d = new Date(cursor);
             ///d.setTime(cursor);
             d.setDate( d.getDate()+ Math.round(-(WEEKS*DAYS*0.5)) );  
-            d.setDate( d.getDate()-d.getDay() ); //arrancar un domingo
+            d.setDate( d.getDate()-d.getDay() + $startDay );  
   
             let firstWithNoData = 0;
             let lastWithNoData  = 0;
@@ -285,7 +296,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
     }
 
     return <div>  
-                <CalendarGrid hasMoved={pinnedDay!=cursor} data={cellProps} weeks={WEEKS} days={DAYS} onClickMove={go} onClick={onClick}/>  
+                <CalendarGrid hasMoved={pinnedDay!=cursor} data={cellProps} weeks={WEEKS} days={DAYS} onClickMove={go} onClick={onClick} FDOW={ $startDay } onChangeFDOW={changeFDOW}/>  
                 <CalendarLoadIndicator />
            </div>;
  
@@ -294,7 +305,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
 
 
-export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick }) {
+export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick, FDOW, onChangeFDOW }) {
 
     const classes = useStyles();
  
@@ -303,6 +314,9 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
     var monthNames  = [];
     var currentMonth; 
     var MONTHNAME = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
+    var DAYS        = ["","Mon","","Wed","","Fri",""];
+
+    DAYS = DAYS.slice(FDOW) .concat(DAYS.slice(0, FDOW ));
 
     /**
      * == calculando Month Names bar ==
@@ -314,10 +328,6 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
         let column = Math.floor(i/7);  
         const namePostfix = d.showYear? " "+d.showYear : "";
 
-        if( d.month==null )
-        {
-            debugger;
-        }
         if( monthNames.length==0 ) 
         { 
             currentMonth = { colSpan:1, name:MONTHNAME[ d.month ]+namePostfix, monthID:d.month, lastColumn:column };
@@ -360,13 +370,18 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
                 </div>
 
                 <div className="days">
-                    <div></div>
-                    <div>Mon</div>
-                    <div></div>
-                    <div>Wed</div>
-                    <div></div>
-                    <div>Fri</div>
-                    <div></div>
+                    { DAYS.map( (dayName, _dIndex)=>{
+
+                        if( FDOW == _dIndex && onChangeFDOW)
+                        {
+                            const Icon = FDOW==1? DownArrow : UpArrow;
+                            return <div><Icon onClick={()=>onChangeFDOW( 1-FDOW )}/></div>
+                        }
+                        else 
+                        {
+                            return <div>{dayName}</div>
+                        } 
+                    } )} 
                 </div>
 
                 { new Array(weeks).fill(0).map( (_,week_i)=>(<div key={"week"+week_i} style={{width:w+"%"}}>

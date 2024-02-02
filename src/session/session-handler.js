@@ -25,6 +25,7 @@ export const SessionPolicies = {
                             settings.convertDisplayUnits        = false;
                             settings.notificationsLastSeenDate  = null;
                             settings.inboxLastSeenDate          = null;
+                            settings.firstDayOfWeek             = 0; //sunday
                         });
                     }
                     else 
