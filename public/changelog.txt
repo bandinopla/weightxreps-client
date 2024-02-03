@@ -1,3 +1,6 @@
+- 2.21.1 : 2024-02-03
+        * Added ALT+TAB as key combination to trigger the autocomplete as suggested by @mm_42 to be used in Mac as quote "since cmd+space shortcut is widely used for spotlight search"
+
 - 2.21.0 : 2024-02-02
         + Requested by @Krustenviech : "change the calendar view to starting on monday from top to bottom sunday"
         (Added as a tiny arrow below or above the day Monday on the calendar, if you click on it, it will set the new first day of the week)
