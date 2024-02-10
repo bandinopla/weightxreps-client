@@ -74,6 +74,8 @@
     ]
   },
   "devDependencies": {
+    "@types/codemirror": "^5.60.15",
+    "@types/papaparse": "^5.3.14",
     "yargs": "^15.4.1"
   }
 }

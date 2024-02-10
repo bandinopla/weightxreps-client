@@ -11,7 +11,7 @@ import { parseError } from "../data/db";
  * @property {Class} IconClass icono
  * @property {string} label el label del boton
  * @property {string} labelWhenSending el label del boton cuando esté en estado de "busy"
- * @property {()=>Promise} executeAction ejecutador de la accion
+ * @property {(c:(status:string)=>void)=>Promise} executeAction ejecutador de la accion
  * 
  * @param {ActionChipButtonParams} param0 
  * @returns 
@@ -20,12 +20,14 @@ export const ActionChipButton = ({ IconClass, label, labelWhenSending, executeAc
  
     const [error, setError] = useState();
     const [busy, setBusy]   = useState(false);
+    const [statusText, setStatusText] = useState(null);
 
     const onClick = ()=>{
         setError(null);
         setBusy(true);
+        setStatusText(null)
 
-        executeAction()
+        executeAction( status=>setStatusText(status) )
             .catch( error => setError(error) )
             .finally(()=>setBusy(false)); 
     }
@@ -33,7 +35,7 @@ export const ActionChipButton = ({ IconClass, label, labelWhenSending, executeAc
 
  
     return <><Chip icon={busy? <CircularProgress size={10}/> : <IconClass fontSize={size}/> }
-                label={busy? labelWhenSending : label} 
+                label={busy? statusText || labelWhenSending : label} 
                 variant="outlined"
                 clickable
                 size={size}

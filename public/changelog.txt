@@ -1,3 +1,7 @@
+- 2.22.0 : 2024-02-10
+        + Added, in the settings, the option to import the backup file from weightxreps.net 
+        + Requested by @Indobesar : added the posibility to import a backup file from StrongApp
+
 - 2.21.1 : 2024-02-03
         * Added ALT+TAB as key combination to trigger the autocomplete as suggested by @mm_42 to be used in Mac as quote "since cmd+space shortcut is widely used for spotlight search"
 
