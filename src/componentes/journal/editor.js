@@ -16,7 +16,6 @@ import { OpenConfirmModal } from "../Dialog";
 import { useGetSession } from "../../session/session-handler";
 import { OpenJeditorSaveBackdrop } from "./editor-save-backdrop";
 import LoadCopyOfWorkoutModal from "./editor-copy-journal";
-import { JLogTokenizer } from "./tokenizer";
 
 const $jeditorError     = makeVar(); 
  
