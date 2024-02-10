@@ -74,12 +74,7 @@ const formatStrongToWeightxreps = async (file, informStatus) => {
                         //
                         if( data['Workout Notes']?.length )
                         {
-                            log += data['Workout Notes'] +"\n";
-
-                            console.log("--------")
-                            console.log( data['Workout Notes'].replace(NEWLINE,"\n") )
-                            console.log( "asasa\nasdasd" )
-                            console.log("--------")
+                            log += data['Workout Notes'].replace(NEWLINE,"\n") +"\n";
                         }
                     }
 
