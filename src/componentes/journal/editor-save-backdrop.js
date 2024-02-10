@@ -81,7 +81,7 @@ export const JeditorSaveBackdrop = ()=>{
  
 
     return <Backdrop className={ classes.backdrop + (data.success===true? " success-"+data.success.toString() : "" ) } 
-                     open={ shouldBeOpen } >
+                     open={ !!shouldBeOpen } >
 
         <div style={{display:"none"}}>
             <img src={ NoddingGuySrc } alt=""/>
@@ -90,7 +90,7 @@ export const JeditorSaveBackdrop = ()=>{
         { data.loading? <CircularProgress color="inherit" /> 
         : data.success? <div>  
                             <img src={ NoddingGuySrc } alt="" style={{ borderRadius:180 }}/>
-                            <Typography variant="h2" className="flikrAnim">
+                            <Typography variant="h2" className="flikrAnim" style={{color:"white"}}>
                                  Good Job! <ThumbUpIcon style={{ fontSize:50 }}/>
                                  </Typography>
                             <Fireworks {...fxProps} />

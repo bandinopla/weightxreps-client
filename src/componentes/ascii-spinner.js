@@ -2,23 +2,35 @@ import { useEffect, useRef } from "react";
 
 
 
-
-export const AsciiSpinner = ({ label })=>{
+/**
+ * Creates an intervall that will call callback with label + spinning ascii icon
+ * @param {string} label 
+ * @param {(label:string)=>void} callback 
+ * @returns 
+ */
+export function asciiSpinnerInterval (label, callback) {
     const frames = "┤┘┴└├┌┬┐";
+    var _frame = 0;
+    const total = frames.length;
+
+    return setInterval( ()=>{ 
+        _frame++;
+        
+        callback( frames.substr(_frame%total,1)+" "+ label.substr(0, _frame%label.length)+" "+ label.substr(_frame%label.length) );
+
+    }, 100)
+}
+
+export const AsciiSpinner = ({ label })=>{ 
 
     const ref = useRef();
 
-    useEffect(()=>{
+    useEffect(()=>{ 
 
-        var _frame = 0;
-        const total = frames.length;
-        const anim = setInterval( ()=>{ 
-            _frame++;
-            
-            if( ref.current )
-                ref.current.innerHTML = frames.substr(_frame%total,1)+" "+ label.substr(0, _frame%label.length)+" "+ label.substr(_frame%label.length);
-
-        }, 100);
+        const anim = asciiSpinnerInterval(label, txt => { 
+                                if( ref.current )
+                                    ref.current.innerHTML=txt ;
+                            } );
 
         return ()=>clearInterval(anim);
     });

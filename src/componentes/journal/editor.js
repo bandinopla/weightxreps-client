@@ -16,7 +16,6 @@ import { OpenConfirmModal } from "../Dialog";
 import { useGetSession } from "../../session/session-handler";
 import { OpenJeditorSaveBackdrop } from "./editor-save-backdrop";
 import LoadCopyOfWorkoutModal from "./editor-copy-journal";
- 
 
 const $jeditorError     = makeVar(); 
  
@@ -54,7 +53,6 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
 
         const onEventData = (event) => { 
 
-            console.log("LOAD EDUITORRR", event.detail)
             setJeditorData( event.detail )
         }
 
@@ -63,6 +61,10 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
         return ()=>window.removeEventListener('jeditor:data', onEventData )
 
     }, []);
+
+
+    useEffect(()=>data && setTimeout( onLoaded, 0 ),[data]);
+
 
     if( !session )
     {
@@ -159,7 +161,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                     
                     if( !saveOp.data?.saveJEditor )
                     {
-                        throw new Error("Unespected error...");
+                        throw new Error("Unexpected error...");
                     }
             });// OpenJeditorSaveBackdrop 
             //
@@ -239,7 +241,6 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
     saveTrigger.current = save;
     //--
 
-    onLoaded();
 
     return <> 
         <LogTextEditor  defaultYMD={ymd} 

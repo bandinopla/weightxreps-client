@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, CircularProgress, Container, FormControl, FormHelperText, Grid, Input, makeStyles, Paper, Snackbar, Typography } from '@material-ui/core';
 import { useEffect, useRef, useState, createContext, useContext } from 'react';
-import SettingsIcon from '@material-ui/icons/Settings'; 
+import SettingsIcon from '@material-ui/icons/Settings';
 import { UAvatarFromUserQL } from '../componentes/uavatar';
 import { ImageUploadButton } from '../image-uploader/image-uploader';
 import { useGetSettingsQuery, useSendVerificatonCodeMutation, useSetSettingMutation } from '../data/generated---db-types-and-hooks';
@@ -17,17 +17,13 @@ import { dateToYMD, isEmail, ymd2date } from '../utils/utils';
 import { RPETableWidget } from './setting-rpetable';
 
 //---
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import { makeVar, useReactiveVar } from '@apollo/client';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { clearJdayAndJRangeOf, updateUserCachedData } from '../cache/clean-cache';
 import { useHistory } from "react-router-dom";
 import { PasswordInput } from '../componentes/PasswordInput';
 import { DownloadWidget } from './download-logs-widget';
 import { useGetSession } from '../session/session-handler';
 import { SettingDiv } from '../componentes/setting-div';
+import { ImportFromWidget } from './settings-import-from';
 
 export const useSettingsStyles = makeStyles( theme=>({
     input: {
@@ -90,6 +86,9 @@ export default function() {
                 { settings && <>
                             <SettingDiv title="Download logs" desc="Download all your logs..."> 
                                 <DownloadWidget user={session?.user}/>
+                            </SettingDiv>
+                            <SettingDiv title="Import Workouts" desc="Import workout data from a backup...">
+                                <ImportFromWidget user={session?.user}/>
                             </SettingDiv>
 
                             <SettingDiv title="Change profile picture" desc="Change your avatar...">
