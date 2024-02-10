@@ -1,6 +1,28 @@
 import { ImportFromWXR } from "./import-from-wxr" 
+import Joi from "joi";
+import { TYPES } from "../../user-tags/data-types";
 
 const NEWLINE = /\\n/g;
+
+//
+// Expected fields in the CVS...
+//
+const schema = Joi.object({
+    Date: Joi.date(),
+    "Workout Name": Joi.string().allow(""),
+    "Duration": [ 
+        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_h.reg)),
+        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_hm.reg)),
+        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_sec.reg)),
+        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_hms.reg)),
+        Joi.string().allow("")
+    ],
+    "Exercise Name": Joi.string(),
+    "Weight":Joi.number(),
+    "Reps":Joi.number().allow(""),
+    "Workout Notes":Joi.string().allow(""),
+    "RPE":Joi.number().allow(""),
+});
 
 /** 
  * @param {File} file 
@@ -51,6 +73,15 @@ const formatStrongToWeightxreps = async (file, informStatus) => {
 
                     try
                     {
+
+                    //
+                    // verify each row to make sure the schema matches what we expect...
+                    //
+                    let validationResult = schema.validate(data, {allowUnknown:true, presence:"required"});
+                    if( validationResult.error ) //validate each row.... 
+                    {  
+                        throw new Error("Unexpected data format. Bad .csv mabe...");
+                    }
 
                     //
                     // DAY
@@ -131,7 +162,13 @@ const formatStrongToWeightxreps = async (file, informStatus) => {
 
                 if( abortedError )
                 {
-                    reject(`The file you attempt to import has errors, can't proceed :(`);
+                    reject(`The file you attempt to import has errors, can't proceed :( Details: ${abortedError.message}`);
+                    return;
+                }  
+
+                if( log=="" )
+                {
+                    reject("Nothing was imported, no data was found in the file.");
                     return;
                 }
 

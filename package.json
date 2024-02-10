@@ -26,6 +26,7 @@
     "fireworks": "^2.2.7",
     "fuse.js": "^6.6.2",
     "graphql": "^15.5.1",
+    "joi": "^17.12.1",
     "papaparse": "^5.3.1",
     "react": "^17.0.2",
     "react-colorful": "^5.6.1",
