@@ -105,7 +105,7 @@ function padNumber(num) {
  * @type {import("./import-from-csv").CVSParserConfig}
  */
 const config = {
-    askWeightUnitToUser: true,
+    askWeightUnitToUser: false,
     canContinueInCaseOfError: true, 
     schema,
     verifyEachRow: true,
@@ -115,7 +115,7 @@ const config = {
             day: null,
             ename: null,
             log:"",
-            wunit: usekg?'kg':'lb'
+            wunit: 'kg' //weights in this case are in KG
         }
     },
 
