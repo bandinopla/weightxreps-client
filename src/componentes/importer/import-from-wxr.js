@@ -168,7 +168,7 @@ export const ImportFromWXR = ({ formatFile, fileInputLabel, fileInputFileExtensi
                                 throw new Error("Unexpected error... Idk what happened...");
                             }
 
-                            alert("File was imported!");
+                            alert("File was imported! Reloading...");
                             window.location.reload(); 
                         })
                         
@@ -180,7 +180,6 @@ export const ImportFromWXR = ({ formatFile, fileInputLabel, fileInputFileExtensi
 
                         .finally(()=>{
 
-                            console.log("CLEAR INTERVALS")
                             clearInterval(_interval)
                         })
                         ;

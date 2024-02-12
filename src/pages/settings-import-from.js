@@ -1,6 +1,3 @@
-import { Typography } from "@material-ui/core";
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { ImportFromWXR } from "../componentes/importer/import-from-wxr";
 import { ImportFromWStrongapp } from "../componentes/importer/import-from-strongapp";
 import { Alert } from "@material-ui/lab";
+import { ImportFromHevyapp } from "../componentes/importer/import-from-heavyapp";
 
 /**
  * @typedef {Object} Importer
@@ -28,6 +26,10 @@ const importers = [
     {
         label:<a href="https://www.strong.app/" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/strongapp-logo.jpg" width={150} alt="Strongapp logo"/></a>,
         widget:<ImportFromWStrongapp/>
+    },
+    {
+        label:<a href="https://www.hevyapp.com/" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/heavyapp-logo.jpg" width={150} alt="Hevyapp logo"/></a>,
+        widget:<ImportFromHevyapp/>
     }
 ]
 
