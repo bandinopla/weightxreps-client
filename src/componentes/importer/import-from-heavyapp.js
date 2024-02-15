@@ -2,6 +2,7 @@
 import Joi from "joi";
 import { ImportFromCVS } from "./import-from-csv";
 import { fixRPE } from "./fixRPE";
+import { enameToEtag } from "./import-from-strongapp";
  
 //
 // the Hevyapp time string format
@@ -20,9 +21,11 @@ const schema = Joi.object({
     exercise_title: Joi.string(),
     exercise_notes: Joi.string().allow(""),
     set_type:Joi.string().allow(""), //ecom
-    weight_kg:Joi.number().default(0).allow(null).allow(''),
+    weight_kg:Joi.number().default(0).allow(null).allow('').optional(),
+    weight_lbs:Joi.number().default(0).allow(null).allow('').optional(),
     reps:Joi.number().default(0).allow(null).allow(''),
-    distance_km:Joi.number().default(0).allow(null).allow(''),
+    distance_km:Joi.number().default(0).allow(null).allow('').optional(),
+    distance_miles:Joi.number().default(0).allow(null).allow('').optional(),
     duration_seconds:Joi.number().default(0).allow(null).allow(''),
     rpe:Joi.number().default(0).allow(null).allow('')
 
@@ -115,7 +118,6 @@ const config = {
             day: null,
             ename: null,
             log:"",
-            wunit: 'kg' //weights in this case are in KG
         }
     },
 
@@ -155,11 +157,20 @@ const config = {
         //
         // EROW
         //
+        let wUnit = 'kg';
         let W = parseFloat(data.weight_kg) || 0;
+
+        if( data.hasOwnProperty("weight_lbs") ) //<--- uses Lbs
+        {
+            W = ( parseFloat(data.weight_lbs) || 0 );
+            wUnit = 'lbs';
+        }
+
         let R = parseFloat(data.reps) || 0; 
         let RPE = fixRPE( parseFloat(data.rpe) || 0 ); 
         let Duration = parseFloat(data.duration_seconds) || 0; 
-        let Distance = parseFloat(data.distance_km) || 0; 
+        let Distance = parseFloat(data.distance_km) || parseFloat(data.distance_miles) || 0; 
+        const distanceUnits = data.hasOwnProperty("distance_km")?"km":"miles";
         let com = (data.set_type!='normal'?data.set_type+". ":"") + data.exercise_notes;
         let erow;
         const rpeVal = RPE? `@${RPE} RPE `:"";
@@ -176,7 +187,7 @@ const config = {
 
             if( Distance>=1 ) //number is too big. No ename
             {
-                state.log += `@${data.exercise_title} / Distance (km) : ${ Distance }\n`;
+                state.log += `@${data.exercise_title} / Distance (${distanceUnits}) : ${ Distance }\n`;
 
                 if( Duration )
                 {
@@ -186,12 +197,12 @@ const config = {
             }
             else 
             {
-                erow = `${W || 1}${state.wunit} x ${Math.round( Distance*1000 )} ${rpeVal} (meters)${durationVal?" in "+durationVal : ""}`;
+                erow = `${W || 1}${wUnit} x ${Math.round( Distance*1000 )} ${rpeVal} (meters)${durationVal?" in "+durationVal : ""}`;
             }
         }
         else 
         {
-            erow = `${W || 1}${state.wunit} x ${R} ${rpeVal}${durationVal?" in "+durationVal+" | " : ""}${com}`;
+            erow = `${W || 1}${wUnit} x ${R} ${rpeVal}${durationVal?" in "+durationVal+" | " : ""}${com}`;
         } 
 
         //
@@ -204,8 +215,10 @@ const config = {
             //
             if( !state.ename || state.ename!=data.exercise_title || dayChanged )
             {
-                state.ename = data.exercise_title;
-                state.log += `#${data.exercise_title}\n`;
+                const ename = data.exercise_title;
+                state.ename = ename;
+                const etag = enameToEtag(ename);
+                state.log += `#${ename+etag}\n`;
             }
 
             state.log += erow + "\n";

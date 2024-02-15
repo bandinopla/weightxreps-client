@@ -1,7 +1,8 @@
 import { ImportFromWXR } from "./import-from-wxr" 
 import Joi from "joi"; 
 
-
+const disclaimer = 
+`It can/might happen that they update or change the way in which they export their data and this module results in unexpected errors!`;
 
 /**
  * Config for a CVS improter
@@ -57,7 +58,6 @@ const formatCVS = async (config, file, informStatus) => {
         let errorsIgnored = 0;
 
         Papa.parse(file, {
-            delimiter:",", 
             header:true,
             encoding:"utf-8",
             skipEmptyLines:"greedy",
@@ -78,7 +78,6 @@ const formatCVS = async (config, file, informStatus) => {
                             let validationResult = config.schema.validate(row, {allowUnknown:true, presence:"required"});
                             if( validationResult.error ) //validate each row.... 
                             {  
-                                console.error(validationResult.error);
                                 throw new Error("Unexpected row format. Bad .csv mabe...");
                             }
                         } 
@@ -125,7 +124,7 @@ const formatCVS = async (config, file, informStatus) => {
 
                 if( abortedError )
                 {
-                    reject(`The file you attempt to import has errors, can't proceed :( Details: ${abortedError.message}`);
+                    reject(`The file you attempt to import has errors, can't proceed :( Details: ${abortedError.message}\n\n${disclaimer}`);
                     return;
                 }  
 
@@ -141,7 +140,7 @@ const formatCVS = async (config, file, informStatus) => {
 
                 if( !log || log=="" )
                 {
-                    reject("Nothing was imported, no data was found in the file.");
+                    reject(`Nothing was imported, no data was found in the file.\n\n${disclaimer}`);
                     return;
                 }
 
@@ -149,7 +148,7 @@ const formatCVS = async (config, file, informStatus) => {
 
                 if( errorsIgnored>0 )
                 {
-                    alert(`The cvs was parsed! But we skipped (${errorsIgnored}) rows with errors.\n %${ ((rowsDone-errorsIgnored)/rowsDone*100).toFixed(1) } of the cvs was parsed successfully.`);
+                    alert(`The cvs was parsed! But we skipped (${errorsIgnored}) rows with errors.\n %${ ((rowsDone-errorsIgnored)/rowsDone*100).toFixed(1) } of the cvs was parsed successfully.\n\n${disclaimer}`);
                 }
 
                 resolve( log );
@@ -167,5 +166,54 @@ const formatCVS = async (config, file, informStatus) => {
  */
 export const ImportFromCVS = ({ config, fileInputLabel, fileInputFileExtensions })=>{ 
 
-    return <ImportFromWXR formatFile={ formatCVS.bind(null,config) } fileInputLabel={fileInputLabel} fileInputFileExtensions=".csv"/>
+    //formatCVS.bind(null,config)
+
+    /** 
+     * Let's process the ZIP first in case it was one...
+     * @param {File} file 
+     * @param {(status:string)=>void} informStatus 
+     */
+    const onFile = async (file, informStatus) => {
+
+        if( file.name.endsWith(".zip") )
+        {
+            informStatus("Opening zip file...");
+
+            const ZipModule = await import("jszip");
+ 
+            const z         = new ZipModule.default();
+
+            informStatus("Processing zip...");
+
+            await z.loadAsync(file);
+
+            let csv;
+
+            // look for the cvs inside...
+            z.forEach( (path, file)=>{ 
+                if( file.name.endsWith(".csv") )
+                {
+                    csv = file;
+                }
+            });
+
+            if(!csv )
+            {
+                throw new Error("The zip doesn't contain any CSV file inside :(");
+            }
+            else 
+            { 
+
+                csv = await csv.async("blob");
+                return formatCVS(config, csv, informStatus);
+            }
+
+        }
+        else 
+        {
+            return formatCVS(config, file, informStatus);
+        }  
+    }
+
+    return <ImportFromWXR formatFile={ onFile } fileInputLabel={fileInputLabel} fileInputFileExtensions=".csv, .zip"/>
 }
