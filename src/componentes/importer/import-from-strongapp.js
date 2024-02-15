@@ -77,8 +77,41 @@ const config = {
         //
         if( !state.ename || state.ename!=data['Exercise Name'] || dayChanged )
         {
-            state.ename = data['Exercise Name'];
-            state.log += `#${data['Exercise Name']}\n`;
+            /**
+             * @type {string}
+             */
+            const ename = data['Exercise Name'];
+            state.ename = ename;
+            const etag = "";
+
+            //#region define the etag
+            if( ename.startsWith("Bench Press") )
+            {
+                etag = " #bp";
+            }
+            else if( ename.startsWith("Deadlift") || ename=="Sumo Deadlift (Barbell)" || ename.startsWith("Stiff Leg Deadlift"))
+            {
+                etag = " #dl";
+            }
+            else if( ename.startsWith("Clean and Jerk") )
+            {
+                etag = " #cnj";
+            }
+            else if( ename=="Chin Up" || ename=="Wide Pull Up")
+            {
+                etag = " #pull";
+            }
+            else if( ename=="Squat (Barbell)" || ename=="Squat (Dumbbell)")
+            {
+                etag = " #sq";
+            }
+            else if ( ename=="Strict Military Press (Barbell)" )
+            {
+                etag = " #ohp";
+            }
+            //#endregion
+
+            state.log += `#${data['Exercise Name']}${etag}\n`;
         }
 
         //
@@ -87,6 +120,7 @@ const config = {
         let W = parseFloat(data["Weight"]) || 1;
         let R = parseFloat(data["Reps"]) || 1; 
         let RPE = fixRPE( parseFloat(data["RPE"] )) || ""; 
+        
 
         state.log += `${W}${state.usekg?"kg":"lbs"} x ${R} ${RPE}\n`;
     },
