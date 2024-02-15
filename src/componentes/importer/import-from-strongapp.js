@@ -82,7 +82,7 @@ const config = {
              */
             const ename = data['Exercise Name'];
             state.ename = ename;
-            const etag = "";
+            let etag = "";
 
             //#region define the etag
             if( ename.startsWith("Bench Press") )
@@ -111,7 +111,7 @@ const config = {
             }
             //#endregion
 
-            state.log += `#${data['Exercise Name']}${etag}\n`;
+            state.log += `#${ename}${etag}\n`;
         }
 
         //
