@@ -1,3 +1,7 @@
+- 2.23.2 : 2024-02-16
+        * Thanks to @Tribble_Fun for making notice that Strongapp exports diferent columns on iOS and Android in the csv, so i had to modify the code to account for that.
+        ? I think it might happen the same on Hevyapp importer (because they are basically clone apps...) but I don't have an iPhone to test.
+
 - 2.23.1 : 2024-02-15
         * fix importers to handle units changes and other cases.
         + allowed to select a zip file continaing a cvs 
