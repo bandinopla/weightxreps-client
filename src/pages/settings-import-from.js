@@ -25,11 +25,21 @@ const importers = [
     },
     {
         label:<a href="https://www.strong.app/" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/strongapp-logo.jpg" width={150} alt="Strongapp logo"/></a>,
-        widget:<ImportFromWStrongapp/>
+        widget:<div>
+                <ImportFromWStrongapp/><br/>
+                <Alert severity='info'>
+                    Tested on Strongapp version:<br/><b>v2.7.10</b> on <u>Android</u><br/><b>v5.15.23 (7825)</b> on <u>iOS</u>
+                </Alert>
+            </div>
     },
     {
         label:<a href="https://www.hevyapp.com/" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/heavyapp-logo.jpg" width={150} alt="Hevyapp logo"/></a>,
-        widget:<ImportFromHevyapp/>
+        widget:<div>
+            <ImportFromHevyapp/><br/>
+            <Alert severity='info'>
+                    Tested on Hevyapp <b>v1.30.31</b> on <u>Android</u>
+                </Alert>
+        </div>
     }
 ]
 

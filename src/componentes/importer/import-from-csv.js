@@ -32,9 +32,9 @@ const formatCVS = async (config, file, informStatus) => {
 
     if( config.askWeightUnitToUser === true )
     {
-        informStatus("Are the weights are in kilograms?"); 
+        informStatus("Are the weights in kilograms?"); 
 
-        if( !window.confirm("WEIGHT UNIT\n\nThe weights in the file are in (kg)Kilograms? (If you cancel then (lbs)Pounds will be assumed)\n\nAccept = KG\nCancel = LB"))
+        if( !window.confirm("WEIGHT UNIT\n\nIf not set in the file, what weight unit should be used? \n\nAccept = KG (Kilograms)\nCancel = LB (Pounds)"))
         {
             usekg = false;
         }
@@ -75,9 +75,10 @@ const formatCVS = async (config, file, informStatus) => {
                             //
                             // verify each row to make sure the schema matches what we expect...
                             //
-                            let validationResult = config.schema.validate(row, {allowUnknown:true, presence:"required"});
+                            let validationResult = config.schema.validate(row, { allowUnknown:true }); 
                             if( validationResult.error ) //validate each row.... 
                             {  
+                                console.error(validationResult.error)
                                 throw new Error("Unexpected row format. Bad .csv mabe...");
                             }
                         } 

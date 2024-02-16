@@ -3,6 +3,13 @@ import { TYPES } from "../../user-tags/data-types";
 import { ImportFromCVS } from "./import-from-csv";
 import { fixRPE } from "./fixRPE";
 
+const durationScheme = [ 
+    Joi.string().pattern(new RegExp(TYPES.TAG_TIME_h.reg)),
+    Joi.string().pattern(new RegExp(TYPES.TAG_TIME_hm.reg)),
+    Joi.string().pattern(new RegExp(TYPES.TAG_TIME_sec.reg)),
+    Joi.string().pattern(new RegExp(TYPES.TAG_TIME_hms.reg)),
+    Joi.string().allow("").optional()
+];
 
 //
 // Expected fields in the CVS...
@@ -10,15 +17,11 @@ import { fixRPE } from "./fixRPE";
 const schema = Joi.object({
     "Date": Joi.date(),
     "Workout Name": Joi.string().allow(""),
-    "Workout Duration": [ 
-        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_h.reg)),
-        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_hm.reg)),
-        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_sec.reg)),
-        Joi.string().pattern(new RegExp(TYPES.TAG_TIME_hms.reg)),
-        Joi.string().allow("")
-    ],
+    "Workout Duration": durationScheme,
+    "Duration": durationScheme,
     "Exercise Name": Joi.string(),
     "Weight":Joi.number().allow(""),
+    "Weight Unit":Joi.string().optional(),
     "Reps":Joi.number().allow(""),
     "Workout Notes":Joi.string().allow(""),
     "RPE":Joi.number().default(0).allow(""),
@@ -30,7 +33,7 @@ const schema = Joi.object({
  * @type {import("./import-from-csv").CVSParserConfig}
  */
 const config = {
-    askWeightUnitToUser: false,
+    askWeightUnitToUser: true,
     canContinueInCaseOfError: true, 
     schema,
     verifyEachRow: true,
@@ -40,6 +43,7 @@ const config = {
             day: null,
             ename: null,
             log:"",
+            assumeWUnit: usekg? 'kg' : 'lbs', //<-- Android has the weight unit field, but iOS doesn't... 
         }
     },
 
@@ -58,10 +62,11 @@ const config = {
 
             state.log += data['Workout Name']+"\n";
             dayChanged = true;
+            const duration = data["Workout Duration"] || data["Duration"] || ""; // because strongapp exports this field as "Duration" on iOS and "Workout Duration" on Android... :/
 
-            if( data["Workout Duration"].length )
+            if( duration )
             {
-                state.log += `@Workout Duration: ${data["Workout Duration"]}\n`;
+                state.log += `@Workout Duration: ${duration}\n`;
             }
 
             //
@@ -77,12 +82,12 @@ const config = {
         // EROW
         //
         const ename = data['Exercise Name'];
-        const wUnit = data["Weight Unit"] || "kg";
+        const wUnit = data["Weight Unit"] || state.assumeWUnit;
         let W = parseFloat(data["Weight"]) || 1;
         let R = parseFloat(data["Reps"]) || 1; 
         let RPE = fixRPE( parseFloat(data["RPE"] )) || ""; 
         const distance = parseFloat(data["Distance"]) || 0;
-        const distanceUnit = data["Distance Unit"] || "km";
+        const distanceUnit = data["Distance Unit"] || ( wUnit=='kg'? "km" : "mi" ); //<--- assume km is weight is metric system. else assume miles...
 
         //
         // we dont support distance exercises but we can logg it as a custom user tag
