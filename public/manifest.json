@@ -1,14 +1,29 @@
 {
   "short_name": "weightxreps",
   "name": "Weight For Reps",
-  "icons": [
+  "description": "Weight for reps is a training journal logging tool to help you keep track of your weight training.",
+  "icons": [ 
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    } 
+        "src": "logo-512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
   ],
-  "start_url": ".",
+  "screenshots":[
+    {
+        "src": "screenshot.png",
+        "type": "image/png",
+        "sizes": "768x384",
+        "form_factor": "wide"
+      },
+      {
+        "src": "mobile-screenshot.png",
+        "type": "image/png",
+        "sizes": "344x746",
+        "form_factor": "narrow"
+      }
+  ],
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
