@@ -6,6 +6,7 @@ import { JOwnerContext } from '../pages/journal-context';
 import { useGetYearOverviewQuery } from '../data/generated---db-types-and-hooks';
 import { parseError } from '../data/db';
 import { useDarkModeOn } from '../MainTheme';
+import { useGetSession, useReactiveSetting } from '../session/session-handler';
 
 /**
  * @typedef {Object} YearOVerviewParams
@@ -14,6 +15,7 @@ import { useDarkModeOn } from '../MainTheme';
  * @property {(day:Date)=>void} onClickDay
  * @property {Date} focusOn
  * @property {JSX.Element?} header Header to use instead of the month's names.
+ * @property {number} firstDayOfWeek 0=sunday 6=Saturday
  */
 
 /**
@@ -25,15 +27,20 @@ import { useDarkModeOn } from '../MainTheme';
 
 /**
  * @typedef {Object} CalInfo
- * @property {Date[]} dates 
+ * @property {Array<Date>} dates 
  * @property {MonthLabel[]} months
  * @property {number} weeks
+ * @property {number} year
  */
 
 
 export const YearOVerview = ({ ymd })=>{
     const jowner    = useContext( JOwnerContext );
     const darkMode = useDarkModeOn();
+    const { userSettings }  = useGetSession(); 
+    const firstDayOfWeek    = useReactiveSetting( userSettings?.firstDayOfWeek );
+    const $startDay         = firstDayOfWeek || 0;
+
     const { loading, data, error } = useGetYearOverviewQuery({
         variables: {
             uid: jowner.id,
@@ -48,11 +55,14 @@ export const YearOVerview = ({ ymd })=>{
         ;
     }; 
 
-    return <div className={darkMode? styles.dark:styles.light }><YearOVerviewGrid ymd={ymd} 
+    return <div className={darkMode? styles.dark:styles.light } style={{marginBottom:10}}>
+        
+                <YearOVerviewGrid ymd={ymd} 
                             daysData={ data?.getYearOverview } 
                             focusOn={ymd2date(ymd,true)} 
                             onClickDay={onClickDay}
                             header={error? <i>{"Failed to load year overview due to: "+parseError(error)}</i> : null}
+                            firstDayOfWeek={$startDay}
                             />
                             </div>
 };
@@ -70,7 +80,7 @@ const colorStyles = [
  * @param {YearOVerviewParams} param0 
  * @returns 
  */
-const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header })=>{ 
+const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header, firstDayOfWeek })=>{ 
 
     /**
      * @type {CalInfo}
@@ -122,10 +132,10 @@ const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header })=>{
         });
  
         return {
-            dates, months, weeks
+            dates, months, weeks, year:d.getFullYear()
         }
 
-    },[ymd]); 
+    },[ymd, firstDayOfWeek]); 
 
     /**
      * Determines the color of the cell
@@ -142,28 +152,36 @@ const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header })=>{
             return styles.cellOnFocus+" PR";
         }
 
+        if( d.getFullYear()!=calInfo.year )
+        {
+            return styles.hiddenCell;
+        }
+
         if( daysData )
         {
-            return colorStyles[ daysData[i] ];
+            return colorStyles[ daysData[i+firstDayOfWeek] ];
         }
 
         return "";
     }
 
-    
-
-    return <div> 
-
-        {
-            header || <div className={styles.monthNames}>
-            { calInfo.months.map( (monthLabel,i) =><div key={i}>{monthLabel.count>2? monthLabel.name : ""}</div> )}
+     
+    return <div className={styles.layout}>
+        <div className={styles.year}>
+            {  calInfo.year.toString().split("").map(l=><div>{l}</div>) }
         </div>
-        }
-        
-        <div className={styles.container}>
-
-            { calInfo.dates.map((d,i)=><div key={i} className={styles.item+" "+cellColor(i,d)} onClick={()=>onClickDay(d)}></div> ) }
+        <div className={styles.mainArea}>  
+            {
+                header || <div className={styles.monthNames}>
+                { calInfo.months.map( (monthLabel,i) =><div key={i}>{monthLabel.count>2? monthLabel.name : ""}</div> )}
+            </div>
+            }
             
+            <div className={styles.container}>
+
+                { calInfo.dates.slice(firstDayOfWeek).map((d,i)=><div key={i} className={styles.item+" "+cellColor(i,d)} onClick={()=>onClickDay(d)}></div> ) }
+                
+            </div>
         </div>
     </div>;
 }

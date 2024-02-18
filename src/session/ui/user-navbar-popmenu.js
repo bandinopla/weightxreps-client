@@ -22,6 +22,8 @@ import { JEditorButton } from "../../componentes/journal/editor-button";
 import AddIcon from '@material-ui/icons/Add';
 import { OpenDMButton } from "./dms-window/dm-window";
 import RssFeedIcon from '@material-ui/icons/RssFeed';
+import { openExercisesModal } from "../../componentes/journal/exercises";
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
 // user: es un objeto que vino del server...
 export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
@@ -84,6 +86,12 @@ export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
                             <ListItemIcon><EventIcon/></ListItemIcon>
                             <ListItemText>My Journal</ListItemText>
                         </ListItem>
+
+                        <ListItem button onClick={ ()=>openExercisesModal(0) || close() }>
+                            <ListItemIcon><FitnessCenterIcon/></ListItemIcon>
+                            <ListItemText>My Exercises</ListItemText>
+                        </ListItem>
+
                         <ListItem button onClick={ ()=>history.push("/following") || close() }>
                             <ListItemIcon><BookmarksIcon/></ListItemIcon>
                             <ListItemText>Following</ListItemText>

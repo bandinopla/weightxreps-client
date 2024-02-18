@@ -24,9 +24,7 @@ import WeightValue from '../componentes/weight-value';
 import { parseError } from '../data/db';
 import { useGetUserInfoQuery } from '../data/generated---db-types-and-hooks';
 import { OpenDMButton } from '../session/ui/dms-window/dm-window';
-import { todayAsYMD } from '../utils/utils';
-
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import { todayAsYMD } from '../utils/utils'; 
 import { JOwnerContext } from './journal-context';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { YearOVerview } from '../componentes/year-overview';
@@ -114,7 +112,9 @@ export default function({ match:{  path, url, params:{ uname } } }) {
                                                 <Route>
                                                     <div style={{marginTop:10}}>
                                                         <Button onClick={()=>history.push(`${url}/achievements`)} startIcon={<AccessTimeIcon/>} variant="contained" color="primary" fullWidth>Achievements</Button>
-                                                    </div>
+                                                        <OpenDMButton otherUser={uinfo.user} style={{marginRight:22, marginTop:5}} fullWidth/>
+                                                        <br/><br/><FollowButton/> 
+                                                    </div> 
                                                 </Route>
 
                                             </Switch>
@@ -122,14 +122,7 @@ export default function({ match:{  path, url, params:{ uname } } }) {
                                         </UCard>
                                     </Box>
                                 </Grid>
-                                <Grid item xs={12} sm={8}> 
-
-                                    <Box textAlign="right" marginBottom={1}>
-                                     
-                                            <OpenDMButton otherUser={uinfo.user} style={{marginRight:22}}/>
-                                            <Button startIcon={<FitnessCenterIcon/>} onClick={()=>openExercisesModal(0)} variant="outlined" style={{marginRight:22}}>Exercises</Button>
-                                            <FollowButton/> 
-                                    </Box>
+                                <Grid item xs={12} sm={8}>  
 
                                     <Suspense fallback={<div>Loading stats...</div>}>
                                     <Switch> 
@@ -181,11 +174,11 @@ export default function({ match:{  path, url, params:{ uname } } }) {
                         {/* === SIDE BAR === */}
                         <Grid item xs={12} md={4}  >
 
-                            <Paper style={{width:300, padding:10, marginBottom:6}}>
+                            {/* <Paper style={{width:300, padding:10, marginBottom:6}}>
                                 <RedGuyBanner variant='random'/>
                             </Paper>
 
-                            <SideBanners/>
+                             */}<SideBanners/>
                             <Hidden smDown>
                                 
                                 <Switch>

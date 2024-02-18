@@ -56,3 +56,30 @@
 .cellOnFocus {
     background-color: red; 
 }
+.hiddenCell {
+    visibility: hidden;
+}
+
+.layout {
+    display: flex;
+    gap: 5px;
+}
+.mainArea {
+    flex-grow: 1;
+}
+.year {
+    flex-shrink:1;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-around;
+    background-color: #444;
+    color:white;
+    padding: 3px 8px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    font-weight: bold;
+}
+.year > div { 
+}
