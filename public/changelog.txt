@@ -1,3 +1,8 @@
+- 2.24.0 : 2024-02-18
+        + added year overview calendar in the journals, to see the entire year overview of what was done.
+        * moved button "my exercises" to the contextual menu 
+        * moved button "follow" and "send DM" to the user card on the left 
+
 - 2.23.2 : 2024-02-16
         * Thanks to @Tribble_Fun for making notice that Strongapp exports diferent columns on iOS and Android in the csv, so i had to modify the code to account for that.
         ? I think it might happen the same on Hevyapp importer (because they are basically clone apps...) but I don't have an iPhone to test.
