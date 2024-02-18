@@ -1,0 +1,58 @@
+:root {
+    --height: 70px; 
+
+}
+
+.dark {
+    --borderColor:rgba(0,0,0,0.4);
+    --cell0: rgba(0,0,0,0.4);
+    --cell1: #09C2D6;
+    --cell2: #079DAD;
+    --cell3: #057885;
+    --cell4: #04535C;
+}
+
+.light {
+    --borderColor:white;
+    --cell0: #EBEDF0;
+    --cell1: #09C2D6;
+    --cell2: #079DAD;
+    --cell3: #057885;
+    --cell4: #04535C;
+} 
+  
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: var(--height); /* Set the height of the container */
+  }
+  
+.item { 
+    height: calc( var(--height)/7); /* Set the height of each item */  
+    border-right: 1px solid var(--borderColor);
+    border-bottom: 1px solid var(--borderColor);
+    border-radius: 3px;
+    background-color: var(--cell0);
+}
+
+.monthNames {
+    display: flex;
+    color: #666;;
+    font-size: 0.9em;
+}
+.monthNames > div {
+    flex-grow: 1;
+    text-align: center;
+    
+}
+ 
+.cell1 { background-color: var(--cell1); } 
+.cell2 { background-color: var(--cell2); } 
+.cell3 { background-color: var(--cell3); } 
+.cell4 { background-color: var(--cell4); } 
+
+.cellOnFocus {
+    background-color: red; 
+}

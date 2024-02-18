@@ -183,7 +183,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
     const go = (dir)=>{  
 
-            if( dir===0 )
+            if( !dir || dir===0 )
             {
                 setCursor(pinnedDay);
                 return;
@@ -203,6 +203,16 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
             setCursor( d.valueOf() ); 
     };
+
+
+    useEffect(()=>{
+        const focusCalendar = ()=>{ 
+            go(0)
+        };
+        document.body.addEventListener("calendar:focus", focusCalendar);
+        return ()=>document.body.removeEventListener("calendar:focus", focusCalendar);
+
+    },[ymd]);
  
  
     

@@ -625,6 +625,7 @@ export type Query = {
   getTwitterChallengesStates?: Maybe<Array<Maybe<TweetState>>>;
   getUserSettings: Array<Maybe<UserSetting>>;
   getVideos?: Maybe<Array<Maybe<Video>>>;
+  getYearOverview?: Maybe<Array<Maybe<Scalars['Int']>>>;
   jday?: Maybe<JLog>;
   jeditor?: Maybe<JEditorData>;
   jrange?: Maybe<JRangeData>;
@@ -712,6 +713,12 @@ export type QueryGetNotificationsArgs = {
 export type QueryGetPRsOfArgs = {
   eid: Scalars['ID'];
   till?: InputMaybe<Scalars['YMD']>;
+};
+
+
+export type QueryGetYearOverviewArgs = {
+  uid: Scalars['ID'];
+  year: Scalars['Int'];
 };
 
 
@@ -1106,6 +1113,14 @@ export type GetCalendarDaysQueryVariables = Exact<{
 
 
 export type GetCalendarDaysQuery = { __typename?: 'Query', getCalendarDays?: Array<any | null> | null };
+
+export type GetYearOverviewQueryVariables = Exact<{
+  uid: Scalars['ID'];
+  year: Scalars['Int'];
+}>;
+
+
+export type GetYearOverviewQuery = { __typename?: 'Query', getYearOverview?: Array<number | null> | null };
 
 export type JDayQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -2248,6 +2263,40 @@ export function useGetCalendarDaysLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetCalendarDaysQueryHookResult = ReturnType<typeof useGetCalendarDaysQuery>;
 export type GetCalendarDaysLazyQueryHookResult = ReturnType<typeof useGetCalendarDaysLazyQuery>;
 export type GetCalendarDaysQueryResult = Apollo.QueryResult<GetCalendarDaysQuery, GetCalendarDaysQueryVariables>;
+export const GetYearOverviewDocument = gql`
+    query GetYearOverview($uid: ID!, $year: Int!) {
+  getYearOverview(uid: $uid, year: $year)
+}
+    `;
+
+/**
+ * __useGetYearOverviewQuery__
+ *
+ * To run a query within a React component, call `useGetYearOverviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetYearOverviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetYearOverviewQuery({
+ *   variables: {
+ *      uid: // value for 'uid'
+ *      year: // value for 'year'
+ *   },
+ * });
+ */
+export function useGetYearOverviewQuery(baseOptions: Apollo.QueryHookOptions<GetYearOverviewQuery, GetYearOverviewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetYearOverviewQuery, GetYearOverviewQueryVariables>(GetYearOverviewDocument, options);
+      }
+export function useGetYearOverviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetYearOverviewQuery, GetYearOverviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetYearOverviewQuery, GetYearOverviewQueryVariables>(GetYearOverviewDocument, options);
+        }
+export type GetYearOverviewQueryHookResult = ReturnType<typeof useGetYearOverviewQuery>;
+export type GetYearOverviewLazyQueryHookResult = ReturnType<typeof useGetYearOverviewLazyQuery>;
+export type GetYearOverviewQueryResult = Apollo.QueryResult<GetYearOverviewQuery, GetYearOverviewQueryVariables>;
 export const JDayDocument = gql`
     query JDay($uid: ID!, $ymd: YMD) {
   jday(uid: $uid, ymd: $ymd) {

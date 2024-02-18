@@ -29,6 +29,7 @@ import { todayAsYMD } from '../utils/utils';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import { JOwnerContext } from './journal-context';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import { YearOVerview } from '../componentes/year-overview';
 
 //import { PRsHistoryTable } from '../componentes/journal/prs-history'; 
 //const JRange        = lazy(()=>import("../componentes/journal/jrange"));
@@ -133,6 +134,7 @@ export default function({ match:{  path, url, params:{ uname } } }) {
                                     <Suspense fallback={<div>Loading stats...</div>}>
                                     <Switch> 
                                         <Route path={path+YMD_PATH_MATCHER+RANGE_MATCHER+"?"} render={ ({match:{params}, location})=>(<>
+                                                <YearOVerview ymd={params.ymd}/>
                                                 <Calendario ymd={params.ymd} rangeHighlight={ params.range?.substr(1) } />
                                                 <Box paddingLeft="10%"> 
                                                     <CalendarioZoomSlider currentSelection={Number(params.range?.substr(1) || 0)} onSelect={ v=>onClickOnRange( params.ymd, v) } />
