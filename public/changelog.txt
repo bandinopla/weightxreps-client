@@ -1,3 +1,6 @@
+- 2.25.0 : 2024-02-19
+        + added tiny widget to see all the years logged and sync the navigation between the calendars to quickly switch years.
+
 - 2.24.0 : 2024-02-18
         + added year overview calendar in the journals, to see the entire year overview of what was done.
         * moved button "my exercises" to the contextual menu 

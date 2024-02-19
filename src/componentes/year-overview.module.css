@@ -72,14 +72,32 @@
     flex-grow: 0;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    justify-content: space-around;
-    background-color: #444;
-    color:white;
-    padding: 3px 8px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    align-items: center;
+    justify-content: space-around; 
+    padding: 3px 8px; 
     font-weight: bold;
 }
-.year > div { 
+.year > div {
+    padding: 3px 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease-in;
+    border-radius: 20px;
+}
+
+.year > div:hover {
+    background-color: #999;
+    color: white; 
+}
+
+.pinnedYear {
+    background-color: #444;
+    color: white; 
+}
+.year > div.btn { 
+    height: 24px; 
+}
+.hidden {
+    pointer-events: none;
+    opacity: 0.2;
 }

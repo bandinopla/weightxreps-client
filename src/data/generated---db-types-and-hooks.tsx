@@ -626,6 +626,7 @@ export type Query = {
   getUserSettings: Array<Maybe<UserSetting>>;
   getVideos?: Maybe<Array<Maybe<Video>>>;
   getYearOverview?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  getYearsLogged?: Maybe<Array<Maybe<Scalars['Int']>>>;
   jday?: Maybe<JLog>;
   jeditor?: Maybe<JEditorData>;
   jrange?: Maybe<JRangeData>;
@@ -719,6 +720,11 @@ export type QueryGetPRsOfArgs = {
 export type QueryGetYearOverviewArgs = {
   uid: Scalars['ID'];
   year: Scalars['Int'];
+};
+
+
+export type QueryGetYearsLoggedArgs = {
+  uid: Scalars['ID'];
 };
 
 
@@ -1120,7 +1126,7 @@ export type GetYearOverviewQueryVariables = Exact<{
 }>;
 
 
-export type GetYearOverviewQuery = { __typename?: 'Query', getYearOverview?: Array<number | null> | null };
+export type GetYearOverviewQuery = { __typename?: 'Query', getYearOverview?: Array<number | null> | null, getYearsLogged?: Array<number | null> | null };
 
 export type JDayQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -2266,6 +2272,7 @@ export type GetCalendarDaysQueryResult = Apollo.QueryResult<GetCalendarDaysQuery
 export const GetYearOverviewDocument = gql`
     query GetYearOverview($uid: ID!, $year: Int!) {
   getYearOverview(uid: $uid, year: $year)
+  getYearsLogged(uid: $uid)
 }
     `;
 
