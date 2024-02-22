@@ -133,10 +133,13 @@ export const BaseTheme = {
   var v = JSON.parse(storage.getItem("darkON"));
   var darkModeCurrentValue = false;
 
-  if( typeof v =='boolean' )
+  if( typeof v =='number' ) // if it is defined by the user...
   {
-      darkModeCurrentValue = v;
-      
+      darkModeCurrentValue = Boolean(v);
+  }
+  else // if the system prefers dark mode...
+  {
+    darkModeCurrentValue = (window.hasOwnProperty("matchMedia") && window.matchMedia('(prefers-color-scheme: dark)').matches);
   }
 
 const DarkModeOn = makeVar(darkModeCurrentValue);

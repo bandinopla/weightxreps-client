@@ -32,12 +32,13 @@ export const defaultPaletteColors = {
 //];
  
 
-export const applyPaletteColorsToTheme = ( colors, theme )=> {
+export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
  
     if(!colors) return theme;
 
     const ntheme = { ...theme }
 
+    ntheme.palette.type = isDarkTheme? 'dark':'light';
     ntheme.referenceLineColor = alpha(colors.backgroundColorOnTop, 0.2)  ;
     ntheme.ucardBgColor = alpha("#fff", 0.1)//lighten(colors.backgroundColor, 0.3)
 
@@ -182,7 +183,7 @@ export const useColorThemeManager = ( id )=>{
         
         },
 
-        getTheme: mode=> applyPaletteColorsToTheme(  getColorPalette(mode) , createTheme( MainTheme ) ), 
+        getTheme: mode=> applyPaletteColorsToTheme(  mode, getColorPalette(mode) , createTheme( MainTheme ) ), 
 
         getColorPalette, 
     }

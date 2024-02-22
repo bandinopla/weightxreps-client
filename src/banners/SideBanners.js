@@ -71,7 +71,7 @@ const Banner = ({ src }) => {
 					height: "100%",
 					//backgroundImage: `repeating-linear-gradient(41deg, ${theme.PINK_COLOR} 0, ${theme.PINK_COLOR} 2px, transparent 0, transparent 50%)`,
 					//backgroundSize: "12px 12px",
-                    background:"#eee"
+                    background:theme.palette.background.paper
 				}}
 			></div>
 			<div
@@ -84,7 +84,7 @@ const Banner = ({ src }) => {
 					height: "100%",
 					//backgroundImage: `repeating-linear-gradient(41deg, ${theme.GREEN_COLOR} 0, ${theme.GREEN_COLOR} 1px, transparent 0, transparent 50%)`,
 					//backgroundSize: "11px 11px",
-                    background:"#eee"
+                    background:theme.palette.background.paper
 				}}
 			></div>
 
