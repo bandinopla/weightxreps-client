@@ -25,7 +25,8 @@ export const defaultPaletteColors = {
 // 0 LIGHT MODE
 // 1 DARK MODE
 //
- export const ColorSchemes =  [{"backgroundColor":"#FAFAFA","backgroundColorOnTop":"#6a798b","mainColor":"#3574a5","mainColorOnTop":"#e3edf2","secondaryColor":"#68a9bd","secondaryColorOnTop":"#ffffff","dataCellColor":"#3b434d","dataCellColorOnTop":"#d6dadf","undefined":"#d2b3b3"},{"backgroundColor":"#2a2a2b","backgroundColorOnTop":"#b3b3bb","mainColor":"#035699","mainColorOnTop":"#bec9cf","secondaryColor":"#7f93a1","secondaryColorOnTop":"#0d0f0d","dataCellColor":"#000000","dataCellColorOnTop":"#899091","undefined":"#d2b3b3"}]
+ export const ColorSchemes =  [{ /* LIGHT */"backgroundColor":"#FAFAFA","backgroundColorOnTop":"#6a798b","mainColor":"#3574a5","mainColorOnTop":"#e3edf2","secondaryColor":"#68a9bd","secondaryColorOnTop":"#ffffff","dataCellColor":"#3b434d","dataCellColorOnTop":"#d6dadf","undefined":"#d2b3b3"},
+                                 /* DARK */{"backgroundColor":"#333333","backgroundColorOnTop":"#a9a9ad","mainColor":"#45abff","mainColorOnTop":"#bec9cf","secondaryColor":"#7f93a1","secondaryColorOnTop":"#0d0f0d","dataCellColor":"#0d0a0a","dataCellColorOnTop":"#cfdee0","undefined":"#d2b3b3"}]
 //[
 //     {"backgroundColor":"#f1f7f7","backgroundColorOnTop":"#1a314e","mainColor":"#6c786c","mainColorOnTop":"#ffffff","secondaryColor":"#ff00ca","secondaryColorOnTop":"#e3eee3","dataCellColor":"#000000","dataCellColorOnTop":"#f7f7f7","undefined":"#d2b3b3"},
 //     {"backgroundColor":"#000000","backgroundColorOnTop":"#ffffff","mainColor":"#6c786c","mainColorOnTop":"#ffffff","secondaryColor":"#ff00ca","secondaryColorOnTop":"#e3eee3","dataCellColor":"#000000","dataCellColorOnTop":"#f7f7f7","undefined":"#d2b3b3"}
@@ -40,7 +41,7 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
 
     ntheme.palette.type = isDarkTheme? 'dark':'light';
     ntheme.referenceLineColor = alpha(colors.backgroundColorOnTop, 0.2)  ;
-    ntheme.ucardBgColor = alpha("#fff", 0.1)//lighten(colors.backgroundColor, 0.3)
+    ntheme.ucardBgColor = isDarkTheme? alpha("#fff", 0.1) : alpha("#000", 0.01)//lighten(colors.backgroundColor, 0.3)
 
     ntheme.palette.background = {
         default: colors.backgroundColor,

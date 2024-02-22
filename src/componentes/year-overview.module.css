@@ -4,8 +4,8 @@
 }
 
 .dark {
-    --borderColor:rgba(0,0,0,0.4);
-    --cell0: rgba(0,0,0,0.4);
+    --borderColor:rgba(0,0,0,0.1);
+    --cell0: rgba(0,0,0,0.2);
     --cell1: #09C2D6;
     --cell2: #079DAD;
     --cell3: #057885;

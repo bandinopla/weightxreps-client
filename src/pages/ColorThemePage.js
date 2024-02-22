@@ -171,7 +171,7 @@ function ColorThemePage() {
                                 </div>
 
                             </div>
-                            <ThemeProvider theme={ applyPaletteColorsToTheme(colors, theme) } >
+                            <ThemeProvider theme={ applyPaletteColorsToTheme(darkModeON, colors, theme) } >
                             <MockSiteSkeleton/>
                             </ThemeProvider>
                         </Grid>
