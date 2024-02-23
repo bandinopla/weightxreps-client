@@ -196,7 +196,7 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
             //halfW
             ctx.font = "bold 15px arial";
             ctx.textBaseline = "middle";
-            let lbl = reps.toString();
+            let lbl = "x"+reps.toString();
   
             ctx.strokeStyle = "rgb(255 255 255 / 90%)"
             ctx.strokeText(lbl, metrics.halfW, metrics.halfH);
