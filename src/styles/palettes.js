@@ -112,9 +112,12 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
         color: darken( colors.backgroundColorOnTop, 0.3)
     }
 
-    // ntheme.overrides.MuiSvgIcon = {
-    //     root: { color: colors.backgroundColorOnTop  }
-    // }
+    ntheme.overrides.MuiButtonBase = {
+        root: { color: colors.backgroundColorOnTop  }
+    }
+    ntheme.overrides.MuiListItemIcon = {
+        root: { color: colors.backgroundColorOnTop  }
+    }
 
     ntheme.dataCell = { 
             background: colors.dataCellColor,
