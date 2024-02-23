@@ -1,3 +1,7 @@
+- 2.25.1 : 2024-02-23
+        * Dark mode & palette tweaks
+        * Bar Icons from css spritesheet to canvas (looks a bit nicer)
+
 - 2.25.0 : 2024-02-19
         + added tiny widget to see all the years logged and sync the navigation between the calendars to quickly switch years.
 
