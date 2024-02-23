@@ -10,7 +10,7 @@ const normalPlates = [
     [15, 4,.8,"#FFCC00"],
     [10, 4,.6,"#339900"],
     [5, 3,.53,"#CCCCCC"],
-    [2.5, 3,.45,"#444"],
+    [2.5, 3,.45,"#666"],
     [1.25, 2,.25,"#000"]
 ]
 
@@ -76,7 +76,7 @@ const plate = (ctx, metrics, info, scale) => {
  * @param {number} w 
  * @returns 
  */
-const drawPlatesForWeight = (ctx, metrics, w) => {
+const drawPlatesForWeight = (ctx, metrics, w, customBarColor) => {
 
     const plates = w>=400? bigPlates : normalPlates;
 
@@ -88,7 +88,7 @@ const drawPlatesForWeight = (ctx, metrics, w) => {
             gradient.addColorStop(1, "#aaa");
 
     //#region bar
-    ctx.strokeStyle = gradient; 
+    ctx.strokeStyle = customBarColor ?? gradient; 
     ctx.lineWidth = 3;  
 
     drawLine(ctx, metrics, 0,metrics.halfH, metrics.halfW, metrics.halfH);//bar
@@ -99,7 +99,7 @@ const drawPlatesForWeight = (ctx, metrics, w) => {
 
     w -= 20; //bar
 
-    if(w<20) 
+    if(w<0) 
     {  
         return false;
     } 
@@ -135,7 +135,6 @@ const drawPlatesForWeight = (ctx, metrics, w) => {
         scale = availSpace / platesWidth; 
     }
 
-    console.log("***", platesWidth, availSpace)
     //draw
     platesToDraw.forEach(p=>{
         metrics.plateX = plate(ctx, metrics, p, scale);
@@ -187,16 +186,16 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
 
         metrics.plateX = metrics.barStart;  
 
-        drawPlatesForWeight(ctx, metrics, weight);
+        drawPlatesForWeight(ctx, metrics, weight, reps===0? "#f00" : null);
 
         //#region Reps Label
-        if( reps>1 )
+        const lbl = reps===0? ":(" : reps>1? "x"+reps.toString() : null;
+        if( lbl )
         {
             ctx.textAlign = "center"; 
             //halfW
             ctx.font = "bold 15px arial";
             ctx.textBaseline = "middle";
-            let lbl = "x"+reps.toString();
   
             ctx.strokeStyle = "rgb(255 255 255 / 90%)"
             ctx.strokeText(lbl, metrics.halfW, metrics.halfH);

@@ -219,7 +219,7 @@ export default function Eblock({ data }){
                                 &nbsp;x <b className="r">{ set.r }</b> x <b>{ set.s }</b></div> 
 
                         <div className="bar">
-                            <Barra weight={set.weight}/> 
+                            <Barra weight={set.weight} reps={set.r===0? 0 : null}/> 
                         </div> 
 
                         <div style={{flexGrow:1, overflow:"hidden"}} className="effint">
