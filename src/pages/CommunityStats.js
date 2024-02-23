@@ -332,7 +332,7 @@ const _weightRenderer = item => {
                     <Grid container> 
                     
                     <Grid item xs={5}> 
-                        <Barra weight={w} reps={!item.originalw? item.reps : 0 }/>   
+                        <Barra weight={w} reps={!item.originalw? item.reps : null }/>   
                         <RankPosition pos={item.rank}/>
                         <Box textAlign="center">
                             <strong>{item.originalw?"~":""}<WeightValue round={item.originalw!=null} value={w} inkg={!item.w.lb}/></strong>
