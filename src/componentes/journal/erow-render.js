@@ -1,10 +1,9 @@
-import { Box, Button, Divider, Paper, Tooltip, Typography } from '@material-ui/core';
+import { Box, Divider, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 import Alert from '@material-ui/lab/Alert';
 import { useTheme } from '@material-ui/styles';
-import React, { useContext, useRef } from 'react';
-import { ifDark } from '../../MainTheme';
+import { useContext, useRef } from 'react';
 import { JOwnerContext } from '../../pages/journal-context';
 import Barra from '../barras';
 import { OpenConfirmModal } from '../Dialog';
@@ -16,6 +15,7 @@ import celebrateGIF from "./celebrate.gif";
 import "./erow-render.css";
 import { JDayContext } from './jday-context';
 import { useHistory } from "react-router-dom";
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 
 const effintLink = {
     textDecoration:"underline",
@@ -185,7 +185,7 @@ export default function Eblock({ data }){
                 <Box padding={1} paddingLeft={2}>
                     {/*<Typography variant="h6" gutterBottom>#<b>{ data.exerciseRef.exercise.name }</b></Typography> */}
 
-                    <Button style={{float:"right"}} variant="outlined" onClick={()=>history.push(`/journal/${jowner.uname}/personal-records--${data.exerciseRef.exercise.id}`)}>Personal Records</Button>
+                    <IconButton style={{float:"right"}} variant="outlined" title='Personal Records' onClick={()=>history.push(`/journal/${jowner.uname}/personal-records--${data.exerciseRef.exercise.id}`)}><MenuBookIcon/></IconButton>
                     <Ename gutter {...data.exerciseRef.exercise} variant="h6"/>
 
                     <div className={classes.stat}> 
