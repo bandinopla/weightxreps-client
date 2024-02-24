@@ -163,6 +163,6 @@ const JoinedTag = ({ label, years}) => {
 
 const OGSeal = ()=>{
     //return <div style={{ position:"absolute", top:45, right:0, transform:"scale(0.7)"}}><img src="/og.png" title='Member since year 1'/></div>
-    return <span className='og' title='Member since year 1'>OG</span>
+    return <span className='og' title='Member since year 1'>OG :)</span>
 }
 

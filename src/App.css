@@ -87,6 +87,7 @@ background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%,
     margin-left: 3px;
     border-radius: 4px;
     font-family: monospace;
+    transform: rotate(5deg);
 }
 .rainbow1.silver {
     background: rgb(121,144,148);
