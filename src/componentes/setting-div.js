@@ -8,7 +8,7 @@ const $settingsPanelOpen = makeVar(false);
 export const ActiveSettingContext = createContext(()=>{});
 
 
-export const SettingDiv = ({title, desc, children})=>{
+export const SettingDiv = ({title, desc, children, Icon})=>{
 
     const expanded  = useReactiveVar($settingsPanelOpen);
     const classes   = {}; //useSettingsStyles();
@@ -19,8 +19,7 @@ export const SettingDiv = ({title, desc, children})=>{
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />} 
                     >
-                    <Typography>{ title }</Typography> &nbsp;( 
-                    <Typography variant='caption'>{ desc || "..." }</Typography> )
+                    <Typography title={desc} className='vertically-aligned'>{Icon} &nbsp;&nbsp;{ title }</Typography> 
                     </AccordionSummary>
                     <AccordionDetails style={{ flexDirection:"column"}}>
                         {children}

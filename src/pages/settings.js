@@ -24,6 +24,24 @@ import { DownloadWidget } from './download-logs-widget';
 import { useGetSession } from '../session/session-handler';
 import { SettingDiv } from '../componentes/setting-div';
 import { ImportFromWidget } from './settings-import-from';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import PublishIcon from '@material-ui/icons/Publish';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import EditIcon from '@material-ui/icons/Edit';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+import RssFeedIcon from '@material-ui/icons/RssFeed';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import WcIcon from '@material-ui/icons/Wc';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import PregnantWomanIcon from '@material-ui/icons/PregnantWoman';
+import LockIcon from '@material-ui/icons/Lock';
+import CakeIcon from '@material-ui/icons/Cake';
+import FlagIcon from '@material-ui/icons/Flag';
+import BlockIcon from '@material-ui/icons/Block';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import GridOnIcon from '@material-ui/icons/GridOn';
+import FunctionsIcon from '@material-ui/icons/Functions';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 export const useSettingsStyles = makeStyles( theme=>({
     input: {
@@ -84,14 +102,14 @@ export default function() {
                             { loading && <AsciiSpinner label="Loading settings..."/>}
 
                 { settings && <>
-                            <SettingDiv title="Download logs" desc="Download all your logs..."> 
+                            <SettingDiv title="Download logs" desc="Download all your logs..." Icon={<GetAppIcon/>}> 
                                 <DownloadWidget user={session?.user}/>
                             </SettingDiv>
-                            <SettingDiv title="Import Workouts" desc="Import workout data from a backup...">
+                            <SettingDiv title="Import Workouts" desc="Import workout data from a backup..." Icon={<PublishIcon/>}>
                                 <ImportFromWidget user={session?.user}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Change profile picture" desc="Change your avatar...">
+                            <SettingDiv title="Change profile picture" desc="Change your avatar..." Icon={<AccountBoxIcon/>}>
                                 <Grid container>
                                     <Grid item md={3}> 
                                         <UAvatarFromUserQL userQL={session.user} width={155} height={67} className="rounded" />
@@ -104,27 +122,27 @@ export default function() {
                                 </Grid>
                             </SettingDiv>
 
-                            <SettingDiv title="Change Username" desc="Change your username">
+                            <SettingDiv title="Change Username" desc="Change your username" Icon={<EditIcon/>}>
                                 <MustBeSOK user={session?.user}/>
                                 <ChangeUsernameWidget setting={ settings.getUserSettings.find(s=>s.id=='username')}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Change Email" desc="How to contact you in case the agency needs you... j/k ">
+                            <SettingDiv title="Change Email" desc="How to contact you in case the agency needs you... j/k " Icon={<AlternateEmailIcon/>}>
                                 <EmailChangeWidget setting={ settings.getUserSettings.find(s=>s.id=='email')}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Allow Emails" desc="Do you allow recieving emails in your inbox?">
+                            <SettingDiv title="Allow Emails" desc="Do you allow recieving emails in your inbox?" Icon={<RssFeedIcon/>}>
                                 <OptionsWidget successMessage="Emails notifications setting applied" hint="Do you want to recieve emails when/if someone sends you a message or comment?" 
                                                 setting={ settings.getUserSettings.find(s=>s.id=='emails-allowed')} 
                                                 />
                             </SettingDiv> 
 
 
-                            <SettingDiv title="Change Password" desc="Change it once in a while just to stay somewhat safe...">
+                            <SettingDiv title="Change Password" desc="Change it once in a while just to stay somewhat safe..." Icon={<VpnKeyIcon/>}>
                                 <PasswordChangeWidget setting={ settings.getUserSettings.find(s=>s.id=='password')}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Change Gender" desc="Color of your username and stats category">
+                            <SettingDiv title="Change Gender" desc="Color of your username and stats category" Icon={<WcIcon/>}>
                                 <OptionsWidget successMessage="Gender changed!" hint="Sets color of your username and is used to filter on the comunity stats users with your same gender." 
                                                 setting={ settings.getUserSettings.find(s=>s.id=='gender')}
                                                 onUpdateCache={ (cache, {data:{setSetting}})=>updateUserCachedData(cache, session.user.id, { isf:setSetting.i }) }
@@ -132,18 +150,18 @@ export default function() {
                             </SettingDiv> 
                             
 
-                            <SettingDiv title="Supporter Status" desc="Info about your status...">
+                            <SettingDiv title="Supporter Status" desc="Info about your status..." Icon={<FavoriteIcon/>}>
                                 <SupporterStatusWidget setting={ settings.getUserSettings.find(s=>s.id=='supstatus')}/>
                             </SettingDiv>
 
 
-                            <SettingDiv title="Hide Bodyweight" desc="Idk is this is usefull...">
+                            <SettingDiv title="Hide Bodyweight" desc="Idk is this is usefull..." Icon={<PregnantWomanIcon/>}>
                                 <OptionsWidget successMessage="Done!" hint="Hiding the bodyweight will mean only you will be able to see it. NOTE: in the community stats it might take a while to update this new value (Until the next calculation)" setting={ settings.getUserSettings.find(s=>s.id=='hidebw')}/>
                             </SettingDiv>
 
                             
 
-                            <SettingDiv title="Private mode" desc="Ninja mode... secret agent training?">
+                            <SettingDiv title="Private mode" desc="Ninja mode... secret agent training?" Icon={<LockIcon/>}>
                                 <MustBeSOK user={session?.user} extra="This is required only to turn it ON. If you turn it ON and you stop being an active supporter it will remain ON until you turn it OFF (if you ever do)"/>
                                 <OptionsWidget  successMessage="Private mode changed!" 
                                                 hint="Private means no one will be able to see your logs, only you." 
@@ -153,19 +171,19 @@ export default function() {
                             </SettingDiv> 
                             
 
-                            <SettingDiv title="Set Birthday" desc="Used to display your age, the date is not shown.">
+                            <SettingDiv title="Set Birthday" desc="Used to display your age, the date is not shown." Icon={<CakeIcon/>}>
                                 <BirthdayWidget setting={ settings.getUserSettings.find(s=>s.id=='dob')}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Country" desc="Used to show a flag next to your username...">
+                            <SettingDiv title="Country" desc="Used to show a flag next to your username..." Icon={<FlagIcon/>}>
                                 <CountryCodeWidget setting={ settings.getUserSettings.find(s=>s.id=='cc')}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Block Users" desc="Usernames to block...">
+                            <SettingDiv title="Block Users" desc="Usernames to block..." Icon={<BlockIcon/>}>
                                 <BlockedUsersWidget setting={ settings.getUserSettings.find(s=>s.id=='block')}/>
                             </SettingDiv>
 
-                            <SettingDiv title="Default weight unit" desc="Kilograms or Pounds?">
+                            <SettingDiv title="Default weight unit" desc="Kilograms or Pounds?" Icon={<FitnessCenterIcon/>}>
                                 <OptionsWidget  successMessage="Unit set!" 
                                                 hint="Weight unit to assume if you dont explicitly type it next to a weight. For example, if you type: 100x5, it should be 100lbs or 100kg?" 
                                                 setting={ settings.getUserSettings.find(s=>s.id=='uselbs')}
@@ -173,12 +191,12 @@ export default function() {
                                                 />
                             </SettingDiv>
 
-                            <SettingDiv title="RPE Table" desc="Set a custom % for a given RPE and REP...">
+                            <SettingDiv title="RPE Table" desc="Set a custom % for a given RPE and REP..." Icon={<GridOnIcon/>}>
                                 <RPETableWidget setting={ settings.getUserSettings.find(s=>s.id=='rpe')}/>
                             </SettingDiv>
 
 
-                            <SettingDiv title="Custom 1RM Factor" desc="Set a custom factor for the 1RM Formula...">
+                            <SettingDiv title="Custom 1RM Factor" desc="Set a custom factor for the 1RM Formula..." Icon={<FunctionsIcon/>}>
                                 <Custom1RMFactorWidget setting={ settings.getUserSettings.find(s=>s.id=='custom1rm')}/>
                             </SettingDiv>
 
@@ -186,7 +204,7 @@ export default function() {
                             
 
 
-                            <SettingDiv title="Delete Account" desc="Delete all data and destroy account!">
+                            <SettingDiv title="Delete Account" desc="Delete all data and destroy account!" Icon={<DeleteForeverIcon/>}>
                                 <DeleteAccountWidget setting={ settings.getUserSettings.find(s=>s.id=='del-acc')}/>
                             </SettingDiv>
 
