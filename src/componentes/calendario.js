@@ -88,6 +88,7 @@ const useStyles = makeStyles( theme => ({
             color: theme.palette.secondary.contrastText+ " !important",
             filter: "none !important",
             opacity:0.7,
+            animation:"pulse-animation 0.5s infinite ease-in-out",
             "&.hasData": {
                 opacity:1
             }
