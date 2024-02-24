@@ -32,7 +32,8 @@ const useStyles = makeStyles( theme => ({
     root: {
         margin:5,
         marginBottom:5,
-        backgroundColor: theme.ucardBgColor
+        backgroundColor: theme.ucardBgColor,
+        position:"relative" 
         
 
         ,"& .ustats": {
@@ -154,8 +155,14 @@ const JoinedTag = ({ label, years}) => {
 
     if( years>5 )
     {
-        return <span className={"rainbow1 "+ (years>=10?"gold":"silver") }>{label}</span>;
+        const isOG = years >= ((new Date().getFullYear()-2011)-1);
+        return <><span className={"rainbow1 "+ (years>=10?"gold":"silver") }>{label}</span>{isOG && <OGSeal/>}</>;
     }
     return <>{label}</>;
+}
+
+const OGSeal = ()=>{
+    //return <div style={{ position:"absolute", top:45, right:0, transform:"scale(0.7)"}}><img src="/og.png" title='Member since year 1'/></div>
+    return <span className='og' title='Member since year 1'>OG</span>
 }
 

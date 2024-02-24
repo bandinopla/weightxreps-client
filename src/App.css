@@ -68,6 +68,8 @@
     -webkit-text-fill-color: transparent; 
     display: inline-block;   
 }
+ 
+.og,
 .rainbow1.gold {
     background: rgb(97,84,48);
 background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%, rgba(190,175,101,1) 59%, rgba(103,90,51,1) 100%);
@@ -76,6 +78,15 @@ background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%,
     background-size: 200% auto;
     background-clip: text;
     animation: rainbowSlide 1s linear infinite;
+}
+.og {
+    display: inline-block;   
+    color:white;
+    background-clip:padding-box;
+    padding:0px 4px;
+    margin-left: 3px;
+    border-radius: 4px;
+    font-family: monospace;
 }
 .rainbow1.silver {
     background: rgb(121,144,148);
