@@ -1,3 +1,10 @@
+- 2.25.2 : 2024-02-24
+        * restyled some key action buttons to make them pop. 
+        * erow "Personal Records" button changed to just an icon (to make more space)
+        * "OG" indicator on users with more than 10 years in the site.
+        * added icons in the settings page to make it easier to find sections.
+        * pulse animation in calendar on the selected dates.
+
 - 2.25.1 : 2024-02-23
         * Dark mode & palette tweaks
         * Bar Icons from css spritesheet to canvas (looks a bit nicer)
