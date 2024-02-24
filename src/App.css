@@ -89,6 +89,10 @@ background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%,
     font-family: monospace;
     transform: rotate(5deg);
 }
+.og svg {
+    width: 13px; 
+    height: 13px;;
+}
 .rainbow1.silver {
     background: rgb(121,144,148);
 background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 49%, rgba(125,149,152,1) 100%);

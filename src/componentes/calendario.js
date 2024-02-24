@@ -79,7 +79,8 @@ const useStyles = makeStyles( theme => ({
        "& .pinned": {
            background:theme.palette.primary.main + " !important",
            color:theme.palette.primary.contrastText+ " !important",
-           filter: "none !important"
+           filter: "none !important",
+           animation:"pulse-animation 0.5s infinite ease-in-out"
        },
 
        "& .highlighted": {
