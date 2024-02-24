@@ -103,7 +103,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     
 
 
-    return <><ActionButton startIcon={<BtnIcon/>} {...rest} execAction={openEditor}>
+    return <><ActionButton startIcon={<BtnIcon/>} {...rest} execAction={openEditor} className="fancy">
                 {children || ( wouldBeNewLog?"New Log" :"Edit") } 
             </ActionButton> 
 

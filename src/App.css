@@ -109,3 +109,28 @@ background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 4
     text-align: center;
     display: block;
 }
+
+.MuiButton-root.fancy {
+    text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
+  background: linear-gradient(
+      15deg,
+      #880088,
+      #aa2068,
+      #cc3f47,
+      #de6f3d,
+      #f09f33,
+      #de6f3d,
+      #cc3f47,
+      #aa2068,
+      #880088
+    )
+    no-repeat;
+  background-size: 300%;
+  background-position: left center;
+  transition: background 0.3s ease;
+  color:white; 
+}
+.MuiButton-root.fancy:hover {
+    background-size: 320%;
+    background-position: right center;
+}

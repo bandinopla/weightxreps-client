@@ -45,8 +45,8 @@ export const SessionMenuChilds = ()=> {
 
                 <div className="desktop-view inline">
                     <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global" style={{margin:5}}/>
-                    <JEditorButton redirect variant="outlined" color="primary" style={{margin:5}}>
-                        <AddIcon /> 
+                    <JEditorButton redirect variant="contained" color="primary" style={{margin:5}} wouldBeNewLog={true}>
+                        Log Workout
                     </JEditorButton>  
                 </div>
 
@@ -87,7 +87,7 @@ export const SessionMenuChilds = ()=> {
                 <Button color="inherit" onClick={ ()=>history.push("/login")  } style={{marginRight:10}}>
                      Sign In 
                 </Button>  
-                <Button onClick={ ()=>history.push("/signup") } variant="contained" color="primary">
+                <Button onClick={ ()=>history.push("/signup") } variant="contained" color="primary" className="fancy">
                      Create Account  
                 </Button> 
             </div>
