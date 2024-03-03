@@ -8,11 +8,14 @@ import FlareRoundedIcon from '@material-ui/icons/FlareRounded';
 import InvertColorsIcon from '@material-ui/icons/InvertColors';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { useHistory } from "react-router-dom";
+import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
 
-export const DarkModeActivatorButton = ({ ...rest })=>{ 
+export const DarkModeActivatorButton = ({ UseButton, ...rest })=>{ 
      
     const history   = useHistory();
     const [anchorEl, setAnchorEl] = useState(null);
+    
+    UseButton = UseButton ?? Button;
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -28,9 +31,9 @@ export const DarkModeActivatorButton = ({ ...rest })=>{
     }
 
     return <>  
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={ handleClick }  >
-                    <InvertColorsIcon/>
-                </Button> 
+                <UseButton onClick={ handleClick } startIcon={<Brightness4RoundedIcon/>}>
+                    Theme
+                </UseButton> 
                 <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}

@@ -104,7 +104,7 @@ export const RPETableWidget = ({setting})=>{
     } ,[setting]);
  
 //calc(-500px + 50% ) - absolute pos y width.
-//386 HEIGHT table
+//386 HEIGHT table ----style={{width, left:`calc(-${Math.floor(width/2)}px + 50% )` }}
     return <> 
             <PercentChangeModal/>
 
@@ -118,7 +118,7 @@ export const RPETableWidget = ({setting})=>{
                 </Typography>
 
             <div className={classes.tableContainer}>
-            <TableContainer component={Paper} elevation={3} className={classes.table} style={{width, left:`calc(-${Math.floor(width/2)}px + 50% )` }}>
+            <TableContainer component={Paper} elevation={3} className={classes.table} >
                 <Table padding="checkbox" >
                 <TableHead>
                     <TableRow>

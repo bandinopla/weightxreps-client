@@ -1,3 +1,17 @@
+- 2.26.0 : 2024-03-03
+        + Mayor layout redesign & new banners 
+        + NEW! in the "home" (when logged) a side banner shows an overview of what was done by the user.
+        + NEW! in the global feed, a side widget shows the current TOP 3 in the squat, bench, deadlift and OHP for the month.
+        + NEW! Heat-map in the comunity stats showing the density of distribution of people lifting a particular weight.
+        + NEW! in the comunity stats, a side widget shows an overview display + rank of the current user in relation to the rest.
+        + NEW! SBD Score in the journals, next to each relevant set. A 5-Stars ranking based on data from openpowerlifting.org 
+        + NEW! SBD Rank side widget shows the recent lifts by the user and how they compare with the lifts from openpowerlifting.org 
+        + Added the videos section, experimental, want to see if this takes form or not... shows recent videos posted in logs.
+        + added link to our X account.
+        * Improved the FAQ/HELP section, with more questions and better filtering of them. 
+        * SBD Rank data update
+
+
 - 2.25.2 : 2024-02-24
         * restyled some key action buttons to make them pop. 
         * erow "Personal Records" button changed to just an icon (to make more space)

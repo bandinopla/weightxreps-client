@@ -1,30 +1,27 @@
-import { Box, Button, Container, Dialog, Grid, makeStyles, Typography, useTheme } from "@material-ui/core";
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
-import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-//import Typewriter from 'typewriter-effect'; 
-import FeatureCard from "./FeatureCard";
+import { Box, Button, Container, Dialog, Grid, makeStyles, Typography, useTheme } from "@material-ui/core";  
+//import Typewriter from 'typewriter-effect';  
 
-//
-import FeatureCalendarImg from "./img/feature-cal.jpg";
-import ErowsImg from "./img/erows.jpg";
-import ZoomImg from "./img/zoom-stats.jpg";
-import PRsImg from "./img/prs.jpg";
-import SinceBadgeSrc from "../../banners/since-badge.png";
-import { useGetSession } from "../../session/session-handler";
+// 
+import SinceBadgeSrc from "../../banners/since-badge.png"; 
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+
+import { FeaturesDisplay } from "./features-display";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles( theme=>({
 
-    root: {
+    root: { 
         //background: theme.palette.type=="dark"?"none": "linear-gradient(180deg, #fafafa 1%, rgba(0,0,0,0.03) 45%, #fafafa 86%)"
+         
+        paddingTop: 50,
+        "& .MuiTypography-root": {
+            //color:"#333 !important",
+            "& strong": {
+                //color: theme.palette.getContrastText()
+            }
+        }
     },
-
-    calloutLine: {
-        backgroundColor:"#00BBF9",
-        textAlign:"center",
-        padding:"0 10px", 
-    },
+ 
 
     typewritterBanner: {
         display:"inline",
@@ -34,16 +31,14 @@ const useStyles = makeStyles( theme=>({
 
     subtitle: {
         margin:"30px 0",
-        color:"#7d7c83",
+        //color:"#7d7c83",
          
     },
 
     SecondSection: { 
         //background:"radial-gradient(circle, rgba(255,255,255,1) 1%, rgba(234,239,244,1) 50%, rgba(255,255,255,1) 100%)",
         //paddingTop:theme.spacing(5),
-        paddingBottom:theme.spacing(5),
-        "& a > strong": { 
-        }, 
+        paddingBottom:theme.spacing(5), 
     }
 
 }));// //theme.palette.type=="dark"? "#444" : "#444",
@@ -53,134 +48,97 @@ export const SectionTitle = ({ line1, line2, color }) => {
 
     const theme = useTheme();
 
-    return      <><div className="line" style={{ width:80, borderTop:"3px solid black", marginBottom:5 }}></div>
-                 <Typography  style={{color}}><strong>{line1}</strong></Typography> 
+    return      <><div className="line" style={{ width:80, borderTop:"3px solid "+theme.palette.text.disabled, marginBottom:5 }}></div>
+                 <Typography ><strong>{line1}</strong></Typography> 
                 <Typography variant="h2" gutterBottom>  <strong>{line2}</strong></Typography>
                 </>;
 }
 
 
 export const GuestLandingPage = ()=>{
-
-    const { session } = useGetSession();
-    const history = useHistory();
+ 
     const classes = useStyles();
-    const theme = useTheme();
+    const theme = useTheme(); 
 
-    if( session ) 
-    {
-        return null;
-    }
-
-    return <Box className={classes.root}>
-
-  
+    return <Box className={ classes.root }> 
 
 
-        <div className={ classes.SecondSection } style={{ marginTop:theme.spacing(5)}}> 
+        <div className={ classes.SecondSection } > 
 
             <Container >
-            <Grid container spacing={3}>
-                <Grid item sm={6}>
+            <Grid container spacing={5}>
+                <Grid item md={6}>
 
-                <img src={SinceBadgeSrc} alt="Since 2011 Badge" style={{float:"right"}} />
+                <a href="https://web.archive.org/web/20110901000000*/https://weightxreps.net" target="_blank" style={{float:"right"}}>
+                <img src={SinceBadgeSrc} alt="Since 2011 Badge"  />
+                    </a>
 
                 <SectionTitle line1="WELCOME TO" line2="WEIGHT X REPS" color={theme.PINK_COLOR}/>
  
  
                             <Typography variant="h6" className={classes.subtitle} >
-                            <strong>Weight (x)For Reps</strong>, is an <strong>Open Source</strong> ( <a href="https://github.com/bandinopla/weightxreps-client" target="_blank">Frontend</a> & <a href="https://github.com/bandinopla/weightxreps-server" target="_blank">Backend</a> )  online training journal system (web & mobile*) that will allow you to keep your training data organized and tracked.
+                            Read as <strong>Weight for Reps</strong>, is an <a href="https://github.com/bandinopla/weightxreps-client" target="_blank"><strong>Open Source</strong></a>  online training journal system that will allow you to keep your training data organized and tracked.
 Several charts and graphs will aid you in better undertsanding your training.
-
-                            <br/>
-                            <br/>
-                            <a href="https://web.archive.org/web/20110901000000*/https://weightxreps.net" target="_blank">Born in 2011</a>, before us, fitness used to be logged on a simple forum post. No specific tool existed online to such task. After we went online, slowly a bunch of sites and tools started to emerge showing similar functionality (coincidence?). We started it all.
+ 
                             </Typography> 
  
 
                             <div style={{ marginTop: theme.spacing(3)}}>
-                *Also it is available for Android<br/>
+                
                 <a  href='https://play.google.com/store/apps/details?id=net.weightxreps.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
                     <img  width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
                 </a>
             </div>
 
                 </Grid>
-                <Grid item sm={6}> 
+                <Grid item md={6}> 
  
 
-                            <SectionTitle line1="BUT WAIT" line2="¿What's the point?" color={theme.GREEN_COLOR}/>
+                            <SectionTitle line1="LOG A WORKOUT? EWWW..." line2="¿What's the point?" color={theme.GREEN_COLOR}/>
 
 
                             <Typography variant="h6" className={classes.subtitle} >
-                                It is very easy too see days, weeks and even months just pass you by without paying right of passage in the form of personal records! ;)
+                                It is very easy too see days, weeks and even months just pass you by without paying right of passage in the form of personal fitness improvements! ;)
                                 
-                                Work, family &amp; life in general will offer you several pathways to gradually steer away from holding onto a somewhat decent fitness level. Take action!
-                                &nbsp;<br/><br/><Link to="/signup"><strong>Developing the habit of logging your workouts will help you stay on track and keep your fitness awareness alive!</strong></Link>
+                                Work, family &amp; life in general will offer you several pathways to gradually steer away from holding onto a somewhat decent fitness level. 
+                                
                             </Typography> 
-                            <Button size="large" onClick={()=>history.push("/signup")} color="primary" variant="contained" endIcon={<ArrowForwardIcon/>}>START NOW</Button>
+                            <Button size="large" onClick={()=>window.scrollTo(0,0)} color="primary" variant="outlined" endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
                      
                     </Grid>
-            </Grid>
+                </Grid> 
             </Container>
         </div>
 
+<Box marginTop={10}>
+    <img src="/banner-a.jpg" className="banner-fullrow sha"/>
+    <Box paddingTop={2}>
+    <Alert severity="info">
+        [*] Fitness awareness means you live your day to day life knowing were you at strength wise. Health isn't free, it is paid with an everyday constant effort.
+    </Alert>
+    </Box>
+</Box>
  
         <SectionSeparator>Features</SectionSeparator> 
 
 
         <Box textAlign="center" >
- 
-        <Container > 
-                <Grid container spacing={3}  >
-                    <Grid item sm={3}>
-                        <FeatureCard
-                            title="Intuitive Navigation"
-                            img={FeatureCalendarImg}
-                            >
-                                Navigate your logs using your journal's calendar. 
-                                <br/>This is how you navigate from workout to workout and it also allows you to 'zoom out' and see the compressed stats of a block of weeks. 
-                            </FeatureCard>
-                    </Grid>
-                    <Grid item sm={3}>
-                        <FeatureCard
-                            title="Workout stats"
-                            img={ErowsImg}
-                            >
-                                Each exercise has it's own stats:
-                                <ul>
-                                    <li>Volume/Reps/Sets in total</li>
-                                    <li>Estimated ~1RM per set</li>
-                                    <li>EFF (blue) bar: how the estimated 1RM of each set compares to your all time best estimated 1RM.</li>
-                                    <li>INT (red) bar: how the weight on the bar of each set compares to your all time best heavyest weight lifted.</li>
-                                    </ul>
-                            </FeatureCard>
-                    </Grid>
-                    <Grid item sm={3}>
-                            <FeatureCard
-                            title="Week Stats!"
-                            img={ZoomImg}
-                            >
-                                See how you did on a timespan of 3, 6, 9, etc.. weeks! 
-                                <br/>Evaluate how a training block is performing. Focus on a single exercise or overlap them and see how they interact.
-                            </FeatureCard>
-                    </Grid>
-                    <Grid item sm={3}>
-                            <FeatureCard
-                            title="Personal Records "
-                            img={PRsImg}
-                            >
-                                Each exercise has it's own records page were we keep track of all your PRs.
-                                <br/>Also, we show in which rep range you spent more of your efforts.
-                            </FeatureCard>
-                    </Grid>
-                </Grid> 
-                </Container>
+            <FeaturesDisplay/>
         </Box>
 
+        <SectionSeparator>Are you ready?</SectionSeparator> 
 
-        <br/>
-        <SectionSeparator>PEOPLE ARE TRAINING!</SectionSeparator>
+        <Box marginBottom={6}>      
+            <div>
+                <Box textAlign={"center"} marginBottom={4}>
+                    <Button onClick={()=>window.scrollTo(0,0)} variant="outlined" endIcon={<ArrowUpwardIcon />} size="large">
+                        Let's go!
+                    </Button>
+                </Box>
+                
+                <img src="/banner-starttoday2.jpg" className="banner-fullrow  sha"/>
+            </div>
+        </Box>  
 
     </Box>
 }
@@ -188,16 +146,10 @@ Several charts and graphs will aid you in better undertsanding your training.
 
 
 const SectionSeparator = ({ children })=>{
-    return <Box marginTop={8} marginBottom={5}><Typography variant="h3" display="block"><div className="app-section-separator">{children}</div></Typography> </Box>;
+    return <Box marginTop={8} marginBottom={2}><Typography variant="h3" display="block"><div className="app-section-separator">{children}</div></Typography> </Box>;
 }
 
-
-const CallOutLine = ({ children })=>{
-    const classes = useStyles();
-    return <div className={classes.calloutLine }>
-        <Typography variant="subtitle1">{children}</Typography>
-        </div>;
-}
+ 
 
 
 // const TypeWritterText = ()=>{
@@ -213,22 +165,4 @@ const CallOutLine = ({ children })=>{
 //             /></div>;
 // }
 
-
-const OpenTutorialVideo = ({ children, ...rest }) => {
-
-    const [open, setOpen] = useState(false);
  
-    const handleClose = ()=>{
-        setOpen(false);
-    }
-
-
-    return <>
-        <Button variant="outlined" {...rest} onClick={ ()=>setOpen(true) } startIcon={<VideoLibraryIcon/>}  >Watch in action!</Button>
-        <Dialog open={open} onClose={ handleClose } maxWidth="lg">
- 
-                <iframe style={{width:1280, height:720}}  src="https://www.youtube-nocookie.com/embed/T96bVtiewOY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              
-        </Dialog>
-    </>;
-}

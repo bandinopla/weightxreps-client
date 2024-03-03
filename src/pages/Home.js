@@ -14,6 +14,8 @@ import SignalWifi1BarIcon from '@material-ui/icons/SignalWifi1Bar';
 import UnameTag from "../componentes/uname"; 
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useGetSession } from '../session/session-handler';
+import { SupportersDisplay } from '../componentes/supporters-display';
+import { RestoreScroll } from '../componentes/scroll-restoration';
 
 
 const $holder = document.createElement('div');
@@ -68,7 +70,8 @@ export default function Home({ activator }) {
 export const ActivityFeed = function({ type }) {
      
     const { data, loading, error, refetch, networkStatus, fetchMore } = useGetFeedQuery({variables:{ type }});
-    const history = useHistory();
+    const history = useHistory(); 
+
      
     /**
      * Cargar items más antiguos
@@ -114,15 +117,15 @@ export const ActivityFeed = function({ type }) {
 
 
  
-    return <div>  
-                <ActiveSupportersBanner/>
-
+    return <div>   
+                
+                <SupportersDisplay/>
                 { loading && <LinearProgress /> }
                 { data?.getActivityFeed && <KeepFeedUpdated loadMoreTrigger={ ()=>fetchNewData() } intervalInSeconds={60} />}
                 { data?.getActivityFeed.length>0 
                     && <div>
   
-                            <ActivityFeedTabs current={type}/>
+                            {/* <ActivityFeedTabs current={type}/> */}
                             
                             <SizeMe>{({ size }) => { 
 
@@ -180,6 +183,8 @@ export const ActivityFeed = function({ type }) {
                             <Box textAlign="center" margin={1}>  
                                 <FetchMoreButton fetchMore={loadMoreItems}/> 
                             </Box>
+
+                            <RestoreScroll/>
                         </div>
                 }
 
@@ -190,7 +195,7 @@ export const ActivityFeed = function({ type }) {
                         <Typography variant="subtitle2">When you do, here you will see only the people you follow.</Typography>
                         <br/>
                         <br/>
-                        <Button variant="outlined" onClick={ ()=>history.push("/") } startIcon={<ArrowBackIcon/>}>Explore the journals</Button>
+                        <Button variant="outlined" onClick={ ()=>history.push("/explore") } startIcon={<ArrowBackIcon/>}>Explore the journals</Button>
                         </Box> }
                      
                      
@@ -248,61 +253,8 @@ const KeepFeedUpdated = ({ dummy, loadMoreTrigger, intervalInSeconds })=> {
 
     return "";
 }
-
-
-const useStyles = makeStyles( theme=>({
-
-    supporter: { 
-        padding:"3px 8px",
-        display:"inline-block",
-        margin:"4px 6px",
-        fontSize:13
-    }
-}) );
-
-const ActiveSupportersBanner = ()=>{
-    const { data, loading, error } = useGetActiveSupportersQuery();
-    const classes = useStyles();
-
-    if(!data || loading || error) {
-        return null;
-    }
-
-    const plural = data.getActiveSupporters.length>1;
-    const hayActives = data.getActiveSupporters.length>0;
-
-    return <Box padding={3} textAlign="center">
-
-        {/*<RedGuyBanner/>*/}
-        {/* <SBDBanner/> */}
-        {/* <Box textAlign={"center"}>
-            <RedGuyBanner variant="random"/>
-        </Box> */}
-
-        <Box marginBottom={2}>
-            <Typography variant="h6">Special thanks to<br/>
-                { data.getActiveSupporters.map( (sup,i)=>{
-
-                return <span key={sup.user.id} className={classes.supporter}><UnameTag inline {...sup.user}/> </span>;
-
-                } ) }
-            </Typography>  
-        </Box>
-
-         {/* <Container maxWidth="md">
-            { data.getActiveSupporters.map( (sup,i)=>{
-
-                return <div key={sup.user.id} className={classes.supporter}><UnameTag inline {...sup.user}/> </div>;
-
-            } ) }
-
-            {hayActives==false && "No active supporters yet :'("}
  
-        </Container>  */}
-    </Box>
-}
-
-
+ 
 
 const ActivityFeedTabs = ({ current }) => {
     // global o following

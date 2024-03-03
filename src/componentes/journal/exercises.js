@@ -88,7 +88,7 @@ export const EditExerciseButton = ({ exercise, ...rest })=>{
 
     const open          = useReactiveVar($open);
     const jowner        = useContext(JOwnerContext);
-    const { session }      = useGetSession();
+    const { session }   = useGetSession();
 
     if( jowner.id!=session?.user.id ) return "";
 
@@ -98,7 +98,7 @@ export const EditExerciseButton = ({ exercise, ...rest })=>{
 export const ExercisesModal = ()=>{
     const open          = useReactiveVar($open); 
     const jowner        = useContext(JOwnerContext);
-    const { session }      = useGetSession();
+    const { session }   = useGetSession();
     const myId          = session?.user.id;
 
     const handleClose   = ()=>$open(false);
@@ -118,7 +118,7 @@ export const ExercisesModal = ()=>{
                     maxWidth="sm"
                     fullWidth
                 >
-                    { open===0 && <ExercisesListView jowner={jowner} myId={myId} onClose={handleClose}/>} 
+                    { open===0 && <ExercisesListView jowner={jowner || session.user} myId={myId} onClose={handleClose}/>} 
                     
                 </Dialog>;
 }

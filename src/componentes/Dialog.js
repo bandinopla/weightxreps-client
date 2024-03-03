@@ -135,7 +135,7 @@ export const OpenConfirmModal = ( params )=> {
             params.onCancel && params.onCancel();
         }
  
-        var res = yes===true? onConfirm() : null;
+        var res = yes===true && onConfirm? onConfirm() : null;
  
         if( res instanceof Promise )
         {

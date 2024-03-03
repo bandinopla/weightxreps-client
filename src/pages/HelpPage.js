@@ -1,86 +1,286 @@
-import { Box, Container, Grid, Typography } from "@material-ui/core";
+import { Box, Container, Grid, IconButton, LinearProgress, Paper, Typography } from "@material-ui/core";
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { UnameRef } from "../componentes/uname";
+import { Fragment, useEffect, useRef, useState } from "react";  
+import { makeStyles } from '@material-ui/core/styles';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails'; 
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InputBase from '@material-ui/core/InputBase';
+import Divider from '@material-ui/core/Divider'; 
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+import Fuse from 'fuse.js';
+import { Alert } from "@material-ui/lab";
+import { exampleLog } from "../componentes/journal/editor-tutorial";
+import { StaticLogHighlighter } from "../codemirror/LogTextEditor";
+import { getExampleUTagsLog } from "../codemirror/tag-parsing";
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import { ContentPage } from "../componentes/ContentPageWrapper";
 
-export const HelpPage = ()=>{
-    return <Container maxWidth="md">
- 
-        <Grid container >
-            <Grid item md={4}>
-                <Typography variant="h2">
-                    <InfoOutlinedIcon/> <strong>F.A.Q.</strong></Typography>
-            </Grid>
-            <Grid item md={8}>
+const useStyles = makeStyles((theme) => ({
+    root: {
+      display:"flex", 
+      justifyContent:"center",
+      marginBottom:30
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightBold,
+    },
+    searchBox: {
+        padding: '0px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        maxWidth: 400,
+        width:"100%",
+        backgroundColor: theme.palette.background.paper
+      }, 
+      input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+        
+      }
+
+  }));
+
+var faq_json;
+
+/**
+ * Load `/faq.json` which is an array of questions and answers.
+ * The answers can have tags that are used to inject content:
+ *  
+ *  `@[shortcut:question_alias:label]` if you omit `question_alias`, then the label will be used as alias replaceing \s with -
+ *  `@[url:the_url:label]` a link to a url. If you omit the `label` then `the_url` will be used as it.
+ * 
+ * if "a" is just a tag in this format `"[something]""` then `tag2component` will be called.
+ */  
+
+const HelpPage = ({ location })=>{ 
+
+    const [ qs, setQs ]=useState([]);
+    const [ filteredQs, setFilteredQs ]=useState([]);
+    const classes = useStyles();
+    const filterInterval = useRef();
+    const searchInput = useRef();
+    const haveSearchTerm = searchInput.current?.value.length>0;
+    const mounted = useRef(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    /**
+     * @type {{ current: Fuse}}
+     */
+    const fuse = useRef();
+
+    useEffect(()=>{
   
-                <Typography variant="h4" gutterBottom><strong>F</strong>requently <strong>A</strong>sked <strong>Q</strong>uestions</Typography>
-                <br/>
-                <Question title="Is this free?">
-                    Yes! But there are some options/features that can be unlocked by donating (hey, bills...) 
-                </Question>
+        faq_json = faq_json ?? fetch("/faq.json").then( resp=>resp.text() )
+                                                 .then( txt=>JSON.parse(txt) )
+                                                 .catch( e=>false );
 
-                <Question title="Do you collect/sell data?">
-                    No! Many sites out there are doing that to get some extra cash. We do not collect your behavioural info or any other weird stuff nor we build a parallel version of you, a cyber avatar, identical to you in every digital aspect and pretend like it's not data theft because of some semantic argument.
-                </Question>
+        mounted.current = true;
+        setLoading(true);
+
+        faq_json        .then( json=>{  
+
+                            if( mounted.current )
+                            {
+                                if( json===false)
+                                {
+                                    setError(true);
+                                    return;
+                                }
+
+                                fuse.current = new Fuse(json, {
+                                    findAllMatches:true,
+                                    includeScore: true,
+                                    keys: [
+                                        {
+                                        name: 'q',
+                                        weight: 0.7
+                                        },
+                                        {
+                                        name: 'a',
+                                        weight: 0.3
+                                        }
+                                    ]
+                                });
+
+                                setQs(json); 
+                                setLoading(false);
+                            }
+
+                    });
+
+        return ()=>{
+            mounted.current = false;
+        }
+
+    },[]);
+
+    const delayedFilter = ev => {
+        clearInterval(filterInterval.current);
+        filterInterval.current = setTimeout(()=>{
+
+            setFilteredQs( fuse.current?.search(ev.target.value ).map(itm=>itm.item) )
+
+        }, 300)
+    }
+  
+    const tag2component = tag => {
+        switch( tag )
+        {
+            case "[LOG_TUTORIAL]":
+                return <div>
+                    <Typography variant="body1">
+                        A Log is just text that has a particular format. Not everything has to follow this format, but if it does, it will be tracked. Here you can see a sample log, showing all possible variations:<br/><br/>
+                    </Typography>
+                    <StaticLogHighlighter
+								initialValue={exampleLog}
+								tags={["#sq", "#bp"]}
+								exercises={[{ id: 1, name: "Squat", type: "sq" }]}
+                                utags={[]}
+                                lines={20}
+							/>
+                </div>;
+
+            case "[USER_TAGS]":
+                return <div>
+                    <Typography variant="body1">
+                        The usual way of logging expects an exercise then weight x reps x sets. But if you wan't to track another aspect of your training (like time on the static bike, or duration of the workout...), you can do so in the following ways: <br/><br/>
+                    </Typography>
+                    <StaticLogHighlighter
+								initialValue={getExampleUTagsLog()}
+								tags={[]}
+								exercises={[]}
+                                utags={[]}
+                                lines={20}
+							/>
+                </div>;
+            default:
+                return "???"
+        }
+    }
+
+    const inlineTagToComponents = str => {
+        return str.split("@[").map( (chunk,i)=>{
+
+            const value = chunk.substr(0, chunk.indexOf("]") );
+            let Injected = "";
+
+            if( value!="" )
+            {
+                Injected = <strong>???</strong>;
+                const params = value.split(":");
+                let label = params[ params.length-1 ]; // let's make it so labels is always at the end...
+
+                chunk = chunk.substr(value.length+1);
+
+                //
+                // SHORTCUT TO ANOTHER QUESTION
+                //
+                if( value.indexOf("shortcut:")==0 )
+                { 
+                    Injected = <a href="#" onClick={shortcutClick(params[1])}><strong>{label}</strong></a>;
+                } 
+                //
+                // LINK TO A URL
+                //
+                else if( value.indexOf("url:")==0 )
+                { 
+                    let target = "_self";
+
+                    if( params[1].indexOf('http')==0 )
+                    {
+                        params[1] += ":" + params[2];
+                        label = params[3] ?? params[1];
+                        target = "_blank";
+                    }
+
+                    Injected = <a href={params[1]} target={target}>{label}</a>;
+                } 
+            } 
+
+            return <Fragment key={i}>{ Injected } <span dangerouslySetInnerHTML={{__html:chunk}}></span></Fragment>
+
+        } )
+    }
+
+    const shortcutClick = alias => ev => {
+        ev.preventDefault();
+        alias = alias.replace(/\s+/,"-");
+
+        const q = qs.find( itm=>itm.alias==alias );
+ 
+        if(!q) 
+        {
+            alert("Oops! can't find location of this link...");
+        }
+        else 
+        {
+            searchInput.current.value = alias;
+            setFilteredQs( [q] );
+        }
+    }
+
+    const clear = ()=>{
+        searchInput.current.value = "";
+        setFilteredQs([]);
+    }
+
+    if( error )
+    {
+        return <Box padding={3}>
+            <Alert severity="error">Failed to load contents of this page... :/</Alert>
+        </Box>
+    }
+
+    return <Box padding={3}>
 
 
-                <Question title="What is this site for?">
-                This site is designed to help you track your gym progress. Mainly focused to exercises that involve lifting weight for a set number of repetitions and sets. This was developed to log powerlifting workouts (i train powerlifting) but can be used for bodybuilding and weightlifting too. It is not suited for cardio workouts... we lift weights here...
-                </Question>
+        <Box className={classes.root}>
+            <Paper component="form" className={classes.searchBox}> 
+                <InputBase
+                    className={classes.input}
+                    placeholder="Filter terms" 
+                    onKeyUp={delayedFilter}
+                    inputRef={searchInput}
+                />
+                <IconButton type="button" onClick={ haveSearchTerm?clear:delayedFilter} className={classes.iconButton}>
+                    { haveSearchTerm? <CloseIcon /> : <SearchIcon /> }
+                </IconButton> 
+            </Paper>
+        </Box>
+        
+        { (haveSearchTerm? filteredQs : qs).map( (itm,i)=><Accordion key={itm.q}>
 
-                <Question title="Why should i log my workouts?">If you dont track or measure what you do, you might fail to progress. It is important to track each workout to help you see if you are moving forward or stalling. Depending on your goals you might want to make adjustements since the body wont respond the same to the same workouts every single time... many things change, we age, our bodyweight change, stress in life, moving, family, etc...</Question>
-                <Question title="How do i log my workouts?">
-                    You log in into your account, go to your journal. You will see a calendar. You click on the day you want to log and write your workout and hit save, that's it! You dont need to pre-configure your exercises or anything like that, the system will recognize some patterns in the text on the fly and act accordingly. You just write.
-                    {/* <br/><br/><Button variant="outlined" size="small" onClick={ ()=>OpenTutorial() }>Read the Tutorial / Manual</Button>
-                    <TutorialModal/> */}
-                    </Question>
-                <Question title="Do i have to log all my workouts the same way?">No. You can log whatever you want. If you follow a specific format that will allow our system to extract information from your log and give you stats. But if you dont care to log accesory exercises for example you can log whatever you want. For example you can just type: "today i did abs" and save...</Question>
-                <Question title="What is EFF and INT?">EFF = Effort. In this system it refers to the highest 1RM estimated based on a set of more than 1 rep.
-<br/>INT = Intensity. For us it means weight on the bar. How heavy the set was.
-</Question>
-                <Question title="Where my data is stored?">
-                    Your data is stored in the server. You can download it if you have an active supporter status. "Active" means you donated recently...
-                    </Question>
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />} 
+                    >
+                    <Typography className={classes.heading}>{itm.q}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                    <Typography component="div">
+                        {
+                            itm.a[0]=="[" ? tag2component(itm.a) : inlineTagToComponents(itm.a)
+                        }
+                    </Typography>
+                    </AccordionDetails> 
 
+            </Accordion> )}
 
+            { loading && <LinearProgress/> }
 
-                <Question title="How do i change my body weight in the profile?">
-                    The body weight shown there is taken from the most recent log. When you post a log, if you use the bodyweight tag, it will be updated.
-                </Question>
+        <br/><Alert severity="info">If you still can't find your answer, send me a DM!</Alert>
+        
 
-                <Question title="Can i log future/planned workouts?">
-                    At the moment the system doesn't handle "future" logs. Whatever you type is what you did and will affect the stats. 
-                    <br/> 
-                    But a clever way that <UnameRef uid={2751} uname="Bartman"/> found to achieve a similar effect is to write the log as you would normally do and then prefix an "x" in front of the "#" symbol of each exercise. That would render the block as just plain text and will not affect the stats.
-                </Question>
-
-                
-
-                <Question title="How to record exercises using either arms/legs alternatively">
-                    To log that, you just type the reps you did per limb. For example, if you did biceps curls with dumbbells x 5 reps each arm, you just type x 5. If you let's say make 5 reps with one arm and 4 with the other, just either type 4 ( the least reps of the two limbs ) or 5. But in any case, realistically, that would happen because of fatigue, it makes no sense to be so specific. 
-                    <br/>
-                    In cases where you have to mentally focus on one limp at a time (for example, one arm dumbbell press), just consider each limb as a complete set. And type the reps you did per "set" and mabe add in the comments "left" or "right".
-                </Question>
-
-
-                <Question title="Accidentally deleted an exercise?">Sorry, delete actions cant be undone. They actually delete stuff.</Question>
-                <Question title="What does the numbers with the ~ mean?">They mean "estimated max" based on the weight x reps.</Question>
-                <Question title="How to become a supporter?">Someone that once in a while send us money to help us pay the bills. Donating doesn't require recurrent payment, it is always a manual action executed by you.</Question>
-                <Question title="How do i DELETE my account?">Go to your settings and you will see the option there...</Question>
-                <Question title="More questions?">
-                    DM me! <UnameRef uid={1} uname="tlast2o12dude"/> (response time is variant, depends on workload...)
-                </Question> 
-                 
-            </Grid>
-        </Grid>
-    </Container>
-}
+    </Box>
+} 
 
 
-
-const Question = ({ title, children })=>{
-    return <Box marginTop={1} marginBottom={3}>
-                <Typography gutterBottom variant="h6">{title}</Typography>
-                <Box paddingLeft={1} color="#666">
-                    {children}</Box>
-            </Box>
+export default function (props) {
+    return <ContentPage Child={HelpPage} {...props}/>
 }

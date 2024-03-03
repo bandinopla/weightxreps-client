@@ -8,6 +8,9 @@ import "firebase/compat/auth";
 import * as firebaseui from "firebaseui";
 
 import "firebaseui/dist/firebaseui.css";
+import "./FirebaseLoginPage.css";
+
+
 import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import OperationBackdrop from "../componentes/backdrop";
@@ -17,7 +20,7 @@ import { trackLoginWith } from "../componentes/google-tracker";
 import { parseError } from "../data/db";
 import { useLoginWithFirebaseMutation } from "../data/generated---db-types-and-hooks"; 
 import { useGetSession } from "../session/session-handler";
-import { OneOf } from "./SignupAndLogin";
+import { OneOf } from "../componentes/one-of";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -31,8 +34,7 @@ const firebaseConfig = {
     measurementId: "G-CMKG2KBH88"
   };
  
-
-  console.log("INIT FIREBASE")
+ 
 // Initialize Firebase
 const app   = firebase.initializeApp(firebaseConfig);
 const auth  = app.auth(); //getAuth(app);
@@ -41,6 +43,9 @@ const auth  = app.auth(); //getAuth(app);
 let firebaseUiDeletion = Promise.resolve();
 
 
+/**
+ * This is the UI that handles the Firebasse Sign in buttons
+ */
 export default function FirebaseLoginPage() 
 {
     const ref                   = useRef(); 
@@ -88,12 +93,12 @@ export default function FirebaseLoginPage()
                     provider:firebase.auth.GithubAuthProvider.PROVIDER_ID,
                     scopes:["read:user","user:email"]
                 },
-                {
-                    provider:firebase.auth.PhoneAuthProvider.PROVIDER_ID,  
-                    recaptchaParameters: {
-                        size:"normal"
-                    }
-                }
+                // {
+                //     provider:firebase.auth.PhoneAuthProvider.PROVIDER_ID,  
+                //     recaptchaParameters: {
+                //         size:"normal"
+                //     }
+                // }
             ],
 
             autoUpgradeAnonymousUsers:true,
@@ -112,9 +117,14 @@ export default function FirebaseLoginPage()
                     // var operationType = authResult.operationType;
                     // var idToken = authResult.user.accessToken; 
                     // accessToken.current = authResult.user.accessToken;
-                    console.log("LOAGUEADOS CON FIREBASE", authResult.user)
+                    // console.log("LOAGUEADOS CON FIREBASE", authResult.user)
                     
-
+ 
+                    //
+                    // let's ignore this because most people won't want to use the same username as their google or whatever account
+                    //
+                    //const possibleUsername = authResult.user.displayName.toLowerCase().replace(/[^a-z0-9_]+/,"");
+                    
                     auth.currentUser.getIdToken(false).then( callLogin );
 
                     
@@ -153,8 +163,7 @@ export default function FirebaseLoginPage()
             await firebaseUiDeletion;
             //unsub(); 
             firebaseUiDeletion = ui.delete();
-            await firebaseUiDeletion;
-            console.log("DELETE LOGIN UI");
+            await firebaseUiDeletion; 
         }
 
     }, [ accessToken ]);
@@ -181,6 +190,7 @@ export default function FirebaseLoginPage()
 
 
     const callLogin = (token, accSetupValues) => {
+ 
 
         return login({ variables: { token, ...accSetupValues } })
  
@@ -231,15 +241,13 @@ export default function FirebaseLoginPage()
 
     }  
  
-
-    return <Paper elevation={2} square style={{ padding: 30 }}>
-        {accessToken}
+//{accessToken}
+    return <> 
                 <OperationBackdrop open={loading} />
                 <ErrorSnackbar trigger={ opError } vertical="bottom" horizontal="center" onClose={() => setOpError(null)} />
  
-                <div style={{ textAlign: "right", width: "100%" }} ref={ref}></div> 
- 
-            </Paper>;
+                <div style={{ maxWidth: 250 }} ref={ref}></div>  
+            </>;
 
 }
 

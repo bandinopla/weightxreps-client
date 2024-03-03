@@ -1,8 +1,7 @@
 import { makeVar, useReactiveVar } from "@apollo/client";
-import { createTheme } from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core";
 import { ThemeProvider } from '@material-ui/core/styles';
-import { useGetSession, useReactiveSetting } from "./session/session-handler";
-import { applyPaletteColorsToTheme, useColorThemeManager } from "./styles/palettes";
+import { useColorThemeManager } from "./styles/palettes";
 
 
 
@@ -81,6 +80,13 @@ export const BaseTheme = {
         //     }
              
         // }
+      },
+      MuiButton: {
+        containedPrimary: { 
+            "&:hover": {
+                //color:"#444"
+            } 
+        }
       }
     },
   
@@ -93,10 +99,9 @@ export const BaseTheme = {
     eff_color:"#457B9D",
     PR_Bar_color:"yellow", 
 
-    notifItemBgColor:"#fefefe",
-    notifItemBorderColor:"#ccc",
-
-    userTextColor:"blue",
+    // notifItemBgColor:"#fefefe",
+    // notifItemBorderColor:"#ccc", 
+    // userTextColor:"blue",
 
     calendario: {
         cellM1BgColor: "#DBDDE0",
@@ -129,146 +134,41 @@ export const BaseTheme = {
     } 
   };
 
-  var storage     = localStorage; 
-  var v = JSON.parse(storage.getItem("darkON"));
-  var darkModeCurrentValue = false;
+  var storage               = localStorage; 
+  var v                     = JSON.parse(storage.getItem("darkON"));
+  var darkModeCurrentValue ;
 
-  if( typeof v =='number' ) // if it is defined by the user...
+  if( typeof v =='boolean' ) // if it is defined by the user
   {
-      darkModeCurrentValue = Boolean(v);
-  }
-  else // if the system prefers dark mode...
-  {
-    darkModeCurrentValue = (window.hasOwnProperty("matchMedia") && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      darkModeCurrentValue = v;
   }
 
 const DarkModeOn = makeVar(darkModeCurrentValue);
 
 export const ifDark = (theme, darkColor, lightColor) => theme.palette.type=='dark'? darkColor : lightColor;
-export const MainTheme = BaseTheme;
-export const DarkTheme = {
-    ...BaseTheme
-
-    , root: {
-        "& a": {
-            color:"red"
-        }
-    }
-    , logoBgColor:"none"
-    , palette: {
-        ... BaseTheme.palette,
-        type:"dark",
-        background: {
-            default:"#12181B"
-        },
-
-        primary: {
-            main:"#ED6154"
-        },
-        secondary: {
-            main:"#415A77"
-        },
-
-        text: {
-            primary:"#ccc"
-        }
-        
-    },
-
-    notifItemBgColor:"#555",
-    notifItemBorderColor:"#444",
-
-    userTextColor:"#1C9DED",
-
-    overrides: {
-        MuiCssBaseline: {
-            '@global': {
-                "a": {
-                    color:"#ED6154"
-                }
-            }
-        },
-        MuiAppBar: {
-            colorDefault: {
-              backgroundColor:"#2A2E35"
-              //, borderBottom:"2px solid blue"
-            }
-          },
-
-          MuiAlert: {
-            standardInfo: {
-                backgroundColor:"#115293"
-            }
-          },
- 
-
-        // MuiCssBaseline: { 
-        //     "@global": { 
-        //         body: {
-        //             backgroundColor:"#333"
-        //             , "& a": {
-        //                 color:"#1B79C3"
-        //             }
-        //         } 
-        //     }
-        // }
-    },
-
-    erow: {
-        bgColor: "rgba(255,255,255,0.03)",
-        RepSetColor:"#00F5D4",
-        weightColor:"#CAF0F8"
-    },
-
-    effIntBars: {
-        bg:"#333",
-        borderColor:"#222"
-    },
-
-    calendario: {
-        cellM1BgColor: "rgba(255,255,255,0.2)",
-        cellM0BgColor: "rgba(255,255,255,0.05)",
-        hasDataColor: "#ED6154",
-        cellPinned: "#34A5DD"
-    },
-
-    eff_color: "#1C9DED"
-
-    ,supporterUcard: {
-        gold: {
-          border:"1px solid rgba(240,216,99,0.1)",
-          background:"linear-gradient(180deg, rgba(196,181,104,1) 2%, rgba(97,84,48,1) 85%)"
-        }
-      },
-
-      uname: {
-        male:"#00BBF9",
-        female:"#f39",
-        adminColor:"#ED6154"
-      },
-};
+export const MainTheme = BaseTheme; 
  
 
 export const ThemeSwitcher = ({ children })=>{
 
     const { getTheme }  = useColorThemeManager();  
-    const mode          = useDarkModeOn()
+    const mode          = useDarkModeOn();
+    const theme         = getTheme(mode);
 
- 
-    // const session       = useGetSession();   
-    // const colors        = useReactiveSetting( session?.userSettings?.colorScheme, 'ThemeSwitcher' ); 
-    // const theme         = applyPaletteColorsToTheme( colors, createTheme( MainTheme ) );
-
-    // // //!
-    // //return <div className={darkON?"dark":""}><ThemeProvider theme={theme} >{children}</ThemeProvider></div>; 
-    // console.log("45656666",  currentScheme?.backgroundColor ) 
-
-    return  <ThemeProvider theme={ getTheme(mode) }>{children}</ThemeProvider> ;  
+    return  <ThemeProvider theme={ theme }>{children}</ThemeProvider> ;  
  
 }
 
 export const useDarkModeOn = ()=>{
+
     const darkON = useReactiveVar(DarkModeOn); 
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    if( darkON == undefined ) // no value defined by the user.
+    { 
+        return prefersDarkMode; // use system preference
+    }
+
     return darkON; 
 }
 

@@ -7,17 +7,14 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import TextQuote from "./TextQuote";
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import { UserTypedText } from "../../../componentes/user-typed-text";
-import { useHistory } from "react-router-dom";
-import { useSubmenuListener } from "../../../componentes/boton-con-submenu";  
+import { useHistory } from "react-router-dom"; 
 
 export default function EventNotificationItem({ data, myId }){
  
-    const history       = useHistory();
-    const closeMenu     = useSubmenuListener();
+    const history       = useHistory(); 
 
     const openLink = ()=>{ 
-        history.push("/journal/"+ ( data.jowner?.uname || data.by.uname) + ( data.ymd?"/"+data.ymd : "") );
-        closeMenu()
+        history.push("/journal/"+ ( data.jowner?.uname || data.by.uname) + ( data.ymd?"/"+data.ymd : "") ); 
     }
 
     let ItemIcon ;

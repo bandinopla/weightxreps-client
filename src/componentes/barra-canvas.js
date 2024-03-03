@@ -1,3 +1,4 @@
+import { useTheme } from "@material-ui/core";
 import { useLayoutEffect, useRef, useState } from "react";
 
 /**
@@ -76,7 +77,7 @@ const plate = (ctx, metrics, info, scale) => {
  * @param {number} w 
  * @returns 
  */
-const drawPlatesForWeight = (ctx, metrics, w, customBarColor) => {
+const drawPlatesForWeight = (ctx, metrics, w, customBarColor ) => {
 
     const plates = w>=400? bigPlates : normalPlates;
 
@@ -157,8 +158,11 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
 
     const ref = useRef(); 
     const [fallback, setFallback] = useState(false);
+    const theme = useTheme();
 
     useLayoutEffect(()=>{  
+
+        const isDarkMode = theme.palette.type=='dark';
         
         /**
          * @type {CanvasRenderingContext2D}
@@ -186,7 +190,7 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
 
         metrics.plateX = metrics.barStart;  
 
-        drawPlatesForWeight(ctx, metrics, weight, reps===0? "#f00" : null);
+        drawPlatesForWeight(ctx, metrics, weight, isDarkMode? "#000" : reps===0? "#f00" : null );
 
         //#region Reps Label
         const lbl = reps===0? ":(" : reps>1? "x"+reps.toString() : null;
@@ -206,12 +210,12 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
         //#endregion 
 
 
-    }, [weight, reps]); 
+    }, [weight, reps, theme.palette.type]); 
 
     if( fallback )
     {
         return <FallbackTo weight={weight} reps={reps}/>
     }
 
-    return <canvas width="138" height="25" ref={ref}></canvas>;
+    return <canvas width="138" height="25" ref={ref} style={{maxWidth:"100%"}}></canvas>;
 }

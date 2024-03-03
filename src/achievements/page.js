@@ -30,15 +30,15 @@ export default function() {
         <Typography variant="subtitle2"  gutterBottom>Exercises with the tag "#sq" in their name will be recognized for these badges.</Typography>
         <br/>
         <Grid container spacing={3} justifyContent="flex-start">
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-1plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-2plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-3plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-4plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-5plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-6plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-SQ-7plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="SQ-MISSION"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="SQ-INSANE"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-1plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-2plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-3plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-4plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-5plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-6plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-SQ-7plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="SQ-MISSION"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="SQ-INSANE"/></Grid>
         </Grid>
 
         <br/>
@@ -47,13 +47,13 @@ export default function() {
         <br/>
 
         <Grid container spacing={3} justifyContent="flex-start">
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-BP-1plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-BP-2plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-BP-3plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-BP-4plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-BP-5plate"/></Grid> 
-            <Grid item xs={12} sm={4} md={2}><Achievement id="BP-MISSION"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="BP-INSANE"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-BP-1plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-BP-2plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-BP-3plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-BP-4plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-BP-5plate"/></Grid> 
+            <Grid item xs={4} md={2}><Achievement id="BP-MISSION"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="BP-INSANE"/></Grid>
         </Grid>
 
         <br/>
@@ -62,14 +62,14 @@ export default function() {
         <br/>
 
         <Grid container spacing={3} justifyContent="flex-start">
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-1plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-2plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-3plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-4plate"/></Grid>
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-5plate"/></Grid>  
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-6plate"/></Grid>  
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-DL-7plate"/></Grid>  
-            <Grid item xs={12} sm={4} md={2}><Achievement id="DL-MISSION"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-1plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-2plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-3plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-4plate"/></Grid>
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-5plate"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-6plate"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="CAN-DL-7plate"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="DL-MISSION"/></Grid>  
         </Grid>
 
         <br/>
@@ -78,10 +78,10 @@ export default function() {
         <br/>
 
         <Grid container spacing={3} justifyContent="flex-start">
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-OHP-1plate"/></Grid>  
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-OHP-2plate"/></Grid>  
-            <Grid item xs={12} sm={4} md={2}><Achievement id="CAN-OHP-3plate"/></Grid>  
-            <Grid item xs={12} sm={4} md={2}><Achievement id="OHP-MISSION"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="CAN-OHP-1plate"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="CAN-OHP-2plate"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="CAN-OHP-3plate"/></Grid>  
+            <Grid item xs={4} md={2}><Achievement id="OHP-MISSION"/></Grid>  
         </Grid>
  
         <Typography style={{marginTop:20}} variant="subtitle1">[!] More achievements will be added soon... if you have any suggestion send me a message (admin)</Typography>
@@ -103,10 +103,10 @@ function Achievement({ id, data }) {
             
             <div style={{marginTop:20, fontWeight:"bold"}}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={4}>
                         <img src={process.env.PUBLIC_URL+"/achievements/"+id+".png"} style={{maxWidth:"100%" }}/>
                     </Grid>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={8}>
 
                         <Typography variant="h3" style={{textTransform:"capitalize"}} gutterBottom>{mydata.name}</Typography>
                     

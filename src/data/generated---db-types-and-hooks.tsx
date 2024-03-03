@@ -717,6 +717,12 @@ export type QueryGetPRsOfArgs = {
 };
 
 
+export type QueryGetVideosArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+};
+
+
 export type QueryGetYearOverviewArgs = {
   uid: Scalars['ID'];
   year: Scalars['Int'];
@@ -932,6 +938,7 @@ export type User = {
   joined?: Maybe<Scalars['String']>;
   jranges?: Maybe<Array<Maybe<Scalars['Int']>>>;
   private?: Maybe<Scalars['Int']>;
+  sleft?: Maybe<Scalars['Int']>;
   slvl?: Maybe<Scalars['Float']>;
   socialLinks?: Maybe<Array<Maybe<Scalars['String']>>>;
   sok?: Maybe<Scalars['Int']>;
@@ -1109,7 +1116,7 @@ export type GetUserInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetUserInfoQuery = { __typename?: 'Query', userInfo: { __typename?: 'UserInfo', daysLogged: number, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null }, best3?: Array<{ __typename?: 'BestLift', w: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } }> | null } };
+export type GetUserInfoQuery = { __typename?: 'Query', userInfo: { __typename?: 'UserInfo', daysLogged: number, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, sleft?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null }, best3?: Array<{ __typename?: 'BestLift', w: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } }> | null } };
 
 export type GetCalendarDaysQueryVariables = Exact<{
   uid: Scalars['ID'];
@@ -1241,7 +1248,7 @@ export type DeleteMessageMutation = { __typename?: 'Mutation', deleteMessage?: b
 export type GetSessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSessionQuery = { __typename?: 'Query', getSession?: { __typename?: 'SessionInfo', time?: string | null, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null } } | null };
+export type GetSessionQuery = { __typename?: 'Query', getSession?: { __typename?: 'SessionInfo', time?: string | null, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, sleft?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null } } | null };
 
 export type SignupMutationVariables = Exact<{
   uname: Scalars['String'];
@@ -1411,11 +1418,14 @@ export type DeleteTweetMutationVariables = Exact<{
 
 export type DeleteTweetMutation = { __typename?: 'Mutation', deleteTweet?: boolean | null };
 
-export type UserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null };
+export type UserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, sleft?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null };
 
 export type BriefUserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null };
 
-export type GetVideosQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetVideosQueryVariables = Exact<{
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
 
 
 export type GetVideosQuery = { __typename?: 'Query', getVideos?: Array<{ __typename?: 'Video', when: string, posted: string, logid: string, link: string, user: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } } | null> | null };
@@ -1583,6 +1593,7 @@ export const UserFieldsFragmentDoc = gql`
   cc
   slvl
   sok
+  sleft
   age
   bw
   private
@@ -3523,8 +3534,8 @@ export type DeleteTweetMutationHookResult = ReturnType<typeof useDeleteTweetMuta
 export type DeleteTweetMutationResult = Apollo.MutationResult<DeleteTweetMutation>;
 export type DeleteTweetMutationOptions = Apollo.BaseMutationOptions<DeleteTweetMutation, DeleteTweetMutationVariables>;
 export const GetVideosDocument = gql`
-    query GetVideos {
-  getVideos {
+    query GetVideos($olderThan: UTCDate, $limit: Int) {
+  getVideos(olderThan: $olderThan, limit: $limit) {
     user {
       ...BriefUserFields
     }
@@ -3548,6 +3559,8 @@ export const GetVideosDocument = gql`
  * @example
  * const { data, loading, error } = useGetVideosQuery({
  *   variables: {
+ *      olderThan: // value for 'olderThan'
+ *      limit: // value for 'limit'
  *   },
  * });
  */

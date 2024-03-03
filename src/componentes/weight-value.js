@@ -22,7 +22,7 @@ export default function WeightValue( props )
     //let {session, userSettings} = useGetSession(); 
     const { session, userSettings }                 = useGetSession();
     const changeValue             = useReactiveSetting( userSettings?.convertDisplayUnits );   
-    const sessionUseKg            = session?.user?.usekg;
+    const sessionUseKg            = session?.user?.usekg ?? true;
     const theme                   = useTheme();
     //
     // unit original en que se escribio este valor....

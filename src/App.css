@@ -36,6 +36,15 @@
   }
 }
 
+@keyframes pulseBorder {
+    from {
+        border-width: 3px;
+    }
+    to {
+        border-width: 6px;
+    }
+  }
+
 
 /*----------------------------------------------------------*/
 .oneline {
@@ -52,7 +61,12 @@
 
 .sha {
   -webkit-box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 30%);
-    box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 30%);
+    box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 30%); 
+}
+.fatSha {
+    box-shadow: 4px 5px 33px 3px rgba(0,0,0,0.85);
+    -webkit-box-shadow: 4px 5px 33px 3px rgba(0,0,0,0.85);
+    -moz-box-shadow: 4px 5px 33px 3px rgba(0,0,0,0.85);
 }
 
 .link-looking {
@@ -61,24 +75,30 @@
   
 }
 
+.spaceBelow {
+    margin-bottom: 10px !important;
+}
+
 /*-----------------------------------------*/
 .rainbow1 { 
     text-fill-color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; 
     display: inline-block;   
+
 }
  
 .og,
 .rainbow1.gold {
     background: rgb(97,84,48);
 background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%, rgba(190,175,101,1) 59%, rgba(103,90,51,1) 100%);
-    background-size: auto auto;
-    background-clip: border-box;
-    background-size: 200% auto;
-    background-clip: text;
-    animation: rainbowSlide 1s linear infinite;
-}
+background-size: auto auto;
+background-clip: border-box;
+background-size: 200% auto;
+background-clip: text;
+animation: rainbowSlide 2s linear infinite;
+} 
+
 .og {
     display: inline-block;   
     color:white;
@@ -96,12 +116,17 @@ background: linear-gradient(83deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 45%,
 .rainbow1.silver {
     background: rgb(121,144,148);
 background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 49%, rgba(125,149,152,1) 100%);
-    background-size: auto auto;
-    background-clip: border-box;
-    background-size: 200% auto;
-    background-clip: text;
-    animation: rainbowSlide 2s linear infinite;
+background-size: auto auto;
+background-clip: border-box;
+background-size: 200% auto;
+background-clip: text;
+animation: rainbowSlide 2s linear infinite;
 }
+
+.rainbow1.bg {
+    background-clip:padding-box;
+}
+
 @keyframes rainbowSlide {
     to {
         background-position: 200% center;
@@ -126,7 +151,10 @@ background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 4
     display: block;
 }
 
-.MuiButton-root.fancy {
+.fancy .MuiSvgIcon-root {
+    color: white
+}
+.MuiButton-root.fancy, .MuiButtonBase-root.fancy  {
     text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
   background: linear-gradient(
       15deg,
@@ -145,6 +173,8 @@ background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 4
   background-position: left center;
   transition: background 0.3s ease;
   color:white; 
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .MuiButton-root.fancy:hover {
     background-size: 320%;
@@ -154,3 +184,94 @@ background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(155,181,181,1) 4
     display: flex;
     align-items: center;
 }
+
+.coolSpaceIshBg {
+    background: linear-gradient(83deg, rgb(8, 8, 8) 70%, rgb(18, 92, 104) 100%);
+    background-size: 200% 200%;
+    background-origin: border-box;
+    background-position: 0 0, bottom left;
+    animation: coolSpaceIshBgAnim 5s ease-in-out infinite alternate-reverse;
+}
+.coolSpaceIshBgLight {
+    background: linear-gradient(83deg, rgba(255,255,255,1) 70%, rgba(54, 198, 255,.1) 100%);
+    background-size: 200% 200%;
+    background-origin: border-box;
+    background-position: 0 0, bottom left;
+    animation: coolSpaceIshBgAnim 5s ease-in-out infinite alternate-reverse;
+}
+@keyframes coolSpaceIshBgAnim {
+    0% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 70% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes glow {
+    0% {
+        stroke-dashoffset: 10;
+        stroke-opacity: 1;
+      }
+      50% {
+        stroke-dashoffset: -10;
+        stroke-opacity: 0.3;
+      }
+      100% {
+        stroke-dashoffset: 10;
+        stroke-opacity: 1;
+      }
+  } 
+
+.animated-wxr-logo {  
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+.banner-fullrow {
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+}
+
+/**
+ * ----------------------------------------
+ * animation pulsate-fwd
+ * ----------------------------------------
+ */
+ 
+  @keyframes pulsate-fwd {
+    0% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+    50% {
+      -webkit-transform: scale(1.01);
+              transform: scale(1.01);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+
+  .sidebar-handle {
+    background: black;
+    color:white;
+    position:fixed;
+    top: 25%;
+    height: 25%;
+    padding:5px; z-index: 1198;
+  }
+  .sidebar-handle.left {
+    border-top-right-radius:10px;
+    border-bottom-right-radius:10px;
+  }
+
+  .sidebar-handle.right {
+    right:0px;
+    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;
+  }

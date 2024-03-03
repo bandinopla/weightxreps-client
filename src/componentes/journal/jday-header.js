@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 
 export const JDayContentHeader = ({ noData, title, titleChild, children, noDataLabel="No log on this day" })=>(<>
-    <Typography variant="h3" style={{textTransform:"capitalize"}}>
+    <Typography variant="h4" style={{textTransform:"capitalize"}}>
         <b>{ title }</b>
         { titleChild }
     </Typography>
@@ -10,7 +10,7 @@ export const JDayContentHeader = ({ noData, title, titleChild, children, noDataL
     <Typography variant="h6" style={{fontWeight:300 }}> 
         { !noData? children : <Box padding={2} margin={2} border="1px dotted #ccc">-- {noDataLabel}</Box> } 
     </Typography>  
-    <br/><br/>
+    <br/> 
 </>);
 
 

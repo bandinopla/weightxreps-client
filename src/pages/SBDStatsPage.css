@@ -1,0 +1,46 @@
+.bg { 
+    color:white;
+    padding: 3px 10px; 
+    border-radius: 10px;
+}
+.bg.legendary {
+    background: rgb(131,58,180);
+    background: linear-gradient(83deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 30%, rgba(252,176,69,1) 64%, rgba(131,58,180,1) 100%);
+    background-size: 200% auto;
+    animation: rainbowSlide 1s linear infinite; 
+}
+
+.bg.elite {
+    background: rgb(97,84,48);
+    background: linear-gradient(90deg, rgba(97,84,48,1) 0%, rgba(196,181,104,1) 35%, rgba(190,175,101,1) 54%, rgba(103,90,51,1) 100%);
+    background-size: 200% auto;
+    animation: rainbowSlide 1s linear infinite; 
+}
+
+.bg.verystrong {
+    background: rgb(121,144,148);
+    background: linear-gradient(83deg, rgba(121,144,148,1) 0%, rgba(208,228,228,1) 49%, rgba(125,149,152,1) 100%);
+    background-size: 200% auto;
+    animation: rainbowSlide 2s linear infinite; 
+    color:#fff;
+}
+
+.bg.strong {
+    background: rgb(85,181,85); 
+    color:#eee;
+}
+
+.bg.good {
+    background: rgb(6, 106, 255); 
+    color:#eee;
+}
+
+.bg.average {
+    background: rgb(255, 218, 6); 
+    color:#444;
+}
+
+.bg.poor {
+    background: rgb(199, 27, 27); 
+    color:#fff;
+}

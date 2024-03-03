@@ -28,6 +28,7 @@ import { JEditorPolicy } from "./jeditor-policy";
 import { SettingsTypePolicy } from "./SettingsTypePolicies";
 import { trackError } from "../componentes/google-tracker";
 import { UTagsPolicy } from "../componentes/journal/tags";
+import { VideosCachePolicy } from "./videos-policy";
 
 //   const httpLink = createHttpLink({
 //     uri:"http://localhost:4000/graphql",
@@ -77,7 +78,8 @@ let typePolicies = mergeObjects([
 	CommunityStatsPolicy,
 	SettingsTypePolicy,
 	SessionPolicies,
-    UTagsPolicy
+    UTagsPolicy,
+    VideosCachePolicy
 ]);
 
 const client = new ApolloClient({

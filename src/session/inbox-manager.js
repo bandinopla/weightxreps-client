@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { makeVar, useReactiveVar } from '@apollo/client';
 import { Badge, withStyles } from '@material-ui/core';
 import {
@@ -7,7 +7,7 @@ import {
 import { parseError } from '../data/db';
 import { useGetInboxQuery, useGetNotificationsQuery } from '../data/generated---db-types-and-hooks';
 import { __resolveReferencedUserId } from '../data/type-policies';
-import { useGetSession } from './session-handler';
+import { useGetSession, useReactiveSetting } from './session-handler';
 
 
 
@@ -146,20 +146,157 @@ export const inboxTypePolicies = {
 }
 
  
+/**
+ * @typedef {ReturnType<typeof useInbox>} UseInboxReturnType
+ */
+ 
 
-export const useInbox = type =>{
+export const useInbox = ( type, uid, SETTINGS ) =>{
+ 
  
     //
     // i know this is not optimal... but i had to refactor this.
     //
-    const DMs  = useGetInboxQuery({ notifyOnNetworkStatusChange:true });
-    const Notifs = useGetNotificationsQuery({ notifyOnNetworkStatusChange:true });
+    const propName      = type==1? "getInbox" : "getNotifications";
+
+    const DMs                   = useGetInboxQuery({ notifyOnNetworkStatusChange:true });
+    const Notifs                = useGetNotificationsQuery({ notifyOnNetworkStatusChange:true });
+    const reactiveLastSeen      = SETTINGS?.[ type==1? "inboxLastSeenDate": "notificationsLastSeenDate" ];
+    const lastSeen              = useReactiveSetting( reactiveLastSeen ); 
+    // //last Seen
+    // const setting       = SETTINGS?.[ type==1? "inboxLastSeenDate": "notificationsLastSeenDate" ];
+    // const lastSeen      = useReactiveSetting( setting );
 
 
-    const  { data, loading, error, fetchMore } = type==1? DMs : Notifs ;
-    const propName = type==1? "getInbox" : "getNotifications";
-    
+    const  { data, loading, error, fetchMore } = type==1? DMs : Notifs ; 
+    const parsedError = useMemo(()=>error? parseError(error) : null ,[error]);
+
+    const inbox = data?.[propName].notifications ;
+
+
+    /**
+     * The goal here is to condense the individual messages grouping them by, if they are DMs, the id of the use to which the session user is talking to.
+     */
+    const filteredInbox = useMemo(()=>{
+
+        if( !inbox || !uid ) return; 
+
+        //se supone vienen ordenados por fecha...
+        //agruparlos. Mostrar solo 1 por username....   
+        //
+        // quitar todos los items (salvo el más reciente) relacionados con un DM de un usuario.
+        // 
+        let uidDM   = new Map(); 
+
+        return inbox
+        
+        .map( msg => { //<--- combine DMs
+
+            let otherUID; //user DM
+
+            // DM | DMSent | LikeOnMyDM
+
+            switch( msg.__typename ) 
+            {
+                case "DM":
+                case "LikeOnDM": 
+
+                if( msg.text.length>80 ) { 
+                    msg = {
+                        ...msg,
+                        text: msg.text+"[...]"
+                    } 
+                }
+
+                //
+                // if "to" el item es un "sent message" de nosotros hacia ese usuario...
+                // if "by" es un DM enviado a nosotros
+                //
+                otherUID = msg.by.id==uid? msg.to.id : msg.by.id; //el context del mensaje
+                break; 
+            } 
  
+            //
+            // si estamos en el contexto de un "DM"...
+            //
+            if( otherUID )
+            {
+                //
+                // si no hay nada ya procesado... es un item reciente:
+                //
+                if( !uidDM.has(otherUID) )
+                {
+                    let combined = { _combined:true, count:0, notification:msg };
+                    uidDM.set(otherUID, combined);
+                    return combined;
+                }
+
+                //
+                // else, es un evento viejo. 
+                //
+                uidDM.get(otherUID).count++;  
+                return null; // we don't add this since it is already represented by the combined item created above.
+            }
+
+
+
+            //
+            // todo lo demas se agrega así como viene
+            //
+            return msg; 
+        })
+
+        .filter( itm=>itm!=null )
+
+        // .map( msg => { //<--- calculate freshness...
+        //     const item  = msg._combined? msg.notification : msg;
+        //     let itmDate = new Date( item.when ); 
+        //     let unseen = (!lastSeenDate || lastSeenDate<itmDate) && ( item.by!=null && (item.by.id!=uid) );
+
+        //     // if(unseen)
+        //     // {
+        //     //     console.log( itmDate, lastSeenDate )
+        //     // }
+
+        //     return {
+        //         ...msg,
+        //         isFresh: unseen //---> by "is fresh" we mean, it hasn't been seen by the user on this browser since "lastSeenDate"
+        //         , date : itmDate
+        //     }
+        // })
+        
+        ; 
+
+    },[ inbox, uid ]);
+
+    /**
+     * A fresh message is a message that it is considered new for the user in this current browser session.
+     * We compare the date of the last time the user saw the inbox vs the date of the message to determine if the user has seen it.
+     * A message is "fresh" for 12 hours even if the user has seen it...
+     */
+    const inboxWithFreshness = useMemo(()=>{   
+ 
+        const lastSeenDate = lastSeen? new Date(lastSeen) : null;
+
+        return filteredInbox?.map( itm => {
+ 
+            const item = itm._combined? itm.notification : itm;
+
+            let itmDate = new Date( item.when ); 
+
+            let isUnseen = (!lastSeenDate || lastSeenDate<itmDate) && ( item.by!=null && (item.by.id!=uid) );  
+    
+            return { 
+                ...itm,
+                isUnseen,
+                caca:true
+            } ;
+    
+        } )  ;
+
+    }, [ filteredInbox, lastSeen, uid ])
+
+  
     //
     // fetch NEW data
     //
@@ -194,21 +331,27 @@ export const useInbox = type =>{
     } 
  
  
-    let rtrn = data?.[propName].notifications ;
+    
+ 
   
  
     return {
-              inbox     : rtrn //data?.getInbox.notifications
+              inbox 
+            , filteredInbox: inboxWithFreshness //<--- grouping DMs into a single item (the latest message in that chat)
+            , unread: inboxWithFreshness?.reduce( (t, itm)=>t + Number(itm.isUnseen), 0) ?? 0
             , loading
-            , error     :error && parseError(error)
+            , error     : parsedError
             , checkForNewNotifications
             , loadOlderNotifications 
-            , setUnseenNotificationsCount: (totalUnseen)=> {
+            // , setUnseenNotificationsCount: (totalUnseen)=> {
 
-                const rVar = type==1? $newMessagesCount : $newNotificationsCount;
+            //     const rVar = type==1? $newMessagesCount : $newNotificationsCount;
 
-                //rVar(totalUnseen);
-                return setTimeout(rVar, 100, totalUnseen);
+            //     //rVar(totalUnseen);
+            //     return setTimeout(rVar, 100, totalUnseen);
+            // },
+            ,markAllAsRead: ()=>{
+                reactiveLastSeen(new Date().toUTCString());
             },
             propName
         };
@@ -291,11 +434,11 @@ const LowerBadge = withStyles((theme) => ({
     badge: {
       right: -3,
       top: 13,
-      border: `2px solid ${theme.palette.background.paper}`,
+      border: `2px solid red`,
       padding: '0 4px',
-      [theme.breakpoints.up("md")]: {
-          display:"none"
-      }
+    //   [theme.breakpoints.up("md")]: {
+    //       display:"none"
+    //   }
     },
   }))(Badge); 
  
@@ -308,13 +451,15 @@ const LowerBadge = withStyles((theme) => ({
    * @param { ...NotificationsBadgeParams} param0 
    * @returns 
    */
-export const NotificationsBadge = ({children, type, showOnlyOnMobile})=> {
+export const NotificationsBadge = ({children, small, type, showOnlyOnMobile})=> {
 
-    const newMessages = useReactiveVar(type==1? $newMessagesCount : $newNotificationsCount);
+    const user = useGetSession();
+    const newMessages = type==1? user.messages.unread : user.notifications.unread;
+    //const newMessages = useReactiveVar(type==1? $newMessagesCount : $newNotificationsCount);
 
-    const Element = showOnlyOnMobile? LowerBadge : Badge;
+    const Element = LowerBadge; //showOnlyOnMobile? LowerBadge : Badge;
 
-    return <Element badgeContent={newMessages} color="secondary">
+    return <Element badgeContent={newMessages} color="error" variant={ small? "dot":"standard"}>
                     {children}
             </Element> ;
 } 

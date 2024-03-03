@@ -1,0 +1,104 @@
+[ 
+    {
+        "q":"¿How do I log a workout?",
+        "a":"A workout in this site is a text log that has some @[shortcut:specific format] that the system recognizes. To log a workout, you click the \"Log Workout\" button located at the top right of this window. You can watch @[url:https://www.youtube.com/embed/T96bVtiewOY?start=53:this video] that it will show you the process of logging a workout."
+    } ,
+    {
+        "q":"¿Can I delete my account?",
+        "a":"Yes you can, go to your @[url:/settings] and at the bottom you will se the option to delete your account."
+    },
+    {
+        "q":"¿What format should the logs have to be properly logged?",
+        "alias":"specific-format",
+        "a":"[LOG_TUTORIAL]"
+    },
+    {
+        "q":"Do you collect/sell data?",
+        "a":"No! Many sites out there are doing that to get some extra cash. We do not collect your behavioural info or any other weird stuff nor we build a parallel version of you, a cyber avatar, identical to you in every digital aspect and pretend like it's not data theft because of some semantic argument."
+    },
+    {
+        "q":"¿Why should I log my workouts?", 
+        "a":"If you dont track or measure what you do, you might fail to progress. It is important to track each workout to help you see if you are moving forward or stalling. Depending on your goals you might want to make adjustements since the body wont respond the same to the same workouts every single time... many things change, we age, our bodyweight change, stress in life, moving, family, etc..."
+    },
+    {
+        "q":"¿Do I have to log all my workouts the same way?", 
+        "a":"No. You can log whatever you want. If you follow a specific format that will allow our system to extract information from your log and give you stats. But if you dont care to log accesory exercises for example you can log whatever you want. For example you can just type: \"today i did abs\" and save..."
+    },
+    {
+        "q":"¿What is EFF and INT?", 
+        "a":"EFF = Effort. In this system it refers to the highest 1RM estimated based on a set of more than 1 rep.<br/>INT = Intensity. For us it means weight on the bar. How heavy the set was."
+    },
+    {
+        "q":"¿Where my data is stored?", 
+        "a":"Your data is stored in the server. But you can download it by going to your @[url:/settings] and on the download section."
+    },
+    {
+        "q":"¿How do I change my bodyweight in the profile?", 
+        "a":"The bodyweight shown there is taken from the most recent log. When you post a log, if you use the bodyweight tag, it will be updated."
+    },
+    {
+        "q":"¿Can I log future/planned workouts?", 
+        "a":"While the original intention of the site is to log workouts you have done, some users log future workouts too. This is so for example to plan your entire week or month in advance.<br/><br/>Some clever users take advantage of the format of the logs by putting an \"x\" in front of the exercise's # symbol, this way the log is stored as text and it doesn't generate any stats from it until you actually remove that \"x\" and save again once you do that workout."
+    },
+    {
+        "q":"¿How to record exercises using either arms/legs alternatively", 
+        "a":"To log that, you just type the reps you did per limb. For example, if you did biceps curls with dumbbells x 5 reps each arm, you just type x 5. If you let's say make 5 reps with one arm and 4 with the other, just either type 4 ( the least reps of the two limbs ) or 5. But in any case, realistically, that would happen because of fatigue, it makes no sense to be so specific. In cases where you have to mentally focus on one limp at a time (for example, one arm dumbbell press), just consider each limb as a complete set. And type the reps you did per \"set\" and mabe add in the comments \"left\" or \"right\"."
+    },
+    {
+        "q":"Accidentally deleted an exercise! Help!", 
+        "a":"Sorry, delete actions cant be undone. They actually delete stuff."
+    },
+    {
+        "q":"¿What does the numbers with the ~ mean?", 
+        "a":"They mean \"estimated\", that the value is arround that..."
+    },
+    {
+        "q":"¿How to donate and become a supporter?", 
+        "a":"Someone that once in a while @[url:/donate:send us money] to help us pay the bills is what we call a \"supporter\". Donating doesn't require recurrent payment, it is always a manual action executed by you."
+    },
+    {
+        "q":"¿How do I DELETE my account?", 
+        "a":"You cant >:( Joking! Go to your @[url:/settings] and at the bottom you will the the option to delete your data. Make sure you download it first in case you need it."
+    },
+    {
+        "q":"¿How do I log cardio?", 
+        "a":"You can use @[shortcut:user-tags:custom user tags]. On a new line in your log, type the @ symbol, followed by the name of the tag then \":\" and the value."
+    },
+    {
+        "q":"Custom user tags", 
+        "alias":"user-tags",
+        "a":"[USER_TAGS]"
+    },
+    {
+        "q":"¿Is this free?", 
+        "a":"Yes. If you wan't to @[url:/donate] you are welcome too!"
+    },
+    {
+        "q":"¿Is there an iPhone app? Appstore?", 
+        "a":"No, and it will probably never be one since the process to publish an app in that store is tedious and expensive."
+    },
+    {
+        "q":"The Android app doesn't work on my phone!", 
+        "a":"At the time the android app was made, it was set to a version of Android that now might be obsolete or too old, so the google play store doesn't show it anymore. As of this time, I can't say if a new Android app will be done."
+    },
+    {
+        "q":"I've deleted something by mistake! Help!", 
+        "a":"Deletion of data can't be undone :("
+    },
+    {
+        "q":"¿Can I donate vía Bitcoin?", 
+        "a":"Not at the moment"
+    },
+    {
+        "q":"I don't have PayPal ¿In how other way I can donate?", 
+        "a":"Currently we only work with PayPal donations, but you can try the \"@[url:/donate:Donate vía Twitter]\" which is a way to help the site by means of social marketing."
+    },
+    {
+        "q":"¿Is this site open source?", 
+        "a":"Yes, you can see the @[url:https://github.com/bandinopla/weightxreps-client:CLIENT] and @[url:https://github.com/bandinopla/weightxreps-server:SERVER] source code on GitHub. If you want to collab, fork it, and do a pull request. Try to make the least moving arround code as possible and everything new make it compact and isolated.<br/><br/>If you clone the site or make any derivative work, @[url:https://github.com/bandinopla:let me know!]"
+    },
+    {
+        "q":"Who made this site", 
+        "a":"This site was done and is being maintaned by @[url:https://github.com/bandinopla:Bandinopla] a full stack web dev. You can read more in the @[url:/about:About page]"
+    } 
+]

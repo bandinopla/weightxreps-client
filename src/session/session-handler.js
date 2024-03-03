@@ -2,13 +2,19 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { getOrCreateSettingsHandler } from '../utils/local-storage-settings'; 
 import { useGetSessionQuery, useLoginMutation, UserFieldsFragmentDoc } from '../data/generated---db-types-and-hooks'; 
 import { gql } from '@apollo/client';
+import { useInbox } from './inbox-manager';
 
 
 const SESSION_TOKEN = 'token'; 
 
 
 var UID = 0;
-var SETTINGS;
+var SETTINGS = getOrCreateSettingsHandler( "guest", settings=>{
+    settings.convertDisplayUnits        = false;
+    settings.notificationsLastSeenDate  = null;
+    settings.inboxLastSeenDate          = null;
+    settings.firstDayOfWeek             = 0; //sunday
+});
 
 export const SessionPolicies = {
 
@@ -31,7 +37,7 @@ export const SessionPolicies = {
                     else 
                     {
                         UID = 0;
-                        SETTINGS = null;
+                        //SETTINGS = null; 
                     }
 
                     
@@ -46,7 +52,7 @@ export const SessionPolicies = {
                     //         uname
                     //       }
                     //     `,
-                    //   });
+                    //   }); 
  
                     return user;
                   }
@@ -68,10 +74,16 @@ export const getAuthorizationHeaders = ()=> {
 
 //------------- GET SESSION
  
-
+/**
+ * 
+ * @returns 
+ */
 export const useGetSession = ()=> {
 
-    const { data, loading, error, client, refetch }      =  useGetSessionQuery({ notifyOnNetworkStatusChange:true });   
+    const { data, loading, error, client, refetch }         = useGetSessionQuery({ notifyOnNetworkStatusChange:true });   
+    const uid                                               = data?.getSession?.user.id;
+    const messages                                          = useInbox(1, uid, SETTINGS);
+    const notifications                                     = useInbox(2, uid, SETTINGS);
 
     const logout = async ()=>{  
 
@@ -94,21 +106,25 @@ export const useGetSession = ()=> {
             localStorage.setItem( SESSION_TOKEN, newToken );
         }
  
-        
-        return await client.resetStore()
-                            .catch(e => {
-                                // ignore errors... most likely "you are not logged in" errors...
-                            });
+        window.location.reload();
+
+        // return await client.resetStore()
+        //                     .catch(e => {
+        //                         // ignore errors... most likely "you are not logged in" errors...
+        //                     });
     }
-  
+   
     return { 
-             session            : data && data.getSession 
+             session            : data?.getSession 
             , loadingSession    : loading
             , sessionError      : error  
             , userSettings      : SETTINGS
+            , messages 
+            , notifications
             , reload
-            , logout       
-                
+            , logout   
+            // , messages    
+            // , notifications
         } 
 }  
 
@@ -146,7 +162,7 @@ export const useLogin = ()=> {
         }
         else 
         {
-            throw new Error("Unespected response...");
+            throw new Error("Unexpected response...");
         }
     };
 

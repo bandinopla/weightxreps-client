@@ -13,7 +13,7 @@ import {
     Typography,
     useTheme
 } from "@material-ui/core";
-import { MainMenu } from "../../data/Menu";
+//import { MainMenu } from "../../data/Menu"; 
 import { Best3Lifts } from "../../pages/journal-base";
 import UCard from "../ucard";
 import { userTextToParsedUI } from "../user-text-to-parsed-tags";
@@ -23,6 +23,7 @@ import { parseUserComment } from "../journal/jparser";
 import { JDayContext } from "../journal/jday-context";
 import { dateToYMD } from "../../utils/utils";
 import { memo } from "react";
+import { MENU } from "../main-menu";
 
 const TODAY = new Date();
 
@@ -36,18 +37,18 @@ function MockSiteSkeleton() {
 			style={{ 
 				transformOrigin: "top right",
 				background: theme.palette.background.default,
-				border: "1px dotted #555",
+				border: "16px solid #555", 
+                pointerEvents:"none"
 			}}
 		>
 			<Box padding={2}>
 				{/* <AppBar position="relative" color="default" elevation={0}> */}
 					<Toolbar>
-						{MainMenu.map((itm) => (
+						{MENU.slice(0,3).map((itm) => (
 							<Button
-								startIcon={itm.Icon ? <itm.Icon /> : <></>}
-								style={{  color: itm.ename? theme.palette.primary.main : "inherit"}}
+								startIcon={itm.Icon ? <itm.Icon /> : <></>} 
 							>
-								{itm.lbl} 
+								{itm.label} 
 							</Button>
 						))}
 					</Toolbar>
@@ -85,7 +86,10 @@ function MockSiteSkeleton() {
 					</Grid>
 					<Grid item sm={8}>
 						<MockCalendario />
-						<Typography variant="h2">Awesome Workout</Typography>
+						
+					</Grid>
+					<Grid item xs={12}>
+                    <Typography variant="h2">Awesome Workout</Typography>
 						{userTextToParsedUI(
 							`Provident non provident aspernatur excepturi beatae maxime. https://www.youtube.com/watch?v=dQw4w9WgXcQ Perferendis fuga autem adipisci cumque et voluptatem quis quod. Sapiente aliquam praesentium voluptatem ut modi qui ex.`
 						)}
@@ -103,8 +107,7 @@ function MockSiteSkeleton() {
 						<Button variant="contained" color="secondary">
 							Secondary Button
 						</Button>
-					</Grid>
-					<Grid item xs={12}>
+
 						<JDayContext.Provider value={{ ymd: dateToYMD(TODAY) }}>
 							<Eblock
 								data={{
@@ -237,7 +240,7 @@ function MockCalendario() {
 
 	return (
 		<div style={{ overflow: "hidden" }}>
-			<CalendarGrid data={data} weeks={WEEKS} days={DAYS} />{" "}
+			<CalendarGrid data={data} weeks={WEEKS} days={DAYS} FDOW={0}/>
 		</div>
 	);
 }

@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import TwitterChallenges from "../componentes/twitter-to-donate/TwitterChallenges"; 
 import { useGetSession } from "../session/session-handler";
+import slvlsUrl from "../componentes/slvls.png";
 
 const useStyles = makeStyles((theme) => ({
 	logo: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const DonatePage = () => {
+export default function DonatePage() {
 	const classes = useStyles();
 	const { session } = useGetSession();
 
@@ -29,9 +30,7 @@ export const DonatePage = () => {
 				style={{ minHeight: "80vh" }}
 				spacing={5}
 			>
-				<Grid item md={6}>
-					<Paper elevation={2}>
-						<Box padding={1}>
+				<Grid item md={6}> 
 							<Grid container>
 								<Grid item xs={12}>
 									<Box padding={2}>
@@ -76,6 +75,7 @@ export const DonatePage = () => {
 										<li>
 											<strong>Supporter badge</strong> (permanent) to let
 											everyone know you helped the site stay alive!
+                                            
 										</li>
 									</ul>
 								</Typography>
@@ -85,10 +85,10 @@ export const DonatePage = () => {
 									period of time, depending on how much you donate, you will
 									lose the "active supporter" status but will retain the
 									"supporter" badge forever.
+
+                                    
 								</Typography>
-							</Box>
-						</Box>
-					</Paper>
+							</Box> 
 				</Grid>
 
 				<Grid item md={6}>
@@ -177,6 +177,12 @@ export const DonatePage = () => {
                     <br/>
                     <TwitterChallenges/>
 				</Grid>
+                <Grid item xs={12}>
+                <Box padding={1}>
+                        <img src={slvlsUrl} className="banner-fullrow"/>
+                        <Typography component={"div"} variant="caption">↳ Supporter ribbons based on amount of support over time. Placed on top of your avatar.</Typography>
+                    </Box>
+                </Grid>
 			</Grid>
 		</Container>
 	);

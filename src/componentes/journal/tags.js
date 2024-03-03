@@ -33,7 +33,7 @@ export const JournalTagValue = ({ value:utagValue, utag })=>{
 
 export const TagTokenMatcher = ( userTags, utagsValues ) => { 
      
-    let values = utagsValues.slice(0)
+    let values = utagsValues?.slice(0)
                             .map( tval=>new UTagValue(tval) );  
 
 
@@ -43,7 +43,7 @@ export const TagTokenMatcher = ( userTags, utagsValues ) => {
             match:/^UTAG:(\d+)\s*/, 
             block: m=>{
 
-                    const tval = values.find( tval=>tval.id==m[1] );
+                    const tval = values?.find( tval=>tval.id==m[1] );
         
                     return {    type      : TYPE.TAG, // token type
                                 utag    : tval? userTags.find(utag=>utag.id==tval.tagid) : null,

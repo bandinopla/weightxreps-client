@@ -1,7 +1,22 @@
-
+import { useEffect } from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    useLocation
+  } from "react-router-dom";
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages?hl=en#manual_pageviews
-export const TrackPageView = ({location}) => {
+export const TrackPageView = () => {
+
+    let location = useLocation();
+
+    useEffect(() => {
+ 
+        window.gtag('event', 'page_view', {
+            page_location: location
+        });
+
+    }, [location]);
 
 /**
  * 
@@ -18,9 +33,9 @@ export const TrackPageView = ({location}) => {
 
  */
     
-    window.gtag('event', 'page_view');
+    //window.gtag('event', 'page_view');
     //console.log("TRACK ", location.pathname + location.search)
-    return null;
+    return "";
 }
 
 export const trackError = error => {

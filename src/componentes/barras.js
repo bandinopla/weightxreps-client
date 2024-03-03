@@ -19,6 +19,6 @@ function BarraOld({ weight, reps }) {
 
 export default function Barra({ weight, reps }) { 
 
-    return <CanvasBar weight={weight} reps={reps} FallbackTo={BarraOld}> 
+    return <CanvasBar weight={weight} reps={reps} FallbackTo={BarraOld} > 
     </CanvasBar>
 }

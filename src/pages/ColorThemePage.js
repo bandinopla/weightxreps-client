@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, AccordionDetails, Container, createTheme, Grid, ThemeProvider, Button } from "@material-ui/core";
+import { Accordion, AccordionSummary, AccordionDetails, Container, createTheme, Grid, ThemeProvider, Button, Box } from "@material-ui/core";
 import MockSiteSkeleton from "../componentes/color/MockSiteSketeton";
 import { MainTheme, SetDarkMode, useDarkModeOn } from "../MainTheme";
 import Typography from '@material-ui/core/Typography';
@@ -98,20 +98,20 @@ function ColorThemePage() {
     if( !colors )
     {
         return "";
-    }
+    } 
 
-    if( !session?.session?.user )
-    {
-        return <Container><Alert severity="error" elevation={2}>You are not logged in.</Alert></Container>
-    }
+    return  <div>
+                    <div className="rainbowBG" style={{ height:3, marginBottom:20 }}></div>
 
-    return  <Container>
-                    <div className="rainbowBG" style={{ height:2, marginBottom:20 }}></div>
+                    <Box padding={3}>
                     <Grid container spacing={3}>
-                        <Grid item sm={4}>
-                            <Typography variant="h2" gutterBottom>Color Scheme</Typography>
-                            
-                            <Typography variant="h4" gutterBottom>SELECT A MODE</Typography>
+                        <Grid item xs={12}>
+                            <Typography variant="h2">Palette</Typography>
+                            <Typography variant="body1">
+                                You can set custom colors for both the light anb dark mode. 
+                                <Alert severity="info"><strong>This setting is stored in the local storage of this browser.</strong></Alert>
+                            </Typography>
+                             
                             <Grid container spacing={2}>
                                 { ColorSchemes.map( (scheme, i)=>{
                                     scheme = colorScheme.getColorPalette(i);
@@ -147,7 +147,7 @@ function ColorThemePage() {
                                                     </AccordionDetails>
                                                 </Accordion>) }
                         </Grid>
-                        <Grid item sm={8}>
+                        <Grid item>
 
                             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                                 <Typography variant="h2" >Preview</Typography>
@@ -171,13 +171,14 @@ function ColorThemePage() {
                                 </div>
 
                             </div>
+
                             <ThemeProvider theme={ applyPaletteColorsToTheme(darkModeON, colors, theme) } >
-                            <MockSiteSkeleton/>
+                                <MockSiteSkeleton/>
                             </ThemeProvider>
                         </Grid>
                     </Grid>
-                    
-                </Container>
+                    </Box>
+                </div>
            ;
 }
 

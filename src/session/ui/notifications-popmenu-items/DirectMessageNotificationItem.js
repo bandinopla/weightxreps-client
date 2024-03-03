@@ -30,7 +30,7 @@ export default function DirectMessageNotificationItem({ data, myId }) {
 			{data.isGlobal ? (
 				<Alert severity="info">
 					<Typography variant="body2">
-						<UserTypedText text={data.text} short />
+						<UserTypedText text={ data.text.trim().split("\n")[0] } short />
 					</Typography> 
 				</Alert>
 			) : (
@@ -59,7 +59,7 @@ export default function DirectMessageNotificationItem({ data, myId }) {
 	}
 
 	return (
-		<Box border={"1px solid " + theme.notifItemBorderColor}>
+		<Box>
 			<NotificationItemTemplate
 				itemAvatar={<NotificationItemUserAvatar user={$user} />}
 				title={<UnameTag inline {...$user} />}

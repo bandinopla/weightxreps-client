@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -11,7 +11,9 @@ console.log(`▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄�
 ██▄█▄██▄▄▄█▄▄▄█▄▄▄▄█▄██▄██▄██▄█▄█▄█▄▄█▄▄▄█░████▄▄▄█▄▄█▄██▄█▄▄▄██▄█
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 `);
-console.log("Developed by Pablo Bandinopla <pablo@weightxreps.net>");
+console.log("Developed by Pablo Bandinopla <https://github.com/bandinopla>");
+console.log("Client source code: https://github.com/bandinopla/weightxreps-client");
+console.log("Server source code: https://github.com/bandinopla/weightxreps-server");
 console.log("-----------------------------------------------------");
 
 // replace console.* for disable log on production

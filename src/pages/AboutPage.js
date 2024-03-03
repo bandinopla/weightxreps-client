@@ -37,6 +37,7 @@ import LoopIcon from '@material-ui/icons/Loop';
 import { useHistory } from "react-router-dom";
 import BuildIcon from '@material-ui/icons/Build';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
+import { LatestTweets } from "../componentes/twitter";
 
 const useStyles = makeStyles( theme => ({
 
@@ -51,7 +52,7 @@ const useStyles = makeStyles( theme => ({
 
 }));
 
-export const AboutPage = ()=>{
+export default function AboutPage() {
 
     const classes = useStyles();
     const history = useHistory();
@@ -154,6 +155,8 @@ export const AboutPage = ()=>{
                     <LoopIcon/> What's new?
                 </Typography>
                 <Divider/><br/>
+                <LatestTweets/>
+                <br/>
                 Check what has changed, fixed or was added here: <Button variant="outlined" onClick={()=>history.push("/changelog")}>See Changelog</Button>
             </Box>
 

@@ -32,11 +32,12 @@ const useStyles = makeStyles((theme) => ({
 
 var Editor              = null;
 const $defaultYMD       = todayAsYMD();
+var isActive            = false;
 
 export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, ...rest })=>{
 
-    //cargar on click....
-    const classes = useStyles();
+    //cargar on click.... 
+    const classes                   = useStyles();
     const saveTriggerRef            = useRef();
     const hintTriggerRef            = useRef();
     const {session}                 = useGetSession();
@@ -65,6 +66,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     }
 
     const handleClose = ()=>{
+        isActive = false;
         setOpen(false)
     };
 
@@ -83,6 +85,9 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     }
 
     const openEditor = async ()=>{
+        if( isActive ) return;
+
+        isActive = true;
          await loadEditor(); 
          setOpen(true)
     }

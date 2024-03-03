@@ -4,6 +4,7 @@
     width: 230px;
     height: 80px;
     background: url("./index_stats_sprites.png") no-repeat 0px -160px;
+    max-width: 100%;
 }
 
 .BESTESTIMATED1RM {
@@ -12,6 +13,7 @@
     width: 230px;
     height: 80px;
     background: url("./index_stats_sprites.png") no-repeat 0px -80px;
+    max-width: 100%;
 }
 
 .MOSTCOLUME {
@@ -20,4 +22,5 @@
     width: 230px;
     height: 80px;
     background: url("./index_stats_sprites.png") no-repeat 0px 0px;
+    max-width: 100%;
 }

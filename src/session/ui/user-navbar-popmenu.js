@@ -48,11 +48,7 @@ export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
                         
 
                         <div className="mobile-view" style={{ overflow:"hidden"}}>
-                            <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global"  fullWidth/>
-
-                            <JEditorButton redirect variant="contained" color="primary" style={{padding:5 }} fullWidth>
-                                <AddIcon /> Log new workout
-                            </JEditorButton> 
+                            <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global"  fullWidth/> 
                         </div>
 
                         <Divider/>
@@ -64,24 +60,8 @@ export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
                              
                             <UnitConverterSwitch reactVar={ userSettings.convertDisplayUnits } currentUseKg={user.usekg}/>
                         </ListItem>
-                        <Divider />
-
-                        <Hidden mdUp>
-                            <ListItem button> 
-                                <ListItemIcon>
-                                    <NotificationsBadge>
-                                        <NotificationsIcon/>
-                                    </NotificationsBadge>
-                                </ListItemIcon>
-                                <ListItemText>Inbox</ListItemText>
-                            </ListItem>
-                            <Divider />
-                        </Hidden>
-
-                        {/*<ListItem disabled>
-                            <ListItemIcon><DashboardIcon/></ListItemIcon>
-                            <ListItemText>Dashboard (soon...)</ListItemText>
-                        </ListItem>*/}
+                        <Divider /> 
+                         
                         <ListItem button onClick={ ()=>history.push(userRoot) || close() }>
                             <ListItemIcon><EventIcon/></ListItemIcon>
                             <ListItemText>My Journal</ListItemText>
@@ -91,15 +71,12 @@ export const UserSessionSubmenu = ({ user, userSettings, logout })=>{
                             <ListItemIcon><FitnessCenterIcon/></ListItemIcon>
                             <ListItemText>My Exercises</ListItemText>
                         </ListItem>
-
-                        <ListItem button onClick={ ()=>history.push("/following") || close() }>
-                            <ListItemIcon><BookmarksIcon/></ListItemIcon>
-                            <ListItemText>Following</ListItemText>
-                        </ListItem>
-                        <ListItem button onClick={ ()=>history.push("/settings") || close() }>
+ 
+                         <ListItem button onClick={ ()=>history.push("/settings") || close() }>
                             <ListItemIcon><SettingsIcon/></ListItemIcon>
                             <ListItemText>Settings</ListItemText>
-                        </ListItem>
+                        </ListItem> 
+                        
                         <Divider />
                         <ListItem button onClick={ execLogout }>
                             <ListItemIcon><ExitToAppIcon/></ListItemIcon>

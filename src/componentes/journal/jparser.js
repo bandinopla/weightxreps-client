@@ -61,8 +61,8 @@ export const parseJlog = (text2parse, eblocks, execises, bw, usekg, userTags, ut
         //, { match:/^(?:http(?:s?):\/\/(?:www\.)?)?tiktok\.com\/(\@[\w-_]+)\/video\/(\d+)/, block: m=>({ type:TYPE.TIK, user:m[1], tiktok:m[2] }) }
     
         // instagram  --https://www.instagram.com/p/CR79sLGgRIu/
-        ,{ match:/^(?:http(?:s?):\/\/(?:www\.)?)?instagram\.com\/p\/(\w+)\/?.*\b/, block: m=>({ type:TYPE.IG, ig:m[1] }) }
-        ,{ match:/^(?:http(?:s?):\/\/(?:www\.)?)?insta\.gram\/p\/(\w+)\/?.*\b/, block: m=>({ type:TYPE.IG, ig:m[1] }) }
+        ,{ match:/^(?:http(?:s?):\/\/(?:www\.)?)?instagram\.com\/p\/(\w+)\/?/, block: m=>({ type:TYPE.IG, ig:m[1] }) }
+        ,{ match:/^(?:http(?:s?):\/\/(?:www\.)?)?insta\.gram\/p\/(\w+)\/?/, block: m=>({ type:TYPE.IG, ig:m[1] }) }
     
         //, { match:/^(?:http(?:s?):\/\/(?:www\.)?)[\S]+\b/, block: m=>({ type:TYPE.LINK, url:m[0] }) }
         , _urlTagMatcher
