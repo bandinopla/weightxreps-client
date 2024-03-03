@@ -14,8 +14,7 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ForumIcon from '@material-ui/icons/Forum';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import { UserTypedText } from '../../../componentes/user-typed-text';
-import { useHistory } from "react-router-dom";
-import { useSubmenuListener } from "../../../componentes/boton-con-submenu";
+import { useHistory } from "react-router-dom"; 
 
 const useStyles = makeStyles((theme) => ({  
         onWhichLog: {
@@ -27,12 +26,10 @@ const useStyles = makeStyles((theme) => ({
 export default function ({ data, myId }) {
 
     const classes = useStyles(); 
-    const history       = useHistory();
-    const closeMenu     = useSubmenuListener();
+    const history       = useHistory(); 
 
     const openLink = ()=>{ 
-        history.push( "/journal/"+ data.jowner.uname  + "/"+data.ymd );
-        closeMenu();
+        history.push( "/journal/"+ data.jowner.uname  + "/"+data.ymd ); 
     }
 
  

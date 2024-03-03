@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, CircularProgress, Container, FormControl, FormHelperText, Grid, Input, makeStyles, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Box, Button, ButtonGroup, CircularProgress, Container, FormControl, FormHelperText, Grid, Input, LinearProgress, makeStyles, Paper, Snackbar, Typography } from '@material-ui/core';
 import { useEffect, useRef, useState, createContext, useContext } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { UAvatarFromUserQL } from '../componentes/uavatar';
@@ -18,7 +18,7 @@ import { RPETableWidget } from './setting-rpetable';
 
 //---
 import { clearJdayAndJRangeOf, updateUserCachedData } from '../cache/clean-cache';
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { PasswordInput } from '../componentes/PasswordInput';
 import { DownloadWidget } from './download-logs-widget';
 import { useGetSession } from '../session/session-handler';
@@ -42,6 +42,9 @@ import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import FunctionsIcon from '@material-ui/icons/Functions';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { ContentPage } from '../componentes/ContentPageWrapper';
+import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
+import ColorThemePage from './ColorThemePage';
 
 export const useSettingsStyles = makeStyles( theme=>({
     input: {
@@ -65,7 +68,7 @@ export const useSettingsStyles = makeStyles( theme=>({
 
 export const CurrentUserContext = createContext({ id:0 });
 
-export default function() {
+export default function SettingsPage() {
      
     const {session}                  = useGetSession(); 
     const [expanded, setExpanded]   = useState(false);
@@ -81,27 +84,26 @@ export default function() {
         //history.push("/");
         //return "-- no hay session";
         return <Box padding={2} textAlign="center"><AsciiSpinner label="Active session not found, waiting for one... (log in if you haven't done so)"/></Box>;
+         
     }
 
     if( error )
     {
-        return <Alert severity="warning">{ parseError(error) }</Alert>
-    }
-
-
-    
+        return <Alert severity="error">{ parseError(error) }</Alert>
+    } 
  
  
-    return <CurrentUserContext.Provider value={session.user}>
-    
-                <Container maxWidth="md">
-                    <Grid container spacing={2} justifyContent="center">
-                        <Grid item xs={12} md={8}>
-                            <Typography variant="h4" gutterBottom><SettingsIcon/> Settings</Typography>
-                            
-                            { loading && <AsciiSpinner label="Loading settings..."/>}
+    return <CurrentUserContext.Provider value={session.user}> 
+
+                            { loading && <LinearProgress/>}
 
                 { settings && <>
+
+                            <SettingDiv title="Change colors" desc="Customize light and dark mode..." Icon={<FormatColorFillIcon/>}>
+                                <ColorThemePage/>
+                            </SettingDiv>
+
+
                             <SettingDiv title="Download logs" desc="Download all your logs..." Icon={<GetAppIcon/>}> 
                                 <DownloadWidget user={session?.user}/>
                             </SettingDiv>
@@ -209,13 +211,11 @@ export default function() {
                             </SettingDiv>
 
                             </> }
-
-                        </Grid>
-                    </Grid> 
-                </Container> 
+ 
     
             </CurrentUserContext.Provider>;
 }
+ 
 
 const MustBeSOK = ({ user, extra="" })=>{
     return !user.sok && <><Alert severity="warning">You must be an <strong>active supporter</strong> to unlock this feature. {extra}</Alert><br/></>;

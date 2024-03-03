@@ -4,8 +4,7 @@ import Tipo from "./red-guy.png";
 import Gif from "./side-banner.gif";
 import TipoNavidad from "./red-guy-navidad.png";
 import TipoNewYear from "./red-guy-newyear.png";
-import MainBannerSrc from "./main-banner-athletes.png";
-import MainBanner2Src from "./big-banner-2.png";
+import MainBannerSrc from "./main-banner-athletes.png"; 
 import StoreBannerSrc from "./store-banner.png";
 
 //extras
@@ -61,7 +60,7 @@ const Banner = ({ src }) => {
 				cursor: "pointer",
 			}}
 		>
-			<div
+			{/* <div
 				style={{
 					zIndex: -1,
 					position: "absolute",
@@ -70,8 +69,7 @@ const Banner = ({ src }) => {
 					width: "50%",
 					height: "100%",
 					//backgroundImage: `repeating-linear-gradient(41deg, ${theme.PINK_COLOR} 0, ${theme.PINK_COLOR} 2px, transparent 0, transparent 50%)`,
-					//backgroundSize: "12px 12px",
-                    background:theme.palette.background.paper
+					//backgroundSize: "12px 12px", 
 				}}
 			></div>
 			<div
@@ -84,11 +82,11 @@ const Banner = ({ src }) => {
 					height: "100%",
 					//backgroundImage: `repeating-linear-gradient(41deg, ${theme.GREEN_COLOR} 0, ${theme.GREEN_COLOR} 1px, transparent 0, transparent 50%)`,
 					//backgroundSize: "11px 11px",
-                    background:theme.palette.background.paper
+                     
 				}}
-			></div>
+			></div> */}
 
-			<img className="sha" src={src} style={{ maxWidth: "100%", maxHeight:283, transform:"" }} />
+			<img className="sha" fetchpriority="high" src={src} style={{ maxWidth: "100%", maxHeight:283, transform:"" }} />
             
 		</div>
 	);

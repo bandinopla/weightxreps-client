@@ -9,12 +9,8 @@ import { getExampleUTagsLog } from "../../codemirror/tag-parsing";
 
 import { InfoDialog } from "../Dialog";
 
- 
 
-export const TutorialContents = () => {
-	const [show, setSHow] = useState(false);
-
-	const exampleLog = `2021-09-24
+export const exampleLog = `2021-09-24
 @ 77 bw
 This is an example log. The default unit here is "kg" so i dont have to type "kg" next to the weights... but i would have to type "lbs" if i decided to log Pounds.
     
@@ -66,6 +62,12 @@ That keyword will confirm that you want to delete the log. Saving an empty log w
             
 Custom tags are a way to track specific arbitrary aspects of your choise in a way that you can plot their values into a line chart and see the progress/evolution in the change of it's values over time:
 ${ getExampleUTagsLog() }`;
+ 
+
+export const TutorialContents = () => {
+	const [show, setSHow] = useState(false);
+
+	
 
 	return (
 		<div style={{ color:"black !important"}}>

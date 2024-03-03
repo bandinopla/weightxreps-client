@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { Alert } from "@material-ui/lab";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { AsciiSpinner } from "../componentes/ascii-spinner";
 import Barra from "../componentes/barras";
@@ -28,7 +28,9 @@ import { useGetSession } from "../session/session-handler";
 import { OpenDMButton } from "../session/ui/dms-window/dm-window";
 import "./CommunityStats.css";
 import { PageLoadIndicator } from "./page-loader-ui";
-
+import { _volumeRenderer, _weightRenderer } from "../componentes/community-stats-renderer";
+import { ContentPage } from "../componentes/ContentPageWrapper";
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 
 const useStyles = makeStyles( theme => ({
@@ -53,11 +55,21 @@ const useStyles = makeStyles( theme => ({
   }));
 
 
-const $OnStatsResponse  = makeVar();
+/**
+ * @type {import("../data/generated---db-types-and-hooks").GetCommunityStatsQuery}
+ */
+export const $OnStatsResponse  = makeVar();
+
 const $genders          = ["male","female","both"];
 const $gMatcher         = new RegExp(`(YEAR--)?(${$genders.join("|")})--(\\w+)`,"i"); // el "g" lo vuelve statefull y multiples exec en el mismo string incrementan lastIndex
 
-export default function CommunityStats({ match:{  path, url, params:{ filtermask } } }) {
+
+export default function CommunityStats(props) {
+    return <ContentPage Child={CommunityStatsPage} {...props}/>
+}
+
+
+function CommunityStatsPage({ match:{  path, url, params:{ filtermask } } }) {
  
 
  
@@ -114,7 +126,7 @@ export default function CommunityStats({ match:{  path, url, params:{ filtermask
                 onExerciseChange(official.officialExercises[0].id);
             }
             else 
-            {
+            { 
                 //
                 // trigger data load!
                 // 
@@ -130,6 +142,7 @@ export default function CommunityStats({ match:{  path, url, params:{ filtermask
         
     }, [urlParams, official]);  
  
+    useEffect(()=>$OnStatsResponse(loading? false : data), [ data?.communityStats, loading ]);
 
     const _setClassName = (remove, add)=> {
         var cn = div.current.className;
@@ -241,22 +254,15 @@ export default function CommunityStats({ match:{  path, url, params:{ filtermask
             { (loading || error ) && <Box marginTop={2}><PageLoadIndicator isLoading={loading} error={error} onRetry={ ()=>refetch() } /></Box> }
             
             { stats && <>
-                        Last scan: <strong>{ new Date(stats.timestamp).toLocaleString() }</strong> - Updated every <strong>~{stats.scanFrecuency}</strong> aprox.
-                        <br/><br/>
-                        
-                        <ExtraInfo label="What is this section?">
-                            <Typography variant="body2">
-                                The community stats are calculated based on what is logged in the journals on exercises with a <ExplainHowToParticipate exercises={official?.officialExercises}>specific name or tag</ExplainHowToParticipate> 
-                                <br/>For the estimated 1RM the system uses the default values for the 1RM formula. (It doesn't use RPE)
-                            </Typography>
-                        </ExtraInfo>
-
+                        <Typography variant="caption">
+                            Last scan: <strong>{ new Date(stats.timestamp).toLocaleString() }</strong> - Updated every <strong>~{stats.scanFrecuency}</strong> aprox.
+                            </Typography> 
                         </> } 
             </JDayContentHeader>
              
 
                 
-                <WhosAheadGraph data={stats}/>
+                { stats?.heavyest.length>0 && <WhosAheadGraph data={stats?.heavyest.filter( itm=>gender==2 || gender==itm.by.isf )}/> }
   
         
 
@@ -317,68 +323,9 @@ export default function CommunityStats({ match:{  path, url, params:{ filtermask
 }
  
 
-const RankPosition = ({ pos })=>(<sup style={{float:"left"}}><strong>{pos}. </strong> </sup>);
-
-const _weightRenderer = item => {
-  
-    const w         = item.w.v; //item.originalw?.v || item.w.v;
-    const xBW       = item.bw.v? (w/item.bw.v) : 0;
-
-     
-    const onFire    = xBW>0 && xBW >= item.officialExercise.coolxbw;
-
-    return <Box key={item.e.id} margin="10px 0" >
-                
-                    <Grid container> 
-                    
-                    <Grid item xs={5}> 
-                        <Barra weight={w} reps={!item.originalw? item.reps : null }/>   
-                        <RankPosition pos={item.rank}/>
-                        <Box textAlign="center">
-                            <strong>{item.originalw?"~":""}<WeightValue round={item.originalw!=null} value={w} inkg={!item.w.lb}/></strong>
-                        </Box>
-                    </Grid> 
-
-                    <Grid item xs={7}>
-                        <UnameTag {...item.by} ymd={item.ymd}/>
-                        <Typography variant="caption" component="div" noWrap>{ item.e.name }</Typography>
-                        { item.bw?.v>0 && <Typography noWrap variant="button">
-                            @ <WeightValue value={item.bw.v} inkg={!item.bw.lb}/> 
-                            {xBW && <>(<span style={{fontSize:10}}>x</span>{xBW.toFixed(2)}) {onFire && <>🔥</>}</>}
-                        </Typography>}
-                    </Grid>
-                    
-                </Grid>
-            </Box> ;
-}
- 
 
 
-const _volumeRenderer = item => {
-    return <Box key={item.e.id} margin="10px 0">
-                    <Grid container> 
-                
-                        <Grid item xs={3}>
-                            <RankPosition pos={item.rank}/>
-                            <Box width={90} textAlign="right" paddingRight={1}>
-                                <strong><WeightValue round value={item.w.v} inkg={!item.w.lb}/></strong>
-                                <Typography variant="caption" component="div">in <strong>{ item.totalReps }</strong> reps</Typography>
-                                </Box>
-                        </Grid>
 
-
-                        <Grid item xs={9}>
-                            <UnameTag {...item.by}/>
-                            <Typography variant="caption" component="div" noWrap>{ item.e.name }</Typography>
-                            { item.bw?.v>0 && <Typography noWrap variant="button">
-                                @ <WeightValue value={item.bw.v} inkg={!item.bw.lb}/> 
-                            </Typography>}
-                        </Grid>
-                        
-                    </Grid>
-                </Box>
-             ;
-}
 
 
 const StatsFilterControls = ({ busy, gender, period, etype, data:officialExercises, onGenderChange, onExerciseChange, onPeriodChange })=>{ 
@@ -489,43 +436,111 @@ const ExplainHowToParticipate = ({ exercises, children })=>{
 }
 
 
-
+/**
+ * HEAT MAP GRAPH
+ */
 const WhosAheadGraph = ({ data }) => {
 
-    const {session} = useGetSession();
-    if( !data || data.heavyest.length<2 ) return "";
+    const user          = useGetSession();
+    const canvasRef     = useRef();
+    const {session}     = useGetSession();
+    const [heatData, setHeatData] = useState();
 
-    const First     = data.heavyest[0].w;
-    const Last      = data.heavyest[data.heavyest.length-1].w;
+    useLayoutEffect(()=>{
 
-    var MAX         = First.v;
-    var MIN         = Last.v;
-    var W           = MAX-MIN;
-    const myid      = session?.user?.id;
+        if(!data || data.length<2) {
+            setHeatData(null);
+            return;
+        }
 
-    const mine      = myid>0? data.heavyest.find( itm=>itm.by.id==myid) : null;
+        const First     = data[0].w;
+        const Last      = data[data.length-1].w; 
+        var MAX         = First.v;
+        var MIN         = Last.v;
+        var W           = MAX-MIN;
+        const myid      = user.session?.user?.id; 
+        const mine      = myid>0? data.find( itm=>itm.by.id==myid) : null;
+        const alpha     = 1 / ( data.length * 0.1 );
 
-    //data.heavyest   .w.v ////inkg={Last.lb==0}  /// itm.by.id
+        /**
+         * @type {CanvasRenderingContext2D}
+         */
+        const ctx       = canvasRef.current.getContext("2d");
+        const cWidth    = canvasRef.current.width;
+        const cHeight   = canvasRef.current.height;
+        let minePercent = 0;
+        //#region gradient
+        
+
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = "#000066";
+        ctx.fillRect(0,0,cWidth,cHeight);
+        ctx.globalCompositeOperation = 'lighter';
+        
+        //#endregion
+
+        data.forEach( itm=>{
+            const v = ((itm.w.v-MIN)/W) ; // 0-1
+            const x = v*cWidth;
+            const sw = cWidth/10;
+
+            var gradient = ctx.createLinearGradient(x-sw/2,0,x+sw/2,0);
+                gradient.addColorStop(0, "rgba(0,0,255,0)"); 
+                gradient.addColorStop(.5, "rgba(255,0,0,"+alpha+")"); 
+                gradient.addColorStop(1, "rgba(0,0,255,0)");
+                ctx.fillStyle = gradient; 
+ 
+            //ctx.fillRect(v*1000,0,10,30);
+            ctx.beginPath();
+            
+
+            if( itm==mine )
+            {
+                ctx.strokeStyle = "red"
+                ctx.lineWidth = 4
+                minePercent = v;
+            }
+            else 
+            {
+                ctx.strokeStyle = gradient
+                ctx.lineWidth = sw 
+            }
+
+            ctx.moveTo(x,0);
+            ctx.lineTo(x,cHeight);  
+            ctx.stroke();
+        });
+
+        setHeatData({
+            First, Last, W, mine: minePercent
+        });
+
+
+    }, [data ]);  
+
+
+    //data.heavyest   .w.v ////inkg={Last.lb==0}  /// itm.by.id (((mine.w.v-MIN)/W)*99)+
     return <div>
 
-        <div style={{position:"relative", overflow:"hidden"}}>
+    {heatData && <div style={{position:"relative", overflow:"hidden" }}>
             
-            <div style={{float:"right"}}><WeightValue value={First.v} inkg={1}/></div>
-            <div style={{float:"left"}}><WeightValue value={Last.v}  inkg={1}/></div>
-            <div style={{ margin:"0 auto", width:"30%", textAlign:"center"}}><WeightValue value={Last.v+W/2}  inkg={1}/></div>
-        </div>
+            <div style={{float:"right"}}><WeightValue value={heatData.First.v} inkg={1}/></div>
+            <div style={{float:"left"}}><WeightValue value={heatData.Last.v}  inkg={1}/></div>
+            <div style={{ margin:"0 auto", width:"50%", textAlign:"center"}}><WeightValue value={heatData.Last.v+heatData.W/2}  inkg={1}/></div> 
+        </div>}
         
-        <Paper square style={{ padding:2, position:"relative", width:"100%", height:30, marginBottom:50}}>
-            { data.heavyest.map( (itm,i)=>{
-
-                var me = itm.by.id==myid;
-                return <div style={{ zIndex:me?"3":"auto", background: me?"red": "rgba(0,0,0,0.3)", position:"absolute", left:(((itm.w.v-MIN)/W)*99)+"%", width:3, height:me?45:28}}> </div>;
-
-            } ) }
-
-            { mine && <div style={{ zIndex:4, background:"red", position:"absolute", paddingLeft:10, paddingRight:10, top:38, color:"white", left:(((mine.w.v-MIN)/W)*99)+"%" }}> <b>You</b> </div> }
+        
+        <Paper square style={{  position:"relative", width:"100%" }}>
+ 
+            { heatData?.mine>0 && <div style={{ zIndex:4, background:"red", position:"absolute", paddingLeft:10, paddingRight:10, top:38, color:"white", left:(heatData.mine*100)+"%" }}> <b>You</b> </div> }
+            <canvas width={300} height={20} ref={canvasRef} style={{width:"100%"}}/>
+            
         </Paper>
-
+        
+        <Box marginBottom={4}>
+            <Typography variant="caption">
+                <strong>Heat Map →</strong> brighter areas indicate more people in that zone.</Typography>
+            </Box>
         
     
     </div>;

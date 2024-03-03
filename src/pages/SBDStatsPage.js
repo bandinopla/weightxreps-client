@@ -1,27 +1,33 @@
-import { Box, Button, ButtonGroup, Chip, Container, Divider, FormControl, FormHelperText, Grid, Input, InputBase, InputLabel, LinearProgress, makeStyles, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useTheme } from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
+import "./SBDStatsPage.css";
+
+import { Box, Button, Chip, Container, Divider, FormControl, FormHelperText, Grid, Input, InputBase, InputLabel, makeStyles, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useTheme } from "@material-ui/core";
 import { useEffect, useMemo, useState } from "react";
-import { CartesianGrid, ComposedChart, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
-import { AsciiSpinner } from "../componentes/ascii-spinner";
+import { CartesianGrid, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import WeightValue from "../componentes/weight-value";
-import { useGetSbdStatsQuery } from "../data/generated---db-types-and-hooks"
+import { useGetSbdStatsQuery } from "../data/generated---db-types-and-hooks";
 import ShareIcon from '@material-ui/icons/Share';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { OpenConfirmModal } from "../componentes/Dialog";
 
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import LanguageIcon from '@material-ui/icons/Language';
 import { trackEvent } from "../componentes/google-tracker";
 import { PageLoadIndicator } from "./page-loader-ui";
 import { parseError } from "../data/db";
+import { JDayContentHeader } from "../componentes/journal/jday-header";
+import { makeVar } from "@apollo/client";
+import { ContentPage } from "../componentes/ContentPageWrapper";
 
-const LiftId2Name = ["SQUAT","BENCH","DEADLIFT"];
+export const LiftId2Name = ["SQUAT","BENCH","DEADLIFT"];
+export const SBDCOLORS = ["#0081C8","#FCB131","#EE334E"];
+
+
+
 const LBS2KG                    = 0.4535924; 
 
-const SBDStatsPage = ()=> {
+export const $SBDStatsData = makeVar(false);
+
+export default function SBDStatsPage() {
 
     var location = window.location; 
  
@@ -102,6 +108,14 @@ const SBDStatsPage = ()=> {
     }
 
 
+    useEffect(()=>{
+        if( data )
+        {
+            $SBDStatsData(data);
+        }
+    },[data]);
+
+
     useEffect( ()=>{
 
         if( loadState?.detected && !SBD[0])
@@ -110,31 +124,6 @@ const SBDStatsPage = ()=> {
         }
 
     },[] );
-
-
-    // const wclasses = useMemo( ()=>{
-
-    //     if(!data) return;
-
-    //     var classes = [ [],[] ];
-
-
-    //     data.sbdStats.perclass.forEach( cat => {
-
-    //         var i = cat.wclass.male? 0 : 1;
-
-    //         classes[i].push({
-    //             bw      : cat.wclass.max==500? Math.floor(cat.wclass.min)+1 : cat.wclass.max,
-    //             plus    : cat.wclass.max==500,
-    //             lb      : 0
-    //         });
-
-    //     } );
-
-    //     return classes;
-
-
-    // }, [data] );
 
     const graphData = useMemo( ()=>{
 
@@ -151,7 +140,7 @@ const SBDStatsPage = ()=> {
                     lift            : i,
                     data            : (new Array(500/5)).fill(0),
                     params          : sbd, //puede ser null
-                    color           : ["#0081C8","#FCB131","#EE334E"][i],
+                    color           : SBDCOLORS[i],
                     //wclassName      : null, // null = all... 
                     wClasses        : [],
                     wClassNames     : [],
@@ -234,6 +223,7 @@ const SBDStatsPage = ()=> {
     }, [data, gender, useLbs, SBD] );
 
      
+    
     /**
      * W Class:
      *      ANY
@@ -250,16 +240,11 @@ const SBDStatsPage = ()=> {
     }
 
 
-    return <Container >
-
-            <Paper variant="outlined" square style={{padding:20}}>
-
+    return <Container > <br/>
 
                 <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6}>
-                        <Typography variant="h3"><strong><LanguageIcon fontSize="large"/> SBD World Rank</strong></Typography>
-                        
-                        <Typography variant="h6">Compare your best lifts against <strong style={{color:"#EE334E"}}>{data.sbdStats.total.toLocaleString() || "world class"}</strong> competition RAW lifts done arround the world!</Typography>
+                    <Grid item xs={12} sm={6}>   
+                        <Typography variant="h5">Compare your best lifts against <strong style={{color:"#EE334E"}}>{data.sbdStats.total.toLocaleString() || "world class"}</strong> competition RAW lifts done arround the world!</Typography>
                         
                         <Typography variant="subtitle2" gutterBottom>RAW = No knee wraps or suit on the squat, no straps or suit on the deadlift and no bench shirt on the bench press and pausing 1 second on the chest (no touch and go).</Typography>
  
@@ -271,6 +256,7 @@ const SBDStatsPage = ()=> {
 
                     <Grid item xs={12} sm={6}>
                     <iframe style={{maxWidth:"100%"}} width="560" height="215" src="https://www.youtube.com/embed/Q7XUBA6VtZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <Instructions/>
                     </Grid>
 
                 </Grid>
@@ -289,16 +275,6 @@ const SBDStatsPage = ()=> {
                         </Select>
                     </FormControl>  
 
-
-                    { LiftId2Name.map( (liftName,i)=><FormControl error={SBD[i]?.error}>
-                        <InputLabel htmlFor={liftName}>{liftName}</InputLabel>
-                        <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName}/>
-                        <FormHelperText>{ SBD[i]?.error? SBD[i]?.error : SBD[i]?.weight? "1RM = "+ SBD[i].weight : "Type your best RAW " + liftName }</FormHelperText>
-                    </FormControl> )}
-
-                    
- 
-
                     <FormControl style={{marginLeft:15}}>
                         <InputLabel id="sex">UNIT</InputLabel>
                         <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)}> 
@@ -306,17 +282,23 @@ const SBDStatsPage = ()=> {
                             <MenuItem value={1}>Pounds</MenuItem>
                         </Select>
                     </FormControl> 
-                    
+                    <br/>
+
+
+                    { LiftId2Name.map( (liftName,i)=><FormControl error={SBD[i]?.error}>
+                        <InputLabel htmlFor={liftName}>{liftName}</InputLabel>
+                        <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName}/>
+                        <FormHelperText>{ SBD[i]?.error? SBD[i]?.error : SBD[i]?.weight? "1RM = "+ SBD[i].weight : "Type your best RAW " + liftName }</FormHelperText>
+                    </FormControl> )} 
  
 
                 </form>
  
-                <Instructions/>
+                
  
                 
                 <Share gender={gender} inlbs={useLbs} sbd={SBD}/>
-
-            </Paper>
+ 
             
             
             <CatChart series={graphData} inlbs={useLbs}/>
@@ -326,11 +308,7 @@ const SBDStatsPage = ()=> {
  
  </Container >
 }
-
-export default SBDStatsPage;
-
  
-
 
 const CatChart = ({ series, inlbs }) => {
 
@@ -403,11 +381,11 @@ const CatChart = ({ series, inlbs }) => {
 
  
 
-  const LinearQualificationBar = ({ value, color }) => {
+  export const LinearQualificationBar = ({ value, color }) => {
  
 
       return <div> 
-                <div style={{ width:"100%", backgroundColor:"#eee", borderRadius: 15}}>
+                <div style={{ width:"100%", backgroundColor:"#333", borderRadius: 15}}>
                     <div style={{ height:10, width:(value*100)+"%", backgroundColor:color, borderRadius: 15 }}></div>
                 </div>
             </div>;
@@ -418,43 +396,55 @@ const CatChart = ({ series, inlbs }) => {
       if( !data || !data.weight ) return "";
 
       return <><strong>{data.weight}</strong>{inlbs?"Lbs":"Kg"} </>;
-  }
+  } 
 
-
-  const LiftScore = ({ value }) => {
-      let verb = "low";
+  export const LiftScore = ({ value, justVerb }) => {
+      let verb = "low"; 
+      let cls = "";
 
       if( value>0.98 )
       {
           verb = "Legendary"
+          cls = "legendary";
       }
       else if( value>0.9 )
       {
           verb = "Elite"
+          cls = "elite"
       }
       else if( value>0.8 )
       {
           verb = "Very strong"
+          cls = "verystrong"
       }
       else if( value>0.7 )
       {
           verb = "Strong"
+          cls = "strong"
       }
       else if( value>0.6 )
       {
           verb = "Good"
+          cls = "good"
       }
       else if( value>0.4 )
       {
           verb = "average"
+          cls = "average"
       }
       else 
       {
           verb = "poor"
+          cls = "poor"
       } 
+
+      if( justVerb )
+      {
+        return <span className={`bg ${cls}`}>{verb}</span>;
+      }
        
 
-      return <span style={{fontSize:"0.6em"}}>Score: <strong>{verb}</strong> (%{Math.round(value*100)}{value>1?"+":""})</span>
+      return <span style={{fontSize:"0.6em"}}><span className={`bg ${cls}`}>{verb}</span> %{Math.round(value*100)}{value>1?"+":""} </span>
   }
 
 

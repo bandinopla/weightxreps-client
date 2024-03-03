@@ -432,33 +432,15 @@ export default function JRange({ match:{ params } }) {
                                             <br/>
                                 </>}
                               
-                                <Typography variant="h3">Tags</Typography> 
+                                
 
-                                { rawData?.jrange.utags?.values.length ?
+                                { rawData?.jrange.utags?.values.length > 0 &&
                                     <>
-                                    <Typography gutterBottom variant="subtitle1">During this period these are the tags that were defined:</Typography>
+                                    <Typography variant="h3">Custom Tags</Typography> 
+                                    <Typography gutterBottom variant="subtitle1">During this period these are the <a href="/faq#user-tags">custom tags</a> that were defined:</Typography>
                                     <JRangeUTags data={rawData} from={from} to={to} sundays={sundays} onClickX={onClickX}/>  
-                                    </>
-                                    :
-                                    <Typography variant="subtitle1">
-                                        No tags were used during this period.
-                                    </Typography>
-                                }
-
-                                <Alert severity="info" style={{marginTop:30}}>
-
-                                    <Typography variant="subtitle1">
-                                    <strong>How to create a TAG?</strong> To create a tag, when you log a workout, type, on a new line, `{TAG_PREFIX}` followed by a space and the name you want to give to the tag, then ":" and the value of the tag. Example:<br/>
-                                    </Typography>
-                                    <Box marginTop={1} marginBottom={5} >
-                                        <Paper elevation={2}>
-                                            <StaticLogHighlighter initialValue={ getExampleUTagsLog() } tags={[]} utags={[]} exercises={[]} />
-                                        </Paper>
-                                    </Box>
-                                </Alert>
-                              
-                              
-                              
+                                    </> 
+                                }  
                               
               </>}
           </div>;

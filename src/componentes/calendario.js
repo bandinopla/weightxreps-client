@@ -11,7 +11,7 @@ import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useGetCalendarDaysQuery } from '../data/generated---db-types-and-hooks';
 import { JOwnerContext } from '../pages/journal-context';
 import { ymd2date } from '../utils/utils';
@@ -88,7 +88,7 @@ const useStyles = makeStyles( theme => ({
             color: theme.palette.secondary.contrastText+ " !important",
             filter: "none !important",
             opacity:0.7,
-            animation:"pulse-animation 0.5s infinite ease-in-out",
+             
             "&.hasData": {
                 opacity:1
             }
@@ -323,53 +323,64 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
  
     var w           = 90/weeks; //90%...
     var d           = 0;
-    var monthNames  = [];
-    var currentMonth; 
+    
+    
     var MONTHNAME = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
     var DAYS        = ["","Mon","","Wed","","Fri",""];
 
     DAYS = DAYS.slice(FDOW) .concat(DAYS.slice(0, FDOW ));
+ 
+    var monthNames  = useMemo(()=>{
 
-    /**
-     * == calculando Month Names bar ==
-     * agrego month name donde inicia el dia 1 de ese mes.
-     * y solamente si hay al menos 2 slots libres (para que entre el texto del nombre)
-     */
-    data.forEach( (d,i)=>{
+        var currentMonth; 
+        var _monthNames = [];
 
-        let column = Math.floor(i/7);  
-        const namePostfix = d.showYear? " "+d.showYear : "";
+        /**
+         * == calculando Month Names bar ==
+         * agrego month name donde inicia el dia 1 de ese mes.
+         * y solamente si hay al menos 2 slots libres (para que entre el texto del nombre)
+         */
+        data?.forEach( (d,i)=>{
 
-        if( monthNames.length==0 ) 
-        { 
-            currentMonth = { colSpan:1, name:MONTHNAME[ d.month ]+namePostfix, monthID:d.month, lastColumn:column };
-            monthNames.push(currentMonth); 
-        }
-        else 
-        {
-            if( d.month!=currentMonth.monthID )
-            {
-                let newMonthColSpan = 1;
+            let column = Math.floor(i/7);  
+            const namePostfix = d.showYear? " "+d.showYear : "";
 
-                if( currentMonth.lastColumn==column )
-                {
-                    currentMonth.colSpan--;
-                    //newMonthColSpan++;
-                }
-
-                currentMonth = { colSpan:newMonthColSpan, name:MONTHNAME[ d.month ]+namePostfix, monthID:d.month, lastColumn:column };
-                monthNames.push(currentMonth); 
+            if( _monthNames.length==0 ) 
+            { 
+                currentMonth = { colSpan:1, name:MONTHNAME[ d.month ]+namePostfix, monthID:d.month, lastColumn:column };
+                _monthNames.push(currentMonth); 
             }
             else 
             {
-                if( currentMonth.lastColumn!=column ) {
-                    currentMonth.lastColumn = column;
-                    currentMonth.colSpan++;
+                if( d.month!=currentMonth.monthID )
+                {
+                    let newMonthColSpan = 1;
+
+                    if( currentMonth.lastColumn==column )
+                    {
+                        currentMonth.colSpan--;
+                        //newMonthColSpan++;
+                    }
+
+                    currentMonth = { colSpan:newMonthColSpan, name:MONTHNAME[ d.month ]+namePostfix, monthID:d.month, lastColumn:column };
+                    _monthNames.push(currentMonth); 
+                }
+                else 
+                {
+                    if( currentMonth.lastColumn!=column ) {
+                        currentMonth.lastColumn = column;
+                        currentMonth.colSpan++;
+                    }
                 }
             }
-        }
 
-    } );
+        } );
+
+        return _monthNames;
+
+    },[data]);
+ 
+
 
 
     return <div className={classes.root}>

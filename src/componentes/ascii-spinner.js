@@ -21,7 +21,12 @@ export function asciiSpinnerInterval (label, callback) {
     }, 100)
 }
 
-export const AsciiSpinner = ({ label })=>{ 
+ 
+
+/**  
+ * @returns 
+ */
+export const AsciiSpinner = ({ label, styles })=>{ 
 
     const ref = useRef();
 
@@ -35,5 +40,5 @@ export const AsciiSpinner = ({ label })=>{
         return ()=>clearInterval(anim);
     });
 
-    return <div ref={ref}></div>; //frames.substr(frame,1)+" "+label+".".repeat( frame%3 );
+    return <div ref={ref} style={{...styles}}></div>; //frames.substr(frame,1)+" "+label+".".repeat( frame%3 );
 }

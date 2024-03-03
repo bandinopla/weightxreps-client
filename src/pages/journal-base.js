@@ -39,9 +39,9 @@ const AchievementsPage = lazy(()=>import("../achievements/page"));
  
  
  
-const TODAY_AS_YMD      = todayAsYMD();
-const YMD_PATH_MATCHER  = "/:ymd(\\d{4}-\\d{2}-\\d{2})";
-const RANGE_MATCHER     = ":range(:\\d{1,2})";
+const TODAY_AS_YMD              = todayAsYMD();
+export const YMD_PATH_MATCHER   = "/:ymd(\\d{4}-\\d{2}-\\d{2})";
+export const RANGE_MATCHER      = ":range(:\\d{1,2})";
 
 export default function({ match:{  path, url, params:{ uname } } }) {
  
@@ -87,14 +87,11 @@ export default function({ match:{  path, url, params:{ uname } } }) {
     return (
             <JOwnerContext.Provider value={{ ...uinfo.user, gotoYMD, estimate1RM }}>
  
-                <Container maxWidth="lg" ref={containerDivRef}> 
-
+                <Container maxWidth="lg" ref={containerDivRef} style={{marginTop:20}}>  
                     
-                
-                    <ExercisesModal/>
 
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={8}>
+                        <Grid item xs={12}>
                             
                         
 
@@ -171,31 +168,29 @@ export default function({ match:{  path, url, params:{ uname } } }) {
                             
                         </Grid>
 
-                        {/* === SIDE BAR === */}
-                        <Grid item xs={12} md={4}  >
-
-                            {/* <Paper style={{width:300, padding:10, marginBottom:6}}>
-                                <RedGuyBanner variant='random'/>
-                            </Paper>
-
-                             */}<SideBanners/>
-                            <Hidden smDown>
-                                
-                                <Switch>
-
-                                    <Route path={path+YMD_PATH_MATCHER+RANGE_MATCHER+"?"} render={ props=>(
-                                        <AlsoPosted ymd={props.match.params.ymd} />) }  />  
-                                
-                                </Switch>
-
-                            </Hidden>
-                        </Grid>
+                        
                     </Grid>
 
                 </Container>
             </JOwnerContext.Provider>
         );
 };
+
+/* 
+<Grid item xs={12} md={4}  >
+<SideBanners/>
+<Hidden smDown>
+    
+    <Switch>
+
+        <Route path={path+YMD_PATH_MATCHER+RANGE_MATCHER+"?"} render={ props=>(
+            <AlsoPosted ymd={props.match.params.ymd} />) }  />  
+    
+    </Switch>
+
+</Hidden>
+</Grid>
+*/
 
 export const Best3Lifts = ({ data, usekg }) =>{ 
 

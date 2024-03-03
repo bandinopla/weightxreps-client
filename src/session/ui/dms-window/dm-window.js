@@ -71,7 +71,12 @@ export function OpenDMButton( { otherUser, label, Icon, ...rest } ) {
         return null;
     }
 
-    return session && ( (otherUser.id==0 && session?.user.id==1) || 
+    if( session.user.id==1 )
+    {
+
+    }
+
+    return session && ( (otherUser.id==0 && session?.user.id==1) || otherUser.admin || 
                         ( otherUser?.id>0 && otherUser?.id!=session?.user.id )) && <Button startIcon={Icon || <MailOutlineRoundedIcon/>} {...rest} variant="outlined" onClick={ ()=>openDMWindow(otherUser) }>{ label || "Send message"}</Button> ;
 }
 
@@ -267,6 +272,7 @@ export function DMsWindow()
 
                     <DialogTitleWithCloseBtn onClose={handleClose}>
                         { other?.id>0 && <>Direct Messages with <UnameTag inline {...other} /></> }
+                        { other?.admin && <>Messages with admin</> }
                         { other.id==0 && "Global Message" }
                     </DialogTitleWithCloseBtn>
 
@@ -340,7 +346,7 @@ export function DMsWindow()
 
                                                     { msg.isGlobal?<Alert severity="info" className="sha">
                                                                         <Typography variant="body2">
-                                                                            <strong>(Sent to everyone)</strong> {userTextToParsedUI(msg.text)}
+                                                                            <strong>(Sent to everyone)</strong> {userTextToParsedUI(msg.text, true)}
                                                                         </Typography> 
                                                                     </Alert>
                                                                 

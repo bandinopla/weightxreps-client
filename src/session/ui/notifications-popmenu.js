@@ -3,11 +3,8 @@ import Chip from '@material-ui/core/Chip';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useState } from "react";
-import { useSubmenuListener } from "../../componentes/boton-con-submenu";
-import FetchMoreButton from "../../componentes/FetchMoreButton";
-import { Notification } from "../../data/generated---db-types-and-hooks";
-import { useInbox } from "../inbox-manager";
+import React, { useEffect, useRef, useState } from "react"; 
+import FetchMoreButton from "../../componentes/FetchMoreButton"; 
 import DirectMessageNotificationItem from "./notifications-popmenu-items/DirectMessageNotificationItem";
 import EventNotificationItem from "./notifications-popmenu-items/EventNotificationItem";
 import JournalPostNotificationItem from "./notifications-popmenu-items/JournalPostNotificationItem";
@@ -25,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
       "& .what": {
           fontSize:"0.9em",
-          color:"#222", 
+          //color:"#222", 
       },
 
       "& .userText": {
@@ -37,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
           }
       }
     },  
+    fresh: {
+        borderLeft:"3px solid "+theme.palette.primary.main, 
+    }
 }));
 
 
@@ -46,65 +46,32 @@ const useStyles = makeStyles((theme) => ({
 //
 // type: 1 DMs   type 2: Everything else...
 //
-export default function NotificationsPopMenu({ type }) {
+export default function NotificationsPopMenu({ type }) { 
 
-    const { session, userSettings }     = useGetSession();
+    const { session: { user: { id:myID }}, userSettings, messages, notifications }     = useGetSession();
     const classes                       = useStyles();
     const divRef                        = React.createRef();
+    const lastItemCount                 = useRef();
 
-
-    const { inbox, loading, error, loadOlderNotifications, setUnseenNotificationsCount } = useInbox(type);  
-    
-    //
-    // i hold in a "setting" the value of the last time this PopMenu was opened.
-    //
-    const setting       = userSettings?.[ type==1? "inboxLastSeenDate": "notificationsLastSeenDate" ];
-    const lastSeen      = useReactiveSetting( setting );
-
-    const myID          = session?.user.id;
-    let filteredInbox   = inbox? filtrarInbox(inbox, myID) : null;   
-
-    let lastSeenDate = lastSeen ? new Date(lastSeen) : null ; 
-    const lastItemCount = useRef(0);
+    const { inbox, filteredInbox, loading, error, loadOlderNotifications, markAllAsRead } = type==1? messages : notifications;  
 
     const [ fetchMoreFoundAll, setFetchMoreFoundAll ] = useState(false);
 
-
-    //#region Calculat enumber of "unseen" notifications
-
     //
-    // i handle this client side %100 i just check if the last time this UI was opened was older than the message from the newest notification...
+    // when we open this component we are reading everything so....
     //
-    useEffect( ()=>{
+    useEffect(()=>{
 
+        //markAllAsRead(); 
+        if( filteredInbox?.some(itm=>itm.isUnseen) )
+        { 
+            var int = setTimeout(markAllAsRead,2000);
+            return ()=>clearInterval(int);
+        }
 
-        let unseen = filteredInbox?.reduce( (val, itm)=>{
- 
-            const item = itm._combined? itm.notification : itm;
-
-            let itmDate = new Date( item.when ); 
-    
-            if( !lastSeenDate || lastSeenDate<itmDate ) {
- 
-                if( item.by!=null && (item.by.id!=myID) )
-                { 
-                    val++;
-                }
-                
-            }
-    
-            return val;
-    
-        } , 0) || 0;
- 
-    
-        let interval = setUnseenNotificationsCount(unseen);
-        return ()=>clearTimeout(interval);
 
     },[filteredInbox]);
-
-
-    //#endregion
+ 
 
     useEffect(()=>{
         //
@@ -121,21 +88,21 @@ export default function NotificationsPopMenu({ type }) {
     });
 
  
-    useSubmenuListener({ 
-        onOpened(){
+    // useSubmenuListener({ 
+    //     onOpened(){
  
-            //
-            // we opened the notifications UI... that means the user "has" or "will" read them.... anyway....
-            //
-            setting( new Date().toUTCString() ); 
+    //         //
+    //         // we opened the notifications UI... that means the user "has" or "will" read them.... anyway....
+    //         //
+    //         setting( new Date().toUTCString() ); 
 
-            setUnseenNotificationsCount(0);
-        },
+    //         setUnseenNotificationsCount(0);
+    //     },
 
-        onClosed() { 
-            //...
-        }
-    }, [ session ]);
+    //     onClosed() { 
+    //         //...
+    //     }
+    // }, [ session ]);
 
 
     //
@@ -174,18 +141,19 @@ export default function NotificationsPopMenu({ type }) {
     }
  
 
-    return <div ref={divRef} style={{width:500, maxWidth:"100%", padding:"0px 8px"}}>
+    return <div ref={divRef} style={{ padding:"0px 18px"}}>
 
                 {/* error && <Alert severity="error">{error}</Alert>*/}
 
                 { loading && <LinearProgress/> }
-                <List className={classes.root} >
+                <List className={ classes.root } >
 
                     { 
                         
                         filteredInbox?.map( msg=>{  
 
                                 let count = 0;  
+                                let unseen = msg.isUnseen;
 
                                 if( msg._combined )
                                 { 
@@ -221,7 +189,7 @@ export default function NotificationsPopMenu({ type }) {
                                         break;
                                 } 
 
-                                return <div key={msg.id}>{element}</div>
+                                return <div key={msg.id} className={unseen? classes.fresh : ""}>{element}</div>
                     
                         } ) }
 
@@ -246,88 +214,5 @@ export default function NotificationsPopMenu({ type }) {
  */
 const CombinedItem = ({ count, children }) => (<div style={{position:"relative"}}>
     { count>0 && <div style={{ position:"absolute", top:5, right:5, zIndex:999}}><Chip size="small"  label={"+"+count}/></div> }
-    {children}</div>);
-
-
-/**
- * @typedef {object} CombinedNotification
- * @property {Number} count If > 1 significa que hay otros items (mas viejos) "dentro" de este item
- * @property {Notification} notification 
- * @property {Boolean} _combined
- *
- * Quitamos duplicados y dejamos el más reciente, pero llevamos un conteo del numero de items "comprimidos" 
- * para despues mostrarlo con un <CombinedItem/>
- * 
- * @param {[Notification]} inbox 
- * @param {Number} myID 
- * @returns {[(Notification|CombinedNotification)]}
- */
-const filtrarInbox = (inbox, myID) => {
-
-    //se supone vienen ordenados por fecha...
-    //agruparlos. Mostrar solo 1 por username....  
- 
-        //
-        // quitar todos los items (salvo el más reciente) relacionados con un DM de un usuario.
-        //
-        let uidDM = new Map();
-
-        return inbox.map( msg => {
-
-            let uid; //user DM
-
-            // DM | DMSent | LikeOnMyDM
-
-            switch( msg.__typename ) 
-            {
-                case "DM":
-                case "LikeOnDM": 
-
-                if( msg.text.length>80 ) { 
-                    msg = {
-                        ...msg,
-                        text: msg.text+"[...]"
-                    } 
-                }
-
-                //
-                // if "to" el item es un "sent message" de nosotros hacia ese usuario...
-                // if "by" es un DM enviado a nosotros
-                //
-                uid = msg.by.id==myID? msg.to.id : msg.by.id; //el context del mensaje
-                break; 
-            } 
- 
-            //
-            // si estamos en el contexto de un "DM"...
-            //
-            if( uid )
-            {
-                //
-                // si no hay nada ya procesado... es un item reciente:
-                //
-                if( !uidDM.has(uid) )
-                {
-                    let combined = { _combined:true, count:0, notification:msg };
-                    uidDM.set(uid, combined);
-                    return combined;
-                }
-
-                //
-                // else, es un evento viejo. 
-                //
-                uidDM.get(uid).count++;  
-                return null;
-            }
-
-            //
-            // todo lo demas se agrega así como viene
-            //
-            return msg; 
-        })
-        
-        .filter( itm=>itm!=null ); 
-}
-
-
+    {children}</div>); 
 

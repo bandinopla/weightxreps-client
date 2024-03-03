@@ -16,6 +16,7 @@ import "./erow-render.css";
 import { JDayContext } from './jday-context';
 import { useHistory } from "react-router-dom";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
+import { SBDRankLeyend, SetSBDRank } from './erow-sbdrank';
 
 const effintLink = {
     textDecoration:"underline",
@@ -40,9 +41,13 @@ const useStyles = makeStyles((theme) => ({
               , maxWidth: "100%"
               , flexGrow:0
               , fontSize:"1.2em"
+              , whiteSpace:"nowrap"
               , "& b":{ color: theme.palette.primary.main }
               , "& .w": {
                   color: theme.palette.primary.main
+              },
+              [theme.breakpoints.up('md')]: {
+                width:"33%"
               }
           }
 
@@ -86,8 +91,7 @@ const useStyles = makeStyles((theme) => ({
          lineHeight:"25px",
 
          "& .est": {
-            color:"#91a90d",
-            fontSize:"0.7em",
+            color:"#91a90d", 
             lineHeight:"1em",
             paddingRight:15,
             display:"inline-block"
@@ -199,11 +203,16 @@ export default function Eblock({ data }){
                 </Box>
                 <Divider variant="middle" style={{marginBottom:10, marginTop:-5}}/>
                 
+                <SBDRankLeyend>
                 <Box paddingBottom={1}>
                 { data.sets.map( (set,i)=>(<div key={i}>
                 
                     <div className={classes.erow+" erow"+(set.pr>0?" RMPR":"")+(set.r==0?" FAILED-ATTEMPT":"") }>
                         <div className="wxr">
+
+                            { set.r>0 && <div style={{ float:"left", marginLeft:8, marginTop:3}}>
+                                <SetSBDRank weight={set.est1rm} type={data.exerciseRef.exercise.type}/>
+                            </div> }
 
                             <EstimatedRM set={set} best={data.exerciseRef.best}/> 
 
@@ -237,6 +246,8 @@ export default function Eblock({ data }){
                 
                 )) }
                 </Box>
+                </SBDRankLeyend>
+
             </Paper>
 }
 

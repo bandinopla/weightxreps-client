@@ -7,16 +7,17 @@ const SubmenuContext = React.createContext();
 /**
  * HOW TO CLOSE? ---> submenu debe emitir un evento de tipo click con .closeMenu = true
  */
- export const BotonConSubmenu = ({ submenu, children }) => {
+ export const BotonConSubmenu = ({ UseButton, submenu, startIcon, children }) => {
 
     const [anchorEl, setAnchorEl]   = React.useState(null);
     const menuAnchor                = React.createRef();
     const contentDiv                = React.createRef();
     const [onOpenListeners]         = React.useState([]);
     const [onExitListeners]         = React.useState([]);
+    const ButtonClass = UseButton ?? Button;
 
 
-    const handleClick = (event) => {
+    const handleClick = (event) => { 
         setAnchorEl( menuAnchor.current); //event.currentTarget); 
     }; 
 
@@ -52,10 +53,10 @@ const SubmenuContext = React.createContext();
     }
 
     return <>
-            <Button onClick={handleClick} style={{position:"relative"}}>
+            <ButtonClass onClick={handleClick} style={{position:"relative"}} startIcon={startIcon}>
                 {children} 
-                <div style={{position:"fixed", top:52}} ref={menuAnchor}></div>
-            </Button>
+                <div style={{position:"fixed" }} ref={menuAnchor}></div>
+            </ButtonClass>
             
 
             <Menu  
@@ -71,11 +72,11 @@ const SubmenuContext = React.createContext();
                     onExit
                 }}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
+                    vertical: 'center',
+                    horizontal: 'center',
                   }}
                   transformOrigin={{
-                    vertical: 'top',
+                    vertical: 'center',
                     horizontal: 'center',
                   }}
             >  

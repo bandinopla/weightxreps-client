@@ -1,0 +1,39 @@
+.menu, .footer {
+    max-width: 250px;  
+    
+}
+.menu img {
+    max-width: 100%;
+    padding-top: 20px;
+    padding-right: 10px;
+}
+.menu ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0px;  
+    display: flex; 
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+    padding-bottom: 20px; 
+} 
+.footer > div:nth-child(2) {
+    flex-grow: 1;
+}
+
+li.firstSession {
+    border-top:1px dashed #111;
+    margin-top: 10px;
+    padding-top: 10px;
+} 
+.selected *{
+    color:black;
+    font-weight: bold;;
+}
+ 

@@ -1,0 +1,15 @@
+.firebaseui-container {
+    margin:0px  !important;
+}
+.firebaseui-list-item {
+    text-align: left !important;
+}
+.firebaseui-card-footer {
+    padding:0px !important;
+}
+.firebaseui-provider-sign-in-footer>.firebaseui-tos {
+    text-align: left  !important;
+}
+.firebaseui-card-content {
+    padding: 0px;;
+}

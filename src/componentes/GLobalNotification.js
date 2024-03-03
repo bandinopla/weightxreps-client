@@ -37,17 +37,4 @@ export function GLobalNotification() {
     return <MyPaper dangerouslySetInnerHTML={{__html: text}} square> 
     </MyPaper>
 }
-
-
-/**
- * Solo pone un espacio, un margen, de aire.
- */
-export function GLobalNotificationSpace() {
-    const text = useReactiveVar(value);
-
-    if( text )
-    {
-        return <div style={{height:100}}></div>;
-    }
-    return <Toolbar />;
-}
+ 

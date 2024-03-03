@@ -149,7 +149,7 @@ export const UcardErow = ({ type, ename, weight, reps}) => (<div>
         <div style={{textAlign:"center"}}><Barra weight={weight} reps={reps}/></div>
 </div>);
 
-const CardPreviewText = ({ value, utags })=> (<Paper className="textPreview"><Typography variant="body2">{ previewTextToNode(value, utags) }</Typography></Paper>);
+const CardPreviewText = ({ value, utags })=> (<Paper className="textPreview"><Typography variant="body2" component="div">{ previewTextToNode(value, utags) }</Typography></Paper>);
 
 const JoinedTag = ({ label, years}) => {
 
@@ -164,6 +164,6 @@ const JoinedTag = ({ label, years}) => {
 
 const OGSeal = ({sinceDay1})=>{
     //return <div style={{ position:"absolute", top:45, right:0, transform:"scale(0.7)"}}><img src="/og.png" title='Member since year 1'/></div>
-    return <span className='og' title='OG'>{sinceDay1?"OG":<FlareRoundedIcon/>}</span>
+    return <span className='og' title={sinceDay1?"Member since year 1 of the site":"Long time member"}>{sinceDay1?"OG":<FlareRoundedIcon/>}</span>
 }
 
