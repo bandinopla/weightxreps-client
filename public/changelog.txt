@@ -1,3 +1,8 @@
+- 2.26.1 : 2024-03-04
+        * requested by @azothriel : the side menues on mobile are hard to swipe/open so I've increased the hitbox azea and reduced the required gesture needed to determine the desired intent.
+        + FAQ: added posibility to get a permalink to the question (and mecanic to link to a question) in case someone wants to share a link to a particular one.
+        * changed "help" and "about" menu icons (they looked too similar)
+
 - 2.26.0 : 2024-03-03
         + Mayor layout redesign & new banners 
         + NEW! in the "home" (when logged) a side banner shows an overview of what was done by the user.

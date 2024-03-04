@@ -1,15 +1,12 @@
-import { Box, Container, Grid, IconButton, LinearProgress, Paper, Typography } from "@material-ui/core";
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import { UnameRef } from "../componentes/uname";
-import { Fragment, useEffect, useRef, useState } from "react";  
+import { Box, Button, IconButton, LinearProgress, Paper, Typography } from "@material-ui/core";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails'; 
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionActions from '@material-ui/core/AccordionActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider'; 
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import Fuse from 'fuse.js';
@@ -17,8 +14,8 @@ import { Alert } from "@material-ui/lab";
 import { exampleLog } from "../componentes/journal/editor-tutorial";
 import { StaticLogHighlighter } from "../codemirror/LogTextEditor";
 import { getExampleUTagsLog } from "../codemirror/tag-parsing";
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { ContentPage } from "../componentes/ContentPageWrapper";
+import LinkIcon from '@material-ui/icons/Link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,6 +66,7 @@ const HelpPage = ({ location })=>{
     const mounted = useRef(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
+    const removeHash = useRef(false);
 
     /**
      * @type {{ current: Fuse}}
@@ -111,6 +109,13 @@ const HelpPage = ({ location })=>{
 
                                 setQs(json); 
                                 setLoading(false);
+
+                                if( location.hash ) 
+                                {
+                                    searchInput.current.value = location.hash;
+                                    removeHash.current = true;
+                                    setFilteredQs( json.filter(q=>location.hash.indexOf(q.alias)==1 || location.hash.indexOf(slugify(q.q))==1 ) )
+                                }
                             }
 
                     });
@@ -125,9 +130,20 @@ const HelpPage = ({ location })=>{
         clearInterval(filterInterval.current);
         filterInterval.current = setTimeout(()=>{
 
+            execRemoveHash();
             setFilteredQs( fuse.current?.search(ev.target.value ).map(itm=>itm.item) )
 
         }, 300)
+    }
+
+    const execRemoveHash = ()=>{
+        
+        if( removeHash.current )
+        {
+            removeHash.current = false;
+            window.history.replaceState({}, document.title, window.location.pathname );
+        }
+        
     }
   
     const tag2component = tag => {
@@ -227,8 +243,15 @@ const HelpPage = ({ location })=>{
     }
 
     const clear = ()=>{
+        execRemoveHash()
         searchInput.current.value = "";
         setFilteredQs([]);
+    }
+
+    const copyLinkToQuestion = q => {
+        const key = slugify(q.q);
+        const loc = window.location;
+        window.prompt("Copy this link:", `${loc.origin+loc.pathname}#${key}`);
     }
 
     if( error )
@@ -269,6 +292,9 @@ const HelpPage = ({ location })=>{
                         }
                     </Typography>
                     </AccordionDetails> 
+                    <AccordionActions>
+                        <Button size="small" variant="outlined" endIcon={<LinkIcon/>} onClick={()=>copyLinkToQuestion(itm)}>Copy permalink</Button>
+                    </AccordionActions>
 
             </Accordion> )}
 
@@ -283,4 +309,13 @@ const HelpPage = ({ location })=>{
 
 export default function (props) {
     return <ContentPage Child={HelpPage} {...props}/>
+}
+
+function slugify(text) {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
 }

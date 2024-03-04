@@ -49,10 +49,10 @@ import { ContentPage } from './componentes/ContentPageWrapper';
 import ScheduleRoundedIcon from '@material-ui/icons/ScheduleRounded';
 import { ExercisesModal } from './componentes/journal/exercises';
 import { FollowOnX } from './componentes/twitter';
-import { ToogleSidebarMenu } from './componentes/toggle-side-menu';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import { ToogleSidebarMenu } from './componentes/toggle-side-menu'; 
 import Hidden from '@material-ui/core/Hidden'; 
 import { VisualPreferencesSwitcher } from './componentes/VisualPreferencesSwitcher'; 
+import { SwipeableDrawer } from './componentes/SwipableDrawer';
 
 window.fetch = (url, config)=>{
     return fetchPolyfill(url, config)
@@ -323,10 +323,7 @@ const AppSideBar = ()=>{
 
     if( isSmallScreen )
     {
-        return <>
-            <div className="sidebar-handle right">
-                &lt;
-            </div>
+        return <> 
             <SwipeableDrawer
                 anchor="right"
                 open={show}

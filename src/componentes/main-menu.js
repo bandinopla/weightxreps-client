@@ -1,45 +1,34 @@
-import { Grid, IconButton, Button as MaterialButton, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
+import { IconButton, Button as MaterialButton, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 import LanguageIcon from '@material-ui/icons/Language';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'; 
-//import styles from "./main-menu.module.css";
-import { Sticky } from './sticky';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';  
 import { useGetSession } from '../session/session-handler';
-import UAvatar from './uavatar';
-import UnameTag from './uname';
 import FitnessCenterSharpIcon from '@material-ui/icons/FitnessCenterSharp';
 import { useHistory, useLocation } from "react-router-dom";
-import React, { isValidElement, useEffect, useMemo, useState } from 'react';
-import { BotonConSubmenu } from './boton-con-submenu';
+import { useEffect, useState } from 'react';
 import { NotificationsBadge } from '../session/inbox-manager';
-import { UserSessionSubmenu } from '../session/ui/user-navbar-popmenu';
-import { DarkModeActivatorButton } from './DarkModeActivatorButton';
 import { ReactComponent as Logo } from '../logo.svg';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { JEditorButton } from './journal/editor-button';
 
 
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden'; 
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import PersonIcon from '@material-ui/icons/Person';
+import ListItemText from '@material-ui/core/ListItemText'; 
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import OndemandVideoIcon from '@material-ui/icons/OndemandVideo'; 
+import { SwipeableDrawer } from './SwipableDrawer';
+import HelpIcon from '@material-ui/icons/Help';
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 
 const Button = ({ children, ...props }) => {
 
@@ -105,8 +94,8 @@ export const MENU = [
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
     { Icon:OndemandVideoIcon, goto:"/videos", label:"Videos" },
     { Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
-    { Icon:HelpOutlineIcon, goto:"/faq", label:"Help" },
-    { Icon:InfoOutlinedIcon, goto:"/about", label:"About" },
+    { Icon:HelpIcon, goto:"/faq", label:"Help" },
+    { Icon:FingerprintIcon, goto:"/about", label:"About" },
 //liClass:styles.firstSession,
 
     { Icon:FitnessCenterSharpIcon, sessionMenuStart:true, fancy:true, onClick:()=>window.dispatchEvent(new Event("openEditor")), label:"Log Workout", session:true },
@@ -336,10 +325,7 @@ export const MainMenuDrawer = ()=>{
             >{menu}
             </Drawer>
       </Hidden>
-        <Hidden lgUp implementation="css">
-            <div className="sidebar-handle left">
-                &gt;
-            </div>
+        <Hidden lgUp implementation="css"> 
             <SwipeableDrawer
                 anchor="left"
                 open={show}
