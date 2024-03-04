@@ -205,7 +205,7 @@ export default function Eblock({ data }){
                 
                 <SBDRankLeyend>
                 <Box paddingBottom={1}>
-                { data.sets.map( (set,i)=>(<div key={data.eid+"-"+set.est1rm+"-"+set.r}>
+                { data.sets.map( (set,i)=>(<div key={[data.eid,i,set.w,set.r,set.s].toString()}>
                 
                     <div className={classes.erow+" erow"+(set.pr>0?" RMPR":"")+(set.r==0?" FAILED-ATTEMPT":"") }>
                         <div className="wxr">
