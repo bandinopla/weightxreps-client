@@ -614,7 +614,9 @@ export type Query = {
   getCalendarDays?: Maybe<Array<Maybe<Scalars['CalendarDayKey']>>>;
   getDate?: Maybe<Scalars['String']>;
   getExercises?: Maybe<Array<Maybe<ExerciseStat>>>;
+  getFollowers?: Maybe<Array<Maybe<User>>>;
   getFollowersCount: FollowersCount;
+  getFollowing?: Maybe<Array<Maybe<User>>>;
   getInbox?: Maybe<Inbox>;
   getLogInbox?: Maybe<Inbox>;
   getNotifications?: Maybe<Inbox>;
@@ -685,8 +687,18 @@ export type QueryGetExercisesArgs = {
 };
 
 
+export type QueryGetFollowersArgs = {
+  uid: Scalars['ID'];
+};
+
+
 export type QueryGetFollowersCountArgs = {
   has?: InputMaybe<Scalars['ID']>;
+  uid: Scalars['ID'];
+};
+
+
+export type QueryGetFollowingArgs = {
   uid: Scalars['ID'];
 };
 
@@ -1189,6 +1201,27 @@ export type GetFollowersQueryVariables = Exact<{
 
 
 export type GetFollowersQuery = { __typename?: 'Query', getFollowersCount: { __typename?: 'FollowersCount', has?: boolean | null, total: number } };
+
+export type GetUsersFollowingQueryVariables = Exact<{
+  who: Scalars['ID'];
+}>;
+
+
+export type GetUsersFollowingQuery = { __typename?: 'Query', getFollowers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null };
+
+export type GetUsersFollowedByQueryVariables = Exact<{
+  who: Scalars['ID'];
+}>;
+
+
+export type GetUsersFollowedByQuery = { __typename?: 'Query', getFollowing?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null };
+
+export type GetFollowInfoQueryVariables = Exact<{
+  uid: Scalars['ID'];
+}>;
+
+
+export type GetFollowInfoQuery = { __typename?: 'Query', getFollowers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null, getFollowing?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null } | null> | null };
 
 export type LikeMessageMutationVariables = Exact<{
   target: Scalars['ID'];
@@ -2654,6 +2687,114 @@ export function useGetFollowersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetFollowersQueryHookResult = ReturnType<typeof useGetFollowersQuery>;
 export type GetFollowersLazyQueryHookResult = ReturnType<typeof useGetFollowersLazyQuery>;
 export type GetFollowersQueryResult = Apollo.QueryResult<GetFollowersQuery, GetFollowersQueryVariables>;
+export const GetUsersFollowingDocument = gql`
+    query GetUsersFollowing($who: ID!) {
+  getFollowers(uid: $who) {
+    ...BriefUserFields
+  }
+}
+    ${BriefUserFieldsFragmentDoc}`;
+
+/**
+ * __useGetUsersFollowingQuery__
+ *
+ * To run a query within a React component, call `useGetUsersFollowingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersFollowingQuery({
+ *   variables: {
+ *      who: // value for 'who'
+ *   },
+ * });
+ */
+export function useGetUsersFollowingQuery(baseOptions: Apollo.QueryHookOptions<GetUsersFollowingQuery, GetUsersFollowingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersFollowingQuery, GetUsersFollowingQueryVariables>(GetUsersFollowingDocument, options);
+      }
+export function useGetUsersFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersFollowingQuery, GetUsersFollowingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersFollowingQuery, GetUsersFollowingQueryVariables>(GetUsersFollowingDocument, options);
+        }
+export type GetUsersFollowingQueryHookResult = ReturnType<typeof useGetUsersFollowingQuery>;
+export type GetUsersFollowingLazyQueryHookResult = ReturnType<typeof useGetUsersFollowingLazyQuery>;
+export type GetUsersFollowingQueryResult = Apollo.QueryResult<GetUsersFollowingQuery, GetUsersFollowingQueryVariables>;
+export const GetUsersFollowedByDocument = gql`
+    query GetUsersFollowedBy($who: ID!) {
+  getFollowing(uid: $who) {
+    ...BriefUserFields
+  }
+}
+    ${BriefUserFieldsFragmentDoc}`;
+
+/**
+ * __useGetUsersFollowedByQuery__
+ *
+ * To run a query within a React component, call `useGetUsersFollowedByQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersFollowedByQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersFollowedByQuery({
+ *   variables: {
+ *      who: // value for 'who'
+ *   },
+ * });
+ */
+export function useGetUsersFollowedByQuery(baseOptions: Apollo.QueryHookOptions<GetUsersFollowedByQuery, GetUsersFollowedByQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersFollowedByQuery, GetUsersFollowedByQueryVariables>(GetUsersFollowedByDocument, options);
+      }
+export function useGetUsersFollowedByLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersFollowedByQuery, GetUsersFollowedByQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersFollowedByQuery, GetUsersFollowedByQueryVariables>(GetUsersFollowedByDocument, options);
+        }
+export type GetUsersFollowedByQueryHookResult = ReturnType<typeof useGetUsersFollowedByQuery>;
+export type GetUsersFollowedByLazyQueryHookResult = ReturnType<typeof useGetUsersFollowedByLazyQuery>;
+export type GetUsersFollowedByQueryResult = Apollo.QueryResult<GetUsersFollowedByQuery, GetUsersFollowedByQueryVariables>;
+export const GetFollowInfoDocument = gql`
+    query GetFollowInfo($uid: ID!) {
+  getFollowers(uid: $uid) {
+    ...BriefUserFields
+  }
+  getFollowing(uid: $uid) {
+    ...BriefUserFields
+  }
+}
+    ${BriefUserFieldsFragmentDoc}`;
+
+/**
+ * __useGetFollowInfoQuery__
+ *
+ * To run a query within a React component, call `useGetFollowInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFollowInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFollowInfoQuery({
+ *   variables: {
+ *      uid: // value for 'uid'
+ *   },
+ * });
+ */
+export function useGetFollowInfoQuery(baseOptions: Apollo.QueryHookOptions<GetFollowInfoQuery, GetFollowInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFollowInfoQuery, GetFollowInfoQueryVariables>(GetFollowInfoDocument, options);
+      }
+export function useGetFollowInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFollowInfoQuery, GetFollowInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFollowInfoQuery, GetFollowInfoQueryVariables>(GetFollowInfoDocument, options);
+        }
+export type GetFollowInfoQueryHookResult = ReturnType<typeof useGetFollowInfoQuery>;
+export type GetFollowInfoLazyQueryHookResult = ReturnType<typeof useGetFollowInfoLazyQuery>;
+export type GetFollowInfoQueryResult = Apollo.QueryResult<GetFollowInfoQuery, GetFollowInfoQueryVariables>;
 export const LikeMessageDocument = gql`
     mutation LikeMessage($target: ID!) {
   likeMessage(target: $target)

@@ -1,3 +1,6 @@
+- 2.26.3 : 2024-03-05
+        * Added the posibility to see followers and followings list.
+
 - 2.26.2 : 2024-03-05
         * bugfix in the SBD Score & unification of calculations. 
 
