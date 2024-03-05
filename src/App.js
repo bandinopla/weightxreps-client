@@ -305,7 +305,6 @@ const AppSideBar = ()=>{
                                     <Route path="/" exact component={SessionHomeSidebar}/> 
                                     <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStatsSoftBox} />   
                                     <Route path="/sbd-stats" component={SBDRankSidebar} />
-                                    <Route path="/sbd-stats" component={SBDRankSidebar} />
                                     <Route path="/journal/:uname" component={JournalSideBar} />
 
                                 </Switch>

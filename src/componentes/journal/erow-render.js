@@ -211,7 +211,7 @@ export default function Eblock({ data }){
                         <div className="wxr">
 
                             { set.r>0 && <div style={{ float:"left", marginLeft:8, marginTop:3}}>
-                                <SetSBDRank weight={set.est1rm} type={data.exerciseRef.exercise.type}/>
+                                <SetSBDRank weight={ set.r>1? set.est1rm : set.w } type={data.exerciseRef.exercise.type}/>
                             </div> }
 
                             <EstimatedRM set={set} best={data.exerciseRef.best}/> 

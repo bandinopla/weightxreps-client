@@ -4,19 +4,15 @@ import { Box, Button, Chip, Container, Divider, FormControl, FormHelperText, Gri
 import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import WeightValue from "../componentes/weight-value";
-import { useGetSbdStatsQuery } from "../data/generated---db-types-and-hooks";
 import ShareIcon from '@material-ui/icons/Share';
 import { OpenConfirmModal } from "../componentes/Dialog";
 
 import Snackbar from '@material-ui/core/Snackbar';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import LanguageIcon from '@material-ui/icons/Language';
 import { trackEvent } from "../componentes/google-tracker";
 import { PageLoadIndicator } from "./page-loader-ui";
 import { parseError } from "../data/db";
-import { JDayContentHeader } from "../componentes/journal/jday-header";
-import { makeVar } from "@apollo/client";
-import { ContentPage } from "../componentes/ContentPageWrapper";
+import { useSBDStatsHook } from "../data/sbd-stats-hooks";
 
 export const LiftId2Name = ["SQUAT","BENCH","DEADLIFT"];
 export const SBDCOLORS = ["#0081C8","#FCB131","#EE334E"];
@@ -25,7 +21,6 @@ export const SBDCOLORS = ["#0081C8","#FCB131","#EE334E"];
 
 const LBS2KG                    = 0.4535924; 
 
-export const $SBDStatsData = makeVar(false);
 
 export default function SBDStatsPage() {
 
@@ -34,10 +29,7 @@ export default function SBDStatsPage() {
 
     const loadState = ExtractSharedQuery( location.search );
     
-    const { data, loading, error }  = useGetSbdStatsQuery();
- 
-    const male    = true; // null true o false(female)
-    const bw      = 0;
+    const { data, loading, error }  = useSBDStatsHook();
 
     const [gender, setGender] = useState( loadState?.gender || 0 );
     const [useLbs, setUseLbs] = useState( loadState?.inlbs || 0 );
@@ -108,12 +100,6 @@ export default function SBDStatsPage() {
     }
 
 
-    useEffect(()=>{
-        if( data )
-        {
-            $SBDStatsData(data);
-        }
-    },[data]);
 
 
     useEffect( ()=>{
@@ -156,64 +142,39 @@ export default function SBDStatsPage() {
         }); 
 
 
-        series.length && data.sbdStats.perclass.forEach( ({ graph, wclass })=>{
+        series.forEach( serie=>{
 
-            //
-            // A) no hay genero definido
-            // B) hay genero y somo ese genero.
-            //
-            if( !gender || ( (2-gender) == wclass.male ) ) // 1==true
+            let bw = serie.params?.bw || 0;
+
+            if( bw && useLbs )
             {
+                bw *= LBS2KG; //esta escrito en LBs...
+            }
+            
+            const wclasses = data.filterWeightClasses( bw, gender==0? null : gender-1 );
+            
+            if( bw )
+            { 
+                serie.wClasses      = wclasses;
+                serie.wClassNames   = wclasses.flatMap(wc=>wc.wclass).map( wclass => {
 
-                // no tiene BW o esta en la categoria...
-                series.forEach( serie=>{
+                    let plus            = wclass.max>=500;
+                    let classBW         = plus? Math.floor( wclass.min ) : wclass.max;  
 
-                    let bw = serie.params?.bw || 0;
+                    return  (wclass.male?"Male ":"Female ") + (plus?"+":"") + classBW + " Kg "+ (useLbs? " | "+(plus?"+":"") + Math.round(classBW/LBS2KG) + " Lbs" : "" )
+                }); 
+            }
 
-                    if( bw && useLbs )
-                    {
-                        bw *= LBS2KG; //esta escrito en LBs...
-                    }
+            const score = data.getScoreFor(wclasses, serie.lift, serie.wRef );
 
-                    //
-                    // A) !params = acepta todo
-                    // B) hay params pero no se definio un BW, acepta cualquier BW.
-                    // C) se definio un BW, ver si estamos en esta categoria...
-                    //
-                    if( !serie.params || bw==0 || ( bw>=wclass.min && bw<=wclass.max ) )
-                    { 
+            serie.refIsBestThan = score.bestThan;
+            serie.totalLifts = score.total;
 
-                        //
-                        // todavia no se definio el wClassName
-                        //
-                        if( bw>0 && serie.wClasses.indexOf(wclass)<0)
-                        { 
-                            let plus            = wclass.max>=500;
-                            let classBW         = plus? Math.floor( wclass.min ) : wclass.max;  
-
-                            serie.wClasses.push( wclass );
-                            serie.wClassNames.push( (wclass.male?"Male ":"Female ") + (plus?"+":"") + classBW + " Kg "+ (useLbs? " | "+(plus?"+":"") + Math.round(classBW/LBS2KG) + " Lbs" : "" ) ); 
-                        }
-
-                        graph.forEach( (vals, col)=>{
-
-                            let w = col*5;
-                            let segmentLifts = vals[ serie.lift ];
-                            serie.data[col] += segmentLifts;
-
-                            //
-                            if( serie.wRef )
-                            {
-                                serie.refIsBestThan += (serie.wRef>w? segmentLifts : 0);
-                                serie.totalLifts    += segmentLifts;
-                            } 
-
-                        });
-                    }
-
-                });
- 
-            } 
+            wclasses.forEach( wclass => {
+                wclass.graph.forEach( (row, col)=>{
+                    serie.data[col] += row[serie.lift];
+                })
+            });
 
         });
 
@@ -329,8 +290,6 @@ const CatChart = ({ series, inlbs }) => {
                     <LinearQualificationBar value={ serie.totalLifts? serie.refIsBestThan/serie.totalLifts : 0} color={serie.color}/> 
 
                     <Typography variant="h4">
- 
-                        {/* <LiftWeightValue data={serie.params} inlbs={inlbs}/> */}
                         
                         {LiftId2Name[serie.lift]} { serie.totalLifts>0 && <LiftScore value={serie.refIsBestThan/serie.totalLifts}/> }
                     </Typography>
@@ -391,12 +350,6 @@ const CatChart = ({ series, inlbs }) => {
             </div>;
   }
 
-
-  const LiftWeightValue = ({ data, inlbs }) => {
-      if( !data || !data.weight ) return "";
-
-      return <><strong>{data.weight}</strong>{inlbs?"Lbs":"Kg"} </>;
-  } 
 
   export const LiftScore = ({ value, justVerb }) => {
       let verb = "low"; 

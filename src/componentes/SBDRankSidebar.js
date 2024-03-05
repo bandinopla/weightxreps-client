@@ -1,15 +1,14 @@
-import { useReactiveVar } from "@apollo/client"
 import { SoftBox } from "./SoftBox"
-import { $SBDStatsData, LiftScore, LinearQualificationBar, SBDCOLORS } from "../pages/SBDStatsPage"
+import { LiftScore, LinearQualificationBar, SBDCOLORS } from "../pages/SBDStatsPage"
 import { useGetSession } from "../session/session-handler"
 import { useGetJRangeLazyQuery } from "../data/generated---db-types-and-hooks"
 import { useEffect, useState } from "react"
-import { dateToYMD } from "../utils/utils"
-import { Box, Grid, LinearProgress, Typography } from "@material-ui/core"
+import { dateToYMD, ymd2date } from "../utils/utils"
+import { Box, LinearProgress, Typography } from "@material-ui/core"
 import Chip from '@material-ui/core/Chip';
-import Barra from "./barras"
 import WeightValue from "./weight-value"
 import { Alert } from "@material-ui/lab"
+import { useSBDStatsLazyHook } from "../data/sbd-stats-hooks"
 
 export default function SBDRankSidebar(){
     return <>
@@ -19,12 +18,10 @@ export default function SBDRankSidebar(){
 
 const SBD = ["SQ","BP","DL"];
 
-const SBDUserPlacing = ()=>{
+const SBDUserPlacing = ()=>{ 
 
-    /**
-     * @type {import("../data/generated---db-types-and-hooks").GetSbdStatsQuery}
-     */
-    const sbdData = useReactiveVar($SBDStatsData);
+    const [loadSDB, { data:sbdData, loading:loadingSBD, error:sbdError}] = useSBDStatsLazyHook();
+
     const user = useGetSession();
     const [ getData, { loading, data, error }] = useGetJRangeLazyQuery();
     const [lifts, setLifts] = useState();
@@ -43,6 +40,8 @@ const SBDUserPlacing = ()=>{
                     uid:user.session.user.id
                 }
             });
+
+            loadSDB();
         }
 
     },[ user.session ]); 
@@ -52,41 +51,66 @@ const SBDUserPlacing = ()=>{
 
         if( data?.jrange && sbdData?.sbdStats )
         { 
-            let bw = data?.jrange.utags?.values?.findLast(utag=>utag.tagid=="bw")?.value; // most recent bodyweight
-
-            if( bw )
-            {
-                bw = parseInt(bw) / 1000; // it is in KG by default
-            }
-
-            const erows = data.jrange.days.flatMap( d=>d.did.map(e=>({...e,ymd:d.on})) );
+            //
+            // get all bodyweights (which are automatic custom user tags)
+            //
+            let bw = data?.jrange.utags?.values .filter( utag=>utag.tagid=="bw" )
+                                                .map( tag=>({ ...tag, 
+                                                                bw          :parseInt(tag.value)/1000, 
+                                                                ymdAsDate   :ymd2date(tag.ymd) 
+                                                            }) 
+                                                    );
 
             //
-            // relevant weight classes only. Same gender and, if available, same bodyweight class.
+            // add the date in which that set was done to each set. 
             //
-            const wclasses = sbdData.sbdStats.perclass.filter( wclass=> ( Number(!wclass.wclass.male) == Math.max(0,user.session.user.isf)) 
-                                                                                && 
-                                                                                (!bw || (bw>wclass.wclass.min && bw<=wclass.wclass.max)) );
+            const erows = data.jrange.days.flatMap( d=>d.did.map(e=>({
+                ...e,
+                ymd         : d.on,
+                ymdAsDate   : ymd2date(d.on)
+            })) );
+ 
 
-            
-            setLifts( SBD.flatMap( (type, typeIndex) => {
+            // first filter by gender
+            //const wclasses = sbdData.sbdStats.perclass .filter( wclass=> Number(!wclass.wclass.male) == Math.max(0,user.session.user.isf) );
 
-                const totalLiftsOfType = wclasses.flatMap(w=>w.graph).reduce( (t,sbd)=>t+sbd[typeIndex], 0); 
-           
-                return data?.jrange.exercises.filter(e=>e.type==type) // for each exercise of this type
-                                      .map( e=>({ // find the BEST set done (heaviest weight used OR heavyest 1RM generated from it)
+            setLifts( SBD.flatMap( (type, typeIndex) => 
+
+                                    //
+                                    // for each exercise of this type
+                                    //
+                                    data?.jrange.exercises.filter(e=>e.type==type) 
+                                      .map( e=>({ 
                                         ...e,
+
+                                        // find the BEST set done (heaviest weight used OR heavyest 1RM generated from it)
                                         bestLift: erows .filter(r=>r.eid==e.id)
-                                                        .flatMap(r=>r.sets.map(s=>({...s, ymd:r.ymd, maxWeight:Math.max(s.est1rm, s.w)})))
+                                                        .flatMap(r=>r.sets.map(s=>({
+                                                            ...s, 
+                                                            ymd         : r.ymd, 
+                                                            ymdAsDate   : r.ymdAsDate,
+                                                            maxWeight   : s.r>1? s.est1rm : s.w //unnecesary since est1rm is always the heavyest but just in case... >_>
+                                                        })))
                                                         
                                                         .reduce((setA, setB)=>setA.maxWeight > setB.maxWeight ? setA : setB)
                                       }))
-                                      .map( e=>({
-                                        ...e, 
-                                        score: wclasses.reduce((t, wclass)=>t + wclass.graph.reduce((t2, iLifts, i)=>t2+( e.bestLift.maxWeight>i*5? iLifts[typeIndex] : 0 ) ,0)
-                                                                ,0) / totalLiftsOfType
-                                      }))
-                                    }
+
+                                      //
+                                      // calculat score of each exercise's best lift
+                                      //
+                                      .map( e=>{
+                                        
+                                                // calculate bw up to this date...
+                                                const knownBW   = bw?.reduce( (v, tag, i)=>i==0 || tag.ymdAsDate<=e.bestLift.ymdAsDate? tag.bw : v , 0 ); 
+                                                const classes   = sbdData.filterWeightClasses(knownBW, Math.max(0,user.session.user.isf));
+                                                const score     = sbdData.getScoreFor(classes, typeIndex, e.bestLift.maxWeight); 
+                                                return {
+                                                    ...e 
+                                                    , score  
+                                                    , bw            : knownBW 
+                                                    , weightClass   : knownBW>0? classes[0].wclass : null 
+                                                };
+                                        }) 
                             
              ) ); 
         }
@@ -105,16 +129,28 @@ const SBDUserPlacing = ()=>{
         { lifts?.length>0? <Typography gutterBottom>Based on your logs from the past <strong>{WEEKS} weeks</strong></Typography>
             : <Alert severity="info">You haven't done any "official" exercise in the past <strong>{WEEKS} weeks</strong></Alert>}
 
-        { lifts?.map( lift=>(<div key={lift.id}>
+        { lifts?.map( lift=>{
+            
+            const scorePercent = lift.score.bestThan / lift.score.total;
+
+            return (<div key={lift.id}>
                 <div className="oneline">
                     <Chip label={lift.type}/> <a href={`/journal/${user.session.user.uname}/${lift.bestLift.ymd}`}>{lift.name}</a>
                 </div>
-                <LinearQualificationBar value={lift.score} color={SBDCOLORS[ SBD.indexOf(lift.type) ]}/> 
-                <Box padding={1} >
-                    <Typography variant="subtitle2" style={{float:"right"}}><LiftScore value={lift.score} justVerb/></Typography> 
-                    <WeightValue value={lift.bestLift.w} inkg={lift.bestLift.lb==0}/>{lift.bestLift.r>1? " x "+ lift.bestLift.r : ""}
+                <LinearQualificationBar value={scorePercent} color={SBDCOLORS[ SBD.indexOf(lift.type) ]}/> 
+                <Box padding={1}>
+                    
+                    <WeightValue value={lift.bestLift.w} inkg={lift.bestLift.lb==0}/>{lift.bestLift.r>1? " x "+ lift.bestLift.r : ""} 
+                    {lift.bw?<> @ <WeightValue value={lift.bw} inkg={user.session.user.usekg}/> </> : "( any weight class )"}
+        
+
+                    <Typography variant="subtitle2" className="oneline">
+                        <LiftScore value={scorePercent} justVerb/>
+                        <Chip size="small" variant="outlined" label={ (user.session.user.isf==1?"F":"M")+" | "+(lift.weightClass? lift.weightClass.name: " - (any)") }/>
+                        </Typography> 
+                    
                 </Box> 
-                </div>))}
+                </div>)})}
 
     </SoftBox>
 }

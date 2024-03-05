@@ -1,3 +1,6 @@
+- 2.26.2 : 2024-03-05
+        * bugfix in the SBD Score & unification of calculations. 
+
 - 2.26.1 : 2024-03-04
         * requested by @azothriel : the side menues on mobile are hard to swipe/open so I've increased the hitbox azea and reduced the required gesture needed to determine the desired intent.
         + FAQ: added posibility to get a permalink to the question (and mecanic to link to a question) in case someone wants to share a link to a particular one.
