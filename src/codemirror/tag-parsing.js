@@ -98,7 +98,7 @@ const typesForCodeMirror = ()=>{
                     }
                     
                     state.tagType   = key;
-                    return "utag utag-value"
+                    return "utag utag-"+(type.isJustText?"text":"value")
                 }
             }
         }
@@ -123,7 +123,13 @@ export const TAG_STYLES = {
     }, 
 
     "& .cm-utag-value": {  
-        color:"#FF7900"
+        color:"#FF7900",
+        
+    },
+
+    "& .cm-utag-text": {  
+        color:"#84B4FF",
+        fontWeight:"none",
     },
 }
 

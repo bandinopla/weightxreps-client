@@ -90,8 +90,8 @@ export const TYPES = {
 
     "TAG_TIME_hm": {
         kindOf              : "TAG_TIME_h",
-        reg                 : /^\s*(?:(\d+)\s*hs?\s*)?(\d+)\s*m(?:in)?/i,
-        example             : ["Session duration: 2h25m","Time on the bike: 1h 15m", "Abs: 30min"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
+        reg                 : /^\s*(?:(\d+)\s*hs?\s*)?(\d+)\s*m(?:ins?)?/i,
+        example             : ["Session duration: 2h25m","Time on the bike: 1h 15m", "Abs: 30min","Plank:2mins"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
         editor2value        : m=>(m[1]??"0")+"|"+m[2]+"|0",
 
         value2number        : val=>TYPES.TAG_TIME_hms.value2number(val), 
@@ -105,8 +105,8 @@ export const TYPES = {
 
     "TAG_TIME_sec": {
         kindOf              : "TAG_TIME_h",
-        reg                 : /^\s*(\d+(?:\.\d+)?)\s*s(?:ec)?/i,
-        example             : ["3 sec","2.5s"].map( s=>`${TAG_PREFIX} Rest per set (in seconds): ${s}` ).join("\n") ,
+        reg                 : /^\s*(\d+(?:\.\d+)?)\s*s(?:ecs?)?/i,
+        example             : ["3 sec", "5secs", "2.5s"].map( s=>`${TAG_PREFIX} Rest per set (in seconds): ${s}` ).join("\n") ,
         editor2value        : m=>m[1],
         value2number        : val=>parseFloat(val) * 1000,
         components2value    : c => (c / 1000).toFixed(1), 
@@ -278,6 +278,7 @@ export const TYPES = {
         example         : ["Feel like: shit","mood: grumpy"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n"), 
         dataTypeDesc    : "Short Text",
         icon            : ChatBubbleIcon,
+        isJustText      : true, //flag to know if this tag represents arbitrary text.
         canBeCharted    : false,
         description     : "Tag a an arbitrary aspect. 12 Characters max. The graph will be flat and will only serve to show the value.",
         editor2value    : m=>{

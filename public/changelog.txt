@@ -1,3 +1,7 @@
+- 2.26.4 : 2024-03-05
+        * Spotted thanks to @naughtyclue : time user tags were not being recognized if ending with "s" ... I was expecting "min" not "mins" and "sec" not "secs"
+        I've also changed the color for string custom tags, that is, user tags that are only text. They will show in bluish to distinguish them from numerical tags with specific values.
+        
 - 2.26.3 : 2024-03-05
         * Added the posibility to see followers and followings list.
 
