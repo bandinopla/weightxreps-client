@@ -46,7 +46,7 @@ export const FollowButton = ()=>{
 
         if( data?.follow )
         { 
-            refetch();
+            await refetch();
         } 
     }
 
@@ -81,7 +81,7 @@ export const FollowButton = ()=>{
         return <Alert severity="error">{parseError(error)}</Alert>
     }
 
-    return <Typography>
+    return <Typography className="oneline" variant="body2">
 
             <ErrorSnackbar trigger={ execError?.message } horizontal="center" vertical="bottom"/>
 
@@ -90,7 +90,7 @@ export const FollowButton = ()=>{
             </a>
 
             <a href="#" onClick={showUsers(true)}>
-                <strong style={{marginLeft:20}}>{data?.getFollowers?.length}</strong> Followers
+                <strong style={{marginLeft:10}}>{data?.getFollowers?.length}</strong> Followers
             </a>
             {canFollow && <ActionButton className={"FollowButton"+(isFollowing?" unfollow":"")} style={{marginLeft:20}} execAction={execFollow}>
                 { isFollowing?"Unfollow":"Follow"}
