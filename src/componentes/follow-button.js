@@ -52,16 +52,20 @@ export const FollowButton = ()=>{
 
     const showUsers = followers => ev => {
         ev.preventDefault();
+
+        const list = (followers? data.getFollowers : data.getFollowing );
+
         OpenConfirmModal({
             title: <><UnameTag {...jowner} inline style={{marginLeft:10}}/> {followers?"is followed by:":"is following:"}</>
             , open:true
             , fullWidth:true
             , info: <Grid container spacing={1}>
-                { (followers? data.getFollowers : data.getFollowing ).map( user=>
+                { list.map( user=>
                     (<Grid item key={user.id} xs={12} md={6} style={{ display:"flex", alignItems:"center"}}>
                         <UAvatar uid={user.id} cc={user.cc} hash={user.avatarhash} variant="circular" /> &nbsp;<UnameTag {...user} style={{marginLeft:10}}/>
                     </Grid>)) 
                 }
+                { list.length==0 && <Grid item xs={12}><Alert severity="info">{followers?"No followers":"No following"} yet...</Alert></Grid> }
             </Grid>
             , verb:"close"
             , canCancel: false
