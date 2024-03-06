@@ -1,3 +1,7 @@
+- 2.26.7 : 2024-03-06
+        * Round estimated values (~1RMs and Unit change) to nearest multiple of 5.
+        * for SBD Rank, calculate 1RM using the same formula as the server, since it gives more realistic estimations.
+
 - 2.26.6 : 2024-03-06
         * added a status display box for when the webapp is updating and it is ready to take over the old contents.
         * fix: round value of the user's estimated 1RM in the community stats side widget.
