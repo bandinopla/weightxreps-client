@@ -5,9 +5,7 @@ import { Cropper } from 'react-cropper';
 import "cropperjs/dist/cropper.css";
 
 import PublishIcon from '@material-ui/icons/Publish';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
+import CircularProgress from '@material-ui/core/CircularProgress'; 
 import ErrorSnackbar from '../componentes/ErrorSnackbar';
 import { parseError } from '../data/db'; 
 /**
@@ -15,25 +13,21 @@ import { parseError } from '../data/db';
  * https://github.com/jaydenseric/apollo-upload-client 
  * https://github.com/jaydenseric/graphql-upload <--- Upload scalar & handler 
  */
-import { $avatarUpdated } from '../utils/useUpdatedAvatarHash';
 import { useGetSession } from '../session/session-handler';
-
-
-const MUTATION = gql`
-  mutation ($file: Upload!) {
-    uploadAvatar(file: $file) 
-  }
-`;
+import { useDeleteAvatarMutation, useUploadAvatarMutation } from '../data/generated---db-types-and-hooks';
+import { gql } from '@apollo/client'; 
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'; 
 
 
 export const ImageUploadButton = ()=>{
 
-    const {session}                       = useGetSession();
-    const [upload]                      = useMutation(MUTATION);
+    const {session}                     = useGetSession();
+    const [upload, { client }]          = useUploadAvatarMutation();
+    const [remove, { loading:removing, error:errorRemoving }] = useDeleteAvatarMutation();
     const [image, setImage]             = useState();
     const cropper                       = useRef();
     const [isUploading, setIsUploading] = useState(false);
-    const [error, setError]             = useState();
+    const [error, setError]             = useState(); 
 
     const onUserSelectFile = e => {
         e.preventDefault();
@@ -67,10 +61,9 @@ export const ImageUploadButton = ()=>{
 
         callUpload()
 
-            .then( ()=>{
-                setImage(null);
-                // -- trigger refresh
-                $avatarUpdated( { uid:session.user.id, time:new Date().getTime() } );
+            .then( response =>{
+                setImage(null); 
+                updateCachedHash(response.data?.uploadAvatar);
             })
         
             .catch(e=>{
@@ -104,14 +97,52 @@ export const ImageUploadButton = ()=>{
 
         });  
 
-        await upload({ variables: { file } });
+        return await upload({ variables: { file } });
     }
+
+    const updateCachedHash = hash => { 
+        client.cache.modify({
+            id: 'User:'+ session.user.id,
+            fields: {
+                avatarhash: _ => hash
+            }
+        })
+    }
+
+    const deleteAvatar = ()=>{
+
+        if( window.confirm("Are you sure you want to remove your avatar?") )
+        {
+            remove().then( resp =>{
+                if( resp.data.deleteAvatar )
+                {
+                    // ok removed.
+                    updateCachedHash(null);
+                }
+                else 
+                {
+                    setError("Oops! Avatar was not removed :(")
+                }
+            })
+            .catch( err=> {
+                setError( parseError(err) );
+            })
+        } 
+        
+    }
+
 
     return <div style={{maxWidth:"100%"}}>
 
         <ErrorSnackbar trigger={error} horizontal="center"/>
+ 
+        { removing && "Removing avatar..."}
 
-        {!image && <input type="file" disabled={isUploading} onChange={onUserSelectFile} /> }
+        {!image && !removing && <>
+                    <input type="file" disabled={isUploading} onChange={onUserSelectFile} />
+                     
+                    { session.user?.avatarhash?.length>0 && <Button startIcon={<DeleteForeverIcon/>} color='secondary' variant='outlined' onClick={()=>deleteAvatar()}>Remove current avatar</Button> }
+                    </> }
 
         { image != null && <Paper elevation={2}><Box padding={1}>
                 <Cropper

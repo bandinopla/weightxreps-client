@@ -1,7 +1,6 @@
 import React from 'react';
 import Slvl from "./slvls";
 import Avatar from '@material-ui/core/Avatar';
-import { useUpdatedAvatarHash } from '../utils/useUpdatedAvatarHash';
 
 
 
@@ -16,10 +15,9 @@ export const uid2avatarurl = (id,hash)=>{
 }
 
 
-export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, width, iconsScale=1, variant, className })
+export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, width, iconsScale=1, variant, className, cc })
 {
-    const newHash   = useUpdatedAvatarHash(uid);
-    const src       = uid2avatarurl(uid, newHash || hash);
+    const src       = (!hash || hash=="") && cc?"https://flagcdn.com/w160/"+cc.toLowerCase()+".png" : uid2avatarurl(uid, hash);
     const img       = `url( ${ src } )`; 
 
     if( variant=="circular")
@@ -34,7 +32,7 @@ export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, wi
 
 export function UAvatarFromUserQL( { userQL, ...props } ) {
 
-    return <UAvatar uid={userQL.id} hash={userQL.avatarhash} slvl={userQL.slvl} sactive={userQL.sok} {...props}/>
+    return <UAvatar uid={userQL.id} hash={userQL.avatarhash} cc={userQL.cc} slvl={userQL.slvl} sactive={userQL.sok} {...props}/>
 
 }
 

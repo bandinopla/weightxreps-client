@@ -117,6 +117,7 @@ export default function SettingsPage() {
                                         <UAvatarFromUserQL userQL={session.user} width={155} height={67} className="rounded" />
                                     </Grid>
                                     <Grid item md={9}> 
+                                        <Alert severity='info'>If you dont pick a profile picture, the flag of your country will be used as one (if available)</Alert>
                                         <Box padding={1} margin={1}> 
                                             <ImageUploadButton/>
                                         </Box>

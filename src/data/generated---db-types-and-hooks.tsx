@@ -416,6 +416,7 @@ export type MostVolume = BaseStat & {
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']>;
+  deleteAvatar?: Maybe<Scalars['Boolean']>;
   deleteMessage?: Maybe<Scalars['Boolean']>;
   deleteTweet?: Maybe<Scalars['Boolean']>;
   execBulkExercises?: Maybe<Scalars['Boolean']>;
@@ -1454,6 +1455,18 @@ export type DeleteTweetMutation = { __typename?: 'Mutation', deleteTweet?: boole
 export type UserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, sleft?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null };
 
 export type BriefUserFieldsFragment = { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null };
+
+export type UploadAvatarMutationVariables = Exact<{
+  file: Scalars['Upload'];
+}>;
+
+
+export type UploadAvatarMutation = { __typename?: 'Mutation', uploadAvatar: string };
+
+export type DeleteAvatarMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeleteAvatarMutation = { __typename?: 'Mutation', deleteAvatar?: boolean | null };
 
 export type GetVideosQueryVariables = Exact<{
   olderThan?: InputMaybe<Scalars['UTCDate']>;
@@ -3674,6 +3687,67 @@ export function useDeleteTweetMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteTweetMutationHookResult = ReturnType<typeof useDeleteTweetMutation>;
 export type DeleteTweetMutationResult = Apollo.MutationResult<DeleteTweetMutation>;
 export type DeleteTweetMutationOptions = Apollo.BaseMutationOptions<DeleteTweetMutation, DeleteTweetMutationVariables>;
+export const UploadAvatarDocument = gql`
+    mutation UploadAvatar($file: Upload!) {
+  uploadAvatar(file: $file)
+}
+    `;
+export type UploadAvatarMutationFn = Apollo.MutationFunction<UploadAvatarMutation, UploadAvatarMutationVariables>;
+
+/**
+ * __useUploadAvatarMutation__
+ *
+ * To run a mutation, you first call `useUploadAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadAvatarMutation, { data, loading, error }] = useUploadAvatarMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useUploadAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UploadAvatarMutation, UploadAvatarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadAvatarMutation, UploadAvatarMutationVariables>(UploadAvatarDocument, options);
+      }
+export type UploadAvatarMutationHookResult = ReturnType<typeof useUploadAvatarMutation>;
+export type UploadAvatarMutationResult = Apollo.MutationResult<UploadAvatarMutation>;
+export type UploadAvatarMutationOptions = Apollo.BaseMutationOptions<UploadAvatarMutation, UploadAvatarMutationVariables>;
+export const DeleteAvatarDocument = gql`
+    mutation DeleteAvatar {
+  deleteAvatar
+}
+    `;
+export type DeleteAvatarMutationFn = Apollo.MutationFunction<DeleteAvatarMutation, DeleteAvatarMutationVariables>;
+
+/**
+ * __useDeleteAvatarMutation__
+ *
+ * To run a mutation, you first call `useDeleteAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAvatarMutation, { data, loading, error }] = useDeleteAvatarMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDeleteAvatarMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAvatarMutation, DeleteAvatarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAvatarMutation, DeleteAvatarMutationVariables>(DeleteAvatarDocument, options);
+      }
+export type DeleteAvatarMutationHookResult = ReturnType<typeof useDeleteAvatarMutation>;
+export type DeleteAvatarMutationResult = Apollo.MutationResult<DeleteAvatarMutation>;
+export type DeleteAvatarMutationOptions = Apollo.BaseMutationOptions<DeleteAvatarMutation, DeleteAvatarMutationVariables>;
 export const GetVideosDocument = gql`
     query GetVideos($olderThan: UTCDate, $limit: Int) {
   getVideos(olderThan: $olderThan, limit: $limit) {

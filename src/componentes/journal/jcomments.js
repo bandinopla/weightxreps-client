@@ -169,7 +169,7 @@ const JComment = ({ comment:c })=>{
 
                     <Grid>
 
-                        { isComment && <Paper><UAvatar uid={c.by.id} hash={c.by.avatarhash} slvl={  c.by.slvl  } height={40} width={40} iconsScale={0.5}/></Paper> }
+                        { isComment && <Paper><UAvatar uid={c.by.id} cc={c.by.cc} hash={c.by.avatarhash} slvl={  c.by.slvl  } height={40} width={40} iconsScale={0.5}/></Paper> }
                         { !isComment && <Avatar className={classes.icon}><ThumbUpOutlinedIcon/></Avatar>}
                     </Grid>
 

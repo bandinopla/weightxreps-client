@@ -105,7 +105,7 @@ export default function({ data:{ user, media, text, when, utags }, url, extraRow
                 <Wrapper onClick={ onClick }>  
                     
                    
-                    <UAvatar uid={user.id} hash={user.avatarhash} slvl={ user.slvl } sactive={user.sok} height={80} width={"100%"} /> 
+                    <UAvatar uid={user.id} cc={user.cc} hash={user.avatarhash} slvl={ user.slvl } sactive={user.sok} height={80} width={"100%"} /> 
                     <CardContent>
                         <Uname ymd={ymd} {...user} />
 

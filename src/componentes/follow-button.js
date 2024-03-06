@@ -1,4 +1,4 @@
-import { Avatar, Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { useContext, useMemo } from "react";
 import { useFollowMutation, useGetFollowInfoQuery } from "../data/generated---db-types-and-hooks";
 import { JOwnerContext } from "../pages/journal-context";
@@ -10,7 +10,7 @@ import { Alert } from "@material-ui/lab";
 import { parseError } from "../data/db";
 import { ActionButton } from "./action-button";
 import { OpenConfirmModal } from "./Dialog";
-import { uid2avatarurl } from "./uavatar";
+import UAvatar from "./uavatar";
 import UnameTag from "./uname";
 import ErrorSnackbar from "./ErrorSnackbar";
 
@@ -59,7 +59,7 @@ export const FollowButton = ()=>{
             , info: <Grid container spacing={1}>
                 { (followers? data.getFollowers : data.getFollowing ).map( user=>
                     (<Grid item key={user.id} xs={12} md={6} style={{ display:"flex", alignItems:"center"}}>
-                        <Avatar className="sha" alt={user.uname} src={uid2avatarurl(user.id, user.avatarhash)} /> &nbsp;<UnameTag {...user} style={{marginLeft:10}}/>
+                        <UAvatar uid={user.id} cc={user.cc} hash={user.avatarhash} variant="circular" /> &nbsp;<UnameTag {...user} style={{marginLeft:10}}/>
                     </Grid>)) 
                 }
             </Grid>
