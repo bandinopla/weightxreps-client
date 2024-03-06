@@ -495,10 +495,12 @@ const WhosAheadGraph = ({ data }) => {
             
 
             if( itm==mine )
-            {
-                ctx.strokeStyle = "red"
-                ctx.lineWidth = 4
+            { 
+                ctx.strokeStyle = "white"
+                ctx.fillStyle = "#000000";
+                ctx.lineWidth = 2
                 minePercent = v;
+                
             }
             else 
             {
@@ -532,7 +534,7 @@ const WhosAheadGraph = ({ data }) => {
         
         <Paper square style={{  position:"relative", width:"100%" }}>
  
-            { heatData?.mine>0 && <div style={{ zIndex:4, background:"red", position:"absolute", paddingLeft:10, paddingRight:10, top:38, color:"white", left:(heatData.mine*100)+"%" }}> <b>You</b> </div> }
+            { heatData?.mine>0 && <div style={{ zIndex:4, width:40, textAlign:"center", background:"white", position:"absolute", paddingLeft:10, paddingRight:10, top:38, color:"black", left:"calc("+(heatData.mine*100)+"% - 20px)" }}> <b>You</b> </div> }
             <canvas width={300} height={20} ref={canvasRef} style={{width:"100%"}}/>
             
         </Paper>
