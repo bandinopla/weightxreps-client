@@ -127,7 +127,7 @@ const SBDUserPlacing = ()=>{
 
 
         { lifts?.length>0? <Typography gutterBottom>Based on your logs from the past <strong>{WEEKS} weeks</strong></Typography>
-            : <Alert severity="info">You haven't done any "official" exercise in the past <strong>{WEEKS} weeks</strong></Alert>}
+            : loading? "" : <Alert severity="info">You haven't done any "official" exercise in the past <strong>{WEEKS} weeks</strong></Alert>}
 
         { lifts?.map( lift=>{
             
