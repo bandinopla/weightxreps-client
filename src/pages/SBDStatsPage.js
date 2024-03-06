@@ -29,7 +29,7 @@ export default function SBDStatsPage() {
 
     const loadState = ExtractSharedQuery( location.search );
     
-    const { data, loading, error }  = useSBDStatsHook();
+    const { data, loading, error, calculate1RM }  = useSBDStatsHook();
 
     const [gender, setGender] = useState( loadState?.gender || 0 );
     const [useLbs, setUseLbs] = useState( loadState?.inlbs || 0 );
@@ -71,7 +71,7 @@ export default function SBDStatsPage() {
 
                 if( reps>1 )
                 {
-                    weight = Math.ceil( (weight * ( 36 / (37-reps) )) / 5 ) * 5;
+                    weight = calculate1RM( weight, reps ) //Math.ceil( (weight * ( 36 / (37-reps) )) / 5 ) * 5;
                 }
 
                 sbdCopy[lift] = {  

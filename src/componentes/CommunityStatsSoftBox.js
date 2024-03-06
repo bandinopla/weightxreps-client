@@ -129,7 +129,7 @@ export default function CommunityStatsSoftBox({ match:{  path, url, params:{ fil
                     arr.push({ lbl:"Heavyest", val:<><WeightValue value={heavyest[myHeavyest].w.v} inkg={ heavyest[myHeavyest].w.lb==0 }/> <Rank value={myHeavyest}/></> });
 
                 if(myEstimated>-1)
-                    arr.push({ lbl:"Best ~1RM", val:<><WeightValue prefix="~" value={Math.round(estimated[myEstimated].w.v)} inkg={estimated[myEstimated].w.lb==0 }/> <Rank value={myEstimated}/></> });
+                    arr.push({ lbl:"Best ~1RM", val:<><WeightValue prefix="~" round value={Math.round(estimated[myEstimated].w.v)} inkg={estimated[myEstimated].w.lb==0 }/> <Rank value={myEstimated}/></> });
 
                 if(myVolume>-1)
                     arr.push({ lbl:"Volume", val:<><WeightValue value={volume[myVolume].w.v} inkg={ volume[myVolume].w.lb==0 }/> <Rank value={myVolume}/> </> });   

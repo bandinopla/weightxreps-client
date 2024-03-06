@@ -315,7 +315,7 @@ const EstimatedRM = ({ set }) => {
     }
 
  
-    return estimated>0? <Tooltip title="Estimated ~1RM"><div className="est">~{prefix}{estimated && <WeightValue nounit value={ estimated } inkg={ !set.lb }/>}</div></Tooltip> : ""; 
+    return estimated>0? <Tooltip title="Estimated ~1RM"><div className="est">~{prefix}{estimated && <WeightValue nounit round value={ estimated } inkg={ !set.lb }/>}</div></Tooltip> : ""; 
 };
 
 const EffIntBars = ({ eff, int }) => { 

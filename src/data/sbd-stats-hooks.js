@@ -1,11 +1,16 @@
 import { useMemo } from "react";
 import { useGetSbdStatsLazyQuery, useGetSbdStatsQuery } from "./generated---db-types-and-hooks";
 
+// to match the server's default calculations
+function calculate1RM( weight, reps ) {
+    return Math.round( (weight * ( 46 / (47-reps) )) / 5 ) * 5;
+}
+
 export const useSBDStatsHook = () => {
     const { data, loading, error }  = useGetSbdStatsQuery();
 
     return {
-        loading, error, data: data? hook(data) : null
+        loading, error, data: data? hook(data) : null, calculate1RM
     }
 } 
  
@@ -16,7 +21,7 @@ export const useSBDStatsLazyHook = ()=>{
     const hooked = useMemo(()=>data? hook( data ) : null, [data]);
 
     return ([
-        loadSbdStats, { data:hooked, loading, error }
+        loadSbdStats, { data:hooked, loading, error, calculate1RM }
     ])
 }
 
@@ -72,6 +77,6 @@ function hook( data )
         ...data, 
 
         filterWeightClasses,
-        getScoreFor 
+        getScoreFor,
     }
 }

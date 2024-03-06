@@ -20,7 +20,7 @@ const SBD = ["SQ","BP","DL"];
 
 const SBDUserPlacing = ()=>{ 
 
-    const [loadSDB, { data:sbdData, loading:loadingSBD, error:sbdError}] = useSBDStatsLazyHook();
+    const [loadSDB, { data:sbdData, loading:loadingSBD, error:sbdError, calculate1RM }] = useSBDStatsLazyHook();
 
     const user = useGetSession();
     const [ getData, { loading, data, error }] = useGetJRangeLazyQuery();
@@ -85,11 +85,11 @@ const SBDUserPlacing = ()=>{
 
                                         // find the BEST set done (heaviest weight used OR heavyest 1RM generated from it)
                                         bestLift: erows .filter(r=>r.eid==e.id)
-                                                        .flatMap(r=>r.sets.map(s=>({
+                                                        .flatMap(r=>r.sets.filter(s=>s.r>0 && s.r<11).map(s=>({
                                                             ...s, 
                                                             ymd         : r.ymd, 
                                                             ymdAsDate   : r.ymdAsDate,
-                                                            maxWeight   : s.r>1? s.est1rm : s.w //unnecesary since est1rm is always the heavyest but just in case... >_>
+                                                            maxWeight   : s.r>1? calculate1RM(s.w, s.r) : s.w //unnecesary since est1rm is always the heavyest but just in case... >_>
                                                         })))
                                                         
                                                         .reduce((setA, setB)=>setA.maxWeight > setB.maxWeight ? setA : setB)
@@ -127,7 +127,7 @@ const SBDUserPlacing = ()=>{
 
 
         { lifts?.length>0? <Typography gutterBottom>Based on your logs from the past <strong>{WEEKS} weeks</strong></Typography>
-            : loading? "" : <Alert severity="info">You haven't done any "official" exercise in the past <strong>{WEEKS} weeks</strong></Alert>}
+            : loading? "" : <Alert severity="info">You haven't done any "official" exercise in the past <strong>{WEEKS} weeks</strong> (only sets between 1 and 10 reps are valid)</Alert>}
 
         { lifts?.map( lift=>{
             

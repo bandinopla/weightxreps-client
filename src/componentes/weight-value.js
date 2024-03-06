@@ -58,7 +58,7 @@ export default function WeightValue( props )
 
     if( props.round || (unit != originalUnit) )
     {
-        w = Math.round(w);
+        w = Math.round(w/5)*5;
     }
 
     //kg = #09c

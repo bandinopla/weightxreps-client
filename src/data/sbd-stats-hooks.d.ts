@@ -20,7 +20,12 @@ type HookedQuery = GetSbdStatsQuery & {
         bestThan:number, 
         percent:number,
         classes:NonNullable<NonNullable<NonNullable<GetSbdStatsQuery["sbdStats"]>["perclass"]>[0]>["wclass"][]
-    }
+    },
+
+    /**
+     * Formula used in the SBD Stats to calculate 1RM
+     */
+    calculate1RM: ( weight:number, reps:number ) => number
 }
 
 export function useSBDStatsHook(): QueryResult<HookedQuery, GetSbdStatsQueryVariables>;
