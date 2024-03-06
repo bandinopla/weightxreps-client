@@ -21,6 +21,7 @@ const isLocalhost = Boolean(
   type Config = {
     onSuccess?: (registration: ServiceWorkerRegistration) => void;
     onUpdate?: (registration: ServiceWorkerRegistration) => void;
+    onInstallingUpdate?: (registration: ServiceWorkerRegistration) => void;
   };
   
   export function register(config?: Config) {
@@ -90,6 +91,12 @@ const isLocalhost = Boolean(
                   config.onSuccess(registration);
                 }
               }
+            }
+            else if( installingWorker.state === 'installing')
+            {
+                if (config && config.onInstallingUpdate) {
+                    config.onInstallingUpdate(registration);
+                }
             }
           };
         };

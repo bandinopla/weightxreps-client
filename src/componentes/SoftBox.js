@@ -9,10 +9,10 @@ const useStyles = makeStyles( theme=>({
     }
 }))
 
-export const SoftBox = ({ title, Icon, children })=>{
+export const SoftBox = ({ title, Icon, children, ...rest })=>{
     const classes = useStyles();
-    return <Paper className={classes.box} elevation={2}>
-        <Typography variant="h4">{Icon} {title}</Typography>
+    return <Paper className={classes.box+" "+rest.extraClasses} elevation={2} {...rest}>
+        <Typography variant="h4" className="oneline">{Icon} {title}</Typography>
         {children}
     </Paper>
 }

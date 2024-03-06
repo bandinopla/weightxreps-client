@@ -151,10 +151,10 @@ animation: rainbowSlide 2s linear infinite;
     display: block;
 }
 
-.fancy .MuiSvgIcon-root {
-    color: white
+.fancy, .fancy .MuiSvgIcon-root, .fancy .MuiTypography-root {
+    color: white !important
 }
-.MuiButton-root.fancy, .MuiButtonBase-root.fancy  {
+.MuiButton-root.fancy, .MuiButtonBase-root.fancy, .fancy  {
     text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
   background: linear-gradient(
       15deg,

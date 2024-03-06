@@ -1,13 +1,13 @@
-import {fetch as fetchPolyfill} from 'whatwg-fetch' 
+import { fetch as fetchPolyfill } from 'whatwg-fetch';
 
-import './App.css'; 
-import { Box, Drawer, LinearProgress, Typography, makeStyles, useMediaQuery, useTheme } from '@material-ui/core'; 
+import './App.css';
+import { Box, Drawer, LinearProgress, Typography, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { DBProvider } from "./data/db";
 
 //pages
-import Home, { ActivityFeed } from "./pages/Home";
+import { ActivityFeed } from "./pages/Home";
 
 
 import {
@@ -16,7 +16,7 @@ import {
     Route,
     useLocation
 } from "react-router-dom";
-import { Suspense, createContext, lazy, useLayoutEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react';
 
 //import { SettingsPage } from './pages/settings'; 
 
@@ -28,31 +28,29 @@ import { ThemeSwitcher } from './MainTheme';
 import metadata from "./version.json";
 import TimeAgoDisplay from './componentes/TimeAgoDisplay';
 import { DialogModalListener } from './componentes/Dialog';
-import ChangelogPage from './pages/ChangelogPage'; 
+import ChangelogPage from './pages/ChangelogPage';
 import { MainBanner } from './banners/SideBanners';
 //import VideosPage from './pages/Videos';
 import { JeditorSaveBackdrop } from './componentes/journal/editor-save-backdrop';
 import UnsubFromEmails from './pages/Unsub-from-emails';
-import { MainMenu, MainMenuDrawer } from './componentes/main-menu';
+import { MainMenuDrawer } from './componentes/main-menu';
 //import { SupportersDisplay } from './componentes/supporters-display';
 import { HomeSidebar } from './componentes/HomeSidebar';
-import { Sticky } from './componentes/sticky';
 //import { SBDStatsPage } from './pages/SBDStatsPage';
 
 //import JournalBase from "./pages/journal-base";
 
 import { UserHome } from './pages/UserHome';
 import { SessionHomeSidebar } from './componentes/SessionHomeSidebar';
-import { DonationSoftbox } from './componentes/DonationSoftbox'; 
+import { DonationSoftbox } from './componentes/DonationSoftbox';
 import { DMsWindow } from './session/ui/dms-window/dm-window';
 import { ContentPage } from './componentes/ContentPageWrapper';
 import ScheduleRoundedIcon from '@material-ui/icons/ScheduleRounded';
 import { ExercisesModal } from './componentes/journal/exercises';
 import { FollowOnX } from './componentes/twitter';
-import { ToogleSidebarMenu } from './componentes/toggle-side-menu'; 
-import Hidden from '@material-ui/core/Hidden'; 
-import { VisualPreferencesSwitcher } from './componentes/VisualPreferencesSwitcher'; 
+import { VisualPreferencesSwitcher } from './componentes/VisualPreferencesSwitcher';
 import { SwipeableDrawer } from './componentes/SwipableDrawer';
+import { ServiceWorkerStatusDisplay } from './componentes/service-worker-status-ui';
 
 window.fetch = (url, config)=>{
     return fetchPolyfill(url, config)
@@ -295,6 +293,7 @@ const AppSideBar = ()=>{
     const contents = <>
                             <Box margin={2} maxWidth={250}>
 
+                                <ServiceWorkerStatusDisplay/>
                                 <Route path="/" component={VisualPreferencesSwitcher}/>
                                 <Route path="/" component={DonationSoftbox}/>
 

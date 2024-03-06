@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { ServiceWorkerStatus } from './componentes/service-worker-status-ui';
 
 
 console.log(`▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -35,4 +36,11 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 //reportWebVitals();
 
-serviceWorkerRegistration.register();
+serviceWorkerRegistration.register({
+    onUpdate: (registration) => {
+        ServiceWorkerStatus("update-ready");
+    },
+    onInstallingUpdate: (registration) => {
+        ServiceWorkerStatus("installing-update");
+    }
+});
