@@ -1,3 +1,9 @@
+- 2.26.6 : 2024-03-06
+        * added a status display box for when the webapp is updating and it is ready to take over the old contents.
+        * fix: round value of the user's estimated 1RM in the community stats side widget.
+        * fix: in SBD Rank side widget, wait for load operation to end before showing "no data" message 
+        * in the modal window showing the followers/following added a visual display for the case of no users found.
+
 - 2.26.5 : 2024-03-06
         * Added missing posibility to delete the user profile picture
         * Increase visibility of the heatmap marker for the current user 
