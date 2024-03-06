@@ -80,7 +80,7 @@ export const SBDRankLeyend = ({ children })=>{
 
     useEffect(()=>{
         setShow(false);
-    })
+    },[])
     
 
 
