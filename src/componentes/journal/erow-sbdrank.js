@@ -78,6 +78,9 @@ export const SBDRankLeyend = ({ children })=>{
         , canCancel: false
     }); 
 
+    useEffect(()=>{
+        setShow(false);
+    })
     
 
 
