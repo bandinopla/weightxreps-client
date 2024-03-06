@@ -1,3 +1,8 @@
+- 2.26.5 : 2024-03-06
+        * Added missing posibility to delete the user profile picture
+        * Increase visibility of the heatmap marker for the current user 
+        * bugfix: reset SBD Score context on each exercise block render (was causing the "SBD Score used here" label to appear on placed that didn't used it)
+
 - 2.26.4 : 2024-03-05
         * Spotted thanks to @naughtyclue : time user tags were not being recognized if ending with "s" ... I was expecting "min" not "mins" and "sec" not "secs"
         I've also changed the color for string custom tags, that is, user tags that are only text. They will show in bluish to distinguish them from numerical tags with specific values.
