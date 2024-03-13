@@ -51,6 +51,7 @@ import { FollowOnX } from './componentes/twitter';
 import { VisualPreferencesSwitcher } from './componentes/VisualPreferencesSwitcher';
 import { SwipeableDrawer } from './componentes/SwipableDrawer';
 import { ServiceWorkerStatusDisplay } from './componentes/service-worker-status-ui';
+import GitHubButton from 'react-github-btn'
 
 window.fetch = (url, config)=>{
     return fetchPolyfill(url, config)
@@ -80,6 +81,7 @@ const DonatePage = lazy(()=>import(/*webpackChunkName: "donate" */"./pages/Donat
 const AboutPage = lazy(()=>import(/*webpackChunkName: "about" */"./pages/AboutPage"))  
 const JournalSideBar = lazy(() => import(/* webpackChunkName: "jbase" */'./componentes/journal/side-bar.js'));
 const VideosPage = lazy(() => import(/* webpackChunkName: "videos" */'./pages/Videos')); 
+const PersonalRecordsPage = lazy(() => import(/* webpackChunkName: "personal-records" */'./pages/PersonalRecords'));
 
 /**
  * Utility... creates a basic layout.
@@ -91,61 +93,14 @@ const useStyles = makeStyles( theme=>({
     root: { 
             display:"block", 
      
-    }, 
-
-    // menubar: {
-    //     width:80,
-    //     position:"fixed",
-    //     zIndex:1, 
-    //     minHeight:"100vh",
-    //     marginLeft:-80,
-    //     transition:"margin-left .1s ease-out",
-    //     display:"flex",
-    //     justifyContent:"center",
-    //     background:theme.palette.background.default,
-    //     borderRight:"2px solid #333",
-
-    //     "&.opened": {
-    //         marginLeft:0
-    //     },
-    // },  
-
-    // sidebar: {
-    //     width:300, 
-    //     position:"fixed",
-    //     zIndex:1,
-    //     top:0,
-    //     right:0,
-    //     marginRight:-300,
-    //     minHeight:"100vh", 
-    //     background:theme.palette.background.default,
-    //     transition:"margin-right .1s ease-out",
-    //     borderLeft:"2px solid #333",
-    //     "&.opened": {
-    //         marginRight:0
-    //     },
-    // },
-
-    
+    },   
 
 
     [ theme.breakpoints.up("lg") ]: {
         root: {
             display:"grid",
             gridTemplateColumns:"1fr 3fr 1fr"
-        },
-        // menubar: { 
-        //     position:"relative", 
-        //     width:"100%",
-        //     marginLeft:0, 
-        //     justifyContent:"end",
-        //     borderRight:"none"
-        // },
-        // sidebar: {
-        //     position:"relative",
-        //     width:"100%",
-        //     borderLeft:"none"
-        // },
+        }, 
         content: {
             borderRight:"1px solid rgba(0,0,0,0.1)",
             borderLeft:"1px solid rgba(0,0,0,0.1)"
@@ -181,57 +136,13 @@ function App() {
                 <DMsWindow/>
                 <ExercisesModal/> 
                 <TrackPageView/>
-
-                {/* <Router> 
-                <NavBar />  
-                <GLobalNotificationSpace />
-                <Home/>
-                 
-                
-                <Route path="/" component={TrackPageView}/>
  
-                <Suspense fallback={<LinearProgress />}>
-                    <Switch> 
-                        <Route path="/settings" component={SettingsPage} />
-                        <Route path="/color" component={ColorThemePage} /> 
-                        <Route path="/about" component={AboutPage}/> 
-                         
-                        <Route path="/videos" component={VideosPage}/> 
-                        <Route path="/faq" component={HelpPage}/> 
-                        <Route path="/terms-of-service" component={TermsOfServicePage}/> 
-                        <Route path="/privacy-policy" component={PrivacyPolicyPage}/> 
-                        <Route path="/donate" component={DonatePage}/> 
-                        <Route path="/signup" component={SignupPage}/>
-                        <Route path="/login" component={LoginPage}/>
-                        <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStats} />   
-                        <Route path="/journal/:uname" component={JournalBase} />  
-                        <Route path="/changelog" component={ChangelogPage} />   
-                        <Route path="/sbd-stats" component={SBDStatsPage} />
-
-                        <Route path="/following">
-                            <MainBanner/>
-                            <ActivityFeed type="following" />
-                        </Route>
-                        
-                        <Route path="/">
-                            <MainBanner/>
-                            <GuestLandingPage/>
-                            <Home activator/>  
-                        </Route>
-                    </Switch>
-                </Suspense> 
-
-               
-            </Router>   
-
-            */}
                 <div className={ cls.root }>
                     <div className={ cls.menubar }>  
                             <MainMenuDrawer/>
                     </div>
 
-                    <div className={ cls.content }> 
-                        
+                    <div className={ cls.content }>  
                             {/* <Home /> */}
                             <Suspense fallback={<LinearProgress />}>
                                 <Switch>
@@ -251,7 +162,8 @@ function App() {
                                     <RoutePage path="/settings" sessionOnly  component={SettingsPage} Icon={SettingsIcon} title="Settings"/>
                                     <RoutePage path="/messages" sessionOnly component={PageMessages} />
                                     <RoutePage path="/notifications" sessionOnly component={PageNotifications} /> 
-                                    <RoutePage path="/changelog" component={ChangelogPage} title="Changelog" Icon={ScheduleRoundedIcon}/>  
+                                    <RoutePage path="/changelog" component={ChangelogPage} title="Changelog" Icon={ScheduleRoundedIcon}/>
+                                    <Route path="/journal/:uname/personal-records--:eid(\d+)" component={PersonalRecordsPage}/>
                                     <Route path="/journal/:uname" component={JournalBase} /> 
                                     {/* <RoutePage path="/color" sessionOnly component={ColorThemePage} title={false}/>  */}
                                     <Route path="/terms-of-service" component={TermsOfServicePage}/> 
@@ -311,7 +223,11 @@ const AppSideBar = ()=>{
                             </Box>
 
                             <Box padding={1} paddingTop={5} textAlign="center" maxWidth={250}>
-                                <FollowOnX/>
+
+                                <div style={{ display:"flex", justifyContent:"center"}}>
+                                    <FollowOnX/> &nbsp;
+                                    <GitHubButton href="https://github.com/bandinopla/weightxreps-client" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bandinopla/weightxreps-client on GitHub">Star</GitHubButton>
+                                </div>
                                 <Typography variant="caption">
                                     <a href="/changelog"><strong>{`v${metadata.buildMajor}.${metadata.buildMinor}.${metadata.buildRevision} `}</strong> (<TimeAgoDisplay time={metadata.when} />)</a>
                                     &nbsp;&nbsp;| <a href="/terms-of-service">Terms</a> | <a href="/privacy-policy">Privacy</a>

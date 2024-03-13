@@ -182,13 +182,13 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                             <div className="desktop-view">
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    <ButtonGroup variant="outlined" size="large">
+                                    <ButtonGroup variant="outlined" color="secondary" size="large">
                                         <Button onClick={ ()=>helpModalState[1](true) } startIcon={<MenuBookIcon/>}>HELP</Button>
                                         {/* <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> */}
-                                        <Button className="oneline" color="primary" variant="contained" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
+                                        <Button className="oneline" color="secondary" variant="contained" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
                                             Load copy of...
                                         </Button>
-                                        <Button color="primary" startIcon={ stopwatchState[0]? <CloseIcon/> : <TimerIcon/> }  onClick={()=>stopwatchState[1](!stopwatchState[0])}>
+                                        <Button color="secondary" startIcon={ stopwatchState[0]? <CloseIcon/> : <TimerIcon/> }  onClick={()=>stopwatchState[1](!stopwatchState[0])}>
                                             stopwatch
                                         </Button>
                                     </ButtonGroup>

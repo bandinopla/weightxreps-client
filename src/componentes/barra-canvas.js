@@ -190,7 +190,7 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
 
         metrics.plateX = metrics.barStart;  
 
-        drawPlatesForWeight(ctx, metrics, weight, isDarkMode? "#000" : reps===0? "#f00" : null );
+        drawPlatesForWeight(ctx, metrics, weight, isDarkMode? "#111" : reps===0? "#f00" : null );
 
         //#region Reps Label
         const lbl = reps===0? ":(" : reps>1? "x"+reps.toString() : null;
@@ -217,5 +217,5 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
         return <FallbackTo weight={weight} reps={reps}/>
     }
 
-    return <canvas width="138" height="25" ref={ref} style={{maxWidth:"100%"}}></canvas>;
+    return <canvas width="138" height="25" ref={ref} style={{maxWidth:"100%", opacity:!weight || weight<20?0.3:1}}></canvas>;
 }

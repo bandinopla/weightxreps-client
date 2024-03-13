@@ -12,6 +12,7 @@ import { TAG_STYLES } from "./tag-parsing";
 import { TAG_START_OF_DEFINITION_REGEXP } from "../user-tags/data-types";
 import Fuse from 'fuse.js';
 import { JLogTokenizer } from "../componentes/journal/tokenizer";
+import { WxDoT_JeditorErow2Text } from "../componentes/journal/erow-render-WxDoT";
 const searcher = new Fuse([], { findAllMatches:true })
 
 require('codemirror/addon/hint/show-hint');
@@ -73,6 +74,12 @@ const useStyles = makeStyles( theme=>({
         "& .cm-weight": {
             color:"#FF7900"
         },
+        "& .cm-time": {
+            color:"#B5942F"
+        },
+        "& .cm-distance": {
+            color:"#FF59C3"
+        },
 
         "& .cm-rep": {
             color:"#00BBF9"
@@ -80,6 +87,12 @@ const useStyles = makeStyles( theme=>({
 
         "& .cm-set": {
             color:"#F15BB5"
+        },
+
+        "& .cm-setComment": {
+            color:"#359FF4",
+            fontStyle:"italic",
+            backgroundColor:"#E8F4FD"
         },
 
         "& .cm-RPE": { 
@@ -501,6 +514,12 @@ const __convertJEditorDataToText = (value, usekg, utags) => {
                         //
                         .reduce( (out,set)=>{ 
 
+                            if( set.type!=0 )
+                            {
+                                out.push( set );
+                                return out;
+                            }
+
                             var prev                = out.slice(-1)?.[0];
                             var prevSet             = prev?.sameWeight?.slice(-1)[0] || prev?.sameRep?.slice(-1)[0] || prev; 
                             var prevIsCompressed    = Array.isArray( prev?.sameWeight || prev?.sameRep );
@@ -576,15 +595,18 @@ const __convertJEditorDataToText = (value, usekg, utags) => {
                             }
 
                             return out; 
-                        } ,[])
+                        } ,[])  
                         
                         //
                         // render...
                         //
                         .forEach( set=> {
- 
-
-                            //console.log("********",set)
+  
+                            if( set.type>0 )
+                            {
+                                out.push( (set.v? _setToString(set, usekg) + " x " : "") + WxDoT_JeditorErow2Text( set ))
+                                return;
+                            }
 
                             //
                             // nos fijamos si es una version "W,W,W" o solo "W"

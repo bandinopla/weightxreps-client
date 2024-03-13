@@ -41,6 +41,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-sizeme": "^3.0.1",
+    "react-text-tokenizer": "^1.0.3",
     "recharts": "^2.1.2",
     "semver": "^7.3.2",
     "source-map-explorer": "^2.5.2",

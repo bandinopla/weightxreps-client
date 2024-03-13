@@ -90,16 +90,44 @@ export const TYPES = {
 
     "TAG_TIME_hm": {
         kindOf              : "TAG_TIME_h",
-        reg                 : /^\s*(?:(\d+)\s*hs?\s*)?(\d+)\s*m(?:ins?)?/i,
-        example             : ["Session duration: 2h25m","Time on the bike: 1h 15m", "Abs: 30min","Plank:2mins"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
-        editor2value        : m=>(m[1]??"0")+"|"+m[2]+"|0",
+        //reg                 : /^\s*(?:(\d+)\s*hs?\s*)?(\d+)\s*m(?:ins?)?/i,
+        reg                 : /^\s*(?:(\d+)\s*hs?)(?:\s*(\d+)\s*m(?:ins?)?)?(?:\s*(\d+(?:\.\d+)?)\s*s(?:ecs?)?)?/,
+        example             : ["Session duration: 2h 25min","Time on the bike: 1h15m15sec", "Cardio: 1h 20.3s"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
+        //editor2value        : m=>(m[1]??"0")+"|"+m[2]+"|0",
+        editor2value        : m=> {
+
+            const h = parseInt(m[1]);
+            const min = parseInt(m[2] ?? 0);
+            let s = parseFloat(m[3] ?? 0);
+
+            const ms = Math.floor( s % 1 * 1000);
+            s = Math.floor(s);
+
+            return [h,min,s,ms].join("|"); 
+        },
 
         value2number        : val=>TYPES.TAG_TIME_hms.value2number(val), 
         components2value    : c=>TYPES.TAG_TIME_hms.components2value(c), 
 
         value2editor        : val=>{
-            const [ HH, MM ] = val.split("|").map(v=>parseInt(v));
-            return (HH>0? HH+"h" : "") + (MM>0? MM+"m" : "");
+            const [ HH, MM, SS, MS ] = val.split("|").map(v=>parseInt(v));
+            let sec = SS+MS/1000;
+
+            return (HH>0? HH+"h " : "") + (MM>0? MM+"m " : "")+(sec>0? sec+"s " : "");
+        },
+    },
+
+    "TAG_TIME_ms": {
+        kindOf              : "TAG_TIME_h",
+        reg                 : /^\s*(?:\s*(\d+)\s*m(?:ins?)?)(?:\s*(\d+(?:\.\d+)?)\s*s(?:ecs?)?)?/,
+        example             : [ "Rest time: 3 mins 14sec", "Burpees: 2m15.2s" ].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
+        editor2value        : m=>TYPES.TAG_TIME_hm.editor2value([null,"0", m[1], m[2]]),
+        value2number        : val=>TYPES.TAG_TIME_hms.value2number(val), 
+        components2value    : c=>TYPES.TAG_TIME_hms.components2value(c), 
+        value2editor        : val=>{
+            const [ _, M, S, MS ] = val.split("|").map(v=>parseInt(v));
+            const sec = S+( MS /1000);
+            return M+"min"+(sec>0? " "+sec+"sec" : "");
         },
     },
 
@@ -109,27 +137,30 @@ export const TYPES = {
         example             : ["3 sec", "5secs", "2.5s"].map( s=>`${TAG_PREFIX} Rest per set (in seconds): ${s}` ).join("\n") ,
         editor2value        : m=>m[1],
         value2number        : val=>parseFloat(val) * 1000,
-        components2value    : c => (c / 1000).toFixed(1), 
-        value2editor        : v=>`${v} sec`,
+        components2value    : c => {
+            const sec = c / 1000;
+            return (sec%1? sec.toFixed(1) : sec) + "s"; 
+        }, 
+        value2editor        : v=>`${v}`,
     },
 
     "TAG_TIME_hms": {
         kindOf              : "TAG_TIME_h",
-        reg                 : /^\s*(?:(\d+):)?(\d+):(\d+)/i,
+        reg                 : /^\s*(?:(\d{1,3}):)?(\d{1,2}):(\d{1,2})(?:\.(\d{1,3}))?/i,
         example             : ["Rest between sets (MMSS): 3:24","Workout duration (HHMMSS): 1:20:00"].map( s=>`${TAG_PREFIX} ${s}` ).join("\n") ,
-        editor2value        : m=>[ m[1] ?? '0',m[2], m[3]] .join("|"),
+        editor2value        : m=>[ m[1] ?? '0',m[2], m[3], m[4] ?? '0'] .join("|"),
 
         value2editor        : val=>{
 
-            const [ HH, MM, SS] = val.split("|");
+            const [ HH, MM, SS, MS] = val.split("|");
 
-            return `${ parseInt(HH)>0? HH.padStart(2, '0') + ":" : ""}${ MM.padStart(2, '0') }:${ SS.padStart(2, '0') }`;
+            return `${ parseInt(HH)>0? HH.padStart(2, '0') + ":" : ""}${ MM.padStart(2, '0') }:${ SS.padStart(2, '0') }${MS?`.${MS}`:""}`;
         },
  
         value2number        : val=>{
 
-            const [ HH, MM, SS] = val.split("|").map(d=>parseInt(d));
-            return HH*3600000 + MM*60000 + SS*1000;
+            const [ HH, MM, SS, MS] = val.split("|").map(d=>parseInt(d));
+            return HH*3600000 + MM*60000 + SS*1000 + (MS ?? 0);
         },
 
         components2value: milliseconds => {
@@ -138,13 +169,14 @@ export const TYPES = {
             const hours = Math.floor(seconds / 3600);
             const minutes = Math.floor((seconds % 3600) / 60);
             const remainingSeconds = seconds % 60;
+            const _milliseconds = milliseconds % 1000;
           
             const padZero = (value) => (value < 10 ? `0${value}` : value);
             const formattedHours = padZero(hours);
             const formattedMinutes = padZero(minutes);
             const formattedSeconds = padZero(remainingSeconds);
           
-            return `${formattedHours}|${formattedMinutes}|${formattedSeconds}`;
+            return `${formattedHours}|${formattedMinutes}|${formattedSeconds}|${_milliseconds}`;
         }
     },
 
@@ -335,7 +367,7 @@ const typedesc2description = new Map();
 Object.keys(TYPES).forEach(key=>{
 
     if( key.length>12 ) {
-        throw new Error("Hey! Keys must be 12 characters or less!! this is because the DB stores this in a VARCHAR(12)")
+        throw new Error("Hey! Key ["+key+"] must be 12 characters or less!! this is because the DB stores this in a VARCHAR(12)")
     }
 
     TYPES[key].key = key;

@@ -1,4 +1,4 @@
-import { Box, Divider, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
+import { Box, Divider, Hidden, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 import Alert from '@material-ui/lab/Alert';
@@ -17,6 +17,9 @@ import { JDayContext } from './jday-context';
 import { useHistory } from "react-router-dom";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import { SBDRankLeyend, SetSBDRank } from './erow-sbdrank';
+import { renderWxD_Erows } from './erow-render-WxDoT';
+import { ProgressBar, ProgressBarsContainer } from '../progress-bar';
+import { statsOfWxDoT } from './erow-stats-WxDoT';
 
 const effintLink = {
     textDecoration:"underline",
@@ -37,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
           ,"& .wxr": {
               textAlign:"right"
               , paddingRight:10
-              , width:300
+              , width:350
               , maxWidth: "100%"
               , flexGrow:0
               , fontSize:"1.2em"
@@ -53,12 +56,10 @@ const useStyles = makeStyles((theme) => ({
 
           , "& .effint": {
             [theme.breakpoints.only('xs')]: {
-                display:"none"
+                //display:"none"
              },
           },
 
-          "& .Eff-bar": { backgroundColor: theme.eff_color },
-          "& .Int-bar": { backgroundColor: theme.int_color },
           "& .PR-bar": { backgroundColor: theme.PR_Bar_color }
  
      },
@@ -88,13 +89,15 @@ const useStyles = makeStyles((theme) => ({
          flexDirection:"row",
          flexWrap:"nowrap",
          justifyContent:"flex-start",
-         lineHeight:"25px",
+         lineHeight:"25px", 
+         marginBottom:"10px",
 
          "& .est": {
             color:"#91a90d", 
             lineHeight:"1em",
             paddingRight:15,
-            display:"inline-block"
+            display:"inline-block",
+            fontSize:"0.85em"
          },
 
          "& > div": {
@@ -133,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
              "& *": {
                 color:"red !important",
              }
-         }
+         }, 
      },
 
      ecom: { 
@@ -158,6 +161,11 @@ const useStyles = makeStyles((theme) => ({
          },
          "& b": { 
             color: theme.palette.secondary.main
+         },
+         [theme.breakpoints.down('sm')]: {
+            "& > div": {
+                float:"none",  
+            },
          }
      },
 
@@ -166,12 +174,32 @@ const useStyles = makeStyles((theme) => ({
      }
 }));
  
+const separateEblocksByType = eblock=>{
 
-export default function Eblock({ data }){
+    const groups = [];
+
+    for( let set of eblock.sets ) 
+    {
+        const isWxR = Number(set.type==0);
+
+        if( !groups[isWxR] ) groups[isWxR] = [];
+        groups[isWxR].push( set );
+    }  
+
+    return groups.map( sets=>({ ...eblock, sets }) );
+
+} ;
+
+export default function Eblock({ data:eblock }){
+    return separateEblocksByType(eblock).map( (data,i)=> <EblockUI key={data.eid+"/"+i} data={data} /> );
+}
+
+function EblockUI({ data }){
 
     const classes = useStyles();  
     const history = useHistory();
     const jowner = useContext(JOwnerContext);
+    const theme = useTheme();
 
     if( data.missing )
     {
@@ -194,18 +222,30 @@ export default function Eblock({ data }){
 
                     <div className={classes.stat}> 
 
-                        <Stat label="VOL" value={<WeightValue value={data.stats.vol} inkg={ !data.sets[0].lb }/>}/>
-                        <Stat label="REPS" value={data.stats.reps}/>
-                        <Stat label="SETS" value={data.stats.sets}/>
-                        <BestEffOrInt className={classes.effIntLink}  label="B.Eff." data={ data.exerciseRef.best?.eff } /> 
-                        <BestEffOrInt className={classes.effIntLink}  label="B.Int." data={ data.exerciseRef.best?.int } /> 
+                        { // Weight x reps
+                            data.sets[0].type==0 && <>
+                                <Stat label="VOL" value={<WeightValue value={data.stats.vol} inkg={ !data.sets[0].lb }/>}/>
+                                <Stat label="REPS" value={data.stats.reps}/>
+                                <Stat label="SETS" value={data.stats.sets}/>
+                                <BestEffOrInt className={classes.effIntLink}  label="B.Eff." data={ data.exerciseRef.best?.eff } /> 
+                                <BestEffOrInt className={classes.effIntLink}  label="B.Int." data={ data.exerciseRef.best?.int } />
+                            </>
+                        }
+
+                        { // Weight x Time or Distance
+                            data.exerciseRef.best?.prsWxDorT && statsOfWxDoT( data.exerciseRef.best?.prsWxDorT, jowner, data.sets ).map( stat=><Stat label={stat.label.toUpperCase()} value={stat.value}/>)
+                        }
+                         
                     </div>
                 </Box>
                 <Divider variant="middle" style={{marginBottom:10, marginTop:-5}}/>
                 
                 <SBDRankLeyend>
-                <Box paddingBottom={1}>
-                { data.sets.map( (set,i)=>(<div key={[data.eid,i,set.w,set.r,set.s].toString()}>
+                <Box paddingBottom={2}>
+
+                { data.sets[0].type>0 && renderWxD_Erows(data.exerciseRef, data.sets, classes, theme) }
+
+                { data.sets[0].type==0 && data.sets.map( (set,i)=>(<div key={[data.eid,i,set.w,set.r,set.s].toString()}>
                 
                     <div className={classes.erow+" erow"+(set.pr>0?" RMPR":"")+(set.r==0?" FAILED-ATTEMPT":"") }>
                         <div className="wxr">
@@ -218,28 +258,34 @@ export default function Eblock({ data }){
 
                             { set.pr>0 && <img src={celebrateGIF} />}
 
-                                <strong className="w">
-                                    {set.ubw?"BW"+(set.w>0?"+":""):""}
-                                    { set.w!=0 && <WeightValue value={set.w} inkg={ !set.lb }/> }
-                                </strong> 
+                                { SetWeight(set) }
 
                                 { set.rpe>0 && <RPEChip value={set.rpe}/>}
                                 
-                                &nbsp;x <b className="r">{ set.r }</b> x <b>{ set.s }</b></div> 
+                                &nbsp;x <b className="r">{ set.r }</b> x <b>{ set.s }</b>
+                        </div> 
 
                         <div className="bar">
                             <Barra weight={set.weight} reps={set.r===0? 0 : null}/> 
                         </div> 
 
-                        <div style={{flexGrow:1, overflow:"hidden"}} className="effint">
-
-
-                            { 
-                            //w={set.weight} r={set.r} best={data.exerciseRef.best}
-                            data.exerciseRef.best && <EffIntBars eff={set.eff} int={set.int}/> }
-
+                        <div style={{flexGrow:1, overflow:"hidden"}} className="effint" smDown>
+                            <Hidden smDown>
+                                <EffIntBars data={data} set={set} theme={theme}/>          
+                            </Hidden>
                         </div> 
                     </div>
+
+                    {/*
+                    // for small screens, make the bars take an entire row.
+                    */}
+                    <Hidden smUp>
+                        <Box paddingBottom={0} marginBottom={3}>
+                        <EffIntBars data={data} set={set} theme={theme}/>
+                        </Box>
+                        <Divider/>
+                        <br/>
+                    </Hidden>
 
                 { set.c && <div className={classes.ecom}><SubdirectoryArrowRightIcon fontSize="small"/>{ parsedTags2render(set.c, true) }</div> }
                 </div>
@@ -251,20 +297,19 @@ export default function Eblock({ data }){
             </Paper>
 }
 
-// const RPE = ({value})=>{
-//     const colors = {
-//         6:"#219EBC",
-//         6.5: "#2A9D8F",
-//         7:"#52B788",
-//         7.5:"#E9C46A",
-//         8:"#F4A261",
-//         8.5:"#FF9100",
-//         9:"#E76F51",
-//         9.5:"#F94144",
-//         10:"#E63946"
-//     }
-//     return <Chip size="small" label={ value+ " RPE"} style={{backgroundColor:colors[value], color:"white", marginLeft:3}}/>;
-// }
+export const SetWeight = set=>(<strong className="w">
+                                { set.ubw?"BW"+(set.w>0?"+":""):"" }
+                                { set.w!=0 && <WeightValue value={set.w} inkg={ !set.lb }/> }
+                               </strong>);
+
+const EffIntBars = ({ data, set, theme  })=>{
+    return <>
+    { data.exerciseRef.best && <ProgressBarsContainer ifMobileTeleport={set}>
+                                    {set.r>0 && set.r<11 && <ProgressBar desc="Comparing the estimated 1RM from this set with your best ever estimated 1RM." label="Eff" value={set.eff *100} color={theme.eff_color}/>  }
+                                    <ProgressBar desc="Comparing the weight used against the heavyest you ever logged for this exercise." label="Int" value={set.int *100} color={theme.int_color}/> 
+                                </ProgressBarsContainer>
+                                }</>
+}
 
 const BestEffOrInt = ({ data, label, ...rest }) => {
 
@@ -282,12 +327,18 @@ const BestEffOrInt = ({ data, label, ...rest }) => {
 
     if(!data) rest = {};
 
-    if( wasDoneToday )
+    let clickHandler = {};
+
+    if( !wasDoneToday)
     {
-        return <Stat label={label} value={ <WeightValue value={data.est1rm || data.w} inkg={ !data.lb }/> }/>
+        clickHandler = {onClick:open};
+    }
+    else 
+    {
+        rest = {};
     }
  
-    return <Stat onClick={open} {...rest} label={label} value={ data? <WeightValue value={data.est1rm || data.w} inkg={ !data.lb }/> : "---"}/> ;
+    return <Stat {...clickHandler} {...rest} label={label} value={ data? <WeightValue round={data.est1rm>0} prefix={data.est1rm?"~":""} value={data.est1rm || data.w} inkg={ !data.lb }/> : "---"}/> ;
 }
 
 
@@ -316,67 +367,4 @@ const EstimatedRM = ({ set }) => {
 
  
     return estimated>0? <Tooltip title="Estimated ~1RM"><div className="est">~{prefix}{estimated && <WeightValue nounit round value={ estimated } inkg={ !set.lb }/>}</div></Tooltip> : ""; 
-};
-
-const EffIntBars = ({ eff, int }) => { 
-
-    const jowner   = useContext(JOwnerContext);  
-
-    let effPercent = eff * 100; //best.eff && ( jowner.estimate1RM(w,r) / best.eff.est1rm)*100;
-    let intPercent = int * 100; //(w / best.int.w)*100; 
-
-    if( effPercent+intPercent == 0 ) 
-    return "";
-
-    return <div style={{ display:"flex", flexDirection:"column", height:25, margin:3}}> 
-                { effPercent>0 && <EffIntBar percent={effPercent} label="Eff" color="red"/> }
-                <EffIntBar percent={intPercent} label="Int" color="blue"/> 
-            </div>;
-}
-
-const EffIntBar = ({ percent, color, label })=>{
-
-    const ref           = useRef();
-    const theme         = useTheme();
-
-    let beyond100       = false;
-    let originalPercent = Math.round(percent);
-    var extra = 0;
-
-    if( percent > 100 )
-    {
-        extra = Math.min( percent - 100, 100 ); // no mas de 100
-        percent = 100 ;
-        beyond100 = true;
-    }
-
-    // useEffect(()=>{
-    //     if( beyond100 )
-    //     {
-    //         let parent = ref.current.parentNode;
-    //         let class2add = "PR-"+label;
-
-    //         while( parent.parentNode )
-    //         {
-    //             if( parent.className.indexOf(" erow")>0 &&  parent.className.indexOf(class2add)<0 )
-    //             {
-    //                 parent.className += " "+class2add;
-    //                 break;
-    //             }
-    //             parent = parent.parentNode;
-    //         }
-    //     }
-    // },[]);
-    // (beyond100?"PR":"")+" "+
-
-    return <div ref={ref} style={{flexGrow:1, maxHeight:14, position:"relative", borderRadius:50, borderBottom:"1px solid "+theme.effIntBars.borderColor, backgroundColor:beyond100? "#CFCF11" : theme.effIntBars.bg}}>
-
-                <div className={"PR-bar PR" } style={{ position:"absolute", maxWidth:"100%",zIndex:2,borderRadius:50, width: extra+"%", height:"100%", right:0, top:0 }}></div>
-
-                <div style={{position:"absolute",zIndex:1, borderRadius:50, paddingLeft:3,paddingRight:3, background:"#111", opacity:0.9, color:"white", top:0, left:0, lineHeight:"12px", height:12, fontSize:"10px"}}>
-                    {label} <b>{originalPercent}</b>
-                    </div>
-                <div className={label+"-bar" } style={{ maxWidth:"100%",borderRadius:50, width:percent+"%", height:"100%" }}></div> 
-                
-            </div>
 };

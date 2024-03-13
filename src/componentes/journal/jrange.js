@@ -14,10 +14,16 @@ import { JRangeSetsChart } from "./jrange-chart";
 import { JRangeUTags } from "./jrange-utags";
 import { StaticLogHighlighter } from "../../codemirror/LogTextEditor";
 import { getExampleUTagsLog } from "../../codemirror/tag-parsing";
-import { TAG_PREFIX } from "../../user-tags/data-types";
- 
- 
- 
+import { TAG_PREFIX } from "../../user-tags/data-types"; 
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import TabContext from '@material-ui/lab/TabContext';
+import TabPanel from '@material-ui/lab/TabPanel';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import TimerIcon from '@material-ui/icons/Timer';
+import { JRangeWxDoT } from "./jrange-WxDoT";
+import { NothingHere } from "../nothing-here-alert";
 
 /**
  * Componente que rendea la pagina de STATS de un "jrange"
@@ -28,6 +34,7 @@ export default function JRange({ match:{ params } }) {
     const range                 = Number( params.range.substr(1));
     const  ymd                  = params.ymd;
     const niceDate              = useMemo(()=>date2NiceString(ymd2date (ymd)) ,[ ymd ]);
+    const [tab, setTab]         = useState(0);
 
     const { data:rawData, error, loading }        = useGetJRangeQuery({ variables: {
       uid   : jowner.id ,
@@ -35,6 +42,8 @@ export default function JRange({ match:{ params } }) {
       range 
     } }) 
 
+
+    const handleTabChange = (event, newValue) => setTab(newValue);
 
     //
     // DETECCION DE TAGS!
@@ -70,7 +79,10 @@ export default function JRange({ match:{ params } }) {
             .reduce( (sets, eblock)=>{
 
                 const e = eid2e.get(eblock.eid);
-                eblock.sets.forEach( set=>sets.push({ ...set, e }) ); //<--- add reference to the exercise.
+
+                eblock  .sets.filter(set=>set.type==0) // only Weight x Reps type of sets...
+                        .forEach( set=>sets.push({ ...set, e }) ); //<--- add reference to the exercise.
+
                 return sets;
             } ,[])
 
@@ -302,7 +314,7 @@ export default function JRange({ match:{ params } }) {
      */
     const tableData = useMemo( ()=>data?.jrange?.days.reduce( (arr,day)=>{
 
-      day.did 
+      day.did
 
         // por cada "set" hecho (pueden ser de distinto eid)
         .forEach( erow=>{
@@ -415,32 +427,62 @@ export default function JRange({ match:{ params } }) {
                       -- <strong>{ days }</strong> days with <strong>workouts</strong> found.
                 </JDayContentHeader>
 
-              { data.jrange && <> 
+            { data.jrange && days==0 && <NothingHere title="No workouts" description="No workouts found on this period" />}
 
-                                { tableData.length>0 && <>
-                                        {/* <JRangeGraph data={data} eid2color={eid2color} selectedEids={selectedEIDs}  from={from} to={to}/> */}
-                                        <JRangeSetsChart selectedEids={selectedEIDs} data={data} from={from} to={to} eid2color={eid2color.get.bind(eid2color)} sundays={sundays}  onClickX={onClickX}/>
-            
-                                            {/*La tabla*/}
-                                            <Box marginTop={1}>
-                                            <JRangeTable selectedEids={selectedEIDs} onSelectAllClick={toggleSelectAll} onSelect={onSelectRow} data={tableData} />
-                                            </Box>
+              { data.jrange && days>0 && <>  
+                            <TabContext value={tab}>
+                                <Paper>
+                                    <Tabs
+                                        value={tab}
+                                        onChange={handleTabChange}
+                                        indicatorColor="primary"
+                                        textColor="primary"
+                                        centered
+                                    >
+                                        <Tab icon={<TrendingUpIcon/>} label="Weight x Reps" value={0}/>
+                                        <Tab icon={<LocalOfferIcon/>} label="Custom Tags" value={1}/>
+                                        <Tab icon={<TimerIcon/>} label="Time & Distance" value={2}/>
+                                    </Tabs>
+                                </Paper> 
+
+                                <TabPanel value={0}>
+                                    { tableData.length>0 && <> 
+                                            <JRangeSetsChart selectedEids={selectedEIDs} data={data} from={from} to={to} eid2color={eid2color.get.bind(eid2color)} sundays={sundays}  onClickX={onClickX}/>
+                
+                                                {/*La tabla*/}
+                                                <Box marginTop={1}>
+                                                <JRangeTable selectedEids={selectedEIDs} onSelectAllClick={toggleSelectAll} onSelect={onSelectRow} data={tableData} />
+                                                </Box>
 
 
-                                            <br/>
-                                            <Divider/>
-                                            <br/>
-                                </>}
-                              
+                                                <br/>
+                                                <Divider/>
+                                                <br/>
+                                    </>}  
                                 
+                                </TabPanel>
 
+
+                                <TabPanel value={1}>
                                 { rawData?.jrange.utags?.values.length > 0 &&
                                     <>
                                     <Typography variant="h3">Custom Tags</Typography> 
                                     <Typography gutterBottom variant="subtitle1">During this period these are the <a href="/faq#user-tags">custom tags</a> that were defined:</Typography>
                                     <JRangeUTags data={rawData} from={from} to={to} sundays={sundays} onClickX={onClickX}/>  
                                     </> 
-                                }  
+                                } 
+                                </TabPanel>
+
+
+                                <TabPanel value={2}>
+                                    <JRangeWxDoT data={rawData}/>
+                                </TabPanel>
+
+                            </TabContext> 
+                              
+                                    
+
+                                 
                               
               </>}
           </div>;

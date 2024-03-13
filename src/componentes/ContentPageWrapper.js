@@ -42,7 +42,7 @@ export const ContentPage = (props) => {
 /** 
  * @param {ContentPageProps} param0  
  */
-const PageLayout = ({ title, Icon, Child, ...rest }) => {
+export const PageLayout = ({ title, Icon, Child, ...rest }) => {
 
     let location = useLocation(); 
     let menuItem = MENU.findLast( (m,i)=>m.goto?.length>1 && location.pathname.indexOf( m.goto )==0 );
@@ -65,6 +65,6 @@ const PageLayout = ({ title, Icon, Child, ...rest }) => {
         <Box padding={2} borderBottom="1px dashed #444" >
             <Typography variant="h4">{ Icon && <Icon /> } {title ?? "???"}</Typography>
         </Box> 
-        <Child {...rest}/>
+        { Child ? <Child {...rest}/> : rest.children }
     </>
 }

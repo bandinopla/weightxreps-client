@@ -32,6 +32,7 @@ import OperationBackdrop from "../backdrop";
 import { parseError } from "../../data/db";
 import { DialogTitleWithCloseBtn } from "../DialogTitleWithCloseBtn";
 import { useGetSession } from "../../session/session-handler";
+import { useHistory } from "react-router-dom";
 function Alert2(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -84,15 +85,15 @@ export const openExercisesModal = what =>{
     $open( what );
 }
 
-export const EditExerciseButton = ({ exercise, ...rest })=>{
+export const EditExerciseButton = ({ exercise, owner, ...rest })=>{
 
     const open          = useReactiveVar($open);
     const jowner        = useContext(JOwnerContext);
-    const { session }   = useGetSession();
+    const user   = useGetSession();
 
-    if( jowner.id!=session?.user.id ) return "";
+    if( (owner && (owner?.id!=user.session?.user.id)) || (!owner && jowner?.id!=user.session?.user.id) ) return "";
 
-    return <Button disabled={open} variant="outlined" {...rest} startIcon={<EditIcon/>} onClick={ ()=>$open(exercise) }>Edit</Button>
+    return <Button disabled={open} color="secondary" variant="outlined" {...rest} startIcon={<EditIcon/>} onClick={ ()=>$open(exercise) }>Edit Exercise</Button>
 }
 
 export const ExercisesModal = ()=>{
@@ -125,6 +126,7 @@ export const ExercisesModal = ()=>{
 
 const ExercisesListView = ({ jowner, myId, onClose })=> {
 
+    const history       = useHistory();
     const classes       = useStyles(); 
     const imTheOwner    = myId == jowner.id;
 
@@ -145,8 +147,11 @@ const ExercisesListView = ({ jowner, myId, onClose })=> {
     const sortableColumns = useMemo(()=>[
             { label:"Name"    , sort:(a,b)=>(b.e.name.toLowerCase()<a.e.name.toLowerCase()? -1 : b.e.name==a.e.name? 0 : 1) }
         ,   { label:"Days"    , width:30 , sort:(a,b)=>b.days-a.days }
-        ,   { label:"Reps"    , width:30, sort:(a,b)=>b.reps-a.reps } 
     ],[]);
+
+    const onClickEname = e=>{
+        history.push(`/journal/${jowner.uname}/exercise/${e.eid}`);
+    }
 
     const setSortHandler = i=>()=>{
         if( columnIsActive(i) )
@@ -286,21 +291,19 @@ const ExercisesListView = ({ jowner, myId, onClose })=> {
                                         
                                         const isSelected = selectedExercises.find(e=>e.id==row.e.id)?.id>0;
 
-                                        return <TableRow key={row.e.id} className={ !row.isON && classes.isOFF }
-                                                onClick={(event) => onSelectExercise(row.e)}
+                                        return <TableRow key={row.e.id} className={ !row.isON && classes.isOFF } 
                                                 hover
                                                 selected={isSelected}
                                             >
 
-                                            {imTheOwner && <TableCell  padding="checkbox">
+                                            {imTheOwner && <TableCell  padding="checkbox" onClick={(event) => onSelectExercise(row.e)}>
                                                                 <Checkbox checked={isSelected} /> 
                                                             </TableCell>}
 
                                             <TableCell  component="th" scope="row" style={{paddingLeft:5}}>
-                                                <Ename {...row.e} onClick={onClose}/>
+                                                <Ename {...row.e} uname={jowner.uname} onClick={ ()=>onClickEname(row.e) || onClose() }/>
                                             </TableCell>
                                             <TableCell align="center">{row.days}</TableCell>
-                                            <TableCell align="center">{row.reps}</TableCell> 
                                         </TableRow>
                                         })}
                             </TableBody>
