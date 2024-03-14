@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme=>({
  * @param {*} param0 
  * @returns 
  */
-export const ProgressBar = ({ label, desc, value, color }) => {
+export const ProgressBar = ({ label, desc, value, color, noHelp }) => {
  
     const fillColor = "#ccc";
     const classes = useStyles({ color, fillColor });
@@ -109,9 +109,9 @@ export const ProgressBar = ({ label, desc, value, color }) => {
                     <Bar percent={percent} color={color} useLabel={barLabel}/>
                     {percent2!=0 && <Bar percent={percent2} color={color} />}
                 </div>
-                <div>
+                {!noHelp && <div>
                     <a href="#" onClick={explain}>( ? )</a>
-                </div>
+                </div>}
             </div>;
 }
 /*<div className={classes.fill} style={goesBeyond100? { backgroundColor: color}: goesUnder100? { backgroundColor:"yellow" } : null }>

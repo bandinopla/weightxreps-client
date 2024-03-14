@@ -158,9 +158,6 @@ const ExercisesListView = ({ jowner, myId, onClose, onExerciseSelected })=> {
         ,   { label:"Days"    , width:30 , sort:(a,b)=>b.days-a.days }
     ],[]);
 
-    const onClickEname = e=>{
-        history.push(`/journal/${jowner.uname}/exercise/${e.eid}`);
-    }
 
     const setSortHandler = i=>()=>{
         if( columnIsActive(i) )
@@ -309,18 +306,17 @@ const ExercisesListView = ({ jowner, myId, onClose, onExerciseSelected })=> {
                                         
                                         const isSelected = selectedExercises.find(e=>e.id==row.e.id)?.id>0;
 
-                                        return <TableRow key={row.e.id} className={ !row.isON ? classes.isOFF : "" }
-                                                onClick={(event) => onSelectExercise(row.e)}
+                                        return <TableRow key={row.e.id} className={ !row.isON ? classes.isOFF : "" } 
                                                 hover
                                                 selected={isSelected}
                                             >
 
-                                            {imTheOwner && <TableCell  padding="checkbox" onClick={(event) => onSelectExercise(row.e)}>
+                                            {canBulkSelect && <TableCell  padding="checkbox" onClick={(event) => onSelectExercise(row.e)}>
                                                                 <Checkbox checked={isSelected} /> 
                                                             </TableCell>}
 
                                             <TableCell  component="th" scope="row" style={{paddingLeft:5}}>
-                                                <Ename {...row.e} uname={jowner.uname} onClick={ ()=>onClickEname(row.e) || onClose() }/>
+                                                <Ename {...row.e} uname={jowner.uname} onClick={ onClickOn(row.e) }/>
                                             </TableCell>
                                             <TableCell align="center">{row.days}</TableCell>
                                         </TableRow>

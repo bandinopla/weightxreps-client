@@ -50,7 +50,7 @@ const importers = [
                     Tested on Progression <b>v5.2.1 (2782)</b> on <u>Android</u>
             </Alert>
             <Alert severity='warning'>
-                    Their app, when you download a backup, doesn't contain the name of the exercises (only the ones you create) so I can't import their file. But the "share workout" feature does provide a text with proper names.
+                    Their app, when you download a backup, doesn't contain the name of the exercises (only the ones you create) so you will have to complete the missing data on import!
             </Alert>
         </div>
     }

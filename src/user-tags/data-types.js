@@ -113,7 +113,7 @@ export const TYPES = {
             const [ HH, MM, SS, MS ] = val.split("|").map(v=>parseInt(v));
             let sec = SS+MS/1000;
 
-            return (HH>0? HH+"h " : "") + (MM>0? MM+"m " : "")+(sec>0? sec+"s " : "");
+            return (HH>0? HH+"hs " : "") + (MM>0? MM+"min " : "")+(sec>0? sec+"sec " : "");
         },
     },
 

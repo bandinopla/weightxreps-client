@@ -40,7 +40,7 @@ export default function Ename({ type, id, name, variant, gutter, uname=null, onC
       if( canLink ) 
       { 
         if( onClick && onClick() )
-        {
+        { 
             return;
         }
 
