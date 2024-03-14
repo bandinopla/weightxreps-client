@@ -42,7 +42,7 @@ const COLUMNS = [
                                                                 erowA.unit = erowB.dunit;
                                                             }
                                                         } 
-                                                        return erowA.$total? erowA : { $total: (erowA.d ?? 0)*erowA.s + (erowB.d ?? 0)*erowB.s, unit: erowA.dunit }
+                                                        return erowA.$total? erowA : { $total: (erowA.d ?? 0)*erowA.s + (erowB?.d ?? 0)*(erowB?.s || 0), unit: erowA.dunit }
                                                      },
 
         render: val=>val.$total>0 ? <DistanceValue value={val.$total} displayUnit={val.unit}/> : "---",
@@ -76,7 +76,7 @@ const COLUMNS = [
     },
     {
         label:"T. Time", 
-        reduce: (erowA, erowB)=>( isNaN(erowA)? (erowA.t??0)*erowA.s : erowA ) + (erowB?.t??0)*erowB.s , 
+        reduce: (erowA, erowB)=>( isNaN(erowA)? (erowA.t??0)*erowA.s : erowA ) + (erowB?.t??0)*(erowB?.s??1) , 
         render: val=> val>0? <TimeValue milliseconds={val}/> : "---",
         sort: (a,b)=>b-a
     },

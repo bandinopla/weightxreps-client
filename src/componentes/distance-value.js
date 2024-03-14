@@ -64,6 +64,14 @@ export function DistanceValue({ value, unit, postfixUnit, nounit, round, prefix 
         }     
     }
 
+    //
+    // if the number has too many decimals, probably from converting between imperial and metric, cap it to 1 decimal...
+    //
+    if( (w % 1 !== 0 && w.toString().split('.')[1].length > 1) )
+    {
+        round = true;
+    }
+
     if( round )
     {
         w = w.toFixed(1);
