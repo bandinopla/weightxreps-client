@@ -10,6 +10,7 @@ import { ImportFromWStrongapp } from "../componentes/importer/import-from-strong
 import { Alert } from "@material-ui/lab";
 import { ImportFromHevyapp } from "../componentes/importer/import-from-heavyapp";
 import { ImportFromProgressionApp } from '../componentes/importer/import-from-progressionapp';
+import { Hidden, useMediaQuery, useTheme } from '@material-ui/core';
 
 /**
  * @typedef {Object} Importer
@@ -57,6 +58,10 @@ const importers = [
 ]
 
 export const ImportFromWidget = ({ user })=>{
+
+    const theme             = useTheme();
+    const isSmallScreen     = useMediaQuery(theme.breakpoints.down('md'));
+
     return <div>  
             <Alert severity="info">
                 You can DM the admin to code a new parser for some other app you'd like to import data from.
@@ -65,17 +70,26 @@ export const ImportFromWidget = ({ user })=>{
             <Table aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    <TableCell width={200}>Import data from...</TableCell>
-                    <TableCell >Import</TableCell> 
+                    <TableCell width={isSmallScreen?"auto":200}>Import data from...</TableCell>
+
+                    <Hidden smDown>
+                        <TableCell >Import</TableCell> 
+                    </Hidden>
                 </TableRow>
                 </TableHead>
                 <TableBody> 
                     {
                         importers.map( (importer,i)=>(<TableRow key={i}>
-                            <TableCell component="th" scope="row" style={{maxWidth:200}}>
-                                { importer.label }
-                            </TableCell>
+
+                            <Hidden smDown>
+                                <TableCell component="th" scope="row" style={{maxWidth:200}}>
+                                    { importer.label }
+                                </TableCell>
+                            </Hidden>
                             <TableCell >
+                                <Hidden mdUp>
+                                    { importer.label }
+                                </Hidden>
                             { importer.widget }</TableCell> 
                         </TableRow> ) )
                     }
