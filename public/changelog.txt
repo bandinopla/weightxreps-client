@@ -1,6 +1,6 @@
 - 2.27.0 : 2024-03-14
         + !! Added posibility to log Distance & Time !!
-        * suggested by @recuna NEW importer: progressionapp
+        * suggested by @racuna NEW importer: progressionapp
         * fixed responsivness of importer's table on smaller screens
         * fixed hevyapp & strongapp importers to use this new format 
         * improve journal save operation ui feedback
