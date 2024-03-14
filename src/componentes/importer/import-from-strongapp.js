@@ -2,6 +2,7 @@ import Joi from "joi";
 import { TYPES } from "../../user-tags/data-types";
 import { ImportFromCVS } from "./import-from-csv";
 import { fixRPE } from "./fixRPE";
+import { SET_TYPES } from "../../data/set-types";
 
 const durationScheme = [ 
     Joi.string().pattern(new RegExp(TYPES.TAG_TIME_h.reg)),
@@ -66,7 +67,7 @@ const config = {
 
             if( duration )
             {
-                state.log += `@Workout Duration: ${duration}\n`;
+                state.log += `@ Workout Duration: ${duration}\n`;
             }
 
             //
@@ -83,39 +84,99 @@ const config = {
         //
         const ename = data['Exercise Name'];
         const wUnit = data["Weight Unit"] || state.assumeWUnit;
-        let W = parseFloat(data["Weight"]) || 1;
+
+        //
+        // TIME
+        //
+        let T = parseInt(data["Seconds"]) || 0;
+
+        if( T ) T = TYPES.TAG_TIME_hm.value2editor( TYPES.TAG_TIME_hm.components2value( T*1000 ) );
+
+
+        //
+        // WEIGHT
+        //
+        let W = parseFloat(data["Weight"]) || 1; 
+
+        if( data["Weight"]?.length>5 ) W = W.toFixed(1); //else it comes with a bunch of decimals...
+
+        const setW = W? W+" "+wUnit: "";
+
+        //
+        // REPS
+        //
         let R = parseFloat(data["Reps"]) || 1; 
+
+        //
+        // RPE
+        //
         let RPE = fixRPE( parseFloat(data["RPE"] )) || ""; 
-        const distance = parseFloat(data["Distance"]) || 0;
-        const distanceUnit = data["Distance Unit"] || ( wUnit=='kg'? "km" : "mi" ); //<--- assume km is weight is metric system. else assume miles...
+        
 
         //
-        // we dont support distance exercises but we can logg it as a custom user tag
+        // DISTANCE
         //
-        if( distance ) //logged an exercise that uses distance
-        {
-            state.ename = null;
-            state.log += `@${ename} (${distanceUnit}): ${distance}\n`;
-        }
-        else 
-        {
-            //
-            // ENAME
-            //
-            if( !state.ename || state.ename!=ename || dayChanged )
-            {
-                /**
-                 * @type {string}
-                 */
-                state.ename = ename;
-                let etag = enameToEtag(ename); 
+        let D = parseFloat(data["Distance"]) || 0;
 
-                state.log += `#${ename}${etag}\n`;
+        if( data["Distance"]?.length>5 ) D = D.toFixed(1);
+
+        const DUNIT = data["Distance Unit"] || ( wUnit=='kg'? "km" : "mi" ); //<--- assume km is weight is metric system. else assume miles...
+ 
+
+        //
+        // SET's COMMENT
+        //
+        let C = data["Notes"] || "";
+
+        if( RPE ) C = "@"+RPE+"RPE "+C;
+
+        
+        //
+        // SET TYPE
+        //
+        const type = T && !D ? SET_TYPES.WxT.type : 
+                           D ? SET_TYPES.WxD.type :
+                               SET_TYPES.WxR.type ;
+
+        //
+        // CREATE EBLOCK if necesary...
+        //
+        if( !state.eblock || state.eblock.ename!=ename || state.eblock.type != type )
+        {
+            state.eblock = {
+                ename,
+                type,
+                etag : enameToEtag(ename)
             }
 
-            // classic W x R
-            state.log += `${W}${wUnit} x ${R} ${RPE}\n`;
+            state.log += `#${ename} ${state.eblock.etag}\n`;
+        }
+
+        //
+        // GENERATE EACH EROW
+        //
+        switch( type )
+        {
+            case SET_TYPES.WxT.type:
+                state.log += (W? setW+" x ":"") + T + " " + C + "\n";
+                console.log( (W? setW+" x ":"") + T + " " + C + "\n");
+                break;
+
+            case SET_TYPES.WxD.type:
+
+                let setD = (W? setW+" x ":"") + D + DUNIT + " " + C + "\n";
+
+                if( T ) setD = (W? setW+" x ":"") + D + DUNIT + " in " + T + " " + C + "\n"; 
+
+                state.log += setD;
+
+                console.log( setD )
+                break;
+
+            default:
+                state.log += setW +" x " + R + " " + C + "\n"; 
         } 
+
     },
 
     stateAsLog: s=>s.log

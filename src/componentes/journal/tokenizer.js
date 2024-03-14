@@ -21,7 +21,7 @@ const TIME_UTAGS = [
 export const JLogTokenizer = config => {
 
     //const W_Reg     = /(BW\s*[\+\-]?)?(\d+(?:\.\d+)?)?(kg|lbs?)?/i;
-    const W_Reg     = /(?:(?:(bw\s*[\+\-]?)?(\d+(?:\.\d+)?)(kg|lbs?)?)|(bw))/i;
+    const W_Reg     = /(?:(?:(bw\s*[\+\-]?)?(\d+(?:\.\d+)?)\s*(kg|lbs?)?)|(bw))/i;
 
     const Xchars    = "x\\*"
     const X         = new RegExp("["+Xchars+"]");
@@ -94,7 +94,8 @@ export const JLogTokenizer = config => {
                         line    : stream.lineOracle.line,
                         from    : stream.column(),
                         to      : stream.column()+m[0].length,
-                        message : (errorTitle?errorTitle+": ":"")+e.message
+                        message : (errorTitle?errorTitle+": ":"")+e.message,
+                        errorLine: stream.string
                     });
                 }
                 
@@ -259,7 +260,8 @@ export const JLogTokenizer = config => {
                                 from:wPos,
                                 to: wPos+setString.length,
                                 message:( error || "Weight \""+setString+"\" is invalid (meaning, idk what it says...), please fix it.") + "\n"+happened+stream.string
-                                       + "\n" + "-".repeat( happened.length+wPos  )+"^"
+                                       + "\n" + "-".repeat( happened.length+wPos  )+"^",
+                                errorLine: stream.string
                             });
 
                             console.log("ERROR!", setString, state.errors.slice(-1)[0]);
@@ -311,7 +313,8 @@ export const JLogTokenizer = config => {
                             line    :stream.lineOracle.line,
                             from    : stream.column(),
                             to      : stream.column()+m[0].length,
-                            message: e.message
+                            message: e.message,
+                            errorLine: stream.string
                         });
                     }   
 
@@ -346,7 +349,7 @@ export const JLogTokenizer = config => {
         },
 
         "D": {
-            reg: /^(\d+(\.\d+)?)\s*(cm|mi|km|in|ft|yd|m)/i,
+            reg: /^(\d+(\.\d+)?)(cm|mi|km|in|ft|yd|m)/i, // the unit must be next to the number with no spaces to avoid confusion with for example: 100 x 5 in very cood speed | <--- "in" is not "inches" there...
             token( stream, state ) {
                 const m     = stream.match( this.reg );
                 if( m ) 
@@ -361,7 +364,8 @@ export const JLogTokenizer = config => {
                             line    : stream.lineOracle.line,
                             from    : stream.column(),
                             to      : stream.column()+m[0].length,
-                            message : e.message
+                            message : e.message,
+                            errorLine: stream.string
                         });
 
                         return 'error';
@@ -425,7 +429,8 @@ export const JLogTokenizer = config => {
                                 from    : wPos,
                                 to      : wPos+w.length,
                                 message:  e.message  + "\n"+happened+stream.string
-                                       + "\n" + "-".repeat( happened.length+wPos  )+"^"
+                                       + "\n" + "-".repeat( happened.length+wPos  )+"^",
+                                errorLine: stream.string
                             });
                         }
 
@@ -540,7 +545,8 @@ export const JLogTokenizer = config => {
                                 line            : stream.lineOracle.line,
                                 from            : stream.column() + offset ,
                                 to              : stream.column() + offset + length,
-                                message         : e.message
+                                message         : e.message,
+                                errorLine: stream.string
                             });
                             return;
                         }
@@ -641,7 +647,8 @@ export const JLogTokenizer = config => {
                             line            :stream.lineOracle.line,
                             from            : stream.column(),
                             to              : stream.column() + m[0].length,
-                            message         :"Invalid date"
+                            message         :"Invalid date",
+                            errorLine: stream.string
                         });
 
                         return "invalid-date";
@@ -700,7 +707,8 @@ export const JLogTokenizer = config => {
                             line            :stream.lineOracle.line,
                             from            : stream.column(),
                             to              : stream.column() + m[0].length,
-                            message         :"Invalid date"
+                            message         :"Invalid date",
+                            errorLine: stream.string
                         });
 
                         return "invalid-date";
@@ -862,8 +870,6 @@ export const JLogTokenizer = config => {
 
         var tokenReg    = new RegExp( "^"+ parts.map( p=>tokens[p].reg?.source.replace("^","")).join("")+"\\s*$","i" );
  
-        console.log("TOKEN",id, tokenReg)
- 
 
         tokens[id] = {
 
@@ -928,7 +934,8 @@ export const JLogTokenizer = config => {
                             line:stream.lineOracle.line,
                             from: 0,
                             to: stream.string.length,
-                            message:`This type of set cannot be mixed with the one above, this one is a "${erowType.name}" and the set above is a "${state.erowType.name}"`
+                            message:`This type of set cannot be mixed with the one above, this one is a "${erowType.name}" and the set above is a "${state.erowType.name}"`,
+                            errorLine: stream.string + " // " + state.$lastLine
                         })
 
                         return "error";
@@ -936,6 +943,7 @@ export const JLogTokenizer = config => {
 
                     state.erowType = erowType;
                     state.$tokenLine = stream.lineOracle.line;
+                    state.$lastLine = stream.string;
                     state.activeToken = { token: this.tokenChilds.bind(this, parts.slice(0)) };
                     return state.activeToken.token( stream, state );
                 } 
@@ -1100,9 +1108,10 @@ export const JLogTokenizer = config => {
          * Converts the state object to the payload expected by the wxr server
          * 
          * @param {Object} state the final state resulted from analizing a workout log using this tokenizer.
+         * @param {string[]?} lines the final state resulted from analizing a workout log using this tokenizer.
          * @returns {Object[]} log rows 
          */
-        stateToSavePayload( state ) {
+        stateToSavePayload( state, lines ) {
 
             const errors = state.errors?.filter(e=>!e.severity || e.severity=='error');
             //
@@ -1110,7 +1119,7 @@ export const JLogTokenizer = config => {
             //
             if( errors.length ) 
             { 
-                console.error( errors )
+                // console.error( errors )
                 throw new Error("Fix the errors before saving!"); 
             }
 
@@ -1287,7 +1296,7 @@ async function __parseLines( tokenizer, state, lines, chunkSize, onFinish, onErr
 
     try 
     {
-        var payload = tokenizer.stateToSavePayload(state); 
+        var payload = tokenizer.stateToSavePayload(state, lines); 
     }
     catch(e) 
     {

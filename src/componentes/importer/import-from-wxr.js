@@ -203,8 +203,7 @@ export const ImportFromFileToWXR = ({ formatFile, fileInputLabel, fileInputFileE
                         
                         .catch( err=>{
 
-                            alert("ERROR: "+err.toString()); 
-                            reject(err);
+                            reject("The file couldn't be imported due to errors while procesing it." );
                         } )
 
                         .finally(()=>{
