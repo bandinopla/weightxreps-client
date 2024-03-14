@@ -605,7 +605,17 @@ export const JLogTokenizer = config => {
                     if( stream.peek() )
                     {   
                         var l = stream.next(); 
-                        state.erowComment += l;   
+
+                        //
+                        // avoid highlighting with the color style to white spaces at the start.
+                        //
+                        if( l==" " && state.erowComment == "" ) // start of the comment
+                        { 
+                            stream.eatSpace(); //eat all the white space...
+                            return "meta";
+                        }  
+                          
+                        state.erowComment += l;
                         return "setComment";
                     }   
                 
@@ -926,7 +936,7 @@ export const JLogTokenizer = config => {
                 if( stream.match( tokenReg, false ) && stream.string.trim().length>0 )
                 {   
                     //if( state.erowType && state.erowType!=erowType )
-                    if( state.erowType && (state.erowType!=erowType) && (erowType.type==0 || state.erowType.type==0) ) // dont let mixing weight x reps with weight x distance or time.
+                    if( erowType &&state.erowType && (state.erowType!=erowType) && (erowType.type==0 || state.erowType.type==0) ) // dont let mixing weight x reps with weight x distance or time.
                     { 
                         stream.skipToEnd();
 
@@ -984,7 +994,7 @@ export const JLogTokenizer = config => {
 
         ["TAG", [
 
-            ...getUserAvailableTagTypes().map(key=>_token(`TAG_NAME: ${key}`,"/tag")) ,
+            ...getUserAvailableTagTypes().map(key=>_token(`TAG_NAME: ${key}`,"/tag",null, false)) ,
             "error-if-no-tag-set"
         ]]
     ];
@@ -1181,7 +1191,7 @@ export const JLogTokenizer = config => {
                     //
                     const usedBW     = row.erows.find( set=>
                         Array.isArray(set.w)? set.w.find(w=>w.usebw) || null
-                                            : set.w.usebw );
+                                            : set.w?.usebw ); // with ? because it can be null if the set doesn't use weight
                                             
                     if( usedBW && !dayBW )
                     { 

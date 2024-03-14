@@ -159,7 +159,6 @@ const config = {
         {
             case SET_TYPES.WxT.type:
                 state.log += (W? setW+" x ":"") + T + " " + C + "\n";
-                console.log( (W? setW+" x ":"") + T + " " + C + "\n");
                 break;
 
             case SET_TYPES.WxD.type:
@@ -170,7 +169,6 @@ const config = {
 
                 state.log += setD;
 
-                console.log( setD )
                 break;
 
             default:
