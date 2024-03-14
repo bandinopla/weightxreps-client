@@ -151,6 +151,15 @@ const AccessWidget = ()=>{
             setShowAccess(true);
         }
 
+        window.quickAccessLogin = ()=>{
+            setShowAccess(true);
+            window.scrollTo(0,0);
+        }
+
+        setTimeout(()=>window.scrollTo(0,0), 0);
+
+        return ()=>window.quickAccessLogin = null
+
     },[])
 
     if( !showAccess )

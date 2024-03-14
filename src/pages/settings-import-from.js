@@ -5,10 +5,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { ImportFromWXR } from "../componentes/importer/import-from-wxr";
+import { ImportFromFileToWXR, ImportFromWXR } from "../componentes/importer/import-from-wxr";
 import { ImportFromWStrongapp } from "../componentes/importer/import-from-strongapp";
 import { Alert } from "@material-ui/lab";
 import { ImportFromHevyapp } from "../componentes/importer/import-from-heavyapp";
+import { ImportFromProgressionApp } from '../componentes/importer/import-from-progressionapp';
+import { Hidden, useMediaQuery, useTheme } from '@material-ui/core';
 
 /**
  * @typedef {Object} Importer
@@ -21,7 +23,7 @@ import { ImportFromHevyapp } from "../componentes/importer/import-from-heavyapp"
 const importers = [
     {
         label:<img src="/logo.png" width={150}/>,
-        widget:<ImportFromWXR/>
+        widget:<ImportFromFileToWXR fileInputLabel='Select the .txt backup file' fileInputFileExtensions='.txt'/>
     },
     {
         label:<a href="https://www.strong.app/" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/strongapp-logo.jpg" width={150} alt="Strongapp logo"/></a>,
@@ -40,10 +42,26 @@ const importers = [
                     Tested on Hevyapp <b>v1.30.31</b> on <u>Android</u>
                 </Alert>
         </div>
+    },
+    {
+        label:<a href="https://play.google.com/store/apps/details/Progression_Workout_Tracker?id=workout.progression.lite" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/progressionapp-logo.jpg" width={150} alt="Progression App logo"/></a>,
+        widget:<div>
+            <ImportFromProgressionApp/><br/>
+            <Alert severity='info'>
+                    Tested on Progression <b>v5.2.1 (2782)</b> on <u>Android</u>
+            </Alert>
+            <Alert severity='warning'>
+                    Their app, when you download a backup, doesn't contain the name of the exercises (only the ones you create) so you will have to complete the missing data on import!
+            </Alert>
+        </div>
     }
 ]
 
 export const ImportFromWidget = ({ user })=>{
+
+    const theme             = useTheme();
+    const isSmallScreen     = useMediaQuery(theme.breakpoints.down('md'));
+
     return <div>  
             <Alert severity="info">
                 You can DM the admin to code a new parser for some other app you'd like to import data from.
@@ -52,17 +70,26 @@ export const ImportFromWidget = ({ user })=>{
             <Table aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    <TableCell width={200}>Import data from...</TableCell>
-                    <TableCell >Import</TableCell> 
+                    <TableCell width={isSmallScreen?"auto":200}>Import data from...</TableCell>
+
+                    <Hidden smDown>
+                        <TableCell >Import</TableCell> 
+                    </Hidden>
                 </TableRow>
                 </TableHead>
                 <TableBody> 
                     {
                         importers.map( (importer,i)=>(<TableRow key={i}>
-                            <TableCell component="th" scope="row" style={{maxWidth:200}}>
-                                { importer.label }
-                            </TableCell>
+
+                            <Hidden smDown>
+                                <TableCell component="th" scope="row" style={{maxWidth:200}}>
+                                    { importer.label }
+                                </TableCell>
+                            </Hidden>
                             <TableCell >
+                                <Hidden mdUp>
+                                    { importer.label }
+                                </Hidden>
                             { importer.widget }</TableCell> 
                         </TableRow> ) )
                     }

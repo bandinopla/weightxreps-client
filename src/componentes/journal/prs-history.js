@@ -234,8 +234,7 @@ const TestAction = (props)=>{
 
 
 export const PRsHistoryHeader = ({ match:{params} })=>{
-
-  const jowner                    = useContext(JOwnerContext);
+ 
   const { data, loading, error }  = useGetPRsOfQuery({
       variables: {
           eid: params.eid
@@ -279,12 +278,14 @@ export const PRsHistoryHeader = ({ match:{params} })=>{
   } 
 
   return <> 
-        <JDayContentHeader title={data?.getPRsOf.exercise.name || "???"}>
+        {/* <JDayContentHeader title={data?.getPRsOf.exercise.name || "???"}>
 
             <EditExerciseButton exercise={data?.getPRsOf.exercise} style={{float:"right"}}/>
 
             Workouts: <strong>{data?.getPRsOf.totalWorkouts}</strong> | PRs: <strong>{data?.getPRsOf.prs.length}</strong> | Total Reps: <strong>{data?.getPRsOf.setsOf.reduce( (total, itm)=>total+itm.r*itm.count ,0)}</strong>
-          </JDayContentHeader>
+          </JDayContentHeader> */}
+
+          
 
           <div>
 

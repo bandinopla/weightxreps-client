@@ -7,20 +7,20 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 import { FeaturesDisplay } from "./features-display";
 import { Alert } from "@material-ui/lab";
+import { TypesOfLog } from "./types-of-logs";
 
 const useStyles = makeStyles( theme=>({
 
-    root: { 
-        //background: theme.palette.type=="dark"?"none": "linear-gradient(180deg, #fafafa 1%, rgba(0,0,0,0.03) 45%, #fafafa 86%)"
-         
-        paddingTop: 50,
-        "& .MuiTypography-root": {
-            //color:"#333 !important",
-            "& strong": {
-                //color: theme.palette.getContrastText()
-            }
-        }
-    },
+    // root: { 
+    //     //background: theme.palette.type=="dark"?"none": "linear-gradient(180deg, #fafafa 1%, rgba(0,0,0,0.03) 45%, #fafafa 86%)"
+          
+    //     "& .MuiTypography-root": {
+    //         //color:"#333 !important",
+    //         "& strong": {
+    //             //color: theme.palette.getContrastText()
+    //         }
+    //     }
+    // },
  
 
     typewritterBanner: {
@@ -37,8 +37,15 @@ const useStyles = makeStyles( theme=>({
 
     SecondSection: { 
         //background:"radial-gradient(circle, rgba(255,255,255,1) 1%, rgba(234,239,244,1) 50%, rgba(255,255,255,1) 100%)",
-        //paddingTop:theme.spacing(5),
+        paddingTop:theme.spacing(6),
+        padding:30,
         paddingBottom:theme.spacing(5), 
+    }, 
+
+    [theme.breakpoints.down("sm")]: {
+        sectionSeparator: {
+            fontSize:"0.6em"
+        } 
     }
 
 }));// //theme.palette.type=="dark"? "#444" : "#444",
@@ -62,73 +69,88 @@ export const GuestLandingPage = ()=>{
 
     return <Box className={ classes.root }> 
 
-
         <div className={ classes.SecondSection } > 
 
-            <Container >
-            <Grid container spacing={5}>
-                <Grid item md={6}>
+        <Container >
+        <Grid container spacing={5}>
+            <Grid item md={6}>
 
-                <a href="https://web.archive.org/web/20110901000000*/https://weightxreps.net" target="_blank" style={{float:"right"}}>
-                <img src={SinceBadgeSrc} alt="Since 2011 Badge"  />
-                    </a>
-
-                <SectionTitle line1="WELCOME TO" line2="WEIGHT X REPS" color={theme.PINK_COLOR}/>
- 
- 
-                            <Typography variant="h6" className={classes.subtitle} >
-                            Read as <strong>Weight for Reps</strong>, is an <a href="https://github.com/bandinopla/weightxreps-client" target="_blank"><strong>Open Source</strong></a>  online training journal system that will allow you to keep your training data organized and tracked.
-Several charts and graphs will aid you in better undertsanding your training.
- 
-                            </Typography> 
- 
-
-                            <div style={{ marginTop: theme.spacing(3)}}>
-                
-                <a  href='https://play.google.com/store/apps/details?id=net.weightxreps.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
-                    <img  width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
+            <a href="https://web.archive.org/web/20110901000000*/https://weightxreps.net" target="_blank" style={{float:"right"}}>
+            <img src={SinceBadgeSrc} alt="Since 2011 Badge"  />
                 </a>
-            </div>
 
-                </Grid>
-                <Grid item md={6}> 
+            <SectionTitle line1="WELCOME TO" line2="WEIGHTXREPS" color={theme.PINK_COLOR}/>
+
+
+                        <Typography variant="h6" className={classes.subtitle} >
+                        <strong>"Weight for Reps"</strong>, is an <a href="https://github.com/bandinopla/weightxreps-client" target="_blank"><strong>Open Source</strong></a>  online training journal that will allow you to keep your training data organized and tracked in a unique way, as simple as typing text. No fancy or complicated interfaces. Just plain text.
  
 
-                            <SectionTitle line1="LOG A WORKOUT? EWWW..." line2="¿What's the point?" color={theme.GREEN_COLOR}/>
+                        </Typography> 
 
 
-                            <Typography variant="h6" className={classes.subtitle} >
-                                It is very easy too see days, weeks and even months just pass you by without paying right of passage in the form of personal fitness improvements! ;)
-                                
-                                Work, family &amp; life in general will offer you several pathways to gradually steer away from holding onto a somewhat decent fitness level. 
-                                
-                            </Typography> 
-                            <Button size="large" onClick={()=>window.scrollTo(0,0)} color="primary" variant="outlined" endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
-                     
-                    </Grid>
-                </Grid> 
-            </Container>
+                        <div style={{ marginTop: theme.spacing(3)}}>
+            
+                            <a  href='https://play.google.com/store/apps/details?id=net.weightxreps.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                                <img  width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
+                            </a><br/>
+                            <Typography variant="caption" color="textSecondary">* The mobile android app is not up to date with the web app. But this web app should be accessible vía mobile browsers, so try it out!</Typography>
+                        </div>
+
+            </Grid>
+            <Grid item md={6}> 
+
+
+                        <SectionTitle line1="WHY SHOULD I LOG MY WORKOUTS?" line2="What's the point?" color={theme.GREEN_COLOR}/>
+
+
+                        <Typography variant="h6" className={classes.subtitle} >
+                            It is very easy too see days, weeks and even months just pass you by without paying right of passage in the form of personal fitness improvements! ;)
+                            
+                            Work, family &amp; life in general will offer you several pathways to gradually steer away from holding onto a somewhat decent fitness level. 
+                            
+                        </Typography> 
+                        <Button size="large" onClick={()=>window.scrollTo(0,0)} color="primary" variant="outlined" endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
+                
+                </Grid>
+            </Grid> 
+        </Container>
         </div>
 
-<Box marginTop={10}>
-    <img src="/banner-a.jpg" className="banner-fullrow sha"/>
-    <Box paddingTop={2}>
-    <Alert severity="info">
-        [*] Fitness awareness means you live your day to day life knowing were you at strength wise. Health isn't free, it is paid with an everyday constant effort.
-    </Alert>
-    </Box>
-</Box>
+
+            <SectionSeparator>Features</SectionSeparator>  
+
+            <Box textAlign="center" >
+                <FeaturesDisplay/>
+            </Box>
+
+            <SectionSeparator>What can you track?</SectionSeparator> 
+            <Alert severity="info">
+                    [*] In the end, you move <strong>weight</strong>, but sometimes the <strong>goal</strong> is to perform a number of <strong>repetitions</strong> or to move it over a particular <strong>distance</strong> or endure tension over <strong>time</strong>. 
+                </Alert>
+            <Box margin={2} marginTop={5} marginBottom={10}>
+                <TypesOfLog/>
+            </Box>
  
-        <SectionSeparator>Features</SectionSeparator> 
 
+       
 
-        <Box textAlign="center" >
-            <FeaturesDisplay/>
+        <Box marginTop={5}>
+            <img src="/banner-a.jpg" className="banner-fullrow sha"/>
+            <Box paddingTop={2}>
+            <Alert severity="info">
+                [*] Fitness awareness means you live your day to day life knowing were you at strength wise. Health isn't free, it is paid with an everyday constant effort.
+            </Alert>
+            </Box>
         </Box>
+ 
+
+
+
 
         <SectionSeparator>Are you ready?</SectionSeparator> 
 
-        <Box marginBottom={6}>      
+        <Box marginBottom={6} marginTop={5}>      
             <div>
                 <Box textAlign={"center"} marginBottom={4}>
                     <Button onClick={()=>window.scrollTo(0,0)} variant="outlined" endIcon={<ArrowUpwardIcon />} size="large">
@@ -146,7 +168,8 @@ Several charts and graphs will aid you in better undertsanding your training.
 
 
 const SectionSeparator = ({ children })=>{
-    return <Box marginTop={8} marginBottom={2}><Typography variant="h3" display="block"><div className="app-section-separator">{children}</div></Typography> </Box>;
+    const classes = useStyles();
+    return <Box marginTop={8} marginBottom={8}><Typography variant="h3" display="block"><div className={"app-section-separator "+classes.sectionSeparator}>{children}</div></Typography> </Box>;
 }
 
  

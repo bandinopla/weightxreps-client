@@ -3,6 +3,8 @@ import Joi from "joi";
 import { ImportFromCVS } from "./import-from-csv";
 import { fixRPE } from "./fixRPE";
 import { enameToEtag } from "./import-from-strongapp";
+import { TYPES } from "../../user-tags/data-types";
+import { SET_TYPES } from "../../data/set-types";
  
 //
 // the Hevyapp time string format
@@ -82,20 +84,9 @@ function getDuration(start, end) {
  * @param {number} seconds 
  * @returns {string} WXR duration tag
  */
-function formatSeconds(seconds) {
-    // Calculate hours, minutes, and remaining seconds
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
+function formatSeconds(seconds) { 
 
-    // Format the time based on the duration
-    if (hours > 0) {
-        return `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(remainingSeconds)}`;
-    } else if (minutes > 0) {
-        return `${padNumber(minutes)}:${padNumber(remainingSeconds)}`;
-    } else {
-        return remainingSeconds + " sec";
-    }
+    return TYPES.TAG_TIME_hm.value2editor( TYPES.TAG_TIME_hm.components2value(seconds*1000) );
 }
 
 // Helper function to pad single-digit numbers with leading zeros
@@ -145,7 +136,7 @@ const config = {
 
             if( duration )
             {
-                state.log += `@Workout Duration: ${duration}\n`;
+                state.log += `@ Workout Duration: ${duration}\n`;
             }
 
             //
@@ -159,6 +150,7 @@ const config = {
         //
         let wUnit = 'kg';
         let W = parseFloat(data.weight_kg) || 0;
+        let setW;
 
         if( data.hasOwnProperty("weight_lbs") ) //<--- uses Lbs
         {
@@ -166,63 +158,50 @@ const config = {
             wUnit = 'lbs';
         }
 
+        setW = W>0? W + wUnit : null;
+
         let R = parseFloat(data.reps) || 0; 
         let RPE = fixRPE( parseFloat(data.rpe) || 0 ); 
         let Duration = parseFloat(data.duration_seconds) || 0; 
         let Distance = parseFloat(data.distance_km) || parseFloat(data.distance_miles) || 0; 
-        const distanceUnits = data.hasOwnProperty("distance_km")?"km":"miles";
+        const distanceUnits = data.hasOwnProperty("distance_km")?"km":"mi";
+
         let com = (data.set_type!='normal'?data.set_type+". ":"") + data.exercise_notes;
         let erow;
-        const rpeVal = RPE? `@${RPE} RPE `:"";
-        const durationVal = Duration? formatSeconds(Duration) : null;
+        const rpeVal = RPE? `@${RPE}RPE `:"";
+        const C = rpeVal + com;
+
+        const setT = Duration? formatSeconds(Duration) : null;
+
+        const type = Distance? SET_TYPES.WxD : 
+                        !R && Duration ? SET_TYPES.WxT : 
+                        SET_TYPES.WxR;
 
         //
-        // we do this Reps check because if it doesnt use reps, it uses distance. And that can change the way in which we will convert this
-        // log in weightxreps...
+        // ENAME
         //
-        if( !R ) // must be using Distance then
-        { 
-            
-            //TODO: IDK where to put "exercise_notes" in this case...
-
-            if( Distance>=1 ) //number is too big. No ename
-            {
-                state.log += `@${data.exercise_title} / Distance (${distanceUnits}) : ${ Distance }\n`;
-
-                if( Duration )
-                {
-                    state.log += `@${data.exercise_title} / Duration : ${durationVal}\n`;
-                    throw new Error("Dummy")
-                }
-            }
-            else 
-            {
-                erow = `${W || 1}${wUnit} x ${Math.round( Distance*1000 )} ${rpeVal} (meters)${durationVal?" in "+durationVal : ""}`;
-            }
+        if( !state.eblock || state.eblock.ename!=data.exercise_title || state.eblock.type!=type || dayChanged )
+        {
+            const ename = data.exercise_title;
+            state.eblock = {
+                ename,
+                type
+            };
+            const etag = enameToEtag(ename);
+            state.log += `#${ename+etag}\n`;
         }
-        else 
+
+        switch( state.eblock.type )
         {
-            erow = `${W || 1}${wUnit} x ${R} ${rpeVal}${durationVal?" in "+durationVal+" | " : ""}${com}`;
+            case SET_TYPES.WxD:
+                state.log += (setW? setW+" x ":"") + Distance + distanceUnits + (setT?" in "+setT:"") + " " + C + "\n";
+                break;
+            case SET_TYPES.WxT:
+                state.log += (setW? setW+" x ":"") + setT + " " + C + "\n";
+                break;
+            default:
+                state.log += ( setW ?? 1 ) + " x " + R +" " + C + "\n";
         } 
-
-        //
-        // if erow is null, it means it was logged as a custom user tag.
-        //
-        if( erow )
-        {
-            //
-            // ENAME
-            //
-            if( !state.ename || state.ename!=data.exercise_title || dayChanged )
-            {
-                const ename = data.exercise_title;
-                state.ename = ename;
-                const etag = enameToEtag(ename);
-                state.log += `#${ename+etag}\n`;
-            }
-
-            state.log += erow + "\n";
-        }  
     },
 
     stateAsLog: s=>s?.log

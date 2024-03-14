@@ -217,7 +217,8 @@ export const TAG_CODEMIRROR_TOKENS = config => ({
                     line:stream.lineOracle.line,
                     from: 0,
                     to: stream.string.length,
-                    message:"Invalid format, expecting something like: tag name:123 "
+                    message:"Invalid custom tag format, expecting something like: @ tagName : 123 ",
+                    errorLine: stream.string
                 });
 
                 state.lastEblock    = null;

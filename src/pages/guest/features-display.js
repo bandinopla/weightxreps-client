@@ -28,6 +28,23 @@ export const FeaturesDisplay = ()=>{
                 
                 <div ref={featuresRef}>
 
+                <FeatureBox thumbnail={jeditorUrl}>
+                            <Typography variant="h2">
+                                <CreateIcon fontSize="large"/> Simple Editor
+                            </Typography>
+                            
+                            <Box paddingTop={1}>
+                                <Typography variant="h5" gutterBottom>Log your workouts just typing text</Typography> 
+                                <Typography> 
+                                    <ul>
+                                        <li>If you follow a particular format it will be tracked</li> 
+                                        <li>You can type whatever you want otherwise</li>
+                                        <li>You can log multiple days at the same time too!</li>
+                                    </ul>
+                                </Typography>
+                            </Box>
+                        </FeatureBox> 
+
                 <FeatureBox thumbnail={logUrl}>
                             <Typography variant="h2">
                                 <VisibilityIcon fontSize="large"/> Rich Visualization
@@ -132,22 +149,7 @@ export const FeaturesDisplay = ()=>{
                             </Box>
                         </FeatureBox>  
 
-                        <FeatureBox thumbnail={jeditorUrl}>
-                            <Typography variant="h2">
-                                <CreateIcon fontSize="large"/> Simple Editor
-                            </Typography>
-                            
-                            <Box paddingTop={1}>
-                                <Typography variant="h5" gutterBottom>Log your workouts just typing text</Typography> 
-                                <Typography> 
-                                    <ul>
-                                        <li>If you follow a particular format it will be tracked</li> 
-                                        <li>You can type whatever you want otherwise</li>
-                                        <li>You can log multiple days at the same time too!</li>
-                                    </ul>
-                                </Typography>
-                            </Box>
-                        </FeatureBox> 
+                        
                 </div>
         </div>
 }

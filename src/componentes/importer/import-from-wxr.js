@@ -3,8 +3,7 @@ import { LocalFileSelectorButton } from "../local-file-selector-button";
 import { todayAsYMD } from "../../utils/utils";
 import { useGetJEditorDataLazyQuery, useSaveJEditorMutation } from "../../data/generated---db-types-and-hooks";
 import { ApolloError } from "@apollo/client";
-import { JLogTokenizer } from "../journal/tokenizer"; 
-import { asciiSpinnerInterval } from "../ascii-spinner";
+import { JLogTokenizer } from "../journal/tokenizer";  
 import { pulseInterval } from "../../utils/pulseInterval";
 import { useGetSession } from "../../session/session-handler";
  
@@ -22,16 +21,17 @@ import { useGetSession } from "../../session/session-handler";
 const TODAY = todayAsYMD();
 
 /**
- * @typedef {Object} ImportFromWxrParams
+ * @typedef {Object} ImportFromFileToWXRParams
  * @property {(file:File, informStatus:(status:string)=>void)=>Promise<string>?} formatFile A callback to convert the contents of the text file to the format that weightxreps backup files use
  * @property {string} fileInputLabel
  * @property {string} fileInputFileExtensions
+ * @property {bool} canBeZipped
  */
 /** 
- * @param {ImportFromWxrParams} param0 
+ * @param {ImportFromFileToWXRParams} param0 
  * @returns 
  */
-export const ImportFromWXR = ({ formatFile, fileInputLabel, fileInputFileExtensions })=>{
+export const ImportFromFileToWXR = ({ formatFile, fileInputLabel, fileInputFileExtensions, canBeZipped })=>{
 
     const {session }      = useGetSession();
     const [JEditor, setJEditor] = useState();
@@ -57,6 +57,35 @@ export const ImportFromWXR = ({ formatFile, fileInputLabel, fileInputFileExtensi
   
         var fileText ; 
         var _interval; 
+
+        //#region unzip file
+        if( file.name.endsWith(".zip") ) 
+        {  
+            informStatus("Opening zip file...");
+            const ZipModule = await import("jszip");
+            const z         = new ZipModule.default();
+            informStatus("Processing zip...");
+            await z.loadAsync(file); 
+            file = null;
+
+            // look for the cvs inside...
+            z.forEach( (path, fileFromZip )=>{ 
+                if( fileInputFileExtensions.indexOf( fileFromZip.name.split(".").pop() ) !== -1 )
+                {
+                    file = fileFromZip
+                }
+            });
+
+            if(!file )
+            {
+                throw new Error("The zip doesn't contain any valid file inside");
+            } 
+            else 
+            {
+                file = await file.async("blob");
+            }
+        }
+        //#endregion
 
         if( formatFile )
         {
@@ -174,8 +203,7 @@ export const ImportFromWXR = ({ formatFile, fileInputLabel, fileInputFileExtensi
                         
                         .catch( err=>{
 
-                            alert("ERROR: "+err.toString()); 
-                            reject(err);
+                            reject("The file couldn't be imported due to errors while procesing it." );
                         } )
 
                         .finally(()=>{
@@ -211,5 +239,5 @@ export const ImportFromWXR = ({ formatFile, fileInputLabel, fileInputFileExtensi
         return prom;
     } 
 
-    return <div><LocalFileSelectorButton label={fileInputLabel || "Select *.txt"} only={fileInputFileExtensions || ".txt"} onFileSelected={onFileSelected}/></div>
+    return <div><LocalFileSelectorButton label={fileInputLabel || "Select backup *.txt"} only={fileInputFileExtensions + (canBeZipped?",.zip":"")} onFileSelected={onFileSelected}/></div>
 };

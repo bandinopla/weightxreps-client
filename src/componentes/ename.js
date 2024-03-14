@@ -36,9 +36,14 @@ export default function Ename({ type, id, name, variant, gutter, uname=null, onC
     const canLink = uname && id;
  
     const handleClick = ()=>{
+        
       if( canLink ) 
-      {
-        onClick && onClick();
+      { 
+        if( onClick && onClick() )
+        { 
+            return;
+        }
+
         history.push( `/journal/${uname}/personal-records--${id}`); 
       }
     }

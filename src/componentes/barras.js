@@ -12,7 +12,7 @@ function BarraOld({ weight, reps }) {
         return <><img src={FireIcon} style={{maxWidth:12}}/> <strong>A LOT</strong> <img src={FireIcon}style={{maxWidth:12}}/></>;
     }
 
-    return <i className={"bar i"+n} style={{ backgroundImage:"url("+flags_img_src+")", opacity:n<0?0.5:1 }}>
+    return <i className={"bar i"+n} style={{ backgroundImage:"url("+flags_img_src+")", opacity:weight<20?0.5:1 }}>
         { reps && <b style={{backgroundColor:"rgba(0,0,0,0.5)", color:"white", padding:4}}>x{reps}</b>}</i>
 }  
  

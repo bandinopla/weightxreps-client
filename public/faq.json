@@ -62,7 +62,7 @@
     },
     {
         "q":"¿How do I log cardio?", 
-        "a":"You can use @[shortcut:user-tags:custom user tags]. On a new line in your log, type the @ symbol, followed by the name of the tag then \":\" and the value."
+        "a":"You do it the same way you log an exercise. Type the name of the exercise prefixed by the # symbol and on a new line type the time and optionally a comment. Like so:<br/><pre>#Static bike\n10min just a quick session\n</pre><br/>The format for the time is the same as the values admited by duration @[shortcut:user tags]"
     },
     {
         "q":"Custom user tags", 

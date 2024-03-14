@@ -1,3 +1,12 @@
+- 2.27.0 : 2024-03-14
+        + !! Added posibility to log Distance & Time !!
+        * suggested by @recuna NEW importer: progressionapp
+        * fixed responsivness of importer's table on smaller screens
+        * fixed hevyapp & strongapp importers to use this new format 
+        * improve journal save operation ui feedback
+        * added "no content" ui if jrange has no weight x reps data.
+        * lots of other tweaks and fixed I found during the development of the new format.
+
 - 2.26.7 : 2024-03-06
         * Round estimated values (~1RMs and Unit change) to nearest multiple of 5.
         * for SBD Rank, calculate 1RM using the same formula as the server, since it gives more realistic estimations.

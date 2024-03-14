@@ -317,7 +317,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
 
 
-export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick, FDOW, onChangeFDOW }) {
+export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick, FDOW, onChangeFDOW, cantSelectIfNoData }) {
 
     const classes = useStyles();
  
@@ -408,7 +408,7 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
                 </div>
 
                 { new Array(weeks).fill(0).map( (_,week_i)=>(<div key={"week"+week_i} style={{width:w+"%"}}>
-                    { new Array(days).fill(0).map( (_,day_i)=>(<div key={"day"+day_i} style={{paddingBottom:1, paddingRight:1}}><Cell {...data[d++]} onClick={onClick} /></div>) ) }    
+                    { new Array(days).fill(0).map( (_,day_i)=>(<div key={"day"+day_i} style={{paddingBottom:1, paddingRight:1}}><Cell {...data[d++]} onClick={onClick} cantSelectIfNoData={cantSelectIfNoData}/></div>) ) }    
                 </div>) ) }
 
                 <div className={classes.menu}>
@@ -426,9 +426,9 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
 }
 
 
-const Cell = ({ ymd, hasData, num, month, pinned, highlighted, onClick })=>(
+const Cell = ({ ymd, hasData, num, month, pinned, highlighted, onClick, cantSelectIfNoData })=>(
     //onClick(ymd)
-    <ButtonBase key={ymd} focusRipple onClick={()=>onClick(ymd, hasData)} className={"cell m"+(month%2)+" " + ( hasData && "hasData")+" "+(pinned && " pinned")+" "+(highlighted && " highlighted") }>
+    <ButtonBase key={ymd} disabled={cantSelectIfNoData && !hasData} focusRipple onClick={()=>onClick(ymd, hasData)} className={"cell m"+(month%2)+" " + ( hasData && "hasData")+" "+(pinned && " pinned")+" "+(highlighted && " highlighted") }>
          {num} 
     </ButtonBase>);
 

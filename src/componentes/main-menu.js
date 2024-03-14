@@ -14,7 +14,7 @@ import { NotificationsBadge } from '../session/inbox-manager';
 import { ReactComponent as Logo } from '../logo.svg';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { JEditorButton } from './journal/editor-button';
-
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden'; 
@@ -29,62 +29,7 @@ import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
 import { SwipeableDrawer } from './SwipableDrawer';
 import HelpIcon from '@material-ui/icons/Help';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
-
-const Button = ({ children, ...props }) => {
-
-    const theme     = useTheme();
-    const bigScreen = useMediaQuery(theme.breakpoints.up("lg"));
-
-    if( bigScreen )
-    {
-        return <MaterialButton {...props} size='large'>{children}</MaterialButton>
-    }
- 
-        return <IconButton {...props} >{props.startIcon}</IconButton>;
-    
-}  
-
-const InboxButtonBase = ({ type, label, Icon, ...rest })=> {
-
-    const theme     = useTheme();
-    const smallScreen = useMediaQuery(theme.breakpoints.down("lg"));
-    let ButtonClass = MaterialButton;
-
-    if( smallScreen )
-    {
-        ButtonClass = IconButton ;
-    }
-
-    return <ButtonClass size='large' startIcon={<Icon/>} {...rest}>
-                    
-                    <NotificationsBadge type={type} small={smallScreen}>
-                        {smallScreen?<Icon/>:label}
-                    </NotificationsBadge>
-
-                </ButtonClass> 
-}
-
-// const UserMenuButton = ()=>{
-
-//     const user          = useGetSession();
-//     const theme         = useTheme();
-//     const smallScreen   = useMediaQuery(theme.breakpoints.down("lg"));
-
-//     return  <BotonConSubmenu submenu={<UserSessionSubmenu user={user.session.user} userSettings={user.userSettings} logout={user.logout}/>}>
-                     
-//                 <Grid container alignItems="center" wrap='nowrap' spacing={2}>
-//                     <Grid item>
-//                         <UAvatar variant="circular" uid={user.session.user.id} hash={user.session.user.avatarhash}/> 
-//                     </Grid>
-//                     {!smallScreen && <Grid item className='oneline'>
-//                         <UnameTag nolink inline {...user.session.user} />
-//                     </Grid>}
-                    
-//                 </Grid>
-                
-
-//             </BotonConSubmenu> 
-// }
+import { openExercisesModal } from './journal/exercises';
 
 
 export const MENU = [
@@ -103,104 +48,19 @@ export const MENU = [
     { Icon:AccountCircleRoundedIcon, goto: user => `/journal/${user.uname}` , label:"My Journal", session:true },
     { wrap: lbl=><NotificationsBadge type={2}>{lbl}</NotificationsBadge>,goto:"/notifications", type:2, label:"Notifications", Icon:NotificationsNoneIcon, session:true },
     { wrap: lbl=><NotificationsBadge type={1}>{lbl}</NotificationsBadge>, goto:"/messages", type:1, label:"Messages", Icon:MailOutlineIcon, session:true },
+
+    { Icon:FitnessCenterIcon, session:true, label:"My Exercises", onClick:()=>openExercisesModal(0) },
     {  goto:"/settings", label:"Settings", Icon:SettingsRoundedIcon, session:true },
     //<DarkModeActivatorButton UseButton={Button}/>,
-    { Icon:ExitToAppIcon, goto:"/", label:"Sign In", onPreClick:()=>window.skinLoginCover=true, sessionMenuStart:true, fancy:true, session:false, excludeIf: path => path=="/" },
+    { Icon:ExitToAppIcon, goto:"/", label:"Sign In", onPreClick:()=>{
+
+        window.skinLoginCover=true;
+        window.quickAccessLogin && window.quickAccessLogin();
+
+    }, sessionMenuStart:true, fancy:true, session:false }, //, excludeIf: path => path=="/"
     { Icon:PowerSettingsNewRoundedIcon, onClick:()=>window.dispatchEvent(new Event("logout")), label:"Log out", session:true },
-
-    //{ Icon:SettingsIcon, goto:"/settings", label:"Settings", session:true },
     
-] ;
-
-// const useStyles = makeStyles( theme=>({
-//     root:{ 
-//         textAlign:"center",
-//         width:"100%", 
-//         padding:"0 10px",
-
-//         "& > svg": { 
-//             padding:5,
-//             boxSizing:"border-box"
-//         },
-//         "& ul": {
-//             listStyle:"none",
-//             padding:0,
-//             margin:0
-//         }
-//     },
-//     footer: {
-//         position:"fixed",
-//         bottom:0
-//     },
-//     firstSession: {
-//         marginTop:30,
-//     },
-//     [theme.breakpoints.up("lg")]: {
-//         root: {
-//             maxWidth:500,
-//             textAlign:"left"
-//         }
-//     }
-    
-// }));
-
-// //TODO. Menu
-// export const MainMenu = ()=>{
-//     const theme         = useTheme();
-//     const user          = useGetSession();
-//     const smallScreen   = useMediaQuery(theme.breakpoints.down("sm"));
-//     const history       = useHistory();
-//     const location      = useLocation();
-//     const styles        = useStyles(); 
-//     const hasSession    = user.session?.user?.id>0;
- 
-//     let firstSession    = false; 
-
-//     useEffect(()=>{
-//         if( !user.loadingSession )
-//         {
-//             document.body.classList.add("appReady");
-//         }
-//     },[user.loadingSession]);
-
-//     const onClickBtn = btn =>{
-
-//         console.log( "aler", btn, typeof btn.goto)
-//         btn.onPreClick && btn.onPreClick()
-//         btn.onClick ? btn.onClick() : history.push( typeof btn.goto=='function'? btn.goto(user.session?.user) : btn.goto )
-//     }
-
-
-//     return <>
-//             <Sticky siblingIsSticky> 
-
-//             { user.session && <JEditorButton style={{display:"none"}}/>  }
-
-//             <nav className={ styles.root }>
-
-//                 <Logo width={60} height={60}/>
-
-//                 <ul> 
-
-//                     { MENU  .filter(btn=> (btn.excludeIf? !btn.excludeIf(location.pathname) : true) && (btn.session==undefined || btn.session === hasSession) )
-//                             .map( (btn, btnIndex)=>( isValidElement(btn) ? <li key={btnIndex}>{btn}</li> : <li className={(btn.sessionMenuStart? styles.firstSession: "") +" "+ (location.pathname==btn.goto?styles.selected:"")} key={btnIndex}>
-//                                 { btn.Button ? <btn.Button onClick={ ()=>onClickBtn(btn) } {...btn}/> : <Button startIcon={<btn.Icon/>} onClick={ ()=>onClickBtn(btn) } fullWidth={btn.fancy} className={ btn.fancy?"fancy sha spaceBelow": "" }>{btn.label}</Button> }
-//                     </li>) )}
- 
-
-//                 </ul>
-//             </nav>  
-//             </Sticky> 
-
-//             { user.session &&
-//                 <div className={styles.footer} style={{ background:`linear-gradient(to bottom, ${theme.palette.background.default}00 0%, ${theme.palette.background.default}FF 20%)` }}> 
-//                     <UserMenuButton/>  
-//                 </div>
-//             }
-
-
-//             </>
-// }
+] ; 
 
 
 

@@ -40,7 +40,8 @@ export const OpenJeditorSaveBackdrop = async ( task ) => {
 
     $jeditorSaveState({
         loading: false,
-        success: !error 
+        success: !error,
+        error
     });  
      
 
@@ -56,7 +57,7 @@ export const JeditorSaveBackdrop = ()=>{
 
     const classes               = useBackdropStyles();  
     const data                  = useReactiveVar($jeditorSaveState);
-    const shouldBeOpen          = data.loading || data.success;
+    const shouldBeOpen          = data.loading || data.success || data.error;
 
     let fxProps = {
         count: 1 ,
@@ -73,7 +74,14 @@ export const JeditorSaveBackdrop = ()=>{
 
     useEffect(()=>{
 
-        var interval = shouldBeOpen? setInterval( ()=>$jeditorSaveState({}), 2500 ) : 0;
+        var interval;
+
+        if( !data.success && !data.loading )
+        {
+            // autoclose if error....
+            interval = setInterval( ()=>$jeditorSaveState({}), 2000 ); // autoclose this modal in this time...
+        }
+        // else... leave the success modal covering the screen because the editor will do a window reload....
 
         return ()=>clearInterval(interval);
 
@@ -95,7 +103,7 @@ export const JeditorSaveBackdrop = ()=>{
                                  </Typography>
                             <Fireworks {...fxProps} />
                         </div>
-        : data.error? <ErrorIcon fontSize="large"/>  
+        : data.error? <><ErrorIcon fontSize="large"/> Oops! {data.error?.message ?? "Something went wrong"}</>
         : "" }
     </Backdrop>
 }

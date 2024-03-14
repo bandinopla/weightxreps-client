@@ -4,15 +4,12 @@
   
   @keyframes pulse-animation {
     0% {
-      opacity: 1;
-    }
-    40% {
-        opacity: 0.2;
-    }
-    60% {
-        opacity: 0.2;
-    }
-    100% {
-        opacity: 1;
+        background-color: rgba(255, 255, 0, 0.2); /* Start with 50% opacity */
+      }
+      50% {
+        background-color: rgba(255, 255, 0, 1); /* Peak at 100% opacity */
+      }
+      100% {
+        background-color: rgba(255, 255, 0, 0.2); /* End with 50% opacity */
       }
   }
