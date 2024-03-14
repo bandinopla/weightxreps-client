@@ -459,6 +459,10 @@ export default function JRange({ match:{ params } }) {
                                                 <Divider/>
                                                 <br/>
                                     </>}  
+
+                                    {
+                                        tableData.length==0 && <NothingHere title="No data" description="No weight for reps workouts found in this period." />
+                                    }
                                 
                                 </TabPanel>
 

@@ -144,12 +144,12 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                     // });
                 }
                 
-            } 
- 
+            }  
 
-
-            await OpenJeditorSaveBackdrop( async ()=>{  
-        
+            //
+            // show operation backdrop...
+            //
+            await OpenJeditorSaveBackdrop( async ()=>{   
 
                     var saveOp    = await saveEditor({
                         variables: {
@@ -163,27 +163,38 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                     {
                         throw new Error("Unexpected error...");
                     }
+                    else 
+                    {
+                        // full reload...
+                        setTimeout( ()=> window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self"), 2500 );
+                       ;
+                    }
+
             });// OpenJeditorSaveBackdrop 
-            //
-            // borrar cache....
-            //
-            try
-            {
-                await client.resetStore();
-            }
-            catch( e )
-            {
-                // weird... anyway...
-                window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self");
-                return;
-            }   
-            onClose(); 
+            onClose();
+
+
+            // //
+            // // borrar cache....
+            // //
+            // try
+            // {
+            //     await client.resetStore();
+            // }
+            // catch( e )
+            // {
+            //     // weird... anyway...
+            //     window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self");
+            //     return;
+            // }   
+
+            // onClose(); 
                 
-            if ( redirect )
-            {
-                //ir al ultimo dia cargado...  
-                history.push("/journal/"+session.user.uname+"/"+__ymd);
-            } 
+            // if ( redirect )
+            // {
+            //     //ir al ultimo dia cargado...  
+            //     history.push("/journal/"+session.user.uname+"/"+__ymd);
+            // } 
             
  
         }
