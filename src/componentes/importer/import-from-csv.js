@@ -1,4 +1,4 @@
-import { ImportFromWXR } from "./import-from-wxr" 
+import { ImportFromFileToWXR } from "./import-from-wxr" 
 import Joi from "joi"; 
 
 const disclaimer = 
@@ -165,56 +165,14 @@ const formatCVS = async (config, file, informStatus) => {
  * @param {{ config:CVSParserConfig, fileInputLabel:string }} param0 
  * @returns 
  */
-export const ImportFromCVS = ({ config, fileInputLabel, fileInputFileExtensions })=>{ 
-
-    //formatCVS.bind(null,config)
+export const ImportFromCVS = ({ config, fileInputLabel, fileInputFileExtensions })=>{  
 
     /** 
      * Let's process the ZIP first in case it was one...
      * @param {File} file 
      * @param {(status:string)=>void} informStatus 
      */
-    const onFile = async (file, informStatus) => {
+    const onFile = async (file, informStatus) => formatCVS(config, file, informStatus);
 
-        if( file.name.endsWith(".zip") )
-        {
-            informStatus("Opening zip file...");
-
-            const ZipModule = await import("jszip");
- 
-            const z         = new ZipModule.default();
-
-            informStatus("Processing zip...");
-
-            await z.loadAsync(file);
-
-            let csv;
-
-            // look for the cvs inside...
-            z.forEach( (path, file)=>{ 
-                if( file.name.endsWith(".csv") )
-                {
-                    csv = file;
-                }
-            });
-
-            if(!csv )
-            {
-                throw new Error("The zip doesn't contain any CSV file inside :(");
-            }
-            else 
-            { 
-
-                csv = await csv.async("blob");
-                return formatCVS(config, csv, informStatus);
-            }
-
-        }
-        else 
-        {
-            return formatCVS(config, file, informStatus);
-        }  
-    }
-
-    return <ImportFromWXR formatFile={ onFile } fileInputLabel={fileInputLabel} fileInputFileExtensions=".csv, .zip"/>
+    return <ImportFromFileToWXR formatFile={ onFile } fileInputLabel={fileInputLabel} fileInputFileExtensions=".csv" canBeZipped/>
 }

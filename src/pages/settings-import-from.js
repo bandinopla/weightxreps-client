@@ -5,10 +5,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { ImportFromWXR } from "../componentes/importer/import-from-wxr";
+import { ImportFromFileToWXR, ImportFromWXR } from "../componentes/importer/import-from-wxr";
 import { ImportFromWStrongapp } from "../componentes/importer/import-from-strongapp";
 import { Alert } from "@material-ui/lab";
 import { ImportFromHevyapp } from "../componentes/importer/import-from-heavyapp";
+import { ImportFromProgressionApp } from '../componentes/importer/import-from-progressionapp';
 
 /**
  * @typedef {Object} Importer
@@ -21,7 +22,7 @@ import { ImportFromHevyapp } from "../componentes/importer/import-from-heavyapp"
 const importers = [
     {
         label:<img src="/logo.png" width={150}/>,
-        widget:<ImportFromWXR/>
+        widget:<ImportFromFileToWXR fileInputLabel='Select the .txt backup file' fileInputFileExtensions='.txt'/>
     },
     {
         label:<a href="https://www.strong.app/" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/strongapp-logo.jpg" width={150} alt="Strongapp logo"/></a>,
@@ -39,6 +40,18 @@ const importers = [
             <Alert severity='info'>
                     Tested on Hevyapp <b>v1.30.31</b> on <u>Android</u>
                 </Alert>
+        </div>
+    },
+    {
+        label:<a href="https://play.google.com/store/apps/details/Progression_Workout_Tracker?id=workout.progression.lite" target="_blank" title="Visit competitor's site, grrrrrr..."><img src="/progressionapp-logo.jpg" width={150} alt="Progression App logo"/></a>,
+        widget:<div>
+            <ImportFromProgressionApp/><br/>
+            <Alert severity='info'>
+                    Tested on Progression <b>v5.2.1 (2782)</b> on <u>Android</u>
+            </Alert>
+            <Alert severity='warning'>
+                    Their app, when you download a backup, doesn't contain the name of the exercises (only the ones you create) so I can't import their file. But the "share workout" feature does provide a text with proper names.
+            </Alert>
         </div>
     }
 ]

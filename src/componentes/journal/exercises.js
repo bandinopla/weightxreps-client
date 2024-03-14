@@ -93,7 +93,7 @@ export const EditExerciseButton = ({ exercise, owner, ...rest })=>{
 
     if( (owner && (owner?.id!=user.session?.user.id)) || (!owner && jowner?.id!=user.session?.user.id) ) return "";
 
-    return <Button disabled={open} color="secondary" variant="outlined" {...rest} startIcon={<EditIcon/>} onClick={ ()=>$open(exercise) }>Edit Exercise</Button>
+    return <Button disabled={!!open} color="secondary" variant="outlined" {...rest} startIcon={<EditIcon/>} onClick={ ()=>$open(exercise) }>Edit Exercise</Button>
 }
 
 export const ExercisesModal = ()=>{
@@ -112,23 +112,32 @@ export const ExercisesModal = ()=>{
         return <BulkActions closeOnBlur selection={[open]} onClose={handleClose}/> 
     }
 
+    const listParams = open?.onSelected? { onExerciseSelected: exercise=>{
+                                                                                    open.onSelected(exercise);
+                                                                                    handleClose(); 
+                                                                                }} 
+                                                : null;
+
+    const showList = open===0 || listParams; 
+
     return <Dialog
-                    open={ open===0 }
+                    open={ !!showList }
                     onClose={ handleClose }
                     scroll="body"  
                     maxWidth="sm"
                     fullWidth
                 >
-                    { open===0 && <ExercisesListView jowner={jowner || session.user} myId={myId} onClose={handleClose}/>} 
+                    { showList && <ExercisesListView jowner={jowner || session.user} myId={myId} onClose={handleClose} {...listParams}/>} 
                     
                 </Dialog>;
 }
 
-const ExercisesListView = ({ jowner, myId, onClose })=> {
+const ExercisesListView = ({ jowner, myId, onClose, onExerciseSelected })=> {
 
     const history       = useHistory();
     const classes       = useStyles(); 
     const imTheOwner    = myId == jowner.id;
+    const canBulkSelect = imTheOwner && !onExerciseSelected;
 
     const [rowsPerPage, setRowsPerPage]                 = useState(25); 
     const [page, setPage]                               = useState(0);
@@ -230,6 +239,15 @@ const ExercisesListView = ({ jowner, myId, onClose })=> {
         setPage(newPage);
     };
 
+    const onClickOn = exercise => ()=>{
+        if( onExerciseSelected )
+        {
+            onExerciseSelected( exercise );
+            return true;
+        }
+        onClose();
+    }
+
     return <>
         <DialogTitleWithCloseBtn onClose={onClose}>
             { loading ? <LinearProgress/> : <>Exercises of <UnameTag inline {...jowner}/> </>}
@@ -248,7 +266,7 @@ const ExercisesListView = ({ jowner, myId, onClose })=> {
 
                     {/*selectedExercises.length>1 && <BulkActions selection={selectedExercises}/> */}
 
-                    { imTheOwner && <BulkActions selection={selectedExercises} onClose={closeBulkMenu}/>  }
+                    { canBulkSelect && <BulkActions selection={selectedExercises} onClose={closeBulkMenu}/>  }
 
 
                     <TablePagination
@@ -266,7 +284,7 @@ const ExercisesListView = ({ jowner, myId, onClose })=> {
                             <TableHead>
                             <TableRow>
 
-                                {imTheOwner && <TableCell padding="checkbox"> </TableCell>}
+                                {canBulkSelect && <TableCell padding="checkbox"> </TableCell>}
 
                             { sortableColumns.map( (col,i)=>(<TableCell key={col.label} 
                                                                     align={i>0?"center":"left"}
@@ -291,7 +309,8 @@ const ExercisesListView = ({ jowner, myId, onClose })=> {
                                         
                                         const isSelected = selectedExercises.find(e=>e.id==row.e.id)?.id>0;
 
-                                        return <TableRow key={row.e.id} className={ !row.isON && classes.isOFF } 
+                                        return <TableRow key={row.e.id} className={ !row.isON ? classes.isOFF : "" }
+                                                onClick={(event) => onSelectExercise(row.e)}
                                                 hover
                                                 selected={isSelected}
                                             >
