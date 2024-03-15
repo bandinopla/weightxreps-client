@@ -1,3 +1,11 @@
+- 2.27.1 : 2024-03-15
+        * handle the case of missing exercise reference in the split by type erow renderer.
+        * added a "blank log" message to give better visual feedback in the case of an intentional empty log.
+        * decreased opacity of calendar's future dates to visually separate them from present dates.
+        * increased the size of the user tag chip in the logs to make them more visible.
+        * corrented misspelled username racuna in the changelog for version 2.27.0
+        * fix default avatar issue when country code is XX (a.k.a. not set) and user has no avatar hash...
+
 - 2.27.0 : 2024-03-14
         + !! Added posibility to log Distance & Time !!
         * suggested by @racuna NEW importer: progressionapp
