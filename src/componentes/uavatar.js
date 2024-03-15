@@ -17,7 +17,7 @@ export const uid2avatarurl = (id,hash)=>{
 
 export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, width, iconsScale=1, variant, className, cc })
 {
-    const src       = (!hash || hash=="") && cc?"https://flagcdn.com/w160/"+cc.toLowerCase()+".png" : uid2avatarurl(uid, hash);
+    const src       = (!hash || hash=="") && cc && cc.toLowerCase()!="xx"?"https://flagcdn.com/w160/"+cc.toLowerCase()+".png" : uid2avatarurl(uid, hash);
     const img       = `url( ${ src } )`; 
 
     if( variant=="circular")
