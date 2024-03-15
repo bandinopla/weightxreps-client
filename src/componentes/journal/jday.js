@@ -1,4 +1,4 @@
-import { Divider } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
@@ -87,7 +87,9 @@ export const JDay = ()=>{
             </JDayContentHeader>
                  
         
-            <div>{ log && parsedTags2render(log) }</div>
+            <div>{ log?.length>0 ? parsedTags2render(log) : <Typography variant='subtitle1'>⊂(◉‿◉)つ <i>Blank log!</i></Typography> }</div>
+
+
 
             { data.jday!=null && <Box marginTop={5} marginBottom={5}><JComments logid={data.jday.id}/></Box> }
  
