@@ -177,6 +177,8 @@ const useStyles = makeStyles((theme) => ({
 const separateEblocksByType = eblock=>{
 
     const groups = [];
+    
+    if(eblock.missing) return [eblock];
 
     for( let set of eblock.sets ) 
     {
