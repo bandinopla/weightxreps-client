@@ -69,12 +69,17 @@ const useStyles = makeStyles( theme => ({
                 //background: theme.calendario.cellM1BgColor
                 filter: "invert(21%)",
             }
+            ,"&.future": {
+                fontStyle:"italic",
+                opacity:0.33
+            }
        },
 
        "& .hasData" : {
            background: theme.dataCell.background,  //theme.calendario.hasDataColor+ " !important",
            color:theme.dataCell.color
        },
+       
 
        "& .pinned": {
            background:theme.palette.primary.main + " !important",
@@ -108,7 +113,7 @@ const useStyles = makeStyles( theme => ({
 const TODAY         = new Date();
 const HOY           = new Date().valueOf();
 const calStatus     = makeVar(null);
- 
+const DayInMS       = 24 * 60 * 60 * 1000;
 
 export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
 
@@ -266,7 +271,8 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
                 showYear,
                 pinned: key==pinnedKey,
                 ymd:key,
-                highlighted
+                highlighted,
+                isFuture: Math.floor( d.valueOf() / DayInMS) > Math.floor(HOY / DayInMS)
             }
             
         } )); 
@@ -426,9 +432,9 @@ export function CalendarGrid({ data, hasMoved, weeks, days, onClickMove, onClick
 }
 
 
-const Cell = ({ ymd, hasData, num, month, pinned, highlighted, onClick, cantSelectIfNoData })=>(
+const Cell = ({ ymd, hasData, num, month, pinned, highlighted, onClick, cantSelectIfNoData, isFuture })=>(
     //onClick(ymd)
-    <ButtonBase key={ymd} disabled={cantSelectIfNoData && !hasData} focusRipple onClick={()=>onClick(ymd, hasData)} className={"cell m"+(month%2)+" " + ( hasData && "hasData")+" "+(pinned && " pinned")+" "+(highlighted && " highlighted") }>
+    <ButtonBase key={ymd} disabled={cantSelectIfNoData && !hasData} focusRipple onClick={()=>onClick(ymd, hasData)} className={"cell m"+(month%2)+" " + ( hasData && "hasData")+" "+(pinned && " pinned")+" "+(highlighted && " highlighted")+" "+(isFuture && " future") }>
          {num} 
     </ButtonBase>);
 
