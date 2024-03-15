@@ -14,14 +14,16 @@ export const JournalTagValue = ({ value:utagValue, utag })=>{
     const Icon = utagValue.$type.icon;
    
   
-        return <Box marginTop={1} marginBottom={1} fontSize="1.1em">
+        return <Box marginTop={1} marginBottom={1}>
                 <Tooltip title={ `( ${ utagValue.$type.dataTypeDesc } ) ${utagValue.$type.description}` }>
                 <Chip 
                     label={ <> {utag.name} : <div style={{display:"inline", verticalAlign:"middle", color:"blue", fontWeight:"bold"}}>{ utagValue.toView() }</div></> } 
                     variant="outlined"
-                    style={{ background:"white", maxWidth:"100%"}}
+                    style={{ background:"white", maxWidth:"100%", fontSize:"1.3em"}}
                     color="primary"
                     icon={<Icon style={{color:"#666"}}/>}
+                    size="large"
+                    className="sha"
                 />
                 </Tooltip>
                 </Box> ;
