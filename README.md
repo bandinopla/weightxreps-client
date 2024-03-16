@@ -70,6 +70,6 @@ If you have any questions about contributing, feel free to open an issue in the 
 ## :hearts: Support / Donate
 If you have a weightxreps.net account log in and go to the [donations page](https://weightxreps.net/donate)
 
-If you want to donate directly, my paypal is pablo@weightxreps.net
+If you want to donate directly, my paypal is pablo@weightxreps.net .
 
 
