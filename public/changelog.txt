@@ -1,3 +1,11 @@
+- 2.27.2 : 2024-03-16
+        * "blank log" display to improve feedback
+        * increase text of user's journals a bit 
+        * removed link youtube playlist of development of the older version of the site 
+        * removed box shadow in landing page banner to let the broken paper effect blend with the background 
+        * improved the visibility of calendar's cells in darkmode.
+        * fixed silent error due to missplaced code block.
+
 - 2.27.1 : 2024-03-15
         * handle the case of missing exercise reference in the split by type erow renderer.
         * added a "blank log" message to give better visual feedback in the case of an intentional empty log.
