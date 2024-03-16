@@ -80,7 +80,7 @@ function UnameTag( { inline=false, nolink=false, id, uname, cc, isf, slvl, sok, 
                 {!noflag && <Flag cc={cc}/>}
                 <b className={ isf>-1? isf==0? classes.m : classes.f : classes.x }> {prefix}{ uname || "????"}</b>
                 { Icon!=null && <Icon className={classes.icon + " "+ (sok && "ok")} fontSize="small"/> }
-                {rest.private ? <LockIcon fontSize="small"/>:""}
+                {rest.private ? <LockIcon style={{fontSize:"1em"}}/>:""}
             </Wrapper>
 }
 

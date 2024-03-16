@@ -53,7 +53,10 @@ const useStyles = makeStyles( theme => ({
         "& .textPreview": {
             ...theme.dataCell, 
             padding:"5px !important", 
-            marginBottom:10
+            marginBottom:10,
+            "& .MuiTypography-root": {
+                fontSize:"0.6rem"
+            }
         },
 
         "& .private": {

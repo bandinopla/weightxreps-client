@@ -104,7 +104,7 @@ export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
         return null;
     }
 //<Typography component="span" style={{fontFamily:"monospace",whiteSpace:"pre-wrap", wordBreak:"normal", wordWrap:"break-word"}}>{ tag.text }</Typography>}
-    return <div key={i} style={{display:"inline"}}>
+    return <div key={i} style={{display:"inline", fontSize:"1.3em"}}>
                 { element? element : <UserTypedText text={ trimTexts? tag.text.trim() : tag.text } /> } 
             </div> ;
 
