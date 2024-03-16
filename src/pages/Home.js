@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, ButtonGroup, makeStyles, Paper, Typography } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from "react-dom";
@@ -16,6 +16,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useGetSession } from '../session/session-handler';
 import { SupportersDisplay } from '../componentes/supporters-display';
 import { RestoreScroll } from '../componentes/scroll-restoration';
+import { BlankLogText } from '../utils/blankLogText';
 
 
 const $holder = document.createElement('div');
@@ -208,6 +209,7 @@ const UCardMemo = React.memo( (itm)=>{
     return <UCard noClickable={itm.user.private} ymd={itm.posted} extraRows={extras} data={itm}>
                                                                           
                 { itm.workoutPreview && itm.workoutPreview.map( w=>(<UcardErow key={w.e.id} type={w.e.type} ename={w.e.name} weight={w.w} reps={w.r} />) )  }
+                { !itm.user.private && !itm.workoutPreview?.length>0 && !itm.text?.length>0 && <Paper elevation={2}><Box padding={1}><Typography variant='caption'><BlankLogText/></Typography></Box></Paper> }
                 { itm.andXmore && <Box marginBottom={-2} textAlign="right"><Typography variant="subtitle2">... and <b>{itm.andXmore}</b> more.</Typography></Box>}
                 
             </UCard>

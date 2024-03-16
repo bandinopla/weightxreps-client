@@ -1,4 +1,4 @@
-import { Divider, Typography } from '@material-ui/core';
+import { Divider, Paper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
@@ -89,7 +89,7 @@ export const JDay = ()=>{
         
             <div>
                 { log?.length>0 && parsedTags2render(log) }
-                { log && log.length==0 && <Typography variant='subtitle1'>⊂(◉‿◉)つ <i>Blank log!</i></Typography>}
+                { log && log.length==0 && <Paper elevation={3}><Box padding={1}><Typography variant='subtitle2'>⊂(◉‿◉)つ <i>Blank log!</i></Typography></Box></Paper> }
             </div>
 
 

@@ -1,0 +1,1 @@
+export const BlankLogText = ()=><>⊂(◉‿◉)つ <i>Blank log!</i></>;
