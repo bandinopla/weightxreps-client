@@ -82,8 +82,6 @@ export default function AboutPage() {
                     <br/>
                     Take a look at the <a href="https://www.youtube.com/watch?v=rDopX0mV3Dc" target="_blank">old version</a> &nbsp; 
                         <Typography variant="caption">(before the september 26, 2021 update)</Typography>
-                        <br/> 
-                        Look at the <a href="https://www.youtube.com/playlist?list=PLWnUfdoAdVv6wdrUSjHktbbU33ug0uIWl" target="_blank">developer updates</a> buildup before the current version.
                 </Typography>
             </Box>
 
