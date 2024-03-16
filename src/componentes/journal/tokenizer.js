@@ -632,6 +632,16 @@ export const JLogTokenizer = config => {
             }
         },
 
+        "x2": {
+            reg: new RegExp( "^\\s*" + X.source.replace("]","/]") +"\\s*"), 
+            token( stream ) {
+                if( stream.match( this.reg ) )
+                {
+                    return "meta b";
+                }
+            }
+        },
+
         "in": {
             reg: new RegExp( "^\\s*" + IN.source +"\\s*"), ///^\s*[x\*]\s*/,
             token( stream ) {
@@ -972,19 +982,22 @@ export const JLogTokenizer = config => {
         ["BW"],
         ["DELETE"],
         ["ename", [ 
+                    _token("erow: W x D in T x2 S C", "end-of-erow", null, SET_TYPES.WxD), 
                     _token("erow: W x D in T C", "end-of-erow", null, SET_TYPES.WxD), 
-                    _token("erow: W x D x S C", "end-of-erow", null, SET_TYPES.WxD), 
+                    _token("erow: W x D x2 S C", "end-of-erow", null, SET_TYPES.WxD),  
                     _token("erow: W x D C", "end-of-erow", null, SET_TYPES.WxD), 
+                    _token("erow: D in T x2 S C", "end-of-erow", null, SET_TYPES.WxD),
                     _token("erow: D in T C", "end-of-erow", null, SET_TYPES.WxD),
-                    _token("erow: D x S C", "end-of-erow", null, SET_TYPES.WxD),
+                    _token("erow: D x2 S C", "end-of-erow", null, SET_TYPES.WxD),
                     _token("erow: D C", "end-of-erow", null, SET_TYPES.WxD),
 
+                    _token("erow: W x T x2 S C", "end-of-erow", null, SET_TYPES.WxT),
                     _token("erow: W x T C", "end-of-erow", null, SET_TYPES.WxT),
-                    _token("erow: T x S C", "end-of-erow", null, SET_TYPES.WxT),
+                    _token("erow: T x2 S C", "end-of-erow", null, SET_TYPES.WxT),
                     _token("erow: T C", "end-of-erow", null, SET_TYPES.WxT),
                     _token("erow: W,W,W x R C", "end-of-erow"),
                     _token("erow: W,W,W C", "end-of-erow"),
-                    _token("erow: W x R x S C", "end-of-erow"), 
+                    _token("erow: W x R x2 S C", "end-of-erow"), 
                     _token("erow: W x R C", "end-of-erow"),
                     _token("erow: W x R,R,R C", "end-of-erow"),
                     _token("erow: W S x R C", "end-of-erow"),

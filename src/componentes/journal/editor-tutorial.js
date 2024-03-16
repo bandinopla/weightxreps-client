@@ -12,7 +12,7 @@ import { InfoDialog } from "../Dialog";
 
 export const exampleLog = `2021-09-24
 @ 77 bw
-This is an example log. The default unit here is "kg" so i dont have to type "kg" next to the weights... but i would have to type "lbs" if i decided to log Pounds.
+This is an example log. If you don't clarify the weight unit, the default unit in your settings will be used. 
     
 #Squat
 60, 80, 100, 140, 160 x 3 warmup sets (all sets will have 3 reps)
@@ -22,7 +22,21 @@ This is an example log. The default unit here is "kg" so i dont have to type "kg
 220 x 2 x 10 @9.5 rpe that was hard!
 220 x 2, 2, 2 @8, 8.5, 9 Multiple RPEs!
 220 x 2 x 3 @8, 8.5, 9 Multiple RPEs!
+100 x 3/5 reps/sets
 500lbs Using pound plates!
+
+#Farmer's Walk
+100x60m this is weight x distance
+120x30m in 45sec this is weight x distance in time
+140x10m x 4 this would be 4 sets of...
+140x10m /4 this would be 4 sets of...
+
+#Static bike
+01:30:00 time in HH:MM:SS format
+45min x 2 
+
+#Running
+1km just distance
 
 #Some new exercise
 100 x 4
@@ -41,25 +55,12 @@ BW+5, BW+20, BW+30 x 3 working sets...
 I did nothing today... you dont always have to log an exercise...
 that's it...
 
- _____  ______ _      ______ _______ ______ 
-|  __ \\|  ____| |    |  ____|__   __|  ____|
-| |  | | |__  | |    | |__     | |  | |__   
-| |  | |  __| | |    |  __|    | |  |  __|  
-| |__| | |____| |____| |____   | |  | |____ 
-|_____/|______|______|______|  |_|  |______|
-
-To delete a log you have to type this on a new line:
+2021-09-27 
 DELETE
-That keyword will confirm that you want to delete the log. Saving an empty log wont be considered an agreement for a delete operation!
+That keyword will confirm that you want to delete the log. Saving an empty log wont be considered an agreement for a delete operation because you might want to save an empty log to track your bodyweight.
 
 
- _______       _____  _____ 
-|__   __|/\\   / ____|/ ____|
-   | |  /  \\ | |  __| (___  
-   | | / /\\ \\| | |_ |\\___ \\ 
-   | |/ ____ \\ |__| |____) |
-   |_/_/    \\_\\_____|_____/  
-            
+2021-09-28
 Custom tags are a way to track specific arbitrary aspects of your choise in a way that you can plot their values into a line chart and see the progress/evolution in the change of it's values over time:
 ${ getExampleUTagsLog() }`;
  
