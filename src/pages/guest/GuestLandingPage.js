@@ -158,7 +158,7 @@ export const GuestLandingPage = ()=>{
                     </Button>
                 </Box>
                 
-                <img src="/banner-starttoday2.jpg" className="banner-fullrow  sha"/>
+                <img src="/banner-starttoday2.jpg" className="banner-fullrow  "/>
             </div>
         </Box>  
 
