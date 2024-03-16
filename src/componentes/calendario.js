@@ -77,7 +77,8 @@ const useStyles = makeStyles( theme => ({
 
        "& .hasData" : {
            background: theme.dataCell.background,  //theme.calendario.hasDataColor+ " !important",
-           color:theme.dataCell.color
+           color:theme.dataCell.color,
+           filter:"none !important"
        },
        
 
