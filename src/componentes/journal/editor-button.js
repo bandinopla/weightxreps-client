@@ -50,20 +50,6 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     const stopwatchState            = useState(false);
     const theme = useTheme()
 
-    useEffect(()=>{
-
-        const callOpen = ()=>openEditor();
-        window.addEventListener("openEditor", callOpen);
-
-        return ()=>window.removeEventListener("openEditor", callOpen)
-
-    },[]);
-
-
-    if( jowner!=null && session?.user?.id!=jowner?.id )
-    {
-        return "";
-    }
 
     const handleClose = ()=>{
         isActive = false;
@@ -90,6 +76,21 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
         isActive = true;
          await loadEditor(); 
          setOpen(true)
+    }
+
+    useEffect(()=>{
+
+        const callOpen = ()=>openEditor();
+        window.addEventListener("openEditor", callOpen);
+
+        return ()=>window.removeEventListener("openEditor", callOpen)
+
+    },[]);
+
+
+    if( jowner!=null && session?.user?.id!=jowner?.id )
+    {
+        return "";
     }
 
     const BtnIcon = wouldBeNewLog? AddIcon : EditIcon;
