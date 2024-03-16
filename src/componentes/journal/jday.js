@@ -87,7 +87,10 @@ export const JDay = ()=>{
             </JDayContentHeader>
                  
         
-            <div>{ log?.length>0 ? parsedTags2render(log) : <Typography variant='subtitle1'>⊂(◉‿◉)つ <i>Blank log!</i></Typography> }</div>
+            <div>
+                { log?.length>0 && parsedTags2render(log) }
+                { log && log.length==0 && <Typography variant='subtitle1'>⊂(◉‿◉)つ <i>Blank log!</i></Typography>}
+            </div>
 
 
 
