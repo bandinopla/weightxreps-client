@@ -273,7 +273,7 @@ export default function({ ymd, rangeHighlight, widthInWeeks, onClickDay }) {
                 pinned: key==pinnedKey,
                 ymd:key,
                 highlighted,
-                isFuture: Math.floor( d.valueOf() / DayInMS) > Math.floor(HOY / DayInMS)
+                isFuture: Math.floor( d.valueOf() / DayInMS)-1 > Math.floor(HOY / DayInMS)
             }
             
         } )); 
