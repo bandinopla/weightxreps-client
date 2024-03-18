@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+var changeLogText;
+
 export const useChangelog = ()=>{
 
     const [changelog, setContent] = useState();
@@ -9,8 +11,13 @@ export const useChangelog = ()=>{
     useEffect(async () => {
 
         try {
-            const resp = await fetch("/changelog.txt");
-            const txt = await resp.text();
+            if( !changeLogText )
+            {
+                changeLogText = fetch("/changelog.txt").then( resp=>resp.text());
+            } 
+
+            const txt = await changeLogText;
+
             setLoading(false);
             setContent(txt);
         }
