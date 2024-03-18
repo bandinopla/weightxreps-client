@@ -1,3 +1,7 @@
+- 2.28.0 : 2024-03-18
+        + Added "Normal Gym Rank" a rank for the people that trains casually not with an athletic goal in mind.
+        * fix bug introduced in 2.27.3 (changelog loading multiple times... oops!)
+
 - 2.27.3 : 2024-03-18
         * Thanks to @Aizzer_1 for reporting the bug that math symbols and others were not being saved. My bad, I introduced this bug when tyring to remove "weird" characters.
         * Added star icon next to usernames to recognize users for their valuable feedback and bug reports.
