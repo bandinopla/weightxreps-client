@@ -14,6 +14,7 @@ var SETTINGS = getOrCreateSettingsHandler( "guest", settings=>{
     settings.notificationsLastSeenDate  = null;
     settings.inboxLastSeenDate          = null;
     settings.firstDayOfWeek             = 0; //sunday
+    settings.rankSetType                = 0;    
 });
 
 export const SessionPolicies = {
@@ -32,6 +33,7 @@ export const SessionPolicies = {
                             settings.notificationsLastSeenDate  = null;
                             settings.inboxLastSeenDate          = null;
                             settings.firstDayOfWeek             = 0; //sunday
+                            settings.rankSetType                = 0;    
                         });
                     }
                     else 
