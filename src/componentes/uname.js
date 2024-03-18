@@ -8,6 +8,10 @@ import {
 } from "react-router-dom";
 import { useGetUserInfoQuery } from '../data/generated---db-types-and-hooks';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import { useHasGivenFeedback } from "../utils/useHasGivenFeedback";
+import { useMemo } from "react";
+import StarRateIcon from '@material-ui/icons/StarRate';
+import StarOutlineRoundedIcon from '@material-ui/icons/StarOutlineRounded';
 
 const useStyles = makeStyles( theme => ({
 
@@ -72,6 +76,12 @@ function UnameTag( { inline=false, nolink=false, id, uname, cc, isf, slvl, sok, 
 
     const classes   = useStyles();
     const Icon      = id==1? VerifiedUserIcon : slvl>0? sok? CheckCircleIcon : CheckIcon  : null;
+    const collabs   = useHasGivenFeedback();
+    const userCollabs = useMemo(()=>{
+
+        return collabs && collabs(uname);
+
+    },[collabs])
 
     // poner "xx country_unknown" al no saber CC...
     const Wrapper = nolink? Foo : Link;
@@ -81,6 +91,7 @@ function UnameTag( { inline=false, nolink=false, id, uname, cc, isf, slvl, sok, 
                 <b className={ isf>-1? isf==0? classes.m : classes.f : classes.x }> {prefix}{ uname || "????"}</b>
                 { Icon!=null && <Icon className={classes.icon + " "+ (sok && "ok")} fontSize="small"/> }
                 {rest.private ? <LockIcon style={{fontSize:"1em"}}/>:""}
+                { userCollabs?.length>0 && <><StarOutlineRoundedIcon style={{fontSize:"1em"}}/>{userCollabs?.length>1 && <sup>{userCollabs?.length}</sup> }</> }
             </Wrapper>
 }
 

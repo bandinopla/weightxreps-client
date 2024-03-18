@@ -1,3 +1,7 @@
+- 2.27.3 : 2024-03-18
+        * Thanks to @Aizzer_1 for reporting the bug that math symbols and others were not being saved. My bad, I introduced this bug when tyring to remove "weird" characters.
+        * Added star icon next to usernames to recognize users for their valuable feedback and bug reports.
+
 - 2.27.2 : 2024-03-16
         * "blank log" display to improve feedback
         * increase text of user's journals a bit 

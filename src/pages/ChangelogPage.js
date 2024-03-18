@@ -1,6 +1,8 @@
-import { Box, Divider, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { Box, Divider, LinearProgress, Typography } from "@material-ui/core";
+import { useEffect, useMemo, useState } from "react";
 import { UnameRef } from "../componentes/uname";
+import { useChangelog } from "../utils/useChangelog";
+import { Alert } from "@material-ui/lab";
 
 
 const uname2Tag = txt => {
@@ -34,21 +36,16 @@ const uname2Tag = txt => {
 
 export default function ChangelogPage() {
 
-    const [content, setContent] = useState("...loading");
+    const { changelog, loading, error } = useChangelog(); 
 
-    useEffect(async () => {
+    const content = useMemo(() => {
 
-        try {
-            const resp = await fetch("/changelog.txt");
-            const txt = await resp.text();
-            setContent(uname2Tag(txt));
+        if( changelog )
+        {
+            return uname2Tag(changelog);
         }
-        catch (e) {
-            setContent("Failed to load the log for some reason...");
-        }
-
-
-    }, []);
+        
+    }, [changelog])
 
     return <>
         <Box margin={2}>
@@ -61,6 +58,8 @@ export default function ChangelogPage() {
                 <br /><br /></Typography>
 
             <Divider />
+            { loading && <LinearProgress/>}
+            { error && <Alert severity="error">{error}</Alert>}
             <pre style={{ whiteSpace: "pre-wrap", marginTop: 30 }}>{content}</pre>
         </Box>
 

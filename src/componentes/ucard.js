@@ -1,4 +1,4 @@
-import { Chip } from '@material-ui/core';
+import { Box, Chip } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import LockIcon from '@material-ui/icons/Lock';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import Barra from "./barras";
 import Ename from './ename';
@@ -18,6 +18,10 @@ import { SocialLinks } from './ucard-social-links';
 import Uname from "./uname";
 import WeightValue from './weight-value';
 import FlareRoundedIcon from '@material-ui/icons/FlareRounded';
+import { useHasGivenFeedback } from '../utils/useHasGivenFeedback';
+import StarOutlineRoundedIcon from '@material-ui/icons/StarOutlineRounded';
+import { OpenConfirmModal } from './Dialog';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles( theme => ({
      
@@ -86,12 +90,28 @@ export default function({ data:{ user, media, text, when, utags }, url, extraRow
     const breve             = injournal;
     const joined            = user.joined instanceof Date? user.joined : new Date(user.joined);
     const years             = Math.floor((new Date().valueOf() - joined.valueOf()) / 31557600000 ); 
+    const collabs           = useHasGivenFeedback();
+    const collabedIn        = useMemo(()=>{
 
-    var statsExtraRows = [ 
-        ["Joined", <JoinedTag label={date2timeago(joined, null, 3)} years={years}/>  ], 
-        ...extraRows
-         //user.private? ["Private Mode", "ON"] : ["Days Logged", posted]
-    ];
+        return collabs && collabs(user.uname);
+
+    },[collabs])
+
+    var statsExtraRows = useMemo(()=>{
+
+        let rows = [ 
+            ["Joined", <JoinedTag label={date2timeago(joined, null, 3)} years={years}/>  ], 
+            ...extraRows
+        ];
+
+        if( collabedIn?.length )
+        {
+            rows.push(["Collabed", <CollabbedLabel user={user} versions={collabedIn}/> ]);
+        }
+
+        return rows;
+
+    },[ collabedIn ]);
  
     //const extraRow = user.private? ["Private Mode", "ON"] : ["Posted", posted];
  
@@ -170,3 +190,24 @@ const OGSeal = ({sinceDay1})=>{
     return <span className='og' title={sinceDay1?"Member since year 1 of the site":"Long time member"}>{sinceDay1?"OG":<FlareRoundedIcon/>}</span>
 }
 
+const CollabbedLabel = ( { user, versions }) => {
+
+    const showExplanation = ()=>{
+        OpenConfirmModal({ open:true
+            , title:<><Uname nolink inline {...user} /> has collabed with the site</>
+            , info: <div>
+                        <Alert severity='info'>This user has given valuable feedback, either by reporting a bug or suggesting a new feature that has lead to improvements in the site.</Alert>
+                        <br/> <a href="/changelog">Changelog</a> entries:<br/>
+                        {
+                            versions.map( v => <Paper style={{marginBottom:5}} key={v} elevation={2}><Box padding={2}><Typography variant='caption'>{v}</Typography></Box></Paper>)
+                        }
+                    </div>
+            , verb: "Ok, got it" 
+            , canCancel: false
+        });
+    }
+
+    return <>
+        <a href="#" onClick={e=>e.preventDefault() || showExplanation()}><StarOutlineRoundedIcon style={{fontSize:"1em"}}/>{ versions.length } Time{ versions.length>1 && "s" }</a>
+        </>
+}
