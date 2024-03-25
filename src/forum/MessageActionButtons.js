@@ -66,7 +66,7 @@ export const MessageActionButtons = ({ message, ...rest }) => {
     const disable       = isDeleted || isDeleting || isReplying || isAddingNote;
 
     const canDelete     = !isDeleted && (message.user.id==myId || user.session.forum?.role?.all || user.session.forum?.role?.can?.indexOf("delete")>-1 );
-    const canAddNote    = user.session.forum?.role?.all || user.session.forum?.role?.can?.indexOf("note")>-1
+    const canAddNote    = !isDeleted && (user.session.forum?.role?.all || user.session.forum?.role?.can?.indexOf("note")>-1);
     
     useEffect(() => {
 
@@ -114,9 +114,9 @@ export const MessageActionButtons = ({ message, ...rest }) => {
 
     const execAddNote = ()=>{  
 
-            const noteCanBeDeleted = message.note!="";
+            const noteCanBeDeleted = message.note && message.note!="";
 
-            let note = prompt("Write the clarification or note you want to add to this message."+(noteCanBeDeleted? "\nType \"x\" to delete/remove the note." : ""), message.note );
+            let note = prompt("Write the clarification or note you want to add to this message."+(noteCanBeDeleted? "\nType \"x\" to delete/remove the note." : ""), message.note ?? "" );
 
             if( note && note.trim()!="" )
             {

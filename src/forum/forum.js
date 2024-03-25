@@ -164,6 +164,7 @@ const PostNewThreadAction = ({ sectionId })=>{
             threadId: 0,
             message,
             replies: 0,
+            note:"",
             likes: 0, 
             dislikes:0,
             __typename: "ForumMessage"
