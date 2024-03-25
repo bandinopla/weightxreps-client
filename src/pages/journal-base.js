@@ -1,21 +1,17 @@
-import { Button, Paper } from '@material-ui/core';
+import { Button, Chip, Paper } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
 import LinearProgress from '@material-ui/core/LinearProgress';
 //import JRange from '../componentes/journal/jrange';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { Alert } from '@material-ui/lab';
 import { lazy, Suspense, useRef } from 'react';
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
-import { RedGuyBanner, SideBanners } from '../banners/SideBanners';
+import { Redirect, Route, Switch, useHistory, Link } from "react-router-dom";
 import Calendario from "../componentes/calendario";
 import CalendarioZoomSlider from '../componentes/calendario-zoom-slider';
 import { FollowButton } from '../componentes/follow-button';
-import AlsoPosted from '../componentes/journal/AlsoPosted';
-import { ExercisesModal, openExercisesModal } from '../componentes/journal/exercises';
 
 import JRange from '../componentes/journal/jrange';
 import { PRsHistoryHeader, PRsHistoryTable } from '../componentes/journal/prs-history';
@@ -28,6 +24,7 @@ import { todayAsYMD } from '../utils/utils';
 import { JOwnerContext } from './journal-context';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { YearOVerview } from '../componentes/year-overview';
+import { ForumRoleChip } from '../forum/roles';
 
 //import { PRsHistoryTable } from '../componentes/journal/prs-history'; 
 //const JRange        = lazy(()=>import("../componentes/journal/jrange"));
@@ -77,7 +74,17 @@ export default function({ match:{  path, url, params:{ uname } } }) {
         return eval( uinfo.user.estimate1RMFormula );
     };
 
-    const extraRows     = [["Days Logged", uinfo.daysLogged]];
+    const extraRows     = [
+        ["Days Logged", uinfo.daysLogged],
+        [ <Link to={`/forum/by--${uinfo.user.uname}`}>Forum posts</Link> , uinfo.forum?.posts ?? 0]
+    ];
+
+    if( uinfo.forum?.role )
+    {
+        extraRows.push([
+            "Forum Role", <ForumRoleChip role={uinfo.forum.role.title}/>
+        ]);
+    }
 
     if( uinfo.user.private ) {
         extraRows.push(["Visibility","Private"])

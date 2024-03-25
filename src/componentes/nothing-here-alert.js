@@ -17,12 +17,13 @@ import PropTypes from 'prop-types';
  * @param {NothingHereParams} param0 
  * @returns 
  */
-export const NothingHere = ({ title, description, ActionIcon, actionVerb, action }) => {
+export const NothingHere = ({ title, description, ActionIcon, actionVerb, action, children }) => {
     return <Box padding={8} textAlign="center">
 
                 <SignalWifi1BarIcon fontSize="large"/>
                 <Typography variant="h6" gutterBottom>{title}</Typography>
                 <Typography variant="subtitle2">{description}</Typography>
+                {children}
                 { action && <>
                     <br/>
                     <br/>

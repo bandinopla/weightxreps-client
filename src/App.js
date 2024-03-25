@@ -82,6 +82,7 @@ const AboutPage = lazy(()=>import(/*webpackChunkName: "about" */"./pages/AboutPa
 const JournalSideBar = lazy(() => import(/* webpackChunkName: "jbase" */'./componentes/journal/side-bar.js'));
 const VideosPage = lazy(() => import(/* webpackChunkName: "videos" */'./pages/Videos')); 
 const PersonalRecordsPage = lazy(() => import(/* webpackChunkName: "personal-records" */'./pages/PersonalRecords'));
+const ForumPage = lazy(() => import(/* webpackChunkName: "forum" */'./forum/index'));
 
 /**
  * Utility... creates a basic layout.
@@ -156,6 +157,7 @@ function App() {
                                     <Route path="/unsub" component={UnsubFromEmails}/> 
                                     <RoutePage path="/videos" component={VideosPage}/> 
                                     <RoutePage path="/sbd-stats" component={SBDStatsPage} />
+                                    <RoutePage path="/forum" component={ForumPage} />
                                     <Route path="/donate" component={DonatePage}/> 
                                     <Route path="/faq" component={HelpPage}/> 
                                     <Route path="/about" component={AboutPage}/> 

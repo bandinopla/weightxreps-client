@@ -1,13 +1,10 @@
-import { Box, LinearProgress, Typography } from "@material-ui/core";
-import { useGetSession } from "../session/session-handler"
-import { Alert } from "@material-ui/lab";
+import { Box, Typography } from "@material-ui/core";
 import { SessionOnlyWidget } from "./SessionOnlyWidget";
 import {
-    BrowserRouter as Router,
-    Switch,
     useLocation
   } from "react-router-dom";
 import { MENU } from "./main-menu";
+import { createContext, useContext, useEffect, useState } from "react";
 
 
 /**
@@ -39,11 +36,14 @@ export const ContentPage = (props) => {
     return <PageLayout {...props}/>
 }
 
+const PageLayoutContext = createContext({ setTitle:(elem)=>{} });
+
 /** 
  * @param {ContentPageProps} param0  
  */
 export const PageLayout = ({ title, Icon, Child, ...rest }) => {
 
+    const [titleNode, setTitleNode] = useState();
     let location = useLocation(); 
     let menuItem = MENU.findLast( (m,i)=>m.goto?.length>1 && location.pathname.indexOf( m.goto )==0 );
 
@@ -61,10 +61,22 @@ export const PageLayout = ({ title, Icon, Child, ...rest }) => {
     } 
 
 
-    return <>
-        <Box padding={2} borderBottom="1px dashed #444" >
-            <Typography variant="h4">{ Icon && <Icon /> } {title ?? "???"}</Typography>
-        </Box> 
-        { Child ? <Child {...rest}/> : rest.children }
-    </>
+    return <PageLayoutContext.Provider value={{ setTitle:setTitleNode }}>
+            { titleNode!==false && <Box padding={2} borderBottom="1px dashed #444" >
+
+                { titleNode? titleNode : <Typography variant="h4">{ Icon && <Icon /> } {title ?? "???"}</Typography> }
+                
+            </Box> }
+            { Child ? <Child {...rest}/> : rest.children }
+        </PageLayoutContext.Provider>
+}
+
+export const PageLayoutTitle = ({ children, none })=>{
+    const ctx = useContext(PageLayoutContext);
+
+    useEffect(()=>{
+        ctx.setTitle(none? false : children);
+    },[]);
+    
+    return "";
 }

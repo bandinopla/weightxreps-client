@@ -1,4 +1,4 @@
-import { IconButton, Button as MaterialButton, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
@@ -25,19 +25,20 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
-import OndemandVideoIcon from '@material-ui/icons/OndemandVideo'; 
 import { SwipeableDrawer } from './SwipableDrawer';
 import HelpIcon from '@material-ui/icons/Help';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { openExercisesModal } from './journal/exercises';
-
+import VideocamIcon from '@material-ui/icons/Videocam';
+import GroupIcon from '@material-ui/icons/Group';
 
 export const MENU = [
     { Icon:HomeIcon, goto:"/", label:"Home" },
     { Icon:SearchIcon, goto:"/explore", label:"Explore" },
     { Icon:RssFeedIcon, goto:"/community-stats", label:"Community stats" },
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
-    { Icon:OndemandVideoIcon, goto:"/videos", label:"Videos" },
+    { Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
+    { Icon:VideocamIcon, goto:"/videos", label:"Videos" },
     { Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
     { Icon:HelpIcon, goto:"/faq", label:"Help" },
     { Icon:FingerprintIcon, goto:"/about", label:"About" },
@@ -45,7 +46,7 @@ export const MENU = [
 
     { Icon:FitnessCenterSharpIcon, sessionMenuStart:true, fancy:true, onClick:()=>window.dispatchEvent(new Event("openEditor")), label:"Log Workout", session:true },
  
-    { Icon:AccountCircleRoundedIcon, goto: user => `/journal/${user.uname}` , label:"My Journal", session:true },
+    { Icon:AccountCircleRoundedIcon, goto: user => `/journal/${user.uname}` , label:session=>session.user.uname, session:true },
     { wrap: lbl=><NotificationsBadge type={2}>{lbl}</NotificationsBadge>,goto:"/notifications", type:2, label:"Notifications", Icon:NotificationsNoneIcon, session:true },
     { wrap: lbl=><NotificationsBadge type={1}>{lbl}</NotificationsBadge>, goto:"/messages", type:1, label:"Messages", Icon:MailOutlineIcon, session:true },
 
@@ -96,6 +97,18 @@ const useStylesDrawer = makeStyles( theme=>({
         }
     },
 
+    forumBtn: {
+        "& .MuiTypography-root": {
+            fontWeight:"bold !important",
+            background:"-webkit-linear-gradient(#980F7A, #E68538)",
+            "-webkit-background-clip":"text",
+            "-webkit-text-fill-color":"transparent"
+        },
+        "& .MuiSvgIcon-root path": {
+            fill: "#B92E59"
+        }
+        
+    },
     
     // handle: {
     //     background:"black",
@@ -166,10 +179,13 @@ export const MainMenuDrawer = ()=>{
                 
                 const linkUrl = typeof btn.goto=='function'? btn.goto(user.session?.user) : btn.goto;
                 const isSelected = location.pathname==linkUrl || ( linkUrl?.length>1 && location.pathname.indexOf(linkUrl)===0 );
+                const label = typeof btn.label == 'function' ? btn.label(user.session) : btn.label;
 
-                return (<ListItem button key={i} selected={isSelected} onClick={ ev=>onClickButton(btn, linkUrl)} className={(btn.sessionMenuStart? cls.firstSession: "") +" " + (btn.fancy?" fancy sha spaceBelow": "")}>
+                return (<ListItem button key={i} selected={isSelected} 
+                                    onClick={ ev=>onClickButton(btn, linkUrl)} 
+                                    className={(btn.sessionMenuStart? cls.firstSession: "") +" " + (btn.fancy?" fancy sha spaceBelow": "")+ (btn.addClass?" "+btn.addClass(cls):"")}>
                             <ListItemIcon><btn.Icon/></ListItemIcon>
-                            <ListItemText color='primary' primary={  btn.wrap? btn.wrap(btn.label) : btn.label } />
+                            <ListItemText color='primary' primary={  btn.wrap? btn.wrap(label) : label } />
                         </ListItem>)})}
         </List>
     </div>);

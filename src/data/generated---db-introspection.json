@@ -11,13 +11,21 @@
     ],
     "IBy": [
       "DM",
+      "ForumLike",
+      "ForumNotification",
       "JComment",
       "LikeOnDM",
       "LikeOnJComment",
       "LikeOnLog",
       "StartedFollowing"
     ],
+    "IForum": [
+      "ForumLike",
+      "ForumNotification"
+    ],
     "IHasJOwner": [
+      "ForumLike",
+      "ForumNotification",
       "JComment",
       "LikeOnJComment",
       "LikeOnLog"
@@ -28,6 +36,8 @@
     ],
     "IHasText": [
       "DM",
+      "ForumLike",
+      "ForumNotification",
       "JComment",
       "LikeOnDM",
       "LikeOnJComment",
@@ -39,6 +49,8 @@
     ],
     "INotification": [
       "DM",
+      "ForumLike",
+      "ForumNotification",
       "JComment",
       "LikeOnDM",
       "LikeOnJComment",
@@ -48,6 +60,8 @@
     ],
     "ITO": [
       "DM",
+      "ForumLike",
+      "ForumNotification",
       "JComment",
       "LikeOnDM",
       "LikeOnJComment",
@@ -63,6 +77,8 @@
     ],
     "Notification": [
       "DM",
+      "ForumLike",
+      "ForumNotification",
       "JComment",
       "LikeOnDM",
       "LikeOnJComment",
