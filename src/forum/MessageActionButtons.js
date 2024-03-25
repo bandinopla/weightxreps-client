@@ -103,7 +103,7 @@ export const MessageActionButtons = ({ message, ...rest }) => {
                             id: cache.identify(message) ,
                             fields: {
                                 message: _=>"",
-                                note: currentNote=>reason!=""? reason : currentNote
+                                note: currentNote=>reason!=""? reason : ""
                             }
                         });
                 }
