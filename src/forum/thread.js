@@ -1,26 +1,21 @@
-import { Box, Divider, LinearProgress, Paper, Typography, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import { Box, Divider, LinearProgress, Typography, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
 import { GetThreadMessagesDocument, useGetThreadMessagesLazyQuery, useGetThreadMessagesQuery } from "../data/generated---db-types-and-hooks"
-import { UserTypedText } from "../componentes/user-typed-text";
 import UnameTag from "../componentes/uname";
-import { date2NiceString } from "../utils/utils";
 import { date2timeago } from "../componentes/TimeAgoDisplay";
 import { userTextToParsedUI } from "../componentes/user-text-to-parsed-tags";
-import UAvatar from "../componentes/uavatar";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import FetchMoreButton from "../componentes/FetchMoreButton";
+import { useEffect, useMemo, useState } from "react";
 import { ForumBreadcrumb } from "./forum-breadcrumb";
 import { Alert } from "@material-ui/lab";
 import { MessageActionButtons, MessageReplyBox } from "./MessageActionButtons";
 import Pagination from '@material-ui/lab/Pagination';
-import PaginationItem from '@material-ui/lab/PaginationItem';
-import { Link, useHistory  } from "react-router-dom"; 
+import { useHistory  } from "react-router-dom"; 
 import { NothingHere } from "../componentes/nothing-here-alert";
 import { useGetSession } from "../session/session-handler";
 import NotificationItemUserAvatar from "../session/ui/notifications-popmenu-items/NotificationItemUserAvatar";
 import { ForumRoleChip } from "./roles";
 import { ModeratorNote } from "./moderator-note";
 
-export const ThreadMessagesPerPage = 3;
+export const ThreadMessagesPerPage = 10;
 
 const useStyles = makeStyles( theme=>({
 
