@@ -29,6 +29,7 @@ import { SettingsTypePolicy } from "./SettingsTypePolicies";
 import { trackError } from "../componentes/google-tracker";
 import { UTagsPolicy } from "../componentes/journal/tags";
 import { VideosCachePolicy } from "./videos-policy";
+import { ForumPolicy } from "../forum/forum-policy";
 
 //   const httpLink = createHttpLink({
 //     uri:"http://localhost:4000/graphql",
@@ -79,7 +80,8 @@ let typePolicies = mergeObjects([
 	SettingsTypePolicy,
 	SessionPolicies,
     UTagsPolicy,
-    VideosCachePolicy
+    VideosCachePolicy,
+    ForumPolicy
 ]);
 
 const client = new ApolloClient({

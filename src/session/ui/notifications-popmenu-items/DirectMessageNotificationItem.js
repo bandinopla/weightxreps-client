@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Avatar, Box, Typography } from "@material-ui/core";
 import UnameTag from "../../../componentes/uname";
 import { NotificationItemTemplate } from "./NotificationItemTemplate";
 import NotificationItemUserAvatar from "./NotificationItemUserAvatar";
@@ -8,7 +8,8 @@ import TextQuote from "./TextQuote";
 import { openDMWindow } from "../dms-window/dm-window";
 import { UserTypedText } from "../../../componentes/user-typed-text";
 import { useTheme } from "@material-ui/styles";
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@material-ui/lab"; 
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
 export default function DirectMessageNotificationItem({ data, myId }) {
 	const theme = useTheme();
@@ -42,12 +43,14 @@ export default function DirectMessageNotificationItem({ data, myId }) {
 	);
 
 	let children;
+    let isLike = false;
 
 	if (data.__typename == "LikeOnDM") {
+
+        isLike = true;
 		children = (
 			<>
-				{$iSentThis ? "You liked this" : "Liked your"} message{" "}
-				<ThumbUpAltIcon style={{ verticalAlign: "sub" }} fontSize="small" />
+				{$iSentThis ? "you liked this" : "liked your"} message 
 			</>
 		);
 		$message = (
@@ -61,13 +64,13 @@ export default function DirectMessageNotificationItem({ data, myId }) {
 	return (
 		<Box>
 			<NotificationItemTemplate
-				itemAvatar={<NotificationItemUserAvatar user={$user} />}
-				title={<UnameTag inline {...$user} />}
+				itemAvatar={ isLike? <Avatar><ThumbUpAltOutlinedIcon /></Avatar> : <NotificationItemUserAvatar user={$user} />}
+		 
 				when={data.when}
 				message={$message}
 				onClick={() => openDMWindow($user)}
 			>
-				{children}
+				<UnameTag inline {...$user} /> {children}
 			</NotificationItemTemplate>
 		</Box>
 	);

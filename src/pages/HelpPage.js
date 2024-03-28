@@ -16,6 +16,7 @@ import { StaticLogHighlighter } from "../codemirror/LogTextEditor";
 import { getExampleUTagsLog } from "../codemirror/tag-parsing";
 import { ContentPage } from "../componentes/ContentPageWrapper";
 import LinkIcon from '@material-ui/icons/Link';
+import { slugify } from "../utils/slugify";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -309,13 +310,4 @@ const HelpPage = ({ location })=>{
 
 export default function (props) {
     return <ContentPage Child={HelpPage} {...props}/>
-}
-
-function slugify(text) {
-    return text.toString().toLowerCase()
-        .replace(/\s+/g, '-')           // Replace spaces with -
-        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-        .replace(/^-+/, '')             // Trim - from start of text
-        .replace(/-+$/, '');            // Trim - from end of text
 }

@@ -4,9 +4,11 @@ import Eblock from "./journal/erow-render";
 import { parseUserComment, TYPE as TAGTYPE } from "./journal/jparser";
 import { JournalTagValue } from "./journal/tags";
 import { UserTypedText } from "./user-typed-text";
-import { IGThumbnail } from "./ig-thumbnail";
+import { UnameRef } from "./uname";
+import { SoundCloudEmbedder, SoundCloudType } from "./soundcloud-tag";
+import { TextFormatTagType } from "./journal/jlog-text-format-tags";
 
-export const userTextToParsedUI = (text, firstLineIsTitle) => {
+export const userTextToParsedUI = (text, firstLineIsTitle, fullTags) => {
     
     if( !text || text.trim().length==0 ) {
         return <strong style={{color:"red"}}><i>... deleted</i></strong>;
@@ -22,7 +24,7 @@ export const userTextToParsedUI = (text, firstLineIsTitle) => {
         text = lines.join("\n");
     }
 
-    const tags = parseUserComment(text); 
+    const tags = parseUserComment(text, fullTags); 
     return <>{title}{parsedTags2render( tags )}</>
 }
 
@@ -46,12 +48,32 @@ export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
 
     switch( tag.type )
     {
+        case TextFormatTagType:
+            element = tag.render();
+            break;
+
+        case TAGTYPE.GIPHY:
+            element = <div style={{width:480}}><iframe allow="fullscreen" frameBorder="0" height="270" src={`https://giphy.com/embed/${tag.giphy}/video`} width="480"></iframe></div>
+            break;
+
+        case SoundCloudType:
+            element = <SoundCloudEmbedder tag={tag}/>
+            break;
+
         case TAGTYPE.NEWLINE:
             element = <br/>;
             break;
 
+        case TAGTYPE.IMG:
+            element = <div><a href={tag.url} target="_blank"><img className="sha" src={tag.url} style={{maxWidth:"200px", margin:"10px 0"}}/></a></div>
+            break;
+
         case TAGTYPE.TAG:
             element = <JournalTagValue value={tag.value} utag={tag.utag}/>
+            break;
+
+        case TAGTYPE.UNAME:
+            element = <UnameRef uid={tag.uname} uname={tag.uname} prefix="@"/>;
             break;
 
         /*
@@ -83,7 +105,7 @@ export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
         case TAGTYPE.YT:
             //<iframe style={{maxWidth:"100%", width:"100%"}} height="315" src={"https://www.youtube.com/embed/"+tag.yt+(tag.t ? "?start="+tag.t : "")} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             element = <Block>
-                    <a href={`https://www.youtube.com/watch?v=${tag.yt}`} target="_blank"><img src={`https://img.youtube.com/vi/${tag.yt}/sddefault.jpg`} alt="Video thumbnail" style={{ width:"100%"}}/></a>
+                    <a href={`https://www.youtube.com/watch?v=${tag.yt}`} target="_blank"><img src={`https://img.youtube.com/vi/${tag.yt}/sddefault.jpg`} alt="Video thumbnail" style={{ width:"100%", maxWidth:300}}/></a>
                 </Block> ;
             break;
 

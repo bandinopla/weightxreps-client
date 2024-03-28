@@ -22,7 +22,7 @@ export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, wi
 
     if( variant=="circular")
     {
-        return <Avatar src={src} />
+        return <Avatar src={src} className='sha'/>
     }
 
     return <div className={ (className || "") + " sha"} style={{position:"relative", height, minWidth:50, width, backgroundImage:img, backgroundRepeat:"no-repeat", backgroundColor:"#ccc", backgroundSize:"cover", backgroundPosition:"center" }}>

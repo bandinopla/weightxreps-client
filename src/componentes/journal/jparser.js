@@ -1,4 +1,6 @@
+import { soundCloudMatcher } from "../soundcloud-tag";
 import { parsedTags2render } from "../user-text-to-parsed-tags";
+import { JLogTextFormatTags } from "./jlog-text-format-tags";
 import { TagTokenMatcher } from "./tags";
 
 export const TYPE = {
@@ -11,23 +13,48 @@ export const TYPE = {
      NEWLINE:6,
      POSTIMGCC:7,
      BlockWeekDay: 8,
-     TAG:9
+     TAG:9,
+     IMG:10,
+     UNAME:11, 
+     GIPHY:12
 }
 
 const _urlTagMatcher = { match:/^(?:http(?:s?):\/\/(?:www\.)?)[\S]+/, block: m=>({ type:TYPE.LINK, url:m[0] }) };
+const _imgTagMatcher = {
+    match:/^https?:\/\/\S+\.(jpg|png|gif|webp)\S*/gi,
+    block: m=>({ type:TYPE.IMG, url: m[0] })
+}
 const _newlineMatcher = { match:/^\s*$/, block: m=>({ type:TYPE.NEWLINE }) }
+
+const _unameMentionMatcher = { 
+    match: /^@([a-z0-9_]+)/i,
+    block: m=>({ type:TYPE.UNAME, uname: m[1] })
+}
 
 
 const parseErowComment = comment => {
     let tags = [
-        _urlTagMatcher
+        _imgTagMatcher,
+        _urlTagMatcher,
+        _unameMentionMatcher,
+        
         //, _newlineMatcher
     ]
  
     return text2tags( comment, tags ); 
 };
 
-export const parseUserComment = comment => parseErowComment(comment);
+export const parseUserComment = (comment, fullTags) => {
+    if( fullTags )
+    {
+        return parseJlog(comment)
+    }
+    else 
+    {
+        return parseErowComment(comment);
+    }
+    
+}
  
 
 export const previewTextToNode = ( textPreview, utags ) => { 
@@ -37,7 +64,7 @@ export const previewTextToNode = ( textPreview, utags ) => {
 
 export const parseJlog = (text2parse, eblocks, execises, bw, usekg, userTags, utagsValues ) => { 
 
-    let eblockCopy  = eblocks.slice(0); //lo copiamos porque lo vamos a modificar 
+    
     
     //
     // replace TABS with spaces
@@ -65,14 +92,34 @@ export const parseJlog = (text2parse, eblocks, execises, bw, usekg, userTags, ut
         ,{ match:/^(?:http(?:s?):\/\/(?:www\.)?)?insta\.gram\/p\/(\w+)\/?/, block: m=>({ type:TYPE.IG, ig:m[1] }) }
     
         //, { match:/^(?:http(?:s?):\/\/(?:www\.)?)[\S]+\b/, block: m=>({ type:TYPE.LINK, url:m[0] }) }
-        , _urlTagMatcher
-        //, _newlineMatcher
+        , {
+            match:/^https:\/\/giphy\.com.*-(\S+)\b/,
+            block: m=>({ type:TYPE.GIPHY, giphy:m[1] })
+        }
         
-        , { match:/^EBLOCK:(\d+)/, block: m=>_buildEblockData( Number(m[1]), eblockCopy, execises, bw, usekg ) }
-        , TagTokenMatcher( userTags, utagsValues )
+        ,_unameMentionMatcher
+        , ...soundCloudMatcher 
+        , _imgTagMatcher
+        , _urlTagMatcher
+         
+        //, _newlineMatcher 
+
         , { match:/^(?:B(\d+))?W(\d+)D(\d+)\b/, block: m=>({ type:TYPE.BlockWeekDay, B:m[1], W:m[2], D:m[3] }) }
-    
+        , ...JLogTextFormatTags
+        //<div style="width:480px"><iframe allow="fullscreen" frameBorder="0" height="270" src="https://giphy.com/embed/NPl40igBCxq9FAgyKI/video" width="480"></iframe></div>
+        
     ]; 
+
+    if( eblocks )
+    {
+        let eblockCopy  = eblocks.slice(0); //lo copiamos porque lo vamos a modificar 
+        tags.push({ match:/^EBLOCK:(\d+)/, block: m=>_buildEblockData( Number(m[1]), eblockCopy, execises, bw, usekg ) });  
+    }
+
+    if( userTags )
+    {
+        tags.push(TagTokenMatcher( userTags, utagsValues ))
+    }
 
     return text2tags( text2parse, tags ); 
 }; 
@@ -83,6 +130,7 @@ const text2tags = (text2parse, tags) => {
     let i           = 0;
     let rtrn        = [];
     let lastTextBlock;
+    let sol         = true;
 
     while( i<text2parse.length )
     {
@@ -94,7 +142,7 @@ const text2tags = (text2parse, tags) => {
             
             let m = text2parse.substr(i).match( tag.match );
 
-            if( m )
+            if( (!tag.onlyStartOfLine || sol) && m )
             { 
                 i += m[0].length;
 
@@ -113,12 +161,18 @@ const text2tags = (text2parse, tags) => {
 
 
                 lastTextBlock = null;
+                sol = false;
                 continue;
             }  
         }
 
-        if( oldi!=i )
+        if(text2parse[i]=="\n")
         {
+            sol = true;
+        }
+
+        if( oldi!=i )
+        { 
             continue;
         }
          
@@ -129,6 +183,12 @@ const text2tags = (text2parse, tags) => {
         }
 
         lastTextBlock.text += text2parse[i] || "";
+
+        if( text2parse[i]!=" " )
+        {
+            sol = false;
+        }
+
         i++; 
     }
 

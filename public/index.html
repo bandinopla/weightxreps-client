@@ -30,9 +30,32 @@
     </script>
     
     <style>
+        .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: inline-block;
+        border-top: 3px solid #FFF;
+        border-right: 3px solid transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+        } 
+
         .init {
             width: 100vw;
             height: 100vh;
+            display:flex;
+            justify-content: center;
+            align-items: center;
             z-index: 999;
             background-color: black;
             position: fixed;
@@ -57,7 +80,9 @@
     <title>Weight For Reps</title>
   </head>
   <body>
-    <div class="init"></div>
+    <div class="init">
+        <span class="loader"></span>
+    </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div> 
   </body>

@@ -13,6 +13,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { parseError } from "../../data/db";
 import Alert from '@material-ui/lab/Alert';
 import {  useGetSession, useReactiveSetting } from "../session-handler";
+import ForumNotificationItem from "./notifications-popmenu-items/ForumNotificationItem";
+import ForumLikeNotificationItem from "./notifications-popmenu-items/ForumLikeNotificationItem";
 
  
 const useStyles = makeStyles((theme) => ({
@@ -183,6 +185,14 @@ export default function NotificationsPopMenu({ type }) {
                                     case "StartedFollowing":
                                         element =  <EventNotificationItem data={msg} myId={myID} />; 
                                         break;
+
+                                    case "ForumLike":
+                                        element = <ForumLikeNotificationItem data={msg} myId={myID}/>;
+                                        break;
+                                        
+                                    case "ForumNotification":
+                                        element = <ForumNotificationItem data={msg} myId={myID}/>;
+                                        break; 
  
                                     default:  
                                         element = "---?? "+msg.__typename +" ??---";

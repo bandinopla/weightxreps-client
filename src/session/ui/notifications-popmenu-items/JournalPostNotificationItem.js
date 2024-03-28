@@ -35,7 +35,9 @@ export default function ({ data, myId }) {
  
 
     let whenExtra = <>  
-                        { data.jowner.id!=myId? <strong className="oneline what"> <UnameTag inline {...data.jowner}/>'s </strong>:" your "}
+                        { data.jowner.id!=myId? 
+                            data.jowner.id==data.by.id? data.by.isf?"her ":"his "  :
+                            <strong className="oneline what"> <UnameTag inline {...data.jowner}/>'s </strong>:" your "}
                         <strong  className="oneline what">{ data.ymd }</strong> Log</>;
 
                         
