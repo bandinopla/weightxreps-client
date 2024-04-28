@@ -1,3 +1,6 @@
+- 2.29.1 : 2024-04-28
+        * bug fix in backend: thanks to @Kandrase for pointing this out. Some journals failed to load due to trying to access an undefined property (Cannot read property)
+
 - 2.29.0 : 2024-03-26
         + Revived the forums! (˵ ͡° ͜ʖ ͡°˵)
 
