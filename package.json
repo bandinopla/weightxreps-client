@@ -57,9 +57,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:staging": "set \"REACT_APP_REMOTE_SERVER=staging\" && react-scripts start",
-    "start:production": "set \"REACT_APP_REMOTE_SERVER=production\" && react-scripts start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "start:staging": "cross-env REACT_APP_REMOTE_SERVER=staging react-scripts start",
+    "start:production": "cross-env REACT_APP_REMOTE_SERVER=production react-scripts start",
+    "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "test-build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -87,6 +87,7 @@
   "devDependencies": {
     "@types/codemirror": "^5.60.15",
     "@types/papaparse": "^5.3.14",
+    "cross-env": "^7.0.3",
     "yargs": "^15.4.1"
   }
 }

@@ -1,0 +1,27 @@
+{
+	"name": "WeightForReps-FrontEndDev", 
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:14", //<-- because the current server has node 14...
+	"hostRequirements": {
+		"cpus": 4
+	  },
+	  "waitFor": "onCreateCommand",
+	  "updateContentCommand": "npm install",
+	  "postCreateCommand": "",
+	  "postAttachCommand": {
+		"server": "npm run start:production" //<-- points to the backend's endpoint that is running in production.
+	  },
+	  "customizations": {
+		"codespaces": {
+		  "openFiles": [
+			"src/App.js"
+		  ]
+		}
+	  },
+	  "portsAttributes": {
+		"3000": {
+		  "label": "Application",
+		  "onAutoForward": "openBrowser"
+		}
+	  },
+	  "forwardPorts": [3000]
+}
