@@ -1,3 +1,6 @@
+- 2.30.0 : 2024-07-21
+        + Added an auto-save mechanic on the log's editor. As pointed by @jimr1603 sometimes the browser will refresh the page if you leave it on too long and all logged data will be lost. Now, the editor will save whatever you type and if you open it again it will detect previously autosaved data and ask you if you want to use that.
+
 - 2.29.1 : 2024-04-28
         * bug fix in backend: thanks to @Kandrase for pointing this out. Some journals failed to load due to trying to access an undefined property (Cannot read property)
 
