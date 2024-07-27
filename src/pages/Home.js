@@ -17,6 +17,7 @@ import { useGetSession } from '../session/session-handler';
 import { SupportersDisplay } from '../componentes/supporters-display';
 import { RestoreScroll } from '../componentes/scroll-restoration';
 import { BlankLogText } from '../utils/blankLogText';
+import OlympicsVisor from '../olympics/olympics';
 
 
 const $holder = document.createElement('div');
@@ -119,7 +120,7 @@ export const ActivityFeed = function({ type }) {
 
  
     return <div>   
-                
+                <OlympicsVisor/>
                 <SupportersDisplay/>
                 { loading && <LinearProgress /> }
                 { data?.getActivityFeed && <KeepFeedUpdated loadMoreTrigger={ ()=>fetchNewData() } intervalInSeconds={60} />}
