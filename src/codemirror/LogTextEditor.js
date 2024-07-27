@@ -341,7 +341,7 @@ const __lintEditor = {
     }
 };
 
-export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags, hintTriggerRef })=> {
+export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags, hintTriggerRef, onCodeMirrorReady, valueAsTextHook })=> {
 
     const classes       = useStyles();
     const txt           = useRef();
@@ -353,14 +353,28 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
      */
     const valueAsText  = useMemo( ()=>{ 
 
+        let txt = ""; 
+
         if( typeof value == 'string' )
         {
-            return value;
+            txt = value;
+        } 
+        else if( typeof value == 'object') 
+        {
+            txt = __convertJEditorDataToText(value, usekg, utags);
         }
 
-        if( !value ) return "";
+        if( valueAsTextHook )
+        {
+            let txtHooked = valueAsTextHook(txt);
+            
+            if( txtHooked )
+            {
+                return txtHooked;
+            }
+        }
 
-        return __convertJEditorDataToText(value, usekg, utags);
+        return txt;
 
     }, [value] );
 
@@ -432,6 +446,8 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
           } 
 
           myCodeMirror.focus();
+
+          onCodeMirrorReady && onCodeMirrorReady(myCodeMirror)
 
           //
           // on dismount...

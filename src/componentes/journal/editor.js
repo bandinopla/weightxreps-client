@@ -16,6 +16,7 @@ import { OpenConfirmModal } from "../Dialog";
 import { useGetSession } from "../../session/session-handler";
 import { OpenJeditorSaveBackdrop } from "./editor-save-backdrop";
 import LoadCopyOfWorkoutModal from "./editor-copy-journal";
+import { useEditorAutosave } from "./editor-autosave";
 
 const $jeditorError     = makeVar(); 
  
@@ -33,6 +34,10 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
     const history       = useHistory();
     const saveError = useReactiveVar($jeditorError);
     const [jeditorData, setJeditorData] = useState();
+
+    const { autosave, getAutosavedText } = useEditorAutosave({ 
+        cacheKey: `${session.user.id}-autosave`
+    });
 
     const [saveEditor, {client}]    = useSaveJEditorMutation();
     
@@ -263,6 +268,16 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                         getShowErrorRef={showDocError}
                         hintTriggerRef={hintTriggerRef}
                         utags={jeditorData.jeditor.utags}
+                        onCodeMirrorReady = { cm =>cm.on("change", ()=>autosave(cm.getValue()) ) }
+                        valueAsTextHook = { value => {
+
+                            let saved = getAutosavedText(); 
+
+                            if( saved!=="" && saved!==value && window.confirm("An autosaved text is available. Would you like to load it?"))
+                            {
+                                return saved;
+                            } 
+                        }}
                         />
         { saveError && <Alert severity="error">{parseError(saveError)}</Alert> }
     </>
