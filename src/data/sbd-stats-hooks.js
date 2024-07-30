@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useGetSbdStatsLazyQuery, useGetSbdStatsQuery } from "./generated---db-types-and-hooks";
+//import {sbdstats} from "./sbd-stats";
 
 // to match the server's default calculations
 function calculate1RM( weight, reps ) {
@@ -7,6 +8,7 @@ function calculate1RM( weight, reps ) {
 }
 
 export const useSBDStatsHook = () => {
+    //const { data, loading, error }  = { data:{ sbdStats:sbdstats }, loading:false, error:null}; 
     const { data, loading, error }  = useGetSbdStatsQuery();
 
     return {
@@ -28,8 +30,19 @@ export const useSBDStatsLazyHook = ()=>{
 /** 
  * @type {import("./sbd-stats-hooks").HookedQuery["filterWeightClasses"]}
  */
-function filterWeightClasses(bw, isf) {
-    return this.sbdStats?.perclass?.filter( clas =>  ( isf==null || ( isf == 1-clas.wclass.male) ) && (!bw || ( bw>=clas.wclass.min && bw<=clas.wclass.max ) ) );
+function filterWeightClasses(bw, isf, ageClass) {
+
+    let wclasses = this.sbdStats?.perclass?.filter( clas =>  ( isf==null || ( isf == 1-clas.wclass.male) ) && (!bw || ( bw>=clas.wclass.min && bw<=clas.wclass.max ) ) );
+ 
+    if( ageClass > -1 )
+    {
+        wclasses = wclasses.map( wclass=>({
+            ...wclass,
+            graph: wclass.graphAge.map( SBD => SBD.map( perAge=>perAge[ageClass] || 0 )  ) //<--- show only the lifts done by the corresponding age group...
+        }))
+    }
+
+    return wclasses;
 }
 
 /** 
@@ -73,9 +86,17 @@ function getScoreFor ( wclases, liftType, weight ){
  */
 function hook( data )
 {
+    let ageClasses = data.sbdStats?.ageClasses.map((cls,i)=>({
+        name: cls,
+        index:i,
+        min: parseInt(cls.split("-"))
+    })) 
+
+    ageClasses.sort((a, b) => a.min - b.min); // sort from min to greatest
+
     return {
         ...data, 
-
+        ageClasses, 
         filterWeightClasses,
         getScoreFor,
     }

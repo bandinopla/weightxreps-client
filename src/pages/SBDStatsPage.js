@@ -33,6 +33,7 @@ export default function SBDStatsPage() {
 
     const [gender, setGender] = useState( loadState?.gender || 0 );
     const [useLbs, setUseLbs] = useState( loadState?.inlbs || 0 );
+    const [ageClass, setAgeClass] = useState(loadState?.ageclass || -1);
 
     // valor de los inputs...
     const [SBD, _setSBD] = useState([null,null,null]); 
@@ -151,7 +152,7 @@ export default function SBDStatsPage() {
                 bw *= LBS2KG; //esta escrito en LBs...
             }
             
-            const wclasses = data.filterWeightClasses( bw, gender==0? null : gender-1 );
+            const wclasses = data.filterWeightClasses( bw, gender==0? null : gender-1, ageClass );
             
             if( bw )
             { 
@@ -181,7 +182,7 @@ export default function SBDStatsPage() {
         return series;
 
 
-    }, [data, gender, useLbs, SBD] );
+    }, [data, gender, useLbs, SBD, ageClass] );
 
      
     
@@ -227,30 +228,51 @@ export default function SBDStatsPage() {
 
                 <form  noValidate autoComplete="off">
 
-                    <FormControl style={{marginRight:15}}>
-                        <InputLabel id="sex">GENDER</InputLabel>
-                        <Select value={gender} onChange={ e=>setGender(e.target.value)} style={{width:200, textAlign:"center"}}>
-                            <MenuItem value={0}>---- All ----</MenuItem>
-                            <MenuItem value={1}>Males only</MenuItem>
-                            <MenuItem value={2}>Females only</MenuItem>
-                        </Select>
-                    </FormControl>  
-
-                    <FormControl style={{marginLeft:15}}>
-                        <InputLabel id="sex">UNIT</InputLabel>
-                        <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)}> 
-                            <MenuItem value={0}>Kilograms</MenuItem>
-                            <MenuItem value={1}>Pounds</MenuItem>
-                        </Select>
-                    </FormControl> 
-                    <br/>
-
-
-                    { LiftId2Name.map( (liftName,i)=><FormControl error={SBD[i]?.error}>
+                <Grid container>
+                    <Grid item xs={4}>
+                        <FormControl >
+                            <InputLabel id="sex">GENDER</InputLabel>
+                            <Select value={gender} onChange={ e=>setGender(e.target.value)} style={{ textAlign:"center"}}>
+                                <MenuItem value={0}>---- All ----</MenuItem>
+                                <MenuItem value={1}>Males only</MenuItem>
+                                <MenuItem value={2}>Females only</MenuItem>
+                            </Select>
+                        </FormControl> 
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControl >
+                            <InputLabel id="agec">AGE</InputLabel>
+                            <Select value={ageClass} onChange={ e=>setAgeClass(e.target.value)} >
+                            <MenuItem value={ -1 } >--- ANY ---</MenuItem>
+                                {
+                                    data && data.ageClasses.map( cls=><MenuItem value={ cls.index} key={cls.index}>{ cls.name }</MenuItem>  )
+                                }
+                                
+                            </Select> * Might not always be available.
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControl >
+                            <InputLabel id="sex">UNIT</InputLabel>
+                            <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)}> 
+                                <MenuItem value={0}>Kilograms</MenuItem>
+                                <MenuItem value={1}>Pounds</MenuItem>
+                            </Select>
+                        </FormControl> 
+                    </Grid>
+                    
+                    
+                    { LiftId2Name.map( (liftName,i)=><Grid key={i} item xs={4}><FormControl error={SBD[i]?.error}>
                         <InputLabel htmlFor={liftName}>{liftName}</InputLabel>
                         <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName}/>
                         <FormHelperText>{ SBD[i]?.error? SBD[i]?.error : SBD[i]?.weight? "1RM = "+ SBD[i].weight : "Type your best RAW " + liftName }</FormHelperText>
-                    </FormControl> )} 
+                    </FormControl></Grid> )} 
+
+                </Grid>
+  
+
+
+                    
  
 
                 </form>
@@ -258,7 +280,7 @@ export default function SBDStatsPage() {
                 
  
                 
-                <Share gender={gender} inlbs={useLbs} sbd={SBD}/>
+                <Share gender={gender} inlbs={useLbs} sbd={SBD} ageclass={ageClass}/>
  
             
             
@@ -284,15 +306,16 @@ const CatChart = ({ series, inlbs }) => {
             <div>
 
             <Grid container spacing={2}>
-                { series.map( serie=><Grid item xs={4}>
+                { series.map( serie=><Grid item xs={12} md={4}>
  
 
-                    <LinearQualificationBar value={ serie.totalLifts? serie.refIsBestThan/serie.totalLifts : 0} color={serie.color}/> 
 
                     <Typography variant="h4">
                         
                         {LiftId2Name[serie.lift]} { serie.totalLifts>0 && <LiftScore value={serie.refIsBestThan/serie.totalLifts}/> }
                     </Typography>
+                    <LinearQualificationBar value={ serie.totalLifts? serie.refIsBestThan/serie.totalLifts : 0} color={serie.color}/> 
+                    <div>Total lifts: <b>{serie.totalLifts.toLocaleString('en-US')}</b></div>
 
                      <div style={{ fontSize:"1.3em"}}><Divider style={{margin:"10px 0", overflow:"hidden"}}/>
 
@@ -391,6 +414,8 @@ const CatChart = ({ series, inlbs }) => {
           cls = "poor"
       } 
 
+      if(!value) return "";
+
       if( justVerb )
       {
         return <span className={`bg ${cls}`}>{verb}</span>;
@@ -416,7 +441,8 @@ const CatChart = ({ series, inlbs }) => {
                     dl      : data[2],
                     inlbs   : parseInt(data[3]) || 0 ,
                     gender  : parseInt(data[4]) || 0 ,
-                    detected: true
+                    detected: true,
+                    ageclass: parseInt(data[5]) || 0
                 }
             }
             catch(e) 
@@ -426,7 +452,7 @@ const CatChart = ({ series, inlbs }) => {
         }
   }
 
-  const Share = ({ sbd, inlbs, gender }) => {
+  const Share = ({ sbd, inlbs, gender, ageclass }) => {
 
     const [open, setOpen] = useState();
     const closeSnack = ()=>setOpen(false);
@@ -440,7 +466,8 @@ const CatChart = ({ series, inlbs }) => {
          sbd[1]?.rawValue || "",
          sbd[2]?.rawValue || "",
          inlbs,  
-         gender
+         gender,
+         ageclass
     ]//FileCopyIcon  <ShareIcon/> <strong></strong>
 
     const url = "https://weightxreps.net/sbd-stats?load=" + btoa( JSON.stringify(data) );
