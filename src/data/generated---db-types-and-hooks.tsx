@@ -970,6 +970,7 @@ export type SbdStat = {
 
 export type SbdStats = {
   __typename?: 'SBDStats';
+  ageClasses?: Maybe<Array<Maybe<Scalars['String']>>>;
   date: Scalars['String'];
   perclass?: Maybe<Array<Maybe<SbdStat>>>;
   total: Scalars['Int'];
@@ -1249,7 +1250,7 @@ export type GetOfficialExercisesQuery = { __typename?: 'Query', officialExercise
 export type GetSbdStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSbdStatsQuery = { __typename?: 'Query', sbdStats?: { __typename?: 'SBDStats', total: number, date: string, perclass?: Array<{ __typename?: 'SBDStat', graph?: Array<any> | null, graphAge?: Array<any | null> | null, wclass: { __typename?: 'WeightClass', name: string, max: number, min: number, male: boolean } } | null> | null } | null };
+export type GetSbdStatsQuery = { __typename?: 'Query', sbdStats?: { __typename?: 'SBDStats', total: number, date: string, ageClasses?: Array<string | null> | null, perclass?: Array<{ __typename?: 'SBDStat', graph?: Array<any> | null, graphAge?: Array<any | null> | null, wclass: { __typename?: 'WeightClass', name: string, max: number, min: number, male: boolean } } | null> | null } | null };
 
 export type GetCommunityStatsQueryVariables = Exact<{
   etype: Scalars['String'];
@@ -2149,6 +2150,7 @@ export const GetSbdStatsDocument = gql`
       graph
       graphAge
     }
+    ageClasses
   }
 }
     `;
