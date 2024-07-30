@@ -964,6 +964,7 @@ export type RoleDescriptor = {
 export type SbdStat = {
   __typename?: 'SBDStat';
   graph?: Maybe<Array<Scalars['SBDSlot']>>;
+  graphAge?: Maybe<Array<Maybe<Scalars['SBDSlot']>>>;
   wclass: WeightClass;
 };
 
@@ -1248,7 +1249,7 @@ export type GetOfficialExercisesQuery = { __typename?: 'Query', officialExercise
 export type GetSbdStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSbdStatsQuery = { __typename?: 'Query', sbdStats?: { __typename?: 'SBDStats', total: number, date: string, perclass?: Array<{ __typename?: 'SBDStat', graph?: Array<any> | null, wclass: { __typename?: 'WeightClass', name: string, max: number, min: number, male: boolean } } | null> | null } | null };
+export type GetSbdStatsQuery = { __typename?: 'Query', sbdStats?: { __typename?: 'SBDStats', total: number, date: string, perclass?: Array<{ __typename?: 'SBDStat', graph?: Array<any> | null, graphAge?: Array<any | null> | null, wclass: { __typename?: 'WeightClass', name: string, max: number, min: number, male: boolean } } | null> | null } | null };
 
 export type GetCommunityStatsQueryVariables = Exact<{
   etype: Scalars['String'];
@@ -2146,6 +2147,7 @@ export const GetSbdStatsDocument = gql`
         male
       }
       graph
+      graphAge
     }
   }
 }
