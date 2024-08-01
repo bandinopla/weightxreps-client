@@ -49,6 +49,11 @@ export function useEditorAutosave( config:AutoSaveConfig ):AutoSaveReturn {
         getAutosavedText: ()=> {
             let text = localStorage.getItem( config.cacheKey ) || ""
             //localStorage.removeItem( config.cacheKey );
+            let defaultPattern = /^\d{4}-\d{2}-\d{2}\n@ *\d+( *bw)?\s*$/i;
+            if( defaultPattern.test(text) )
+            {
+                return ""; //ignore...
+            }
             return text;
         }
     }

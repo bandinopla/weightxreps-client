@@ -1,3 +1,6 @@
+- 2.30.2 : 2024-08-01
+        * Reported by @Duke309 : the recover autosave popups all the time unnecesarly when editing new days.
+
 - 2.30.1 : 2024-07-30
         * Requested by @Breezy : Add the posibility to filter by age in the SBD Rank.
         * fixed the layout so in mobile the charts stack on top of each other... my bad.
