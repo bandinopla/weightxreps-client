@@ -1,3 +1,6 @@
+- 2.30.3 : 2024-08-08
+        * Bug report by @asambol : in the journals the RPE annotation are persed incorrectly as a reference to a username in some cases.
+        
 - 2.30.2 : 2024-08-01
         * Reported by @Duke309 : the recover autosave popups all the time unnecesarly when editing new days.
 

@@ -27,7 +27,7 @@ const _imgTagMatcher = {
 const _newlineMatcher = { match:/^\s*$/, block: m=>({ type:TYPE.NEWLINE }) }
 
 const _unameMentionMatcher = { 
-    match: /^@([a-z0-9_]+)/i,
+    match: /^@([a-z0-9_]{4,})/i,
     block: m=>({ type:TYPE.UNAME, uname: m[1] })
 }
 
