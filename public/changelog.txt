@@ -1,3 +1,6 @@
+- 2.30.4 : 2024-08-09
+        * Suggested by @asambol : allow RPE values from 1 to 10 instead of just from 6 to 10.
+
 - 2.30.3 : 2024-08-08
         * Bug report by @asambol : in the journals the RPE annotation are persed incorrectly as a reference to a username in some cases.
         
