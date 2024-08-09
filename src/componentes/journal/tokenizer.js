@@ -530,11 +530,11 @@ export const JLogTokenizer = config => {
                             {
                                 const rpe = rpes[i];
 
-                                if( rpe<6 || rpe>10 || (rpe != Math.floor(rpe) && rpe!=Math.floor(rpe)+0.5 ) )
+                                if( rpe<1 || rpe>10 || (rpe != Math.floor(rpe) && rpe!=Math.floor(rpe)+0.5 ) )
                                 { 
                                     offset = rpeString.indexOf( rpe.toString() );
                                     length = rpe.toString().length;
-                                    throw new Error("Invalid RPE. It must be a number between 6 and 10. And only a diference of 0.5 between each. Example: @ 6.5 | You wrote: "+rpe);
+                                    throw new Error("Invalid RPE. It must be a number between 1 and 10. And only a diference of 0.5 between each. Example: @ 6.5 | You wrote: "+rpe);
                                 } 
                             } 
                             
