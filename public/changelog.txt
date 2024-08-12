@@ -1,3 +1,6 @@
+- 2.30.5 : 2024-08-12
+        * Improved the banners using Flux(pro) AI 
+        
 - 2.30.4 : 2024-08-09
         * Suggested by @asambol : allow RPE values from 1 to 10 instead of just from 6 to 10.
 
