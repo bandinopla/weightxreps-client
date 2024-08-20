@@ -7,8 +7,18 @@ export type AutoSaveConfig = {
 export type AutoSaveReturn = { 
     config:AutoSaveConfig, 
     autosave: (text:string)=>void,
-    getAutosavedText: ()=>string
+    getAutosavedText: ()=>string,
+    clear: ( stopAutosaving:boolean )=>void
 }
+
+class LocalStoragePolyfill {
+    setItem = (key: string, value: string) => localStorage?.setItem(key, value);
+    getItem = (key: string) => localStorage?.getItem(key) ?? null;
+    removeItem = (key: string) => localStorage?.removeItem(key);
+    clear = ( ) => localStorage?.clear();
+}
+
+const $lstorage = new LocalStoragePolyfill();
 
 export function useEditorAutosave( config:AutoSaveConfig ):AutoSaveReturn {
  
@@ -29,25 +39,13 @@ export function useEditorAutosave( config:AutoSaveConfig ):AutoSaveReturn {
             clearTimeout( interval.current );
 
             interval.current = window.setTimeout(()=>{
-                try 
-                {
-                    localStorage.setItem( config.cacheKey, text ); 
-                }
-                catch(error) {
-                    
-                    // if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-                    //     console.error('LocalStorage quota exceeded');
-                    // } else {
-                    //     console.error('An error occurred while accessing localStorage', error);
-                    // }
-
-                }
+                $lstorage.setItem(config.cacheKey, text);
                 
             }, 1000 ); 
             
         },
         getAutosavedText: ()=> {
-            let text = localStorage.getItem( config.cacheKey ) || ""
+            let text = $lstorage.getItem( config.cacheKey ) || ""
             //localStorage.removeItem( config.cacheKey );
             let defaultPattern = /^\d{4}-\d{2}-\d{2}\n@ *\d+( *bw)?\s*$/i;
             if( defaultPattern.test(text) )
@@ -55,6 +53,13 @@ export function useEditorAutosave( config:AutoSaveConfig ):AutoSaveReturn {
                 return ""; //ignore...
             }
             return text;
+        },
+        clear: ( stopAutosaving :boolean )=>{
+            $lstorage.removeItem(config.cacheKey)
+            if( stopAutosaving )
+            {
+                clearTimeout( interval.current );
+            }
         }
     }
 

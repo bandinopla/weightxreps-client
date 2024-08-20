@@ -35,7 +35,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
     const saveError = useReactiveVar($jeditorError);
     const [jeditorData, setJeditorData] = useState();
 
-    const { autosave, getAutosavedText } = useEditorAutosave({ 
+    const { autosave, getAutosavedText, clear:clearAutosave } = useEditorAutosave({ 
         cacheKey: `${session.user.id}-autosave`
     });
 
@@ -63,7 +63,10 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
 
         window.addEventListener('jeditor:data', onEventData);
 
-        return ()=>window.removeEventListener('jeditor:data', onEventData )
+        return ()=>{
+            window.removeEventListener('jeditor:data', onEventData )
+            clearAutosave(); // if the user closes the editor, he knows what he is doing...
+        }
 
     }, []);
 
@@ -169,7 +172,9 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                         throw new Error("Unexpected error...");
                     }
                     else 
-                    {
+                    { 
+                        clearAutosave(true); //if everything was saved, clear it since it is already saved...
+
                         // full reload...
                         setTimeout( ()=> window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self"), 2500 );
                        ;
