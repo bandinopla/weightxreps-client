@@ -1,29 +1,18 @@
 
 
 export const todayAsYMD = () => {
-    let d = new Date();
-    let key = d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); 
-    return key.toString().replace(/(\d{4})(\d{2})(\d{2})/,"$1-$2-$3");
-}
+    const d = new Date();
+    return d.toISOString().slice(0, 10);
+};
 
 
-export const dateToYMD = (d, asLocal=false) => { 
-
-    var key; 
-
-    if( asLocal )
-    {
-        key = d.getFullYear ()*10000+(d.getMonth()+1)*100+d.getDate(); 
-    }
-    else 
-    {
-        key = d.getUTCFullYear ()*10000+(d.getUTCMonth()+1)*100+d.getUTCDate(); 
-    }
-    
-
-    return key.toString().replace(/(\d{4})(\d{2})(\d{2})/,"$1-$2-$3");
-}
-
+export const dateToYMD = (d, asLocal = false) => {
+    const year = asLocal ? d.getFullYear() : d.getUTCFullYear();
+    const month = (asLocal ? d.getMonth() : d.getUTCMonth()) + 1;
+    const day = asLocal ? d.getDate() : d.getUTCDate();
+  
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  };
 
 export const date2NiceString = date => {
     let m = date.toString().match(/^(?<day>\w+) (?<month>\w+) (?<date>\d+) (?<year>\d+)/);
@@ -38,34 +27,23 @@ export const ymd2date = (ymd, asUTC)=> {
     return new Date( ymd.substr(0,4), Number(ymd.substr(5,2))-1, ymd.substr(8) ) 
 };
 
-
-/** 
- * @param {[Object]} objects  
+/**
+ * Deeply merges an array of objects
+ * @param {Object[]} objects - Array of objects to merge
+ * @returns {Object} Merged object
  */
-export const mergeObjects = objects => {
-
-    let result = {};
- 
-     objects.forEach( obj => {
-
-        //pegamos todas las propidedades en result
-        Object.keys(obj).forEach( prop=> {
-
-            if( result.hasOwnProperty(prop) && (typeof result[prop]=='object') && (typeof obj[prop]=='object'))
-            {
-                //si ambos son object... 
-                // merge!!
-                result[prop] = mergeObjects( [ result[prop], obj[prop] ] );
-                return;
-            }
-
-            result[prop] = obj[prop];
-        });
-
-     });
-
-     return result;
-}
+export const mergeObjects = (objects) => {
+    return objects.reduce((result, obj) => {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (result.hasOwnProperty(key) && typeof result[key] === 'object' && typeof value === 'object') {
+          result[key] = mergeObjects([result[key], value]);
+        } else {
+          result[key] = value;
+        }
+      });
+      return result;
+    }, {});
+  };
 
 
 export const isEmail = txt => txt.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)!=null;

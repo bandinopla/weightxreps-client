@@ -60,112 +60,115 @@ export default function FirebaseLoginPage()
     //
     // Firebase UI setup
     //
-    useEffect(async () => {  
+    useEffect(()=>{
+        let func = async () => {  
 
-        // Wait in case the firebase UI instance is being deleted.
-        // This can happen if you unmount/remount the element quickly.
-        await firebaseUiDeletion;
-
-        const ui    = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth); 
-
-        ui.reset(); //ig signin flow = popup 
-
-
-        // const unsub = auth.onAuthStateChanged( user => { 
- 
-        //     if( user ) 
-        //     {  
-        //         // auth.currentUser
-        //         //     .getIdToken(false)
-        //         //     .then( setAccessToken ); 
-        //     }
-        // }); 
-
-
-        ui.start(ref.current, {
-            signInOptions: [ 
-                {
-                    provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                    scopes:["email"]
-                },
-                firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-                {
-                    provider:firebase.auth.GithubAuthProvider.PROVIDER_ID,
-                    scopes:["read:user","user:email"]
-                },
-                // {
-                //     provider:firebase.auth.PhoneAuthProvider.PROVIDER_ID,  
-                //     recaptchaParameters: {
-                //         size:"normal"
-                //     }
-                // }
-            ],
-
-            autoUpgradeAnonymousUsers:true,
-            callbacks: {
-                uiShown: function () {
-                    //... se mostro el UI
-                },
-
-                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-
-                    // console.log("LOGIN SUCCESS:", authResult)
-                    // var user = authResult.user;
-                    // var credential = authResult.credential;
-                    // var isNewUser = authResult.additionalUserInfo.isNewUser;
-                    // var providerId = authResult.additionalUserInfo.providerId;
-                    // var operationType = authResult.operationType;
-                    // var idToken = authResult.user.accessToken; 
-                    // accessToken.current = authResult.user.accessToken;
-                    // console.log("LOAGUEADOS CON FIREBASE", authResult.user)
-                    
- 
-                    //
-                    // let's ignore this because most people won't want to use the same username as their google or whatever account
-                    //
-                    //const possibleUsername = authResult.user.displayName.toLowerCase().replace(/[^a-z0-9_]+/,"");
-                    
-                    auth.currentUser.getIdToken(false).then( callLogin );
-
-                    
-
-                    // Do something with the returned AuthResult.
-                    // Return type determines whether we continue the redirect
-                    // automatically or whether we leave that to developer to handle.
-                    //console.log("Chequear que el login sea correcto ---->", idToken)
-
-                    // login({variables:{ token:idToken} }).then( res => {
-                    //     console.log("LOGIN RESULT: "+res.data.loginWithFirebase);
-                    // }, err=>console.error(error));
-
-                    return false;// Avoid redirects after sign-in.
-                },
-
-                signInFailure: (error) => setOpError(error.message) 
-
-
-            },
-
-
-            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-            signInFlow: "popup",
-            //signInSuccessUrl:"/",
-
-            // Terms of service url.
-            tosUrl: '/terms-of-service',
-            // Privacy policy url.
-            privacyPolicyUrl: '/privacy-policy'
-        });
- 
-
-        return async () => {
-
+            // Wait in case the firebase UI instance is being deleted.
+            // This can happen if you unmount/remount the element quickly.
             await firebaseUiDeletion;
-            //unsub(); 
-            firebaseUiDeletion = ui.delete();
-            await firebaseUiDeletion; 
+    
+            const ui    = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth); 
+    
+            ui.reset(); //ig signin flow = popup 
+    
+    
+            // const unsub = auth.onAuthStateChanged( user => { 
+     
+            //     if( user ) 
+            //     {  
+            //         // auth.currentUser
+            //         //     .getIdToken(false)
+            //         //     .then( setAccessToken ); 
+            //     }
+            // }); 
+    
+    
+            ui.start(ref.current, {
+                signInOptions: [ 
+                    {
+                        provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                        scopes:["email"]
+                    },
+                    firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+                    {
+                        provider:firebase.auth.GithubAuthProvider.PROVIDER_ID,
+                        scopes:["read:user","user:email"]
+                    },
+                    // {
+                    //     provider:firebase.auth.PhoneAuthProvider.PROVIDER_ID,  
+                    //     recaptchaParameters: {
+                    //         size:"normal"
+                    //     }
+                    // }
+                ],
+    
+                autoUpgradeAnonymousUsers:true,
+                callbacks: {
+                    uiShown: function () {
+                        //... se mostro el UI
+                    },
+    
+                    signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+    
+                        // console.log("LOGIN SUCCESS:", authResult)
+                        // var user = authResult.user;
+                        // var credential = authResult.credential;
+                        // var isNewUser = authResult.additionalUserInfo.isNewUser;
+                        // var providerId = authResult.additionalUserInfo.providerId;
+                        // var operationType = authResult.operationType;
+                        // var idToken = authResult.user.accessToken; 
+                        // accessToken.current = authResult.user.accessToken;
+                        // console.log("LOAGUEADOS CON FIREBASE", authResult.user)
+                        
+     
+                        //
+                        // let's ignore this because most people won't want to use the same username as their google or whatever account
+                        //
+                        //const possibleUsername = authResult.user.displayName.toLowerCase().replace(/[^a-z0-9_]+/,"");
+                        
+                        auth.currentUser.getIdToken(false).then( callLogin );
+    
+                        
+    
+                        // Do something with the returned AuthResult.
+                        // Return type determines whether we continue the redirect
+                        // automatically or whether we leave that to developer to handle.
+                        //console.log("Chequear que el login sea correcto ---->", idToken)
+    
+                        // login({variables:{ token:idToken} }).then( res => {
+                        //     console.log("LOGIN RESULT: "+res.data.loginWithFirebase);
+                        // }, err=>console.error(error));
+    
+                        return false;// Avoid redirects after sign-in.
+                    },
+    
+                    signInFailure: (error) => setOpError(error.message) 
+    
+    
+                },
+    
+    
+                // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+                signInFlow: "popup",
+                //signInSuccessUrl:"/",
+    
+                // Terms of service url.
+                tosUrl: '/terms-of-service',
+                // Privacy policy url.
+                privacyPolicyUrl: '/privacy-policy'
+            });
+     
+    
+            return async () => {
+    
+                await firebaseUiDeletion;
+                //unsub(); 
+                firebaseUiDeletion = ui.delete();
+                await firebaseUiDeletion; 
+            }
+    
         }
-
+        func();
     }, [ accessToken ]);
 
 

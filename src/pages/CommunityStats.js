@@ -142,7 +142,7 @@ function CommunityStatsPage({ match:{  path, url, params:{ filtermask } } }) {
         
     }, [urlParams, official]);  
  
-    useEffect(()=>$OnStatsResponse(loading? false : data), [ data?.communityStats, loading ]);
+    useEffect(()=>{$OnStatsResponse(loading? false : data)}, [ data?.communityStats, loading ]);
 
     const _setClassName = (remove, add)=> {
         var cn = div.current.className;
@@ -368,7 +368,7 @@ const StatsFilterControls = ({ busy, gender, period, etype, data:officialExercis
                     value={etype}
                     defaultValue={0}
                 >
-                    { officialExercises?.map( (e,i)=>(<MenuItem value={e.id}>{ e.variants[0] }</MenuItem>) ) } 
+                    { officialExercises?.map( (e,i)=>(<MenuItem key={i} value={e.id}>{ e.variants[0] }</MenuItem>) ) } 
                 </Select>
             </FormControl> }
 

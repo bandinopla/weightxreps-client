@@ -1,15 +1,12 @@
-import { useEffect, useLayoutEffect, useState } from 'react'; 
-import { getOrCreateSettingsHandler } from '../utils/local-storage-settings'; 
-import { useGetSessionQuery, useLoginMutation, UserFieldsFragmentDoc } from '../data/generated---db-types-and-hooks'; 
-import { gql } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import { getOrCreateSettingsHandler } from '../utils/local-storage-settings';
+import { useGetSessionQuery, useLoginMutation } from '../data/generated---db-types-and-hooks';
 import { useInbox } from './inbox-manager';
 
 
 const SESSION_TOKEN = 'token'; 
 
-
-var UID = 0;
-var SETTINGS = getOrCreateSettingsHandler( "guest", settings=>{
+var GUEST_SETTINGS = getOrCreateSettingsHandler( "guest", settings=>{
     settings.convertDisplayUnits        = false;
     settings.notificationsLastSeenDate  = null;
     settings.inboxLastSeenDate          = null;
@@ -17,52 +14,7 @@ var SETTINGS = getOrCreateSettingsHandler( "guest", settings=>{
     settings.rankSetType                = 0;    
 });
 
-export const SessionPolicies = {
-
-    SessionInfo: {
-        fields: {
-            user: {
-                read( user,  a ) {
-
-                    if(user)
-                    {
-                        UID = parseInt( user.__ref.split(":")[1] );  //<-- i could cache.readFragment but im Mr. Optimization guy....
-
-                        SETTINGS = getOrCreateSettingsHandler( UID, settings=>{
-                            settings.convertDisplayUnits        = false;
-                            settings.notificationsLastSeenDate  = null;
-                            settings.inboxLastSeenDate          = null;
-                            settings.firstDayOfWeek             = 0; //sunday
-                            settings.rankSetType                = 0;    
-                        });
-                    }
-                    else 
-                    {
-                        UID = 0;
-                        //SETTINGS = null; 
-                    }
-
-                    
-                    
-                    // este es el current logged in user. 
-                    // Return the cached name, transformed to upper case 
-                    // const result = a.cache.readFragment({
-                    //     id: a.cache.identify(user),
-                    //     fragment: gql`
-                    //       fragment UserDummy on User {
-                    //         id 
-                    //         uname
-                    //       }
-                    //     `,
-                    //   }); 
- 
-                    return user;
-                  }
-            }
-        }
-    } 
-
-} 
+export const SessionPolicies = {} 
 
 
 //export const getAuthorizationHeaderValue = ()=> $token() || "" ;
@@ -82,8 +34,15 @@ export const getAuthorizationHeaders = ()=> {
  */
 export const useGetSession = ()=> {
 
-    const { data, loading, error, client, refetch }         = useGetSessionQuery({ notifyOnNetworkStatusChange:true });   
+    const { data, loading, error }                          = useGetSessionQuery({ notifyOnNetworkStatusChange:true });   
     const uid                                               = data?.getSession?.user.id;
+    const SETTINGS                                          = uid? getOrCreateSettingsHandler( uid, settings=>{
+                                                                                                settings.convertDisplayUnits        = false;
+                                                                                                settings.notificationsLastSeenDate  = null;
+                                                                                                settings.inboxLastSeenDate          = null;
+                                                                                                settings.firstDayOfWeek             = 0; //sunday
+                                                                                                settings.rankSetType                = 0;    
+                                                                                            }) : GUEST_SETTINGS
     const messages                                          = useInbox(1, uid, SETTINGS);
     const notifications                                     = useInbox(2, uid, SETTINGS);
 

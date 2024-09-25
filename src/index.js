@@ -1,5 +1,5 @@
  
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
@@ -17,18 +17,14 @@ console.log("Client source code: https://github.com/bandinopla/weightxreps-clien
 console.log("Server source code: https://github.com/bandinopla/weightxreps-server");
 console.log("-----------------------------------------------------");
 
-// replace console.* for disable log on production
-if (process.env.NODE_ENV === 'production') {
-    console.log = () => {} ; //block console logs.
-}
 
 
 
-ReactDOM.render(
+createRoot(document.getElementById('root'))
+.render(
   //<React.StrictMode>
     <App /> 
-  //</React.StrictMode>,
-  ,document.getElementById('root')
+  //</React.StrictMode>, 
 );
 
 // If you want to start measuring performance in your app, pass a function

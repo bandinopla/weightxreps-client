@@ -166,7 +166,7 @@ export default function AboutPage() {
                 <Divider/><br/>
                 { loadingAnnouncements && <AsciiSpinner label="Loading announcements..."/> }
                 { error2 && <Alert severity="error">{ parseError(error2)}</Alert> }
-                { announcements?.getAnnouncements.map( announcement =><Announcement item={announcement}/> )}
+                { announcements?.getAnnouncements.map( announcement =><Announcement key={announcement.id} item={announcement}/> )}
             </Box>
         </Grid>
 

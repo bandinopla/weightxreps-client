@@ -7,6 +7,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest 
 
+    env:
+      IMAGE_INLINE_SIZE_LIMIT: '0'
+
     strategy:
       matrix:
         node-version: [14.x]

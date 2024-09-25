@@ -148,7 +148,7 @@ export default function CommunityStatsSoftBox({ match:{  path, url, params:{ fil
         {!data && <LinearProgress/>}
         {facts && <> <div className={classes.box}>
             
-            { facts.map(fact=>(<div className={ fact.big? "big" : fact.small?"small" : ""}>
+            { facts.map((fact,i)=>(<div key={i} className={ fact.big? "big" : fact.small?"small" : ""}>
                                     <div>{fact.val}</div> 
                                     <div>{fact.lbl}</div> 
                                 </div>))}

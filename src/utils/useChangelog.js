@@ -1,34 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from 'react';
 
-var changeLogText;
+/** @type {Promise<string>} */
+let changeLogLoader;
 
-export const useChangelog = ()=>{
+export const useChangelog = () => {
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const [changelog, setContent] = useState();
-    const [error, setError] = useState();
-    const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let isMounted = true; 
 
-    useEffect(async () => {
+    const fetchChangeLog = async () => {
 
-        try {
-            if( !changeLogText )
-            {
-                changeLogText = fetch("/changelog.txt").then( resp=>resp.text());
-            } 
-
-            const txt = await changeLogText;
-
-            setLoading(false);
-            setContent(txt);
+        if(!changeLogLoader) {
+            changeLogLoader = fetch('/changelog.txt').then(resp=>resp.text());
         }
-        catch (e) {
-            setError("Failed to load the log for some reason...");
-        } 
 
-    }, []);
+      try { 
+        const text = await changeLogLoader;
+        if (isMounted) {
+          setContent(text);
+          setLoading(false);
+        }
+      } catch (e) {
+        if (e.name !== 'AbortError' && isMounted) {
+          setError('Failed to load the changelog. Please try again later.');
+          setLoading(false);
+        }
+      }
+    };
 
-    return {
-        changelog, error, loading
-    }
+    fetchChangeLog();
 
-}
+    return () => {
+      isMounted = false; 
+    };
+  }, []);
+
+  return { changelog:content, loading, error };
+};
+ 

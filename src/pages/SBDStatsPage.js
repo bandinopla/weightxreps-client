@@ -217,7 +217,7 @@ export default function SBDStatsPage() {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                    <iframe style={{maxWidth:"100%"}} width="560" height="215" src="https://www.youtube.com/embed/Q7XUBA6VtZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe style={{maxWidth:"100%"}} width="560" height="215" src="https://www.youtube.com/embed/Q7XUBA6VtZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     <Instructions/>
                     </Grid>
 
@@ -306,7 +306,7 @@ const CatChart = ({ series, inlbs }) => {
             <div>
 
             <Grid container spacing={2}>
-                { series.map( serie=><Grid item xs={12} md={4}>
+                { series.map( serie=><Grid key={serie.lift} item xs={12} md={4}>
  
 
 

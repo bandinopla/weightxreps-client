@@ -31,22 +31,14 @@ import { UTagsPolicy } from "../componentes/journal/tags";
 import { VideosCachePolicy } from "./videos-policy";
 import { ForumPolicy } from "../forum/forum-policy";
 
-//   const httpLink = createHttpLink({
-//     uri:"http://localhost:4000/graphql",
-//   });
+const { REACT_APP_REMOTE_SERVER, NODE_ENV } = process.env;
 
-var $serverURI = "http://localhost:4000/graphql";
-
-if (process.env.REACT_APP_REMOTE_SERVER == "staging") {
-	$serverURI = "https://staging.weightxreps.net/wxr-server-2/graphql";
-} else if (process.env.REACT_APP_REMOTE_SERVER == "production") {
-	$serverURI = "https://weightxreps.net/wxr-server-2/graphql";
-} else if (process.env.NODE_ENV == "production") {
-	$serverURI = "/wxr-server-2/graphql";
-}
+const $serverURI = REACT_APP_REMOTE_SERVER === "staging" 				 ? "https://staging.weightxreps.net/wxr-server-2/graphql"
+  				 : REACT_APP_REMOTE_SERVER === "production" 			 ? "https://weightxreps.net/wxr-server-2/graphql"
+  				 : REACT_APP_REMOTE_SERVER ?? (NODE_ENV === "production" ? "/wxr-server-2/graphql"
+    																	 : "http://localhost:4000/graphql");
 
 const httpLink = createUploadLink({
-	//TODO: endoint
 	uri: $serverURI,
 });
 
@@ -107,47 +99,30 @@ export const DBProvider = (props) => (
 // para logout: client.resetStore()   - el client lo da el hook useQuery
 
 export const parseError = (error) => {
-	var rtrn;
-
-	if (typeof error == "string") {
-		rtrn = "Oops! " + error;
+	let message;
+  
+	if (typeof error === "string") {
+	  message = `Oops! ${error}`;
 	} else if (error.networkError) {
-		let m =
-			error.networkError.result?.errors[0].message ||
-			error.networkError.message;
-
-		rtrn = m; //m.substr( m.indexOf("#") );
-	} else if (error.graphQLErrors) {
-		let e = error.graphQLErrors[0];
-
-		// console.log( e )
-
-		// if( e?.extensions?.code=='INTERNAL_SERVER_ERROR')
-		// {
-		//     return "Something went wrong on the server :/";
-		// }
-		rtrn = error.graphQLErrors[0].message;
-	} else if (typeof error.message == "string") {
-		if (error.message == "Failed to fetch") {
-			rtrn = "Can't connect to the internet";
-		} else {
-			rtrn = error.message;
-		}
+	  message = error.networkError.result?.errors?.[0]?.message || error.networkError.message;
+	} else if (error.graphQLErrors?.length) {
+	  message = error.graphQLErrors[0].message;
+	} else if (typeof error.message === "string") {
+	  message = error.message === "Failed to fetch" 
+		? "Can't connect to the internet" 
+		: error.message;
 	}
-
-	if (rtrn == "NOTSOK") {
-		return (
-			<>
-				Feature restricted to <strong>active supporters</strong> only. (Must
-				have donated recently)
-			</>
-		);
+  
+	if (message === "NOTSOK") {
+	  return (
+		<>
+		  Feature restricted to <strong>active supporters</strong> only. (Must have donated recently)
+		</>
+	  );
 	}
-
-	//
-	// track error...
-	//
-	trackError(rtrn);
-
-	return rtrn;
-};
+  
+	// Track error
+	trackError(message);
+  
+	return message;
+  };

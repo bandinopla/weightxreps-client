@@ -51,7 +51,7 @@ const XWidget = ({ children })=>{
 
 export const LatestTweets = ()=>{ 
     return <XWidget>
-        <a class="twitter-timeline" data-tweet-limit="3" href="https://twitter.com/weight_x_reps?ref_src=twsrc%5Etfw">Loading latest tweets...</a>  
+        <a className="twitter-timeline" data-tweet-limit="3" href="https://twitter.com/weight_x_reps?ref_src=twsrc%5Etfw">Loading latest tweets...</a>  
     </XWidget>
 }
 
