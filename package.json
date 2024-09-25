@@ -5,6 +5,34 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/bandinopla/weightxreps-client.git"
+  }, 
+  "scripts": {
+    "start": "react-app-rewired start",
+    "start:staging": "cross-env REACT_APP_REMOTE_SERVER=staging react-app-rewired start",
+    "start:production": "cross-env REACT_APP_REMOTE_SERVER=production react-app-rewired start",
+    "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
+    "test-build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "version": "node src/utils/increase-build-number.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
@@ -46,34 +74,6 @@
     "workbox-precaching": "^7.1.0",
     "workbox-routing": "^7.1.0",
     "workbox-strategies": "^7.1.0"
-  },
-  "scripts": {
-    "start": "react-app-rewired start",
-    "start:staging": "cross-env REACT_APP_REMOTE_SERVER=staging react-app-rewired start",
-    "start:production": "cross-env REACT_APP_REMOTE_SERVER=production react-app-rewired start",
-    "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
-    "test-build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "version": "node increase-build-number.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

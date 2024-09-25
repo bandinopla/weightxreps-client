@@ -1,7 +1,11 @@
-![Logo](public/session-banner.jpg)
+![Logo](public/session-banner.jpg) 
 
-# Welcome
-I am thrilled to announce that I am releasing my [backend code](https://github.com/bandinopla/weightxreps-server) and [frontend code](https://github.com/bandinopla/weightxreps-client) to the community as open source. This has been a long-time goal of mine and I am excited to see the impact it will have. 
+<div align="center">
+  <a href="https://weightxreps.net/">Home</a> | <a href="https://weightxreps.net/about">About</a> | <a href="https://weightxreps.net/changelog">Changelog</a>
+</div>
+
+# Welcome!
+I am thrilled to announce 😂 that I am releasing my [backend code](https://github.com/bandinopla/weightxreps-server) and [frontend code](https://github.com/bandinopla/weightxreps-client) to the community as open source. This has been a long-time goal of mine and I am excited to see the impact it will have. 
 
 By making the code available to all, I am hoping to attract contributions from other developers that can help enhance the codebase. This will result in a stronger and more reliable code, as well as promote collaboration and creativity within the community. 
 
@@ -15,25 +19,26 @@ This is the code for the front-end side of http://weightxreps.net
 
 This is a [React App](https://reactjs.org/) that was created with [Create React App](https://create-react-app.dev/) and it uses [Apollo Client](https://www.apollographql.com/docs/react/) to comunicate with the server vía [GraphQL](https://graphql.org/) using Hooks created with a [GraphQL Code Generator](https://www.npmjs.com/package/@graphql-codegen/cli) by the backend side during development.
 
-> If you are developing both backend and front end, clone both repos into a folder and name each folder `client` and `server`. This is required because the sever [generates code](https://the-guild.dev/graphql/codegen) and goes one level up and expect a client folder to exist... these files will be dynamically created:
+If you are developing both backend and front end, know that the sever must[generates code](https://the-guild.dev/graphql/codegen) after modifying the gpahql schema, and the 2 files it will generate must be copyed to the client (these contain the react hooks the client use to interact with the graphql server):
     - `generated---db-introspection.json`
     - `generated---db-types-and-hooks.tsx`
 
 ---
 
-## :coffee: Run local dev client
-To run this if [you have the dev server](https://github.com/bandinopla/weightxreps-server) also running in your machine ( at localhost:4000/graphql), run:
+## :coffee: Run client 
+I'm using [github codespaces](https://github.com/features/codespaces) to edit the code, it uses the `.devcontainer` folder to create a dev environment ready to go. You can open this in [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) too.
 
-```
-npm run start
-```
-If you don't have a local database and want to use the real data from the site, run:
+1. To develop while pointing to the live website endpoint (will use real data)
 
 ```
 npm run start:production
 ```
-:warning: NOTE: This will we the same as visiting the site weightxreps.net the data will be all real because the client will point to the production graphql endpoint.
+>:warning: This will we the same as visiting the site weightxreps.net the data will be all real because the client will point to the production graphql endpoint.
 
+2. If you are also [running the backend](https://github.com/bandinopla/weightxreps-server), to connect to it, declare an env var (see .env.example) `REACT_APP_REMOTE_SERVER` and give it the full url to the server endpoint including the `/graphql` at the end (not just the host) and run:
+```
+npm run start
+```
 
 ---
 ## :eyes: Some key stuff to know...
