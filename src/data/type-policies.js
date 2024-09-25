@@ -7,7 +7,8 @@ const fake = {};
 
 export const __resolveReferencedUserId = {
     read( current, { cache } ) {
-
+ 
+        if( isNaN(current) ) return current;
 
         return cache.readFragment({
             id: 'User:'+current, // The value of the to-do item's unique identifier
