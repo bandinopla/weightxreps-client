@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import { ServiceWorkerStatus } from './componentes/service-worker-status-ui';
+import { ServiceWorkerStatus } from './componentes/service-worker-status-ui'; 
 
 
 console.log(`▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -23,7 +23,7 @@ console.log("-----------------------------------------------------");
 createRoot(document.getElementById('root'))
 .render(
   //<React.StrictMode>
-    <App /> 
+    <App />  
   //</React.StrictMode>, 
 );
 

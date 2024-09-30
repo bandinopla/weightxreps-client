@@ -138,10 +138,6 @@ export const MainMenuDrawer = ()=>{
     const [show, setShow] = useState(false);
 
 
-    useEffect(()=>{
-        if( !user.loadingSession ) 
-            document.body.classList.add("appReady"); 
-    },[user.loadingSession]);
 
     useEffect(()=>{
 

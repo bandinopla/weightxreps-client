@@ -52,6 +52,7 @@ import { VisualPreferencesSwitcher } from './componentes/VisualPreferencesSwitch
 import { SwipeableDrawer } from './componentes/SwipableDrawer';
 import { ServiceWorkerStatusDisplay } from './componentes/service-worker-status-ui';
 import GitHubButton from 'react-github-btn'
+import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
 
 window.fetch = (url, config)=>{
     return fetchPolyfill(url, config)
@@ -123,8 +124,8 @@ const useStyles = makeStyles( theme=>({
 function App() {
 
     const sidebarRef = useRef();
-    const cls = useStyles();
-
+    const cls = useStyles(); 
+ 
 
     return (<> 
 
@@ -138,57 +139,60 @@ function App() {
                 <ExercisesModal/> 
                 <TrackPageView/>
  
-                <div className={ cls.root }>
-                    <div className={ cls.menubar }>  
-                            <MainMenuDrawer/>
-                    </div>
+                <Switch>
+                    <Route path="/oauth" component={OAuthAuthorizationPage}/> 
+                    <Route>
 
-                    <div className={ cls.content }>  
-                            {/* <Home /> */}
-                            <Suspense fallback={<LinearProgress />}>
-                                <Switch>
-                                    <Route path="/" exact component={UserHome} />  
-                                    <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStats} />    
-                                    <Route path="/explore">
-                                        <MainBanner /> 
-                                        {/* <Home activator /> */}
-                                        <ActivityFeed type="global" />
-                                    </Route>
-                                    <Route path="/unsub" component={UnsubFromEmails}/> 
-                                    <RoutePage path="/videos" component={VideosPage}/> 
-                                    <RoutePage path="/sbd-stats" component={SBDStatsPage} />
-                                    <RoutePage path="/forum" component={ForumPage} />
-                                    <Route path="/donate" component={DonatePage}/> 
-                                    <Route path="/faq" component={HelpPage}/> 
-                                    <Route path="/about" component={AboutPage}/> 
-                                    <RoutePage path="/settings" sessionOnly  component={SettingsPage} Icon={SettingsIcon} title="Settings"/>
-                                    <RoutePage path="/messages" sessionOnly component={PageMessages} />
-                                    <RoutePage path="/notifications" sessionOnly component={PageNotifications} /> 
-                                    <RoutePage path="/changelog" component={ChangelogPage} title="Changelog" Icon={ScheduleRoundedIcon}/>
-                                    <Route path="/journal/:uname/personal-records--:eid(\d+)" component={PersonalRecordsPage}/>
-                                    <Route path="/journal/:uname" component={JournalBase} /> 
-                                    {/* <RoutePage path="/color" sessionOnly component={ColorThemePage} title={false}/>  */}
-                                    <Route path="/terms-of-service" component={TermsOfServicePage}/> 
-                                    <Route path="/privacy-policy" component={PrivacyPolicyPage}/> 
-                                </Switch>
-                            </Suspense>
-                        
-                    </div>
+                                <div className={ cls.root }>
+                                <div className={ cls.menubar }>  
+                                        <MainMenuDrawer/>
+                                </div>
 
-                    <div className={ cls.sidebar } ref={sidebarRef}>  
+                                <div className={ cls.content }>  
+                                        {/* <Home /> */}
+                                        <Suspense fallback={<LinearProgress />}>
+                                            <Switch>
+                                                <Route path="/" exact component={UserHome} />  
+                                                <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStats} />    
+                                                <Route path="/explore">
+                                                    <MainBanner /> 
+                                                    {/* <Home activator /> */}
+                                                    <ActivityFeed type="global" />
+                                                </Route>
+                                                <Route path="/unsub" component={UnsubFromEmails}/> 
+                                                <RoutePage path="/videos" component={VideosPage}/> 
+                                                <RoutePage path="/sbd-stats" component={SBDStatsPage} />
+                                                <RoutePage path="/forum" component={ForumPage} />
+                                                <Route path="/donate" component={DonatePage}/> 
+                                                <Route path="/faq" component={HelpPage}/> 
+                                                <Route path="/about" component={AboutPage}/> 
+                                                <RoutePage path="/settings" sessionOnly  component={SettingsPage} Icon={SettingsIcon} title="Settings"/>
+                                                <RoutePage path="/messages" sessionOnly component={PageMessages} />
+                                                <RoutePage path="/notifications" sessionOnly component={PageNotifications} /> 
+                                                <RoutePage path="/changelog" component={ChangelogPage} title="Changelog" Icon={ScheduleRoundedIcon}/>
+                                                <Route path="/journal/:uname/personal-records--:eid(\d+)" component={PersonalRecordsPage}/>
+                                                <Route path="/journal/:uname" component={JournalBase} /> 
+                                                {/* <RoutePage path="/color" sessionOnly component={ColorThemePage} title={false}/>  */}
+                                                <Route path="/terms-of-service" component={TermsOfServicePage}/> 
+                                                <Route path="/privacy-policy" component={PrivacyPolicyPage}/> 
+                                            </Switch>
+                                        </Suspense>
+                                    
+                                </div>
 
-                            <AppSideBar/>
-  
-                    </div>
-                </div>
+                                <div className={ cls.sidebar } ref={sidebarRef}>  
+
+                                        <AppSideBar/>
+            
+                                </div>
+                            </div>
+                    </Route>
+                </Switch>
+
 
                 </Router>
             </ThemeSwitcher>
-        </DBProvider>
-
-
-
-
+        </DBProvider> 
     </>);
 }
  

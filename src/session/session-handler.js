@@ -52,11 +52,19 @@ export const useGetSession = ()=> {
         
     }  
 
-    /**
-     * 
+    useEffect(()=>{
+        if( data )
+        {
+            document.body.classList.add("appReady")
+        }
+    },[data])
+
+    /** 
+     * Reloads the session token.
      * @param {string|boolean|undefined} newToken FALSE=logout, "abc"=set session token and refetch, null=refetch
+     * @returns {string} the new sesison token.
      */
-    const reload = async newToken => {
+    const reload = async (newToken, reloadPage=true) => {
 
         if( newToken===false )
         {
@@ -67,7 +75,10 @@ export const useGetSession = ()=> {
             localStorage.setItem( SESSION_TOKEN, newToken );
         }
  
-        window.location.reload();
+        if( reloadPage )
+            window.location.reload();
+
+        return newToken
 
         // return await client.resetStore()
         //                     .catch(e => {
@@ -113,13 +124,13 @@ export const useLogin = ()=> {
     const [ doLogin, { data, loading, error, client }] = useLoginMutation() ; 
    
 
-    const _doLogin = async (u, p)=>{
+    const _doLogin = async (u, p, reloadAfterLogin=true )=>{
 
         const result = await doLogin({ variables:{ u, p } });
 
         if( result.data?.login )
-        {  
-            return await reload( result.data.login ); 
+        {   
+            return await reload( result.data.login, reloadAfterLogin );
         }
         else 
         {

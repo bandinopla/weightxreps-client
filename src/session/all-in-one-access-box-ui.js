@@ -12,6 +12,7 @@ import { useForgotMutation, useSignupMutation, useVerifySignupMutation } from ".
 import { AsciiSpinner } from "../componentes/ascii-spinner";
 import { Alert } from "@material-ui/lab";
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import { useUILoginHook } from "./onUILoginHook";
 
 const Input = withStyles({
     root: {
@@ -60,7 +61,7 @@ const useStyles = makeStyles( theme => ({
         height:12,
 
         "& > strong": {
-            background: "black",
+            background: theme.palette.background.default ,
             display:"inline-block",
             padding:"0px 10px"
         }
@@ -73,8 +74,16 @@ const useStyles = makeStyles( theme => ({
 
 }))
 
+/**
+ * @typedef {Object} AllInOneProps
+ * @property {boolean} [disableCreateAccount] - If that functionality should be hidden
+ * @property {(uid:Number)=>bool} [onUserLogin] -callback to intercept when the user has been identified and prevent the default behaviour (if return ture).
+ */
 
-export const AllInOneAccessBox =  ()=> {
+/**
+ * @param {AllInOneProps} props
+ */
+export const AllInOneAccessBox = ({ disableCreateAccount, onUserLogin })=> {
  
     const [useEmail, setUseEmail]       = useState(); 
     const [error, setError]             = useState(); 
@@ -145,8 +154,11 @@ export const AllInOneAccessBox =  ()=> {
         
             <Typography gutterBottom className={classes.OR}>
                 <strong>OR</strong></Typography>
-            <Button variant="contained" color="primary" fullWidth onClick={()=>setUseEmail(true)} startIcon={<VpnKeyIcon/>}>Login with email</Button><br /><br /> 
-            <Button variant="contained" className="fancy" fullWidth onClick={()=>setUseEmail(false)} startIcon={<AddIcon/>}>CREATE ACCOUNT</Button><br /><br /> 
+            <Button variant="contained" color="primary" fullWidth onClick={()=>setUseEmail(true)} startIcon={<VpnKeyIcon/>}>Login with email</Button>
+            
+            {!disableCreateAccount && <><br /><br /> 
+                <Button variant="contained" className="fancy" fullWidth onClick={()=>setUseEmail(false)} startIcon={<AddIcon/>}>CREATE ACCOUNT</Button></>}
+            <br /><br /> 
         </Box>
     </>;
 };
@@ -164,6 +176,7 @@ const LoginBox = ({ busyState:[ busy, setBusy ], errorState:[ error, setError] }
     const execLogin         = useLogin();
     const [execForgot]      = useForgotMutation();
     const [forgotSent, setForgotSent] = useState(false);
+    const onLoginHook       = useUILoginHook();
 
     const login = ()=>{
 
@@ -176,8 +189,16 @@ const LoginBox = ({ busyState:[ busy, setBusy ], errorState:[ error, setError] }
         setBusy(true);
         setForgotSent(false);
 
-        execLogin(username, password) // on resolve this will location.reload()
+        execLogin(username, password, !onLoginHook ) // on resolve this will location.reload()
+ 
+            .then( sessionToken =>{
 
+                if( onLoginHook )
+                {
+                    onLoginHook( sessionToken );
+                }
+
+            })
             .catch( err=>{
                 setBusy(false);
                 setError(err);
