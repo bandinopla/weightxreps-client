@@ -65,9 +65,12 @@ function VideosPage() {
 				})}
 			</Grid>
 
-            <Box textAlign={"center"} padding={2}>
-            <FetchMoreButton fetchMore={ ()=>fetchMore({ variables: { olderThan: data.getVideos[data.getVideos.length-1].when } }).then( resp=>resp.data.getVideos?.length>0 ) }/>
-            </Box>
+            {
+                data.getVideos?.length>0 && <Box textAlign={"center"} padding={2}>
+                <FetchMoreButton fetchMore={ ()=>fetchMore({ variables: { olderThan: data.getVideos[data.getVideos.length-1].when } }).then( resp=>resp.data.getVideos?.length>0 ) }/>
+                </Box>
+            }
+            
             
 		</div>
 	);
