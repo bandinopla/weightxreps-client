@@ -36,10 +36,9 @@ registerRoute(
     // If this isn't a navigation, skip.
     if (request.mode !== 'navigate') {
       return false;
-    }
+    } 
 
-    if( excludeRoutes.includes(url.pathname)  )
-    {
+    if (excludeRoutes.some(route => url.pathname.startsWith(route))) { 
         return false;
     }
 
