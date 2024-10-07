@@ -24,7 +24,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies to be able to build
-        run: npm i  
+        run: npm i --legacy-peer-deps  
         
       - name: Build
         run: CI=false npm run build  
