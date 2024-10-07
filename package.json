@@ -23,7 +23,9 @@
     ],
     "rules": {
         "no-restricted-globals": "warn",
-        "no-unused-expressions": "warn"
+        "no-unused-expressions": "warn",
+        "@typescript-eslint/no-unused-expressions":"warn"
+        
       }
   },
   "browserslist": {
