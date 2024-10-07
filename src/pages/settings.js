@@ -45,6 +45,10 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { ContentPage } from '../componentes/ContentPageWrapper';
 import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
 import ColorThemePage from './ColorThemePage';
+import LinkIcon from '@material-ui/icons/Link';
+import SettingConnectedServices from '../oauh/SettingConnectedServices';
+import CodeIcon from '@material-ui/icons/Code';
+import SettingDeveloperApi from '../oauh/SettingDeveloperApi';
 
 export const useSettingsStyles = makeStyles( theme=>({
     input: {
@@ -203,7 +207,13 @@ export default function SettingsPage() {
                                 <Custom1RMFactorWidget setting={ settings.getUserSettings.find(s=>s.id=='custom1rm')}/>
                             </SettingDiv>
 
+                            <SettingDiv title="Connected Services" desc="Check what applications are connected to your account" Icon={<LinkIcon/>}>
+                                <SettingConnectedServices setting={settings.getUserSettings.find(s=>s.id=='connected-services') }/>
+                            </SettingDiv>
 
+                            <SettingDiv title="Developer API" desc="Make new apps for our users!" Icon={<CodeIcon/>}>
+                                <SettingDeveloperApi setting={settings.getUserSettings.find(s=>s.id=='oauth-dev-config') }/>
+                            </SettingDiv>
                             
 
 
@@ -211,6 +221,8 @@ export default function SettingsPage() {
                                 <DeleteAccountWidget setting={ settings.getUserSettings.find(s=>s.id=='del-acc')}/>
                             </SettingDiv>
 
+                            <br/>
+                            <br/>
                             </> }
  
     

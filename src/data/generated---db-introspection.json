@@ -89,9 +89,11 @@
     "Setting": [
       "BlockUsersSetting",
       "CCSetting",
+      "ConnectedServicesSetting",
       "Custom1RMFactorSetting",
       "DOBSetting",
       "DeleteAccountSetting",
+      "DeveloperConfigSetting",
       "EmailSetting",
       "OptionSetting",
       "RPESetting",
@@ -103,9 +105,11 @@
     "UserSetting": [
       "BlockUsersSetting",
       "CCSetting",
+      "ConnectedServicesSetting",
       "Custom1RMFactorSetting",
       "DOBSetting",
       "DeleteAccountSetting",
+      "DeveloperConfigSetting",
       "EmailSetting",
       "OptionSetting",
       "RPESetting",

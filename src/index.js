@@ -34,6 +34,7 @@ createRoot(document.getElementById('root'))
 
 serviceWorkerRegistration.register({
     onUpdate: (registration) => {
+        registration.waiting.postMessage({type: 'SKIP_WAITING'})
         ServiceWorkerStatus("update-ready");
     },
     onInstallingUpdate: (registration) => {

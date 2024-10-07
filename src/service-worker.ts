@@ -28,12 +28,19 @@ precacheAndRoute(self.__WB_MANIFEST);
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
+const excludeRoutes = ['/api', '/wxr-server-2'];
+
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
     // If this isn't a navigation, skip.
     if (request.mode !== 'navigate') {
       return false;
+    }
+
+    if( excludeRoutes.includes(url.pathname)  )
+    {
+        return false;
     }
 
     // If this is a URL that starts with /_, skip.

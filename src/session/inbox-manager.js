@@ -171,7 +171,7 @@ export const useInbox = ( type, uid, SETTINGS ) =>{
     const  { data, loading, error, fetchMore } = type==1? DMs : Notifs ; 
     const parsedError = useMemo(()=>error? parseError(error) : null ,[error]);
 
-    const inbox = data?.[propName].notifications ;
+    const inbox = data?.[propName]?.notifications ;
 
 
     /**

@@ -1,8 +1,6 @@
 import React, { createContext, useContext } from "react";
 
-const uiLoginContext = createContext(function( token ){
-    alert("Hooked!");
-});
+const uiLoginContext = createContext();
 
 /**
  * @typedef {Object} UILoginProps

@@ -20,12 +20,12 @@ const useStyles = makeStyles( theme =>({
              
         },
 
-        "& .MuiTypography-root": {
-            color:"#fefefe !important",
-            "& strong": {
-                color:"white"
-            }
-        }
+        // "& .MuiTypography-root": {
+        //     color:"#fefefe !important",
+        //     "& strong": {
+        //         color:"white"
+        //     }
+        // }
     },
     logoArea: { 
         display:"flex", 

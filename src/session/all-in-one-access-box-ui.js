@@ -62,8 +62,10 @@ const useStyles = makeStyles( theme => ({
 
         "& > strong": {
             background: theme.palette.background.default ,
+            color: theme.palette.text.primary,
             display:"inline-block",
-            padding:"0px 10px"
+            padding:"0px 10px",
+            borderRadius:40
         }
     },
     form: {
@@ -234,7 +236,12 @@ const LoginBox = ({ busyState:[ busy, setBusy ], errorState:[ error, setError] }
         .finally( ()=>setBusy(false) );
     }
 
-    return <form noValidate autoComplete="off" className={classes.form}> 
+    const onFormSubmit = ev => {
+        ev.preventDefault();
+        login();
+    }
+
+    return <form noValidate onSubmit={onFormSubmit} autoComplete="off" className={classes.form}> 
                     
                     <Input
                         required 
@@ -264,7 +271,7 @@ const LoginBox = ({ busyState:[ busy, setBusy ], errorState:[ error, setError] }
                     />
 
                     <Box marginTop={2} marginBottom={2}>
-                        <Button disabled={busy} variant="contained" color="primary" startIcon={<VpnKeyIcon/>} fullWidth onClick={()=>login()}>Login</Button> 
+                        <Button disabled={busy} variant="contained" color="primary" startIcon={<VpnKeyIcon/>} fullWidth type="submit">Login</Button> 
 <br/>
 <br/>
                         { forgotSent? 

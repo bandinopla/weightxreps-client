@@ -248,7 +248,7 @@ export default function DivStepper({ targetRef }) {
             Back 
           </Button>
         }
-        on
+        on="true"
       />
     );
   }
@@ -290,7 +290,7 @@ const FeatureBox = withStyles(theme =>({
 (({ title, thumbnail, children, classes }) => {
     return <div className={classes.root+" sha"}> 
  
-             <Grid container alignItems="space-between">
+             <Grid container  >
                 <Grid item sm={12} md={6}>
                     <Box padding={5} textAlign={"left"}>
                         <Typography>{children}</Typography>

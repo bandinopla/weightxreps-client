@@ -33,10 +33,12 @@ import { ForumPolicy } from "../forum/forum-policy";
 
 const { REACT_APP_REMOTE_SERVER, NODE_ENV } = process.env;
 
-export const $serverURI = REACT_APP_REMOTE_SERVER === "staging" 				 ? "https://staging.weightxreps.net/wxr-server-2/graphql"
-  				 : REACT_APP_REMOTE_SERVER === "production" 			 ? "https://weightxreps.net/wxr-server-2/graphql"
-  				 : REACT_APP_REMOTE_SERVER ?? (NODE_ENV === "production" ? "/wxr-server-2/graphql"
+export const $serverURI = REACT_APP_REMOTE_SERVER === "staging" 		 ? "https://staging.weightxreps.net/api/graphql"
+  				 : REACT_APP_REMOTE_SERVER === "production" 			 ? "https://weightxreps.net/api/graphql"
+  				 : REACT_APP_REMOTE_SERVER ?? (NODE_ENV === "production" ? "/api/graphql"
     																	 : "http://localhost:4000/graphql");
+
+export const $nodeURI = $serverURI.replace("/graphql","");
 
 const httpLink = createUploadLink({
 	uri: $serverURI,

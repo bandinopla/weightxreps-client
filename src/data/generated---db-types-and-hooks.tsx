@@ -16,6 +16,7 @@ export type Scalars = {
   CalendarDayKey: any;
   ESet: any;
   JEditorSaveRow: any;
+  OauthReplacementType: any;
   SBDSlot: any;
   SettingValue: any;
   UTCDate: any;
@@ -24,6 +25,7 @@ export type Scalars = {
   YYYYMMDD: any;
 };
 
+/** A generic thing that was achieved.  */
 export type Achievement = {
   __typename?: 'Achievement';
   description: Scalars['String'];
@@ -31,10 +33,14 @@ export type Achievement = {
   name: Scalars['String'];
 };
 
+/** Represents the state of an achievement for a particular user.  */
 export type AchievementState = {
   __typename?: 'AchievementState';
+  /** ID of the achievement */
   aid: Scalars['ID'];
+  /** If it was achieved or not */
   gotit?: Maybe<Scalars['Boolean']>;
+  /** Details particular to this specific achievement */
   note?: Maybe<Scalars['String']>;
   when?: Maybe<Scalars['YYYYMMDD']>;
 };
@@ -89,9 +95,12 @@ export enum BulkMode {
   Merge = 'MERGE'
 }
 
+/** Country code : ISO 3166-1 alpha-2 ( 2 letters ) */
 export type Cc = {
   __typename?: 'CC';
+  /** country code */
   cc: Scalars['ID'];
+  /** Name of the country */
   name: Scalars['String'];
 };
 
@@ -124,6 +133,20 @@ export type ConfirmAction = {
   __typename?: 'ConfirmAction';
   id: Scalars['ID'];
   message: Scalars['String'];
+};
+
+export type ConnectedService = {
+  __typename?: 'ConnectedService';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type ConnectedServicesSetting = Setting & {
+  __typename?: 'ConnectedServicesSetting';
+  connections?: Maybe<Array<ConnectedService>>;
+  id: Scalars['ID'];
+  waitingCodeToChange?: Maybe<Scalars['Boolean']>;
 };
 
 export type Custom1RmFactorSetting = Setting & {
@@ -160,6 +183,35 @@ export type DeleteAccountSetting = Setting & {
   id: Scalars['ID'];
   signature?: Maybe<Scalars['String']>;
   waitingCodeToChange?: Maybe<Scalars['Boolean']>;
+};
+
+export type DevConfigChanges = {
+  __typename?: 'DevConfigChanges';
+  changelog?: Maybe<Scalars['String']>;
+  hash: Scalars['ID'];
+};
+
+export type DeveloperConfig = {
+  __typename?: 'DeveloperConfig';
+  confirmChanges?: Maybe<DevConfigChanges>;
+  services?: Maybe<Array<DeveloperService>>;
+};
+
+export type DeveloperConfigSetting = Setting & {
+  __typename?: 'DeveloperConfigSetting';
+  config: DeveloperConfig;
+  id: Scalars['ID'];
+  waitingCodeToChange?: Maybe<Scalars['Boolean']>;
+};
+
+export type DeveloperService = {
+  __typename?: 'DeveloperService';
+  dbid?: Maybe<Scalars['ID']>;
+  id: Scalars['String'];
+  name: Scalars['String'];
+  redirectUris: Array<Scalars['String']>;
+  secret?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
 };
 
 export type EBestStats = {
@@ -694,6 +746,11 @@ export type MutationVerifySignupArgs = {
 
 export type Notification = Dm | ForumLike | ForumNotification | JComment | LikeOnDm | LikeOnJComment | LikeOnLog | StartedFollowing | SystemNotification;
 
+export enum OAuthAction {
+  Error = 'ERROR',
+  Replace = 'REPLACE'
+}
+
 export type OfficialExercise = {
   __typename?: 'OfficialExercise';
   coolxbw?: Maybe<Scalars['Float']>;
@@ -740,9 +797,12 @@ export type Query = {
   alsoposted?: Maybe<Array<Maybe<User>>>;
   communityStats?: Maybe<CommunityStats>;
   downloadLogs?: Maybe<JEditorData>;
+  /** Returns all the available achievements that the system recognizes/has. */
   getAchievements?: Maybe<Array<Maybe<Achievement>>>;
+  /** Returns all the achievements that this user has up to that particular date. */
   getAchievementsStateOf?: Maybe<Array<Maybe<AchievementState>>>;
   getActiveSupporters?: Maybe<Array<Maybe<Supporter>>>;
+  /** Returns the activity of the users that fall in the context of `type`  */
   getActivityFeed?: Maybe<Array<Maybe<UCard>>>;
   getAllPublicInteractionsInbox?: Maybe<Inbox>;
   getAnnouncements?: Maybe<Array<Maybe<SystemNotification>>>;
@@ -798,8 +858,8 @@ export type QueryGetAchievementsStateOfArgs = {
 
 
 export type QueryGetActivityFeedArgs = {
-  newerThan?: InputMaybe<Scalars['String']>;
-  olderThan?: InputMaybe<Scalars['String']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
   type: ActivityFeedType;
 };
 
@@ -1082,16 +1142,17 @@ export enum TweetType {
   AsDonation2 = 'AS_DONATION2'
 }
 
+/** Represent a journal post's minimal data to show the user what it was done. A brief detail of the log. */
 export type UCard = {
   __typename?: 'UCard';
   andXmore?: Maybe<Scalars['Int']>;
   itemsLeftAfterThis?: Maybe<Scalars['Int']>;
   media?: Maybe<Scalars['String']>;
-  posted?: Maybe<Scalars['String']>;
+  posted?: Maybe<Scalars['YMD']>;
   text?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   utags?: Maybe<UTagsUsed>;
-  when?: Maybe<Scalars['String']>;
+  when?: Maybe<Scalars['UTCDate']>;
   workoutPreview?: Maybe<Array<Maybe<EblockPreview>>>;
 };
 
@@ -1132,6 +1193,7 @@ export type User = {
   bw?: Maybe<Scalars['Float']>;
   cc?: Maybe<Scalars['String']>;
   custom1RM?: Maybe<Scalars['Int']>;
+  email?: Maybe<Scalars['String']>;
   est1RMFactor?: Maybe<Scalars['Int']>;
   estimate1RMFormula?: Maybe<Scalars['String']>;
   forumRole?: Maybe<Scalars['String']>;
@@ -1156,7 +1218,7 @@ export type UserInfo = {
   user: User;
 };
 
-export type UserSetting = BlockUsersSetting | CcSetting | Custom1RmFactorSetting | DobSetting | DeleteAccountSetting | EmailSetting | OptionSetting | RpeSetting | SocialMediasSetting | SupporterStatus | UsernameSetting | VoidSetting;
+export type UserSetting = BlockUsersSetting | CcSetting | ConnectedServicesSetting | Custom1RmFactorSetting | DobSetting | DeleteAccountSetting | DeveloperConfigSetting | EmailSetting | OptionSetting | RpeSetting | SocialMediasSetting | SupporterStatus | UsernameSetting | VoidSetting;
 
 export type UsernameSetting = Setting & {
   __typename?: 'UsernameSetting';
@@ -1293,12 +1355,12 @@ export type ExecBulkExercisesMutation = { __typename?: 'Mutation', execBulkExerc
 
 export type GetFeedQueryVariables = Exact<{
   type: ActivityFeedType;
-  olderThan?: InputMaybe<Scalars['String']>;
-  newerThan?: InputMaybe<Scalars['String']>;
+  olderThan?: InputMaybe<Scalars['UTCDate']>;
+  newerThan?: InputMaybe<Scalars['UTCDate']>;
 }>;
 
 
-export type GetFeedQuery = { __typename?: 'Query', getActivityFeed?: Array<{ __typename?: 'UCard', when?: string | null, text?: string | null, andXmore?: number | null, posted?: string | null, media?: string | null, itemsLeftAfterThis?: number | null, user?: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: string | null } | null, workoutPreview?: Array<{ __typename?: 'EblockPreview', r?: number | null, w?: number | null, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null> | null, utags?: { __typename?: 'UTagsUsed', tags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, values?: Array<{ __typename?: 'UTagValue', id?: string | null, tagid: string, type: string, value: string } | null> | null } | null } | null> | null };
+export type GetFeedQuery = { __typename?: 'Query', getActivityFeed?: Array<{ __typename?: 'UCard', when?: any | null, text?: string | null, andXmore?: number | null, posted?: any | null, media?: string | null, itemsLeftAfterThis?: number | null, user?: { __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: string | null } | null, workoutPreview?: Array<{ __typename?: 'EblockPreview', r?: number | null, w?: number | null, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null> | null, utags?: { __typename?: 'UTagsUsed', tags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, values?: Array<{ __typename?: 'UTagValue', id?: string | null, tagid: string, type: string, value: string } | null> | null } | null } | null> | null };
 
 export type GetForumMessagesQueryVariables = Exact<{
   sectionId?: InputMaybe<Scalars['ID']>;
@@ -1650,11 +1712,15 @@ type SettingsFields_BlockUsersSetting_Fragment = { __typename?: 'BlockUsersSetti
 
 type SettingsFields_CcSetting_Fragment = { __typename?: 'CCSetting', id: string, waitingCodeToChange?: boolean | null };
 
+type SettingsFields_ConnectedServicesSetting_Fragment = { __typename?: 'ConnectedServicesSetting', id: string, waitingCodeToChange?: boolean | null };
+
 type SettingsFields_Custom1RmFactorSetting_Fragment = { __typename?: 'Custom1RMFactorSetting', id: string, waitingCodeToChange?: boolean | null };
 
 type SettingsFields_DobSetting_Fragment = { __typename?: 'DOBSetting', id: string, waitingCodeToChange?: boolean | null };
 
 type SettingsFields_DeleteAccountSetting_Fragment = { __typename?: 'DeleteAccountSetting', id: string, waitingCodeToChange?: boolean | null };
+
+type SettingsFields_DeveloperConfigSetting_Fragment = { __typename?: 'DeveloperConfigSetting', id: string, waitingCodeToChange?: boolean | null };
 
 type SettingsFields_EmailSetting_Fragment = { __typename?: 'EmailSetting', id: string, waitingCodeToChange?: boolean | null };
 
@@ -1670,17 +1736,21 @@ type SettingsFields_UsernameSetting_Fragment = { __typename?: 'UsernameSetting',
 
 type SettingsFields_VoidSetting_Fragment = { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null };
 
-export type SettingsFieldsFragment = SettingsFields_BlockUsersSetting_Fragment | SettingsFields_CcSetting_Fragment | SettingsFields_Custom1RmFactorSetting_Fragment | SettingsFields_DobSetting_Fragment | SettingsFields_DeleteAccountSetting_Fragment | SettingsFields_EmailSetting_Fragment | SettingsFields_OptionSetting_Fragment | SettingsFields_RpeSetting_Fragment | SettingsFields_SocialMediasSetting_Fragment | SettingsFields_SupporterStatus_Fragment | SettingsFields_UsernameSetting_Fragment | SettingsFields_VoidSetting_Fragment;
+export type SettingsFieldsFragment = SettingsFields_BlockUsersSetting_Fragment | SettingsFields_CcSetting_Fragment | SettingsFields_ConnectedServicesSetting_Fragment | SettingsFields_Custom1RmFactorSetting_Fragment | SettingsFields_DobSetting_Fragment | SettingsFields_DeleteAccountSetting_Fragment | SettingsFields_DeveloperConfigSetting_Fragment | SettingsFields_EmailSetting_Fragment | SettingsFields_OptionSetting_Fragment | SettingsFields_RpeSetting_Fragment | SettingsFields_SocialMediasSetting_Fragment | SettingsFields_SupporterStatus_Fragment | SettingsFields_UsernameSetting_Fragment | SettingsFields_VoidSetting_Fragment;
 
 type SettingFields_BlockUsersSetting_Fragment = { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null };
 
 type SettingFields_CcSetting_Fragment = { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null };
+
+type SettingFields_ConnectedServicesSetting_Fragment = { __typename?: 'ConnectedServicesSetting', id: string, waitingCodeToChange?: boolean | null, connections?: Array<{ __typename?: 'ConnectedService', id: string, name: string, url: string }> | null };
 
 type SettingFields_Custom1RmFactorSetting_Fragment = { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null };
 
 type SettingFields_DobSetting_Fragment = { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null };
 
 type SettingFields_DeleteAccountSetting_Fragment = { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null };
+
+type SettingFields_DeveloperConfigSetting_Fragment = { __typename?: 'DeveloperConfigSetting', id: string, waitingCodeToChange?: boolean | null, config: { __typename?: 'DeveloperConfig', confirmChanges?: { __typename?: 'DevConfigChanges', hash: string, changelog?: string | null } | null, services?: Array<{ __typename?: 'DeveloperService', id: string, dbid?: string | null, name: string, url: string, redirectUris: Array<string>, secret?: string | null }> | null } };
 
 type SettingFields_EmailSetting_Fragment = { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null };
 
@@ -1696,12 +1766,12 @@ type SettingFields_UsernameSetting_Fragment = { __typename?: 'UsernameSetting', 
 
 type SettingFields_VoidSetting_Fragment = { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null };
 
-export type SettingFieldsFragment = SettingFields_BlockUsersSetting_Fragment | SettingFields_CcSetting_Fragment | SettingFields_Custom1RmFactorSetting_Fragment | SettingFields_DobSetting_Fragment | SettingFields_DeleteAccountSetting_Fragment | SettingFields_EmailSetting_Fragment | SettingFields_OptionSetting_Fragment | SettingFields_RpeSetting_Fragment | SettingFields_SocialMediasSetting_Fragment | SettingFields_SupporterStatus_Fragment | SettingFields_UsernameSetting_Fragment | SettingFields_VoidSetting_Fragment;
+export type SettingFieldsFragment = SettingFields_BlockUsersSetting_Fragment | SettingFields_CcSetting_Fragment | SettingFields_ConnectedServicesSetting_Fragment | SettingFields_Custom1RmFactorSetting_Fragment | SettingFields_DobSetting_Fragment | SettingFields_DeleteAccountSetting_Fragment | SettingFields_DeveloperConfigSetting_Fragment | SettingFields_EmailSetting_Fragment | SettingFields_OptionSetting_Fragment | SettingFields_RpeSetting_Fragment | SettingFields_SocialMediasSetting_Fragment | SettingFields_SupporterStatus_Fragment | SettingFields_UsernameSetting_Fragment | SettingFields_VoidSetting_Fragment;
 
 export type GetSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSettingsQuery = { __typename?: 'Query', getUserSettings: Array<{ __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null> };
+export type GetSettingsQuery = { __typename?: 'Query', getUserSettings: Array<{ __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'ConnectedServicesSetting', id: string, waitingCodeToChange?: boolean | null, connections?: Array<{ __typename?: 'ConnectedService', id: string, name: string, url: string }> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeveloperConfigSetting', id: string, waitingCodeToChange?: boolean | null, config: { __typename?: 'DeveloperConfig', confirmChanges?: { __typename?: 'DevConfigChanges', hash: string, changelog?: string | null } | null, services?: Array<{ __typename?: 'DeveloperService', id: string, dbid?: string | null, name: string, url: string, redirectUris: Array<string>, secret?: string | null }> | null } } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null> };
 
 export type SetSettingMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1709,7 +1779,7 @@ export type SetSettingMutationVariables = Exact<{
 }>;
 
 
-export type SetSettingMutation = { __typename?: 'Mutation', setSetting?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
+export type SetSettingMutation = { __typename?: 'Mutation', setSetting?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'ConnectedServicesSetting', id: string, waitingCodeToChange?: boolean | null, connections?: Array<{ __typename?: 'ConnectedService', id: string, name: string, url: string }> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeveloperConfigSetting', id: string, waitingCodeToChange?: boolean | null, config: { __typename?: 'DeveloperConfig', confirmChanges?: { __typename?: 'DevConfigChanges', hash: string, changelog?: string | null } | null, services?: Array<{ __typename?: 'DeveloperService', id: string, dbid?: string | null, name: string, url: string, redirectUris: Array<string>, secret?: string | null }> | null } } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
 
 export type SendVerificatonCodeMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1717,7 +1787,7 @@ export type SendVerificatonCodeMutationVariables = Exact<{
 }>;
 
 
-export type SendVerificatonCodeMutation = { __typename?: 'Mutation', sendVerificationCode?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
+export type SendVerificatonCodeMutation = { __typename?: 'Mutation', sendVerificationCode?: { __typename?: 'BlockUsersSetting', unames?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'CCSetting', cc?: string | null, id: string, waitingCodeToChange?: boolean | null, ccs?: Array<{ __typename?: 'CC', cc: string, name: string } | null> | null } | { __typename?: 'ConnectedServicesSetting', id: string, waitingCodeToChange?: boolean | null, connections?: Array<{ __typename?: 'ConnectedService', id: string, name: string, url: string }> | null } | { __typename?: 'Custom1RMFactorSetting', factor: number, formula?: string | null, default: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DOBSetting', dob?: any | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeleteAccountSetting', signature?: string | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'DeveloperConfigSetting', id: string, waitingCodeToChange?: boolean | null, config: { __typename?: 'DeveloperConfig', confirmChanges?: { __typename?: 'DevConfigChanges', hash: string, changelog?: string | null } | null, services?: Array<{ __typename?: 'DeveloperService', id: string, dbid?: string | null, name: string, url: string, redirectUris: Array<string>, secret?: string | null }> | null } } | { __typename?: 'EmailSetting', currentEmail: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'OptionSetting', i?: number | null, id: string, waitingCodeToChange?: boolean | null, options?: Array<{ __typename?: 'Option', i: number, name: string } | null> | null } | { __typename?: 'RPESetting', defaults?: Array<any | null> | null, overrides?: Array<any | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SocialMediasSetting', links?: Array<string | null> | null, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'SupporterStatus', slvl: number, daysLeftAsActive: number, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'UsernameSetting', uname: string, id: string, waitingCodeToChange?: boolean | null } | { __typename?: 'VoidSetting', id: string, waitingCodeToChange?: boolean | null } | null };
 
 export type UnsubFromEmailsMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -1983,6 +2053,29 @@ export const SettingFieldsFragmentDoc = gql`
   }
   ... on SocialMediasSetting {
     links
+  }
+  ... on ConnectedServicesSetting {
+    connections {
+      id
+      name
+      url
+    }
+  }
+  ... on DeveloperConfigSetting {
+    config {
+      confirmChanges {
+        hash
+        changelog
+      }
+      services {
+        id
+        dbid
+        name
+        url
+        redirectUris
+        secret
+      }
+    }
   }
 }
     ${SettingsFieldsFragmentDoc}`;
@@ -2435,7 +2528,7 @@ export type ExecBulkExercisesMutationHookResult = ReturnType<typeof useExecBulkE
 export type ExecBulkExercisesMutationResult = Apollo.MutationResult<ExecBulkExercisesMutation>;
 export type ExecBulkExercisesMutationOptions = Apollo.BaseMutationOptions<ExecBulkExercisesMutation, ExecBulkExercisesMutationVariables>;
 export const GetFeedDocument = gql`
-    query GetFeed($type: ActivityFeedType!, $olderThan: String, $newerThan: String) {
+    query GetFeed($type: ActivityFeedType!, $olderThan: UTCDate, $newerThan: UTCDate) {
   getActivityFeed(type: $type, olderThan: $olderThan, newerThan: $newerThan) {
     user {
       ...BriefUserFields
