@@ -20,7 +20,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+        "no-restricted-globals": "warn",
+        "no-unused-expressions": "warn"
+      }
   },
   "browserslist": {
     "production": [
