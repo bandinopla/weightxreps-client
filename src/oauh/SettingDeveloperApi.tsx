@@ -328,4 +328,4 @@ const configHasChanged = ( original:Config, newconfig:Config ) => {
         || !!newconfig.services?.some(s=>serviceChanged(s, original.services?.find(z=>z.id==s.id)))
 };
 
-const DocumentationButton = ()=><Button startIcon={<LibraryBooksIcon/>} variant="outlined" onClick={()=>window.open("https://github.com/bandinopla/weightxreps-server/blob/main/OAUTH.md","_blank")}>Docs</Button>
+const DocumentationButton = ()=><Button startIcon={<LibraryBooksIcon/>} variant="outlined" onClick={()=>window.open("https://github.com/bandinopla/weightxreps-server/blob/main/docs/OAUTH.md","_blank")}>Docs</Button>

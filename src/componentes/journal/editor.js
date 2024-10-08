@@ -71,7 +71,9 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
     }, []);
 
 
-    useEffect(()=>data && setTimeout( onLoaded, 0 ),[data]);
+    useEffect(()=>{
+        data && setTimeout( onLoaded, 0 )
+    },[data]);
 
 
     if( !session )
