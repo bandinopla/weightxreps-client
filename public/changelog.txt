@@ -1,3 +1,8 @@
+- 2.31.0 : 2024-08-20
+        + Added (actually yesterday) OAuth2 and the new "Developer API" and "Connected Services" sections.
+        * fix bug in tags parser (trailing spaces caused the tag definition to be ignored)
+        + added a Jest test to test the parsing of a log.
+
 - 2.30.6 : 2024-08-20
         * Reported by @Duke309 : The autosave popup is appearing unexpectedly. I reviewed the code and made some adjustments trying to limit the reasons why it whould appear and making sure it doesn't in known scenarios.
 

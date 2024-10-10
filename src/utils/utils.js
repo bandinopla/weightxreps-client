@@ -34,7 +34,7 @@ export const ymd2date = (ymd, asUTC)=> {
  */
 export const mergeObjects = (objects) => {
     return objects.reduce((result, obj) => {
-      Object.entries(obj).forEach(([key, value]) => {
+        obj && Object.entries(obj).forEach(([key, value]) => {
         if (result.hasOwnProperty(key) && typeof result[key] === 'object' && typeof value === 'object') {
           result[key] = mergeObjects([result[key], value]);
         } else {

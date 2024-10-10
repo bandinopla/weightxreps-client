@@ -918,6 +918,7 @@ export const JLogTokenizer = config => {
                     if( !token.repeatUntilFail )
                         state.activeToken = { token: this.tokenChilds.bind(this, parts.slice(1)) }; // avanza al siguiente child 
  
+                    stream.eatSpace(); //eat space that might be left still...
                     //
                     // ** IMPORTANTE **
                     // estamos en el final de la linea pero no se llamó nunca al último token...
@@ -1142,6 +1143,10 @@ export const JLogTokenizer = config => {
             //
             if( errors.length ) 
             { 
+                if( config.printAllErrorsOnThrow )
+                {
+                    throw new Error( "\n"+errors.map(e=>"LINE >>> "+e.errorLine+"\nError ---> "+e.message).join("\n"))
+                }
                 // console.error( errors )
                 throw new Error("Fix the errors before saving!"); 
             }
