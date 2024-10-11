@@ -1,4 +1,7 @@
-- 2.31.0 : 2024-08-20
+- 2.31.1 : 2024-10-11
+        * Reported by @jimr1603 : A bug was introduced in 2.31.0 that caused the google sign in to fail. My bad... 
+
+- 2.31.0 : 2024-10-10
         + Added (actually yesterday) OAuth2 and the new "Developer API" and "Connected Services" sections.
         * fix bug in tags parser (trailing spaces caused the tag definition to be ignored)
         + added a Jest test to test the parsing of a log.
