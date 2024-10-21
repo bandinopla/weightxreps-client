@@ -1,3 +1,6 @@
+- 2.31.2 : 2024-10-21
+        * Reported by @rtdog Distance conversion to "LB" off by 2 decimal places --> https://github.com/bandinopla/weightxreps-client/issues/29
+        
 - 2.31.1 : 2024-10-11
         * Reported by @jimr1603 : A bug was introduced in 2.31.0 that caused the google sign in to fail. My bad... 
 

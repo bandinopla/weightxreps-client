@@ -46,7 +46,7 @@ export function DistanceValue({ value, unit, postfixUnit, nounit, round, prefix 
 
     if( useImperial )
     {
-        w = value/2.54; // cm to inch
+        w = w/2.54; // cm to inch
         keys = imperialKeys;
         _unit =  keys[keys.length-1];
 
