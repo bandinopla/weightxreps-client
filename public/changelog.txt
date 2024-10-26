@@ -1,3 +1,6 @@
+- 2.31.3 : 2024-10-26 
+        * Reported by @Pouja : "if I add some text after a weight x reps x sets line, it would remove all spaces" Ufff... my bad. Sorry. Fixed.
+        
 - 2.31.2 : 2024-10-21
         * Reported by @rtdog Distance conversion to "LB" off by 2 decimal places --> https://github.com/bandinopla/weightxreps-client/issues/29
         

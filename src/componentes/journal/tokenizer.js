@@ -918,7 +918,8 @@ export const JLogTokenizer = config => {
                     if( !token.repeatUntilFail )
                         state.activeToken = { token: this.tokenChilds.bind(this, parts.slice(1)) }; // avanza al siguiente child 
  
-                    stream.eatSpace(); //eat space that might be left still...
+                    if (stream.match(/\s+$/, false))
+                        stream.eatWhile(/\s/);
                     //
                     // ** IMPORTANTE **
                     // estamos en el final de la linea pero no se llamó nunca al último token...
