@@ -201,7 +201,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                                         <Button startIcon={<CloseIcon/>}  onClick={handleClose} color="primary" variant="outlined">
                                             Cancel
                                         </Button>
-                                        <Button disabled={!hasLoaded} onKeyDown={()=>saveTriggerRef.current()} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained" startIcon={<SaveAltIcon/>}>
+                                        <Button disabled={!hasLoaded} onClick={()=>saveTriggerRef.current()} color="primary" variant="contained" startIcon={<SaveAltIcon/>}>
                                             Save
                                         </Button>
                                     </ButtonGroup>
