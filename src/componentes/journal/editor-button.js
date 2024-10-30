@@ -160,7 +160,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                         <JEditorStopwatch openState={stopwatchState}/>
                         
 
-                        <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} hintTriggerRef={hintTriggerRef} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
+                        <JEditor redirect ymd={ymd || $defaultYMD} range={range} onClose={handleClose} saveTriggerRef={saveTriggerRef} hintTriggerRef={hintTriggerRef} saveTrigger={saveTriggerRef} onLoaded={ ()=>setHasLoaded(true) }/>  
                     </DialogContent>
 
                         <DialogActions>
