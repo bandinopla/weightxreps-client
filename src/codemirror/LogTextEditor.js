@@ -339,7 +339,7 @@ const __lintEditor = {
     }
 };
 
-export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags, hintTriggerRef, onCodeMirrorReady, valueAsTextHook })=> {
+export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getShowErrorRef, defaultYMD, utags, hintTriggerRef, saveTriggerRef, onCodeMirrorReady, valueAsTextHook })=> {
 
     const classes       = useStyles();
     const txt           = useRef();
@@ -379,7 +379,9 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
     useEffect( ()=>{
 
         var myCodeMirror = CodeMirror.fromTextArea(txt.current,{ 
-            extraKeys       : { "Ctrl-Space": "autocomplete", "Cmd-Space":"autocomplete", "Shift-Space":"autocomplete", "Alt+Tab":"autocomplete" },// "'#'": "autocomplete" }, 
+            extraKeys       : { "Ctrl-Space": "autocomplete", "Cmd-Space":"autocomplete", "Shift-Space":"autocomplete", "Alt+Tab":"autocomplete", 
+                                "Ctrl-Enter": ()=>{ saveTriggerRef.current() }
+            },// "'#'": "autocomplete" }, 
             lineWrapping    :true, 
 
             mode:  {

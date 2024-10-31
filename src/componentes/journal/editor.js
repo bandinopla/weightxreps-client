@@ -273,6 +273,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                         tags={jeditorData.jeditor.etags} 
                         getDocRef={getDoc} 
                         getShowErrorRef={showDocError}
+                        saveTriggerRef={saveTrigger}
                         hintTriggerRef={hintTriggerRef}
                         utags={jeditorData.jeditor.utags}
                         onCodeMirrorReady = { cm =>cm.on("change", ()=>autosave(cm.getValue()) ) }
