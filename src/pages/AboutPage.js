@@ -37,7 +37,7 @@ import LoopIcon from '@material-ui/icons/Loop';
 import { useHistory } from "react-router-dom";
 import BuildIcon from '@material-ui/icons/Build';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
-import { LatestTweets } from "../componentes/twitter";
+import { FollowOnX, LatestTweets } from "../componentes/twitter";
 
 const useStyles = makeStyles( theme => ({
 
@@ -153,7 +153,8 @@ export default function AboutPage() {
                     <LoopIcon/> What's new?
                 </Typography>
                 <Divider/><br/>
-                <LatestTweets/>
+                <FollowOnX showName/>
+                I post on X things related to the site.
                 <br/>
                 Check what has changed, fixed or was added here: <Button variant="outlined" onClick={()=>history.push("/changelog")}>See Changelog</Button>
             </Box>
@@ -167,6 +168,7 @@ export default function AboutPage() {
                 { loadingAnnouncements && <AsciiSpinner label="Loading announcements..."/> }
                 { error2 && <Alert severity="error">{ parseError(error2)}</Alert> }
                 { announcements?.getAnnouncements.map( announcement =><Announcement key={announcement.id} item={announcement}/> )}
+                { !announcements?.getAnnouncements?.length && <Alert severity="info">Nothing was announced yet...</Alert>}
             </Box>
         </Grid>
 

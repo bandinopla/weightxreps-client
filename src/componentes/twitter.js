@@ -29,14 +29,17 @@ const XWidget = ({ children })=>{
     const me = useRef();
     const mounted = useRef(false);
 
+    //IDK why the embeded timeline doesn't work anymore... it is a twitter thing...
     useEffect(()=>{
 
         mounted.current = true;
 
         onTwitterReady(()=>{
 
-            if( mounted.current )
-                window.twttr.widgets.load( me.current );
+            if( mounted.current ){ 
+                  window.twttr.widgets.load( me.current ); 
+            }
+            
 
         });
 
@@ -51,15 +54,15 @@ const XWidget = ({ children })=>{
 
 export const LatestTweets = ()=>{ 
     return <XWidget>
-        <a className="twitter-timeline" data-tweet-limit="3" href="https://twitter.com/weight_x_reps?ref_src=twsrc%5Etfw">Loading latest tweets...</a>  
+        <a href="https://twitter.com/intent/tweet?button_hashtag=weight_x_reps&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Follow us on X @weight_x_reps</a>
     </XWidget>
-}
+} 
 
-export const FollowOnX = ()=>{
+export const FollowOnX = ({ showName })=>{
     return <XWidget>
             <a className="twitter-follow-button"
                 href="https://twitter.com/weight_x_reps"
-                data-show-screen-name="false"
+                data-show-screen-name={ showName ?? "false" }
                 data-size="large"
                 >
                 Follow @weight_x_reps

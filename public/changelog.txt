@@ -1,3 +1,8 @@
+- 2.32.0 : 2024-10-31
+        + Added by @rtdog : Feature to save Journal with Ctrl-Enter
+        - removed the twitter timeline widget in the about section since it doesn't work anymore for some reason...
+        * added display for when the announcements widgets in the about section has no announcements...
+
 - 2.31.3 : 2024-10-26 
         * Reported by @Pouja : "if I add some text after a weight x reps x sets line, it would remove all spaces" Ufff... my bad. Sorry. Fixed.
         
