@@ -53,6 +53,7 @@ import { SwipeableDrawer } from './componentes/SwipableDrawer';
 import { ServiceWorkerStatusDisplay } from './componentes/service-worker-status-ui';
 import GitHubButton from 'react-github-btn'
 import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
+import { Snowfall } from './componentes/snow';
 
 window.fetch = (url, config)=>{
     return fetchPolyfill(url, config)
@@ -138,6 +139,7 @@ function App() {
                 <DMsWindow/>
                 <ExercisesModal/> 
                 <TrackPageView/>
+                <Snowfall/>
  
                 <Switch>
                     <Route path="/oauth" component={OAuthAuthorizationPage}/> 
