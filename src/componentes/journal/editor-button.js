@@ -151,7 +151,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                         <div className="desktop-view">
                             <DialogContentText>
                                 <Alert severity="info">
-                                To trigger the auto-complete hit <strong>CTRL+SPACE</strong> or <strong>⌘+SPACE</strong>  on a new line. 
+                                To trigger the exercise name auto-complete hit <strong>CTRL+SPACE</strong> or <strong>⌘+SPACE</strong>  on a new line. 
                                 </Alert> 
                             </DialogContentText>
                         </div>
@@ -184,10 +184,10 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
                             <div className="desktop-view">
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    <ButtonGroup variant="outlined" color="secondary" size="large"  disabled={loading}>
+                                    <ButtonGroup variant="" color="secondary" size="large"  disabled={loading}>
                                         <Button onClick={ ()=>helpModalState[1](true) } startIcon={<MenuBookIcon/>}>HELP</Button>
                                         {/* <OpenDMButton  otherUser={{id:"1" }} label="DM Admin" /> */}
-                                        <Button className="oneline" color="secondary" variant="contained" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
+                                        <Button className="oneline" color="secondary" startIcon={<FileCopyIcon/>} onClick={ ()=>copyModalState[1](true) }>
                                             Load copy of...
                                         </Button>
                                         <Button color="secondary" startIcon={ stopwatchState[0]? <CloseIcon/> : <TimerIcon/> }  onClick={()=>stopwatchState[1](!stopwatchState[0])}>
