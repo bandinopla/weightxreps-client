@@ -1,3 +1,12 @@
+- 2.32.1 : 2024-11-03
+        * increase size of side menu handles on mobile 
+        * fix drag functionality of the stopwatch widget 
+        * removed borders from non primary buttons in the editor to simplify the visual 
+        + addded decorative snow effect active on christmas eve 
+        * SBD rank page layout retouches
+        + readded the guy banner as logo and themed it for christmass and newyear eve. 
+        * changed color of signin button on landing page to contrast with the background because some ppl was not noticing it...
+
 - 2.32.0 : 2024-10-31
         + Added by @rtdog : Feature to save Journal with Ctrl-Enter
         - removed the twitter timeline widget in the about section since it doesn't work anymore for some reason...
