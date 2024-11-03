@@ -11,7 +11,8 @@ import FitnessCenterSharpIcon from '@material-ui/icons/FitnessCenterSharp';
 import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { NotificationsBadge } from '../session/inbox-manager';
-import { ReactComponent as Logo } from '../logo.svg';
+//import { ReactComponent as Logo } from '../logo.svg';
+import Logo from "./Logo"
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { JEditorButton } from './journal/editor-button';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
@@ -86,16 +87,16 @@ const useStylesDrawer = makeStyles( theme=>({
         }
     }, 
 
-    logo: {
-        maxWidth:"100% !important",
-        width:90,
-        height:90,
-        display:"block",
-        margin:"0 auto",
-        "& g":{
-            fill: theme.palette.text.primary
-        }
-    },
+    // logo: {
+    //     maxWidth:"100% !important",
+    //     width:90,
+    //     height:90,
+    //     display:"block",
+    //     margin:"0 auto",
+    //     "& g":{
+    //         fill: theme.palette.text.primary
+    //     }
+    // },
 
     forumBtn: {
         "& .MuiTypography-root": {
