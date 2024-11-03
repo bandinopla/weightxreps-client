@@ -44,3 +44,10 @@
     background: rgb(199, 27, 27); 
     color:#fff;
 }
+
+form.sbd .MuiInputBase-input {
+    background-color:#eee;
+    color:blue;
+    font-weight: bold;
+    padding: 3px 5px;
+}

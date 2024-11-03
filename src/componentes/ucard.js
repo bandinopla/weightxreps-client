@@ -75,7 +75,7 @@ const useStyles = makeStyles( theme => ({
 
 
 const MiniUserStats = ({ userdata:u, extraRows } ) => (<div className="ustats">
-    { u.age>0 && <div><b>{u.age}</b>Age:</div> }
+    { u.age>0 && <div><b>{u.age}</b>Years on earth:</div> }
     { u.bw>0 && <div><b> <WeightValue value={u.bw} inkg={u.usekg}/> </b>Bodyweight:</div> }
     { extraRows && extraRows.map((row,i)=>(<div key={i}><b>{row[1]}</b>{row[0]}:</div>)) }
 </div>);

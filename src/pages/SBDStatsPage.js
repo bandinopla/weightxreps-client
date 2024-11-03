@@ -205,77 +205,79 @@ export default function SBDStatsPage() {
     return <Container > <br/>
 
                 <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6}>   
-                        <Typography variant="h5">Compare your best lifts against <strong style={{color:"#EE334E"}}>{data.sbdStats.total.toLocaleString() || "world class"}</strong> competition RAW lifts done arround the world!</Typography>
+                    <Grid item >   
+                        <Typography variant="h6">Compare your best lifts against <strong style={{color:"#EE334E"}}>{data.sbdStats.total.toLocaleString() || "world class"}</strong> competition RAW lifts done arround the world!</Typography>
                         
-                        <Typography variant="subtitle2" gutterBottom>RAW = No knee wraps or suit on the squat, no straps or suit on the deadlift and no bench shirt on the bench press and pausing 1 second on the chest (no touch and go).</Typography>
- 
+                        {/* <Typography variant="subtitle2" gutterBottom>RAW = No knee wraps or suit on the squat, no straps or suit on the deadlift and no bench shirt on the bench press and pausing 1 second on the chest (no touch and go).</Typography>
+  */}
 
                         <Typography variant="caption">
                         This page <a href="https://openpowerlifting.gitlab.io/opl-csv/" target="_blank">uses data</a> from the <a href="https://www.openpowerlifting.org" target="_blank">OpenPowerlifting project</a>. Data download date: { new Date(data.sbdStats.date).toLocaleString() }  
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                     <iframe style={{maxWidth:"100%"}} width="560" height="215" src="https://www.youtube.com/embed/Q7XUBA6VtZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     <Instructions/>
-                    </Grid>
+                    </Grid> */}
 
                 </Grid>
+                 <br/> 
+
+
+                <Paper elevation={5}>
+                    <Box padding={3}>
+                <form className="sbd"  noValidate autoComplete="off">
+
+<Grid container>
+    <Grid item xs={4}>
+        <FormControl >
+            <InputLabel id="sex">GENDER</InputLabel>
+            <Select value={gender} onChange={ e=>setGender(e.target.value)} style={{ textAlign:"center"}}>
+                <MenuItem value={0}>---- All ----</MenuItem>
+                <MenuItem value={1}>Males only</MenuItem>
+                <MenuItem value={2}>Females only</MenuItem>
+            </Select>
+        </FormControl> 
+    </Grid>
+    <Grid item xs={4}>
+        <FormControl >
+            <InputLabel id="agec">AGE</InputLabel>
+            <Select value={ageClass} onChange={ e=>setAgeClass(e.target.value)} >
+            <MenuItem value={ -1 } >--- ANY ---</MenuItem>
+                {
+                    data && data.ageClasses.map( cls=><MenuItem value={ cls.index} key={cls.index}>{ cls.name }</MenuItem>  )
+                }
                 
-                <Divider style={{margin:"20px 0"}}/>
+            </Select>
+        </FormControl>
+    </Grid>
+    <Grid item xs={4}>
+        <FormControl >
+            <InputLabel id="sex">UNIT</InputLabel>
+            <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)}> 
+                <MenuItem value={0}>Kilograms</MenuItem>
+                <MenuItem value={1}>Pounds</MenuItem>
+            </Select>
+        </FormControl> 
+    </Grid>
+    
+    
+    { LiftId2Name.map( (liftName,i)=><Grid key={i} item xs={4} style={{ marginTop:10}}><FormControl error={SBD[i]?.error}>
+        <InputLabel htmlFor={liftName}>{liftName}</InputLabel>
+        <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName}/>
+        <FormHelperText>{ SBD[i]?.error? SBD[i]?.error : SBD[i]?.weight? "1RM = "+ SBD[i].weight : "Type your best RAW " + liftName }</FormHelperText>
+    </FormControl></Grid> )} 
+
+</Grid>
 
 
-                <form  noValidate autoComplete="off">
 
-                <Grid container>
-                    <Grid item xs={4}>
-                        <FormControl >
-                            <InputLabel id="sex">GENDER</InputLabel>
-                            <Select value={gender} onChange={ e=>setGender(e.target.value)} style={{ textAlign:"center"}}>
-                                <MenuItem value={0}>---- All ----</MenuItem>
-                                <MenuItem value={1}>Males only</MenuItem>
-                                <MenuItem value={2}>Females only</MenuItem>
-                            </Select>
-                        </FormControl> 
-                    </Grid>
-                    <Grid item xs={4}>
-                        <FormControl >
-                            <InputLabel id="agec">AGE</InputLabel>
-                            <Select value={ageClass} onChange={ e=>setAgeClass(e.target.value)} >
-                            <MenuItem value={ -1 } >--- ANY ---</MenuItem>
-                                {
-                                    data && data.ageClasses.map( cls=><MenuItem value={ cls.index} key={cls.index}>{ cls.name }</MenuItem>  )
-                                }
-                                
-                            </Select> * Might not always be available.
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <FormControl >
-                            <InputLabel id="sex">UNIT</InputLabel>
-                            <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)}> 
-                                <MenuItem value={0}>Kilograms</MenuItem>
-                                <MenuItem value={1}>Pounds</MenuItem>
-                            </Select>
-                        </FormControl> 
-                    </Grid>
-                    
-                    
-                    { LiftId2Name.map( (liftName,i)=><Grid key={i} item xs={4}><FormControl error={SBD[i]?.error}>
-                        <InputLabel htmlFor={liftName}>{liftName}</InputLabel>
-                        <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName}/>
-                        <FormHelperText>{ SBD[i]?.error? SBD[i]?.error : SBD[i]?.weight? "1RM = "+ SBD[i].weight : "Type your best RAW " + liftName }</FormHelperText>
-                    </FormControl></Grid> )} 
-
-                </Grid>
-  
+    
 
 
-                    
- 
-
-                </form>
+</form></Box>
+                </Paper>
  
                 
  
@@ -300,7 +302,7 @@ const CatChart = ({ series, inlbs }) => {
 
     const getWeight = (data)=>inlbs? data.weight*2.204623 : data.weight;
      
-    return <Paper style={{padding:10, margin:10 }}>
+    return <div style={{padding:10, margin:10 }}>
          
 
             <div>
@@ -317,7 +319,7 @@ const CatChart = ({ series, inlbs }) => {
                     <LinearQualificationBar value={ serie.totalLifts? serie.refIsBestThan/serie.totalLifts : 0} color={serie.color}/> 
                     <div>Total lifts: <b>{serie.totalLifts.toLocaleString('en-US')}</b></div>
 
-                     <div style={{ fontSize:"1.3em"}}><Divider style={{margin:"10px 0", overflow:"hidden"}}/>
+                     <div style={{ fontSize:"1.3em"}}> 
 
                                             { serie.params?.estimated? "~" : ""}
                                             { serie.params?.weight>0 && <strong><WeightValue inkg={inlbs?0:1} value={ serie.params.weight*(inlbs? LBS2KG : 1) }/></strong> }
@@ -328,8 +330,8 @@ const CatChart = ({ series, inlbs }) => {
                                             { serie.wClassNames.map( name =><Chip size="small" label={  name + " class" } variant="outlined" style={{ marginLeft:10}}/> )}
 
                                             
-                                            
-                                        <Divider style={{margin:"10px 0"}}/></div>  
+                                             
+                                        </div>  
 
                     <div  style={{  height:200, padding:"10px 0" }}>
                     <ResponsiveContainer>
@@ -357,7 +359,7 @@ const CatChart = ({ series, inlbs }) => {
             
             </div>
             
-            </Paper>
+            </div>
             ;
 }
 
@@ -497,8 +499,8 @@ const CatChart = ({ series, inlbs }) => {
 
     }
 
-    return <div style={{ marginTop:10, textAlign:"center" }}>
-        <Divider/><br/>
+    return <div style={{ margin:"50px 0", textAlign:"center" }}>
+         
 
         <Snackbar open={open} autoHideDuration={3000} onClose={closeSnack} message="Link copied to clipboard!" /> 
 
