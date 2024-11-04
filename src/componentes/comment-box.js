@@ -24,20 +24,20 @@ const useStyles = makeStyles((theme) => ({
 
     txtarea: {
         width           : '100%', 
-        marginBottom: theme.spacing(1),
-        border:"0px solid none",
-        padding:30,
+        marginBottom: theme.spacing(1), 
+        padding:20,
         color: ifDark(theme, theme.palette.primary.main ,"blue") , 
         fontSize:"20px",
         maxWidth:"100%",
         minWidth:"100%",
-        backgroundColor: ifDark(theme, "#333","white")
+        backgroundColor: ifDark(theme, "#333","white"),
+        borderRadius:8
     },
 
     outlined: { 
-        borderWidth:"1px",
+        borderWidth:"4px",
         borderStyle:"solid",
-        borderColor: ifDark(theme, "black","#444"),
+        borderColor: ifDark(theme, "black","#ccc"),
         padding:20
     }
   }));

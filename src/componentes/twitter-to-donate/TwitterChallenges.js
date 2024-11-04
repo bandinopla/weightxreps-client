@@ -57,7 +57,7 @@ function TwitterChallenges() {
 
                 return <Accordion key={challenge.type} style={{ border:"5px solid #1D9BF0"}}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography variant="h5">
+                                <Typography variant="h6">
 
                                     {
                                         !isLogged ? <Chip label="Login required" disabled /> 

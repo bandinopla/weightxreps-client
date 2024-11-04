@@ -242,7 +242,7 @@ animation: rainbowSlide 2s linear infinite;
  * animation pulsate-fwd
  * ----------------------------------------
  */
- 
+ .pulsate { animation:pulsate-fwd 0.5s ease-in-out infinite both }
   @keyframes pulsate-fwd {
     0% {
       -webkit-transform: scale(1);

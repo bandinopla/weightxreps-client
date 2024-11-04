@@ -88,28 +88,36 @@ export default function DonatePage() {
 
                                     
 								</Typography>
+
+								<Box padding={1}>
+									<img src={slvlsUrl} className="banner-fullrow"/>
+									<Typography component={"div"} variant="caption">↳ Supporter ribbons based on amount of support over time. Placed on top of your avatar.</Typography>
+								</Box>
 							</Box> 
 				</Grid>
 
 				<Grid item md={6}>
-					<Paper elevation={2}>
-						<Box padding={1}>
+					<Paper elevation={0}>
+						<Box padding={0}>
 							<Grid container>
 								<Grid item xs={12}>
 									<Box padding={2}>
 										<Typography variant="h4" gutterBottom>
-											Donate with <strong>Paypal</strong>
+											Donate with <strong>Paypal</strong> ↓
 										</Typography>
+										
 									</Box>
 								</Grid>
 
-								<Grid item xs={6}>
+								<Grid item xs={12}>
+								<Divider />
 									<Box padding={2} textAlign="center">
 										<form
 											name="_xclick"
 											action="https://www.paypal.com/cgi-bin/webscr"
 											method="post"
 											target="_blank"
+											class="pulsate"
 										>
 											<input type="hidden" name="cmd" value="_xclick" />
 											<input
@@ -142,14 +150,7 @@ export default function DonatePage() {
 										</form>
 									</Box>
 								</Grid>
-
-								<Grid xs={6} item style={{ textAlign: "center" }}>
-									<img
-										className={classes.logo}
-										src="/donate.png"
-										style={{ maxWidth: "100%" }}
-									/>
-								</Grid>
+ 
 							</Grid>
 						</Box>
 					</Paper>
@@ -168,21 +169,17 @@ export default function DonatePage() {
                                         </Typography> 
                                         
 									</Box>
+
+									<br/>
+                    <TwitterChallenges/>
                                     
 								</Grid>
  
 							</Grid>
 						</Box>
 					</Paper>
-                    <br/>
-                    <TwitterChallenges/>
-				</Grid>
-                <Grid item xs={12}>
-                <Box padding={1}>
-                        <img src={slvlsUrl} className="banner-fullrow"/>
-                        <Typography component={"div"} variant="caption">↳ Supporter ribbons based on amount of support over time. Placed on top of your avatar.</Typography>
-                    </Box>
-                </Grid>
+                    
+				</Grid> 
 			</Grid>
 		</Container>
 	);
