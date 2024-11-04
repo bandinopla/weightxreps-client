@@ -1,3 +1,6 @@
+- 2.32.2 : 2024-11-04
+        * some visual cosmetic tweaks here and there to improve the layout...
+
 - 2.32.1 : 2024-11-03
         * increase size of side menu handles on mobile 
         * fix drag functionality of the stopwatch widget 
