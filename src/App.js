@@ -106,7 +106,8 @@ const useStyles = makeStyles( theme=>({
         }, 
         content: {
             borderRight:"1px solid rgba(0,0,0,0.1)",
-            borderLeft:"1px solid rgba(0,0,0,0.1)"
+            borderLeft:"1px solid rgba(0,0,0,0.1)",
+            minHeight:"100vh"
         },
         sidebarDrawer: {
             "& .MuiDrawer-paperAnchorRight": {
