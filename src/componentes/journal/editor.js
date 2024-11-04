@@ -178,7 +178,7 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
                         clearAutosave(true); //if everything was saved, clear it since it is already saved...
 
                         // full reload...
-                        setTimeout( ()=> window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self"), 2500 );
+                        setTimeout( ()=> window.open( "/journal/"+session.user.uname+"/"+__ymd , "_self"), 2000 );
                        ;
                     }
 

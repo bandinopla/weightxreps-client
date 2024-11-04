@@ -1,0 +1,95 @@
+.success-true{
+    -webkit-animation:success-anim-color 0.3s ease 0s 1 normal;
+    -moz-animation:success-anim-color 0.3s ease 0s 1 normal;
+    -ms-animation:success-anim-color 0.3s ease 0s 1 normal;
+    animation:success-anim-color 0.3s ease 0s 1 normal;
+    animation-fill-mode: forwards;
+
+    background: rgb(110,184,77);
+    background: radial-gradient(circle, rgba(110,184,77,1) 0%, rgba(72,154,36,1) 100%);
+}
+
+@-webkit-keyframes success-anim-color {
+    0%{ background-color:rgba(0,0,0,0.5); }
+    100%{ background-color:#0EAD69; }
+}
+
+@keyframes success-anim-color {
+    0%{ background-color:rgba(0,0,0,0.5); }
+    100%{ background-color:#0EAD69; }
+}
+
+.success-false{
+    -webkit-animation:fail-anim-color 0.3s ease 0s 1 normal;
+    -moz-animation:fail-anim-color 0.3s ease 0s 1 normal;
+    -ms-animation:fail-anim-color 0.3s ease 0s 1 normal;
+    animation:fail-anim-color 0.3s ease 0s 1 normal;
+    animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fail-anim-color {
+    0%{ background-color:rgba(0,0,0,0.5); }
+    100%{ background-color:#E63946; }
+}
+
+@keyframes fail-anim-color {
+    0%{ background-color:rgba(0,0,0,0.5); }
+    100%{ background-color:#E63946; }
+}
+
+
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 1; 
+    stroke: white; 
+    stroke-width: 5; 
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #4bb71b; 
+    position:relative;
+    top: 5px;
+    right: 5px;
+   margin: 0 auto;
+   animation: scale 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.4s forwards;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-miterlimit: 10;
+    
+    animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+ 
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.4s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px #4bb71b;
+    }
+}
+ 

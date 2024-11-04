@@ -4,14 +4,18 @@ import NoddingGuySrc from "../../banners/nodding-guy.gif";
 import ErrorIcon from '@material-ui/icons/Error';
 import { Backdrop, CircularProgress, Typography } from "@material-ui/core";
 import { useEffect } from 'react';
-import { Fireworks } from 'fireworks/lib/react';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+//import { Fireworks } from 'fireworks/lib/react';
+//import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import "./editor-save-backdrop.css";
+
 const $jeditorSaveState    = makeVar({ loading:false, error:null, success:null });
 
 const useBackdropStyles = makeStyles((theme) => ({
     backdrop: {
       zIndex: theme.zIndex.drawer + 133,
-      color: '#fff',
+      "& *": {
+        color: '#fff !important',
+      }
     },
   })); 
 
@@ -59,19 +63,6 @@ export const JeditorSaveBackdrop = ()=>{
     const data                  = useReactiveVar($jeditorSaveState);
     const shouldBeOpen          = data.loading || data.success || data.error;
 
-    let fxProps = {
-        count: 1 ,
-        interval: 200,
-        colors: ['#14FA96','#0FBA70' ],
-        bubbleSizeMaximum:2,
-
-        calc: (props, i) => ({
-          ...props,
-          x: window.innerWidth / 2 + Math.random()*300*(Math.random()>0.5?-1:1),
-          y: window.innerHeight / 2 + Math.random()*300*(Math.random()>0.5?-1:1)
-        })
-      }
-
     useEffect(()=>{
 
         var interval;
@@ -86,9 +77,20 @@ export const JeditorSaveBackdrop = ()=>{
         return ()=>clearInterval(interval);
 
     }, [ shouldBeOpen ])
+
+    // useEffect(()=>{
+
+    //     window.addEventListener("keydown", ev=>{
+    //         $jeditorSaveState({ loading:false, success:null, error:null });
+
+    //         setTimeout(()=>{
+    //             $jeditorSaveState({ loading:false, success:true, error:{ message:"saraza pla blas"} });
+    //         },300);
+    //     })
+    // },[]);
  
 
-    return <Backdrop className={ classes.backdrop + (data.success===true? " success-"+data.success.toString() : "" ) } 
+    return <Backdrop className={ classes.backdrop + ( " success-"+data.success?.toString() ) } 
                      open={ !!shouldBeOpen } >
 
         <div style={{display:"none"}}>
@@ -97,13 +99,16 @@ export const JeditorSaveBackdrop = ()=>{
         
         { data.loading? <CircularProgress color="inherit" /> 
         : data.success? <div>  
-                            <img src={ NoddingGuySrc } alt="" style={{ borderRadius:180 }}/>
-                            <Typography variant="h2" className="flikrAnim" style={{color:"white"}}>
-                                 Good Job! <ThumbUpIcon style={{ fontSize:50 }}/>
+                            {/* <img src={ NoddingGuySrc } alt="" style={{ border:"14px solid rgba(0,0,0,0.3)", borderRadius:180 }}/> */}
+                            <Typography variant="h2" >
+                                 <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                            </svg>
                                  </Typography>
-                            <Fireworks {...fxProps} />
+                            {/* <Fireworks {...fxProps} /> */}
                         </div>
-        : data.error? <><ErrorIcon fontSize="large"/> Oops! {data.error?.message ?? "Something went wrong"}</>
+        : data.error? <Typography variant="h4" ><ErrorIcon fontSize="large"/> Oops! {data.error?.message ?? "Something went wrong"}</Typography>
         : "" }
     </Backdrop>
 }
