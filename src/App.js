@@ -1,4 +1,4 @@
-import { fetch as fetchPolyfill } from 'whatwg-fetch';
+//import { fetch as fetchPolyfill } from 'whatwg-fetch';
 
 import './App.css';
 import { Box, Drawer, LinearProgress, Typography, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
@@ -55,9 +55,9 @@ import GitHubButton from 'react-github-btn'
 import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
 import { Snowfall } from './componentes/snow';
 
-window.fetch = (url, config)=>{
-    return fetchPolyfill(url, config)
-}
+// window.fetch = (url, config)=>{
+//     return fetchPolyfill(url, config)
+// }
 
 const JournalBase = lazy(() => import(/* webpackChunkName: "jbase" */'./pages/journal-base'));
 //const ColorThemePage = lazy(() => import(/* webpackChunkName: "color" */'./pages/ColorThemePage'));

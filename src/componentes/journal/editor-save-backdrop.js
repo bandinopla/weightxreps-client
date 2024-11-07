@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 //import { Fireworks } from 'fireworks/lib/react';
 //import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import "./editor-save-backdrop.css";
+import { AnimatedLogoIntro } from "../SplashScreenIntro";
 
 const $jeditorSaveState    = makeVar({ loading:false, error:null, success:null });
 
@@ -100,12 +101,13 @@ export const JeditorSaveBackdrop = ()=>{
         { data.loading? <CircularProgress color="inherit" /> 
         : data.success? <div>  
                             {/* <img src={ NoddingGuySrc } alt="" style={{ border:"14px solid rgba(0,0,0,0.3)", borderRadius:180 }}/> */}
-                            <Typography variant="h2" >
-                                 <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            {/* <Typography variant="h6" style={{ transform:"scale(0.5)"}}>
+                                 <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" >
                                                 <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
                                                 <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                                             </svg>
-                                 </Typography>
+                                 </Typography> */}
+                            <AnimatedLogoIntro/>
                             {/* <Fireworks {...fxProps} /> */}
                         </div>
         : data.error? <Typography variant="h4" ><ErrorIcon fontSize="large"/> Oops! {data.error?.message ?? "Something went wrong"}</Typography>

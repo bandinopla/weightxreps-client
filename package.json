@@ -22,11 +22,11 @@
       "react-app/jest"
     ],
     "rules": {
-        "no-restricted-globals": "warn",
-        "no-unused-expressions": "warn",
-        "@typescript-eslint/no-unused-expressions":"warn"
-        
-      }
+      "no-restricted-globals": "warn",
+      "no-unused-expressions": "warn",
+      "@typescript-eslint/no-unused-expressions":"warn"
+
+    }
   },
   "browserslist": {
     "production": [
@@ -46,6 +46,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/styles": "^4.11.5",
+    "@rive-app/react-canvas": "^4.16.1",
     "@use-gesture/react": "^10.3.0",
     "apollo-upload-client": "^16.0.0",
     "codemirror": "^5.62.3",
