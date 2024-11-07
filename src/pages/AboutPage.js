@@ -11,7 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TablePagination from '@material-ui/core/TablePagination';
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 //--
@@ -75,8 +75,8 @@ export default function AboutPage() {
                 </Typography>
                 <Divider/><br/>
                 <Typography> 
-                    Created, Developed and Designed by <a href="mailto:pablo@weightxreps.net"><strong>Pablo Bandinopla</strong></a> ( <UnameTag inline  id={1} uname="tlast2o12dude" cc="ar"/> ) a <a href="https://github.com/bandinopla" target="_blank">Full Stack web developer</a> with a passion for <a href="https://en.wikipedia.org/wiki/Powerlifting" target="_blank">Powerlifting</a>.
-                    <br/><br/>Read as "Weight For Reps". <a href="https://web.archive.org/web/20220000000000*/https://weightxreps.net" target="_blank">Running since 2011</a>. This site provides a way to log your weight training workouts ( Most suited for Powerlifting ) in which several stats and graphs are generated based on that data as to aid you in better undertsanding your progress and overall intensity to volume ratio.
+                    Created by <a href="https://github.com/bandinopla" target="_blank"><strong>Pablo Bandinopla</strong></a> ( <UnameTag inline  id={1} uname="tlast2o12dude" cc="ar"/> )  
+                    <br/><br/>Read as "Weight For Reps", running <a href="https://web.archive.org/web/20220000000000*/https://weightxreps.net" target="_blank">since 2011</a>. This site provides a way to log your weight training workouts ( Most suited for Powerlifting ) in which several stats and graphs are generated based on that data as to aid you in better undertsanding your progress and overall intensity to volume ratio.
 
                     <br/>
                     <br/>
@@ -89,16 +89,23 @@ export default function AboutPage() {
                 <Typography variant="h3" gutterBottom> 
                     <ImportContactsIcon/> Open SOURCE
                 </Typography>
-                <Divider/><br/>
-                <Typography>  
-                <iframe src="https://ghbtns.com/github-btn.html?user=bandinopla&repo=weightxreps-server&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
-<br/><strong>The Backend code</strong> is open source at: <a href="https://github.com/bandinopla/weightxreps-server" alt="Backend Open Source Link" target="_blank">https://github.com/bandinopla/weightxreps-server</a>. 
-                </Typography>
-                <br/><Divider/><br/>
-                <Typography>  
-                <iframe src="https://ghbtns.com/github-btn.html?user=bandinopla&repo=weightxreps-client&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
-<br/><strong>The Frontend code</strong> is open source at: <a href="https://github.com/bandinopla/weightxreps-client" alt="Frontend Open Source Link" target="_blank">https://github.com/bandinopla/weightxreps-client</a>. 
-                </Typography>
+                <Divider/> <br/>
+                <Typography gutterBottom>
+                    Everyone can collab with the site! Just do your addition and create a pull request. After a review and back and forth we'll merge it!
+                </Typography><br/>
+                <div style={{ display:"flex", alignItems:"center", gap:4, fontSize:18}}>  
+                
+<strong>Backend</strong>: <a href="https://github.com/bandinopla/weightxreps-server" alt="Backend Open Source Link" target="_blank">weightxreps-server</a> 
+<iframe src="https://ghbtns.com/github-btn.html?user=bandinopla&repo=weightxreps-server&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+
+                </div>
+                <Collaborators repo="server" />
+                <br/> 
+                <div style={{ display:"flex", alignItems:"center", gap:4, fontSize:18}}>  
+                
+<strong>Frontend</strong>: <a href="https://github.com/bandinopla/weightxreps-client" alt="Frontend Open Source Link" target="_blank">weightxreps-client</a> <iframe src="https://ghbtns.com/github-btn.html?user=bandinopla&repo=weightxreps-client&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+                </div>
+                <Collaborators repo="client" />
 
             </Box>
 
@@ -262,4 +269,50 @@ const Announcement = ({ item }) => {
                   
             </Paper>
     
+}
+
+const Collaborators = ({ repo }) => {
+
+    const [colaborators, setColaborators ] = useState([]);
+    const [err, setErr ] = useState(null);
+
+    useEffect(()=>{ 
+
+        const controller = new AbortController();
+        const signal = controller.signal; 
+        
+        // this token is just for reading metadata, it doesn't allow for anything else. 
+        // it is not a private token.
+        const token = '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';
+
+        fetch(`https://api.github.com/repos/bandinopla/weightxreps-${repo}/contributors`, { 
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github.v3+json', // Optional, but ensures proper response format
+            },
+            signal })
+            .then(response => response.json())
+            .then(result => setColaborators( result.filter(c=> c.login!=='vandinopla') ))
+            
+            .catch(error => {
+                if (error.name !== 'AbortError') {
+                    console.error('Fetch error: ', error);
+                    setErr( "Oops! Something went wrong..." );
+                }
+            });
+
+        return () => {
+            controller.abort();
+        };
+
+    },[]);
+
+    return <div style={{ paddingLeft:10 }}>
+        ↳ <a href={`https://github.com/bandinopla/weightxreps-${repo}/graphs/contributors`} target="_blank">Contributors</a> : 
+        
+                    { err? <Alert severity="error">{err}</Alert> : colaborators.length==0? <AsciiSpinner label={"Loading..."} styles={{ display:"inline"}}/> 
+                       :  <ul> { colaborators.map( c=>(<li key={c.login} ><a href={c.html_url} target="_blank">{c.login}</a></li>) ) }</ul>
+                    }
+    </div>
 }
