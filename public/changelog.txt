@@ -1,3 +1,8 @@
+- 2.33.0 : 2024-11-12
+        + animated logo on save journal
+        + animated banner on guest's home.
+        + added list of contributors from github in the about page.
+
 - 2.32.2 : 2024-11-04
         * some visual cosmetic tweaks here and there to improve the layout...
 
