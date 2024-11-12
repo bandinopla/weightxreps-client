@@ -55,7 +55,7 @@ import Rive from '@rive-app/react-canvas';
 //         />
 //     </div>
 // }
-export const AnimatedLogoIntro = ()=>{
-    return <Rive src="/wxr-logo.riv" stateMachines={"State Machine 1"} style={{ width:150, height: 150, filter:"invert(1)"}}/>
+export const AnimatedLogoIntro = ({ style })=>{
+    return <Rive src="/wxr-logo.riv" stateMachines={"State Machine 1"} style={{ width:150, height: 150, filter:"invert(1)", ...style}}/>
 }
  

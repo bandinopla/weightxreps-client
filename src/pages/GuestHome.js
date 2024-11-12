@@ -6,12 +6,14 @@ import { GuestLandingPage } from "./guest/GuestLandingPage";
 import { ReactComponent as Logo } from '../logo.svg'; 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CloseIcon from '@material-ui/icons/Close';
+import { StartTodayBanner } from "../componentes/start-today-banner";
+import { AnimatedLogoIntro } from "../componentes/SplashScreenIntro";
 
 
 const useStyles = makeStyles( theme =>({
     firstBlock: {
         //background:"linear-gradient(83deg, rgba(0,0,0,1) 70%, rgba(0,19,22,1) 100%)",
-        color:"white !important",
+        "& h2, & h3" :{ color:"white !important" },
         minHeight:"90vh",
         display:"flex", 
         position:"relative",
@@ -164,14 +166,15 @@ const AccessWidget = ()=>{
 
     if( !showAccess )
     {
-        return <Box marginTop={6} className={ cls.AccessNowWidget }>
+        return <Box className={ cls.AccessNowWidget }>
                     
-                    <div>
+                    {/* <div>
                         <Button onClick={()=>setShowAccess(true)} variant="contained" className={ cls.AccessNowBtn+" fancy " } endIcon={<ExitToAppIcon style={{ fontSize: 40 }}/>} size="large">
                             <Typography variant="h2">Sign In</Typography>
                         </Button>
                         <img src="/banner-starttoday.jpg" className="sha"/>
-                    </div>
+                    </div> */}
+                    <StartTodayBanner onClickStart={()=>setShowAccess(true)}/>
                 </Box>
     }
 
@@ -181,7 +184,8 @@ const AccessWidget = ()=>{
                 {/* <img src="/bars.png" style={{ position:"absolute", bottom:0, right:0, maxHeight:"80%" }} className={cls.bars}/> */}
                 <Grid container alignItems="center" flexDirection="column" justifyContent="center">
                     <Grid item md={12} lg={6} className={ cls.logoArea }>
-                        <Logo alt="Logo" className={ " animated-wxr-logo"}/>
+                        {/* <Logo alt="Logo" className={ " animated-wxr-logo"}/> */}
+                        <AnimatedLogoIntro style={{ width:300, height:300 }}/>
                     </Grid>
                     <Grid item md={12} lg={6} style={{ minHeight:500}} className={cls.accessArea}>
                         <Typography variant="h2"><strong>Your Training Journal </strong></Typography>
