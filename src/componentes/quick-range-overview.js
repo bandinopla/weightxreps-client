@@ -103,7 +103,7 @@ export const QuickRangeOverview = ()=>{
     },[range, user.session ]);
 
     
-    return <SoftBox title="Overview" Icon={<DateRangeIcon/>}>
+    return <SoftBox title="You did this" Icon={<DateRangeIcon/>}>
         
         { error && <Alert severity="error">Oops! Something happened :(</Alert>}
 
