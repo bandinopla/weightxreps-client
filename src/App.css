@@ -259,13 +259,12 @@ animation: rainbowSlide 2s linear infinite;
   }
 
   .sidebar-handle {
-    background: black linear-gradient(#111, #444);
+    background: rgba(0,0,0,0.5);
     color:white;
     position:fixed;
     top: 25%;
     height: 25%;
-    padding:10px; z-index: 1198; 
-    border:1px solid white;
+    padding:5px; z-index: 1198;
   }
   .sidebar-handle.left {
     border-top-right-radius:10px;
