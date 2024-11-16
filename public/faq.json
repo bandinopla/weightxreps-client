@@ -4,6 +4,10 @@
         "a":"A workout in this site is a text log that has some @[shortcut:specific format] that the system recognizes. To log a workout, you click the \"Log Workout\" button located at the top right of this window. You can watch @[url:https://www.youtube.com/embed/T96bVtiewOY?start=53:this video] that it will show you the process of logging a workout."
     } ,
     {
+        "q":"¿How to add an exercise?",
+        "a":"To add an exercise you must write, on a new line, the symbol # followed by the name of the exercise. You can use the autocomplete button (or shortcut) to get a list of options to complete after you write a few letters then hit CTRL+SPACE to see a list of already existing exercise names available that contains the letters typed in the current line. "
+    },
+    {
         "q":"¿Can I delete my account?",
         "a":"Yes you can, go to your @[url:/settings] and at the bottom you will se the option to delete your account."
     },
