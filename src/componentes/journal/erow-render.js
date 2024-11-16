@@ -1,4 +1,4 @@
-import { Box, Divider, Hidden, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, Hidden, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 import Alert from '@material-ui/lab/Alert';
@@ -20,6 +20,7 @@ import { SBDRankLeyend, SetSBDRank } from './erow-sbdrank';
 import { renderWxD_Erows } from './erow-render-WxDoT';
 import { ProgressBar, ProgressBarsContainer } from '../progress-bar';
 import { statsOfWxDoT } from './erow-stats-WxDoT';
+import { BrowserView } from 'react-device-detect';
 
 const effintLink = {
     textDecoration:"underline",
@@ -163,8 +164,9 @@ const useStyles = makeStyles((theme) => ({
             color: theme.palette.secondary.main
          },
          [theme.breakpoints.down('sm')]: {
+            display:"flex",
             "& > div": {
-                float:"none",  
+                //float:"none",  
             },
          }
      },
@@ -216,10 +218,10 @@ function EblockUI({ data }){
 
     return <Paper className={classes.root}> 
          
-                <Box padding={1} paddingLeft={2}>
+                <Box padding={1} paddingLeft={2} position={"relative"}>
                     {/*<Typography variant="h6" gutterBottom>#<b>{ data.exerciseRef.exercise.name }</b></Typography> */}
 
-                    <IconButton style={{float:"right"}} variant="outlined" title='Personal Records' onClick={()=>history.push(`/journal/${jowner.uname}/personal-records--${data.exerciseRef.exercise.id}`)}><MenuBookIcon/></IconButton>
+                    <IconButton style={{ position:"absolute", top:0, right:0 }} variant="outlined" title='Personal Records' onClick={()=>history.push(`/journal/${jowner.uname}/personal-records--${data.exerciseRef.exercise.id}`)}><MenuBookIcon/></IconButton>
                     <Ename gutter {...data.exerciseRef.exercise} variant="h6"/>
 
                     <div className={classes.stat}> 
@@ -267,9 +269,11 @@ function EblockUI({ data }){
                                 &nbsp;x <b className="r">{ set.r }</b> x <b>{ set.s }</b>
                         </div> 
 
-                        <div className="bar">
-                            <Barra weight={set.weight} reps={set.r===0? 0 : null}/> 
-                        </div> 
+                        <Hidden smDown>
+                            <div className="bar">
+                                <Barra weight={set.weight} reps={set.r===0? 0 : null}/> 
+                            </div> 
+                        </Hidden>
 
                         <div style={{flexGrow:1, overflow:"hidden"}} className="effint" smDown>
                             <Hidden smDown>
@@ -282,9 +286,16 @@ function EblockUI({ data }){
                     // for small screens, make the bars take an entire row.
                     */}
                     <Hidden smUp>
-                        <Box paddingBottom={0} marginBottom={3}>
-                        <EffIntBars data={data} set={set} theme={theme}/>
-                        </Box>
+                        <Grid container>
+                            <Grid xs={4} style={{ display:"flex", justifyContent:"center"}}>
+                                <Box padding={"0 10px"}>
+                                <Barra weight={set.weight} reps={set.r===0? 0 : null} /> 
+                                </Box>
+                            </Grid>
+                            <Grid xs={8}>
+                                <EffIntBars data={data} set={set} theme={theme}/>
+                            </Grid>
+                        </Grid> 
                         <Divider/>
                         <br/>
                     </Hidden>

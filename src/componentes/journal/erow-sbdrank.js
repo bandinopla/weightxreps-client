@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { JOwnerContext } from "../../pages/journal-context";
 import { JDayContext } from "./jday-context";
-import Rating from '@material-ui/lab/Rating';
+import RatingComponent from '@material-ui/lab/Rating';
 import { AsciiSpinner } from "../ascii-spinner";
 import { Alert } from "@material-ui/lab";
 import { Box, Button, Divider } from "@material-ui/core";
@@ -11,7 +11,8 @@ import { useSBDStatsLazyHook } from "../../data/sbd-stats-hooks";
 import { useGetSession, useReactiveSetting } from "../../session/session-handler";
 import WeightValue from "../weight-value";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-
+import { BrowserView, MobileView } from "react-device-detect";
+import StarRateIcon from '@material-ui/icons/StarRate';
 const TYPES = ["SQ","BP","DL"];
 const SBDRankContext = createContext({
     isBeingUsed:()=>{}
@@ -23,6 +24,18 @@ const RealisticGoodMaxes = [
     [200,140] //DL
 ]
 
+const Rating = ({ ...props }) => {
+    return <>
+        <MobileView>
+                <div style={{ display:"flex", alignItems:"center", marginRight:10}}>
+                <StarRateIcon fontSize="small"/> <span style={{ fontSize:12 }}>{ props.defaultValue.toFixed(1) }</span>
+                </div>
+        </MobileView>
+        <BrowserView>
+            <RatingComponent {...props}/>
+        </BrowserView>
+    </>
+}
 
 export const SetSBDRank = ({ weight, isf, bw, type })=>{
 

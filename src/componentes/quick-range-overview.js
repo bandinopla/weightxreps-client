@@ -110,7 +110,7 @@ export const QuickRangeOverview = ()=>{
         { loading && <LinearProgress/>}
 
         { overview && <> 
-            Quick week overview...
+            Overview of <strong>your</strong> last X week/s...
             <SoftBoxTabs labels={ranges.map(itm=>itm.range)} selected={range} onSelected={setRange} disabled={loading}/> <br/><br/>
             <Typography variant="h4">{ranges[range].range} Week/s</Typography>
             <div className={classes.from}>
