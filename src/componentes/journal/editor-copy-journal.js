@@ -65,8 +65,7 @@ function ModalContents({ onClose }) {
              
             setTimeout( ()=>window.dispatchEvent(jeditorDataEvent), 0 );
     
-            close();
-            return "";
+            close(); 
         }
 
     }, [data]);

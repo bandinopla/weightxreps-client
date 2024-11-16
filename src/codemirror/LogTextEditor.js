@@ -35,8 +35,7 @@ const useStyles = makeStyles( theme=>({
         color:"#ccc",
 
         "& .CodeMirror":{
-            //height:"auto" , 
-            minHeight:400, 
+            minHeight:600,  
         }, 
 
         "& .cm-error": _errorCSS,
@@ -298,8 +297,9 @@ export const StaticLogHighlighter = ({ exercises, tags, utags, initialValue, lin
             gutters: ["CodeMirror-lint-markers","CodeMirror-linenumbers", "CodeMirror-foldgutter"],
             lint: __lintEditor,
             lineWrapping: true,
-            lineHeight: lines
-
+            lineHeight: lines,
+            viewportMargin: Infinity
+            
         });
 
         return ()=>{
@@ -391,7 +391,7 @@ export const LogTextEditor = ({ usekg, exercises, tags, value, getDocRef, getSho
                 utags, //<-- user defined tags
                 defaultYMD
             }, 
-            foldGutter: true, 
+            foldGutter: false, 
             lineNumbers: true,  
             tabSize: 4,
             hintOptions: {hint: synonyms, exercises, tags, utags }, 

@@ -130,6 +130,17 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
         
     }
 
+    ntheme.overrides.MuiIconButton = {
+        root: {
+            color:colors.backgroundColorOnTop,
+        }
+    }
+
+    ntheme.overrides.MuiButton = {
+        containedPrimary: {
+            color:colors.mainColorOnTop,
+        }
+    }
     ntheme.overrides.MuiListItem = {
         root: {
             

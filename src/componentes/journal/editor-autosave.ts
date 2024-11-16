@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 export type AutoSaveConfig = { 
-    cacheKey:string
+    cacheKey:()=>string
 }
 
 export type AutoSaveReturn = { 
@@ -39,13 +39,13 @@ export function useEditorAutosave( config:AutoSaveConfig ):AutoSaveReturn {
             clearTimeout( interval.current );
 
             interval.current = window.setTimeout(()=>{
-                $lstorage.setItem(config.cacheKey, text);
+                $lstorage.setItem(config.cacheKey(), text);
                 
             }, 1000 ); 
             
         },
         getAutosavedText: ()=> {
-            let text = $lstorage.getItem( config.cacheKey ) || ""
+            let text = $lstorage.getItem( config.cacheKey() ) || ""
             //localStorage.removeItem( config.cacheKey );
             let defaultPattern = /^\d{4}-\d{2}-\d{2}\n@ *\d+( *bw)?\s*$/i;
             if( defaultPattern.test(text) )
@@ -55,7 +55,7 @@ export function useEditorAutosave( config:AutoSaveConfig ):AutoSaveReturn {
             return text;
         },
         clear: ( stopAutosaving :boolean )=>{
-            $lstorage.removeItem(config.cacheKey)
+            $lstorage.removeItem(config.cacheKey())
             if( stopAutosaving )
             {
                 clearTimeout( interval.current );

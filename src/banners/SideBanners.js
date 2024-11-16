@@ -34,7 +34,7 @@ const Banner = ({ src }) => {
 
 	const onClick = () => {
 		if ($sess.session) {
-			window.dispatchEvent(new Event("openEditor"));
+			history.push("/log-workout")
 		} else {
 			if (history.location.pathname != "/login") {
 				history.push("/login");

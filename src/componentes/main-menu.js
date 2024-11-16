@@ -45,7 +45,7 @@ export const MENU = [
     { Icon:FingerprintIcon, goto:"/about", label:"About" },
 //liClass:styles.firstSession,
 
-    { Icon:FitnessCenterSharpIcon, sessionMenuStart:true, fancy:true, onClick:()=>window.dispatchEvent(new Event("openEditor")), label:"Log Workout", session:true },
+    { Icon:FitnessCenterSharpIcon, sessionMenuStart:true, fancy:true, goto:"/log-workout", label:"Log Workout", session:true },
  
     { Icon:AccountCircleRoundedIcon, goto: user => `/journal/${user.uname}` , label:session=>session.user.uname, session:true },
     { wrap: lbl=><NotificationsBadge type={2}>{lbl}</NotificationsBadge>,goto:"/notifications", type:2, label:"Notifications", Icon:NotificationsNoneIcon, session:true },

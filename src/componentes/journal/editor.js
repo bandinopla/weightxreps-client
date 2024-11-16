@@ -33,10 +33,10 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
     const {session }      = useGetSession();
     const history       = useHistory();
     const saveError = useReactiveVar($jeditorError);
-    const [jeditorData, setJeditorData] = useState();
+    const [jeditorData, setJeditorData] = useState(); 
 
     const { autosave, getAutosavedText, clear:clearAutosave } = useEditorAutosave({ 
-        cacheKey: `${session.user.id}-autosave`
+        cacheKey: ()=>`${session.user.id}-autosave`
     });
 
     const [saveEditor, {client}]    = useSaveJEditorMutation();
@@ -58,6 +58,8 @@ export const JEditor = ({ ymd, range, onClose, saveTrigger, hintTriggerRef, onLo
 
         const onEventData = (event) => { 
 
+            clearAutosave();
+            console.log("clear autosave")
             setJeditorData( event.detail )
         }
 

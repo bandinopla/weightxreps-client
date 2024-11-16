@@ -65,6 +65,7 @@ const JournalBase = lazy(() => import(/* webpackChunkName: "jbase" */'./pages/jo
 //const LoginPage = lazy(() => import(/* webpackChunkName: "login-page" */'./pages/LoginPage'));
 //const SignupPage = lazy(() => import(/* webpackChunkName: "signup-page" */'./pages/SignupPage'));
 
+const LogWorkoutPage = lazy(() => import(/* webpackChunkName: "log-workout" */'./pages/LogWorkoutPage'));
 const SBDStatsPage = lazy(() => import(/* webpackChunkName: "sbd-stats" */'./pages/SBDStatsPage'));
 const SettingsPage = lazy(() => import(/* webpackChunkName: "settings" */'./pages/settings'));
 //const FirebaseLoginPage = lazy(() => import(/* webpackChunkName: "login" */'./pages/FirebaseLoginPage'));
@@ -165,6 +166,7 @@ function App() {
                                                 <Route path="/unsub" component={UnsubFromEmails}/> 
                                                 <RoutePage path="/videos" component={VideosPage}/> 
                                                 <RoutePage path="/sbd-stats" component={SBDStatsPage} />
+                                                <Route path="/log-workout" component={LogWorkoutPage} />
                                                 <RoutePage path="/forum" component={ForumPage} />
                                                 <Route path="/donate" component={DonatePage}/> 
                                                 <Route path="/faq" component={HelpPage}/> 
