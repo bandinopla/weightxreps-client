@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactComponent as LogoSVG } from '../logo.svg';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import TipoNavidad from "../banners/red-guy-navidad.png";
 import Tipo from "../banners/red-guy.png";
@@ -36,6 +36,9 @@ const useStyles = makeStyles( theme=>({
             "& g": {
                 fill:"orange"
             }
+        },
+        "& g": {
+            fill: theme.palette.primary.main
         }
     }, 
 }))
@@ -54,10 +57,11 @@ const isNewYearEve = (now.getMonth() === 11 && now.getDate() === 31) ||  (now.ge
  */
 export default function Logo({ className }) {
     const styles = useStyles();
+    const theme = useTheme();
     //return ;
     return <div  className={`${styles.root} ${className}`}>
                 <LogoSVG className={`${styles.miniLogo} ${ isNewYearEve? "ny" : isChristmasSeason? "nv" : "" }`} />
-                <img src={ isNewYearEve? TipoNewYear : isChristmasSeason? TipoNavidad : Tipo}/>
+                <img src={ isNewYearEve? TipoNewYear : isChristmasSeason? TipoNavidad : Tipo} style={{ filter: theme.palette.type=='dark'? "drop-shadow(0 0 2em rgba(0, 0,233, 0.2))":"none" }}/>
         </div>;
 }
 

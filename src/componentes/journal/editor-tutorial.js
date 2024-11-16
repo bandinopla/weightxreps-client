@@ -6,7 +6,7 @@ import {
 import { useState } from "react";
 import { StaticLogHighlighter } from "../../codemirror/LogTextEditor";
 import { getExampleUTagsLog } from "../../codemirror/tag-parsing";
-
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import { InfoDialog } from "../Dialog";
 
 
@@ -74,6 +74,10 @@ export const TutorialContents = () => {
 		<div style={{ color:"black !important"}}>
 			<Grid container spacing={5}>
 				<Grid item sm={6}>
+					<Typography variant="h3" gutterBottom>Autocomplete</Typography>
+					<Typography>Use the "trigger autocomplete" <FitnessCenterIcon fontSize="small"/> button ( or CTRL+SPACE ) to triger the autocomplete of an exercise's name when you have the cursor in a new line. You can type the first few letters of an exercise's name and then trigger the autocomplete to show a list of options.</Typography>
+<br/>
+<br/>
 					<Typography variant="h3" gutterBottom>Example</Typography>
 
                     <Typography variant="h5" gutterBottom>
