@@ -1,3 +1,11 @@
+- 2.33.1 : 2024-11-16
+        * some ui tweaks here and there 
+        * fix: side manues were not working on iOS
+        * the log editor now has it's own page, and it is not a modal. I think it looks cleaner that way...
+        * improve logo visibility when dark mode is active... still not perfect.
+        * added "how to add exercise" question in FAQ 
+        * adjusted mobile view of log visualization to make all the elements visible without breaking the layout...
+
 - 2.33.0 : 2024-11-12
         + animated logo on save journal
         + animated banner on guest's home.
