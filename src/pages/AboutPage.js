@@ -279,16 +279,11 @@ const Collaborators = ({ repo }) => {
     useEffect(()=>{ 
 
         const controller = new AbortController();
-        const signal = controller.signal; 
-        
-        // this token is just for reading metadata, it doesn't allow for anything else. 
-        // it is not a private token.
-        const token = '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';
+        const signal = controller.signal;
 
         fetch(`https://api.github.com/repos/bandinopla/weightxreps-${repo}/contributors`, { 
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
+            headers: { 
                 'Accept': 'application/vnd.github.v3+json', // Optional, but ensures proper response format
             },
             signal })
@@ -307,6 +302,8 @@ const Collaborators = ({ repo }) => {
         };
 
     },[]);
+
+    if( err ) return "";
 
     return <div style={{ paddingLeft:10 }}>
         ↳ <a href={`https://github.com/bandinopla/weightxreps-${repo}/graphs/contributors`} target="_blank">Contributors</a> : 
