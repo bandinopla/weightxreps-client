@@ -1,3 +1,9 @@
+- 2.33.2 : 2024-11-20
+        * big fix the "edit log" button was visible in other's people's logs for some reason.
+        * the token used to get the contributors stopped worked, mabe someone over used it? 
+        * compress menu items to use less vertical space 
+        * added "ai podcast" video in about page.
+
 - 2.33.1 : 2024-11-16
         * some ui tweaks here and there 
         * fix: side manues were not working on iOS
