@@ -155,6 +155,11 @@ export default function AboutPage() {
 
 
         <Grid item sm={6}>
+            <Box marginTop={5}>
+                <Typography variant="h3" gutterBottom>¿What is weight for reps?</Typography>
+                <Divider/><br/>
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/lkOYm7SmF_4?si=RhPPpQ-sKaJyr2ZA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </Box>
              <Box marginTop={5}>
                 <Typography variant="h3" gutterBottom>
                     <LoopIcon/> What's new?
