@@ -143,7 +143,8 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
     }
     ntheme.overrides.MuiListItem = {
         root: {
-            
+            paddingTop:3,
+            paddingBottom:3
         } ,
         selected: {
             backgroundColor: "none !important",
