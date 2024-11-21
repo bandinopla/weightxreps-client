@@ -1,8 +1,9 @@
-- 2.33.2 : 2024-11-20
+- 2.33.2 : 2024-11-21
         * big fix the "edit log" button was visible in other's people's logs for some reason.
         * the token used to get the contributors stopped worked, mabe someone over used it? 
         * compress menu items to use less vertical space 
         * added "ai podcast" video in about page.
+        * Bug reported by @ndefilippo : on the achievements badges, in the edge case of a minimum value being tested, some extra decimals in the comparision against the minimum value were making the condition to fail.
 
 - 2.33.1 : 2024-11-16
         * some ui tweaks here and there 
