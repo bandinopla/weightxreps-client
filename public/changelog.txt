@@ -1,6 +1,7 @@
 - 2.34.1 : 2024-11-23(2)
         * Bugfix reported by @Jhn79 : Some buttons dissapeared when viewed on a small screen like a tablet.
-        
+        * Fix color of the text of the search box in dark mode.
+
 - 2.34.0 : 2024-11-23
         + Search functionality in the explore page.
         
