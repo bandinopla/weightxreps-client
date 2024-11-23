@@ -55,6 +55,7 @@ import GitHubButton from 'react-github-btn'
 import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
 import { Snowfall } from './componentes/snow';
 import { SearchBox } from './componentes/SearchBox';
+import { SideVideoBanner } from './componentes/SideVideoBanner';
 
 // window.fetch = (url, config)=>{
 //     return fetchPolyfill(url, config)
@@ -222,6 +223,7 @@ const AppSideBar = ()=>{
                                 <ServiceWorkerStatusDisplay/>
                                 <Route path="/" component={VisualPreferencesSwitcher}/>
                                 <Route path="/" component={DonationSoftbox}/>
+                                <SideVideoBanner/>
 
                                 <Suspense fallback={<LinearProgress />}>
                                 <Switch>
