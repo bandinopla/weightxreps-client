@@ -119,12 +119,13 @@ export const SearchBox = ({ children }) => {
 
     return <>
         <div style={{ display:"flex", maxWidth:500, flexDirection:"column", padding:"0 20px", alignContent:"stretch", margin:"20px auto"}}>
-        <Paper component="form" className={classes.root} elevation={5}> 
+        <Paper className={classes.root} elevation={5}> 
             <InputBase 
                 className={classes.input}
                 placeholder="Search: 2020-10-01 squat 140x5x5"
                 inputProps={{ 'aria-label': 'search google maps' }}
                 inputRef={inputRef}
+                onKeyDown={ev=>ev.code=='Enter' && callSearch()}
             />
 
             {active && 
