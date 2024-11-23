@@ -1,3 +1,6 @@
+- 2.34.0 : 2024-11-23
+        + Search functionality in the explore page.
+        
 - 2.33.2 : 2024-11-21
         * big fix the "edit log" button was visible in other's people's logs for some reason.
         * the token used to get the contributors stopped worked, mabe someone over used it? 
