@@ -59,7 +59,7 @@ export default function LogWorkoutPage ({ location }) {
                             <Button variant="outlined" color="primary" disabled={disabled} onClick={()=>hintTriggerRef.current()}>Trigger Autocomplete</Button>
                         
                         </Hidden>
-                        <Hidden mdUp>
+                        <Hidden only={["lg","xl"]}>
                             <IconButton  disabled={disabled} onClick={()=>helpModalState[1](true) }><HelpOutlineIcon/></IconButton> 
                             <IconButton variant="outlined" color="primary" disabled={disabled} onClick={()=>hintTriggerRef.current()}><FitnessCenterIcon/></IconButton>
                         </Hidden>
@@ -73,7 +73,7 @@ export default function LogWorkoutPage ({ location }) {
                         <Hidden mdDown>
                             <Button size="large" endIcon={<SaveIcon/>} variant="contained" color="primary" disabled={disabled} onClick={()=>saveTriggerRef.current()}>Save</Button>
                         </Hidden>
-                        <Hidden mdUp>
+                        <Hidden only={["lg","xl"]}>
                             <IconButton size="large" variant="contained" color="primary" disabled={disabled} onClick={()=>saveTriggerRef.current()}><SaveIcon/></IconButton>
                         </Hidden>
                         
