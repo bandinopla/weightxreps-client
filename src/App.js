@@ -54,6 +54,7 @@ import { ServiceWorkerStatusDisplay } from './componentes/service-worker-status-
 import GitHubButton from 'react-github-btn'
 import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
 import { Snowfall } from './componentes/snow';
+import { SearchBox } from './componentes/SearchBox';
 
 // window.fetch = (url, config)=>{
 //     return fetchPolyfill(url, config)
@@ -161,7 +162,9 @@ function App() {
                                                 <Route path="/explore">
                                                     <MainBanner /> 
                                                     {/* <Home activator /> */}
-                                                    <ActivityFeed type="global" />
+                                                    <SearchBox>
+                                                        <ActivityFeed type="global" />
+                                                    </SearchBox>
                                                 </Route>
                                                 <Route path="/unsub" component={UnsubFromEmails}/> 
                                                 <RoutePage path="/videos" component={VideosPage}/> 

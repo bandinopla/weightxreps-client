@@ -30,6 +30,7 @@ import { trackError } from "../componentes/google-tracker";
 import { UTagsPolicy } from "../componentes/journal/tags";
 import { VideosCachePolicy } from "./videos-policy";
 import { ForumPolicy } from "../forum/forum-policy";
+import { SearchResultsPolicy } from "./search-results-policy";
 
 const { REACT_APP_REMOTE_SERVER, NODE_ENV } = process.env;
 
@@ -76,6 +77,7 @@ let typePolicies = mergeObjects([
     UTagsPolicy,
     VideosCachePolicy,
     ForumPolicy
+	,SearchResultsPolicy
 ]);
 
 const client = new ApolloClient({
