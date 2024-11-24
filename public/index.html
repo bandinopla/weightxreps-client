@@ -66,6 +66,14 @@
         .appReady .init {
             display: none;
         }
+        .sysError .loader, #sys-error { display: none; }
+        .sysError #sys-error { display: inline-block; }
+        #sys-error {
+          color: red;
+          font-size: large;
+          font-family: monospace;
+          padding: 40px;
+        }
     </style>
  
 
@@ -84,6 +92,14 @@
   <body>
     <div class="init">
         <span class="loader"></span>
+        <span id="sys-error">
+          <h1>↯ Oops!</h1>
+          Failed to connect to the server (check your internet connection mabe?)...
+          <br/>Error detail ➡ <span>...</span>
+          <br/>
+          <br/>
+          Report it vía: admin@weightxreps.net or <a href="https://x.com/weight_x_reps">@weight_x_reps</a>
+        </span>
     </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div> 

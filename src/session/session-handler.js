@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getOrCreateSettingsHandler } from '../utils/local-storage-settings';
 import { useGetSessionQuery, useLoginMutation } from '../data/generated---db-types-and-hooks';
 import { useInbox } from './inbox-manager';
+import { parseError } from '../data/db';
 
 
 const SESSION_TOKEN = 'token'; 
@@ -52,12 +53,18 @@ export const useGetSession = ()=> {
         
     }  
 
-    useEffect(()=>{
+    useEffect(()=>{ 
         if( data )
         {
             document.body.classList.add("appReady")
         }
-    },[data])
+        else if( error )
+        {
+            document.querySelector('#sys-error > span').innerHTML =  parseError(error);
+            document.body.classList.add("sysError");
+
+        }
+    },[data, error])
 
     /** 
      * Reloads the session token.
