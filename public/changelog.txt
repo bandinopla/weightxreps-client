@@ -1,3 +1,6 @@
+- 2.34.2 : 2024-11-25
+        * Bug fix reported by @asambol : An error was happening when there was no session available and the app tried to access a session property. This error made the page look all white, nothing loaded in Safari. My bad, forgot to check for a null session.
+
 - 2.34.1 : 2024-11-23(2)
         * Bugfix reported by @Jhn79 : Some buttons dissapeared when viewed on a small screen like a tablet.
         * Fix color of the text of the search box in dark mode.

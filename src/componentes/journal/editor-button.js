@@ -27,7 +27,7 @@ export const JEditorButton = ({ ymd, range, redirect, wouldBeNewLog, children, .
     const jowner = useContext(JOwnerContext);
     const { session } = useGetSession();
   
-    if( session.user?.id!==jowner?.id ) return "";
+    if( !session || ( jowner && (session.user?.id!==jowner.id) ) ) return "";
     
     return <Button startIcon={<BtnIcon/>} {...rest} className="fancy" onClick={()=>history.push("/log-workout?key="+ymd+(range?":"+range:""))}>
                 {children || ( wouldBeNewLog?"New Log" :"Edit") } 
