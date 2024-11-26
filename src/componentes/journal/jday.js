@@ -22,6 +22,7 @@ import { useParams } from "react-router-dom";
 import { JDayContext } from "./jday-context";
 import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import { Custom1RMFactorChip } from "./custom-1rm-factor-chip";
+import { JDayStats } from './jday-stats';
  
 
 
@@ -73,7 +74,7 @@ export const JDay = ()=>{
     return <JDayContext.Provider value={{...data.jday, ymd}}> 
 
 
-            <JDayContentHeader noData={!data.jday} title={date2NiceString(date)} titleChild={ <div style={{float:"right", marginLeft:15}}>
+            <JDayContentHeader noData={!data.jday} title={<>{date2NiceString(date)} <JDayStats data={data}/></>} titleChild={ <div style={{float:"right", marginLeft:15}}>
 
                                                                                                         <JEditorButton ymd={ymd} wouldBeNewLog={!data.jday} variant="contained" color="primary" size="large" style={{marginRight:5}}/>
                                                                                                         { log && <LikeJournalButton  variant="outlined" size="large"/> }
