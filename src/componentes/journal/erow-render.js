@@ -143,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
      ecom: { 
         ...theme.dataCell
          , padding:"5px 10px" 
-         , margin:"0 10px"
+         , margin:"8px 10px"
          , borderRadius: 3
          , boxShadow:"2px 1px 5px rgba(0,0,0,0.5)"
          , "& svg": {

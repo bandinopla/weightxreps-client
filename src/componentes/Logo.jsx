@@ -9,6 +9,10 @@ import TipoNewYear from "../banners/red-guy-newyear.png";
 const useStyles = makeStyles( theme=>({
     root: {
         maxWidth:"100% !important",
+        backgroundColor: theme.palette.type=="dark"? "white" : "inherit",
+        padding:"20px 0px",
+        borderTopLeftRadius:50,
+        borderBottomRightRadius:50,
         width:200, 
         marginTop:20,
         display:"block",
@@ -26,7 +30,7 @@ const useStyles = makeStyles( theme=>({
         width:40, height:40,
         position:"absolute",
         left:33,
-        top:0, 
+        top:20, 
         "&.nv": {
             "& g": {
                 fill:"red"

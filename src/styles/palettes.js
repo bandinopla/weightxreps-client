@@ -28,7 +28,7 @@ export const defaultPaletteColors = {
 // 1 DARK MODE
 //
  export const ColorSchemes =  [{ /* LIGHT */"backgroundColor":"#FAFAFA","backgroundColorOnTop":"#6a798b","mainColor":"#3574a5","mainColorOnTop":"#e3edf2","secondaryColor":"#68a9bd","secondaryColorOnTop":"#ffffff","dataCellColor":"#3b434d","dataCellColorOnTop":"#d6dadf","undefined":"#d2b3b3"},
-                                 /* DARK */{"backgroundColor":"#15202B","backgroundColorOnTop":"#F7F9F9","mainColor":"#45abff","mainColorOnTop":"#bec9cf","secondaryColor":"#7f93a1","secondaryColorOnTop":"#0d0f0d","dataCellColor":"#0d0a0a","dataCellColorOnTop":"#cfdee0","undefined":"#d2b3b3"}]
+                                 /* DARK */{"backgroundColor":"#212122","backgroundColorOnTop":"#dfdfdf","mainColor":"#bb4c40","mainColorOnTop":"#e1e1e1","secondaryColor":"#457ba2","secondaryColorOnTop":"#e1e1e1","dataCellColor":"#677382","dataCellColorOnTop":"#c2c2c2","undefined":"#d2b3b3"}]
 //[
 //     {"backgroundColor":"#f1f7f7","backgroundColorOnTop":"#1a314e","mainColor":"#6c786c","mainColorOnTop":"#ffffff","secondaryColor":"#ff00ca","secondaryColorOnTop":"#e3eee3","dataCellColor":"#000000","dataCellColorOnTop":"#f7f7f7","undefined":"#d2b3b3"},
 //     {"backgroundColor":"#000000","backgroundColorOnTop":"#ffffff","mainColor":"#6c786c","mainColorOnTop":"#ffffff","secondaryColor":"#ff00ca","secondaryColorOnTop":"#e3eee3","dataCellColor":"#000000","dataCellColorOnTop":"#f7f7f7","undefined":"#d2b3b3"}
@@ -49,7 +49,7 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
 
 
     ntheme.palette.type = isDarkTheme? 'dark':'light';
-    ntheme.referenceLineColor = alpha(colors.backgroundColorOnTop, 0.2)  ;
+    ntheme.referenceLineColor = alpha(colors.backgroundColorOnTop, 0.1)  ;
     ntheme.ucardBgColor = isDarkTheme? alpha("#fff", 0.1) : alpha("#000", 0.01)//lighten(colors.backgroundColor, 0.3)
 
     ntheme.palette.background = {
@@ -84,6 +84,12 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
         }
     }
 
+    ntheme.overrides.MuiPaper = {
+        root: {
+            backgroundColor: lighten(colors.backgroundColor, 0.05), 
+        }
+    }
+
     ntheme.overrides.MuiFormHelperText = {
         root: {
             color: colors.backgroundColorOnTop
@@ -111,6 +117,41 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
 
     ntheme.overrides.MuiFormLabel = {
         root: {
+            color: colors.backgroundColorOnTop
+        }
+    }
+
+    ntheme.overrides.MuiSvgIcon = { 
+            root: {
+                //fill: colors.backgroundColorOnTop
+            }, 
+    } 
+
+    ntheme.overrides.MuiCheckbox = {
+        root: {
+            color:"currentColor"
+        }
+    }
+
+    ntheme.overrides.MuiTableSortLabel = {
+        icon: {
+            color:"currentColor !important"
+        },
+        root: {
+            "&:hover": {
+                color: ntheme.palette.primary.main
+            }
+        }
+    }
+
+    ntheme.overrides.MuiTab = {
+        textColorPrimary: {
+            color: colors.backgroundColorOnTop
+        }
+    }
+
+    ntheme.overrides.MuiSlider = {
+        markLabel: {
             color: colors.backgroundColorOnTop
         }
     }
@@ -195,7 +236,7 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
     ntheme.overrides.MuiTable = {
         root: {
             backgroundColor: ntheme.ucardBgColor //theme.palette.background.default, 
-        }
+        }, 
     }
 
     ntheme.overrides.MuiTableCell = {

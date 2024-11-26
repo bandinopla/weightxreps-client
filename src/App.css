@@ -153,7 +153,8 @@ animation: rainbowSlide 2s linear infinite;
 }
 
 .fancy, .fancy .MuiSvgIcon-root, .fancy .MuiTypography-root {
-    color: white !important
+    color: white !important;
+    fill: white !important;
 }
 .MuiButton-root.fancy, .MuiButtonBase-root.fancy, .fancy  {
     text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);

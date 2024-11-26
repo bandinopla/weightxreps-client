@@ -190,7 +190,7 @@ export function CanvasBar({ weight, reps, FallbackTo }) {
 
         metrics.plateX = metrics.barStart;  
 
-        drawPlatesForWeight(ctx, metrics, weight, isDarkMode? "#111" : reps===0? "#f00" : null );
+        drawPlatesForWeight(ctx, metrics, weight, isDarkMode? "#666" : reps===0? "#f00" : null );
 
         //#region Reps Label
         const lbl = reps===0? ":(" : reps>1? "x"+reps.toString() : null;

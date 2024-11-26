@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { OpenDMButton } from "./dms-window/dm-window";
 import NotificationsPopMenu from "./notifications-popmenu";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -13,8 +13,10 @@ export default function PageMessages() {
     return <> 
             <Box textAlign={"center"} margin={1}>
                 { user.session?.user.id==1 && <OpenDMButton otherUser={{id:"0"}} Icon={<RssFeedIcon/>} label="Global Message" />  }
-
+                &nbsp;
                 <OpenDMButton otherUser={{ id:1, admin:true }} Icon={<VerifiedUserIcon/>} label="DM Admin" color="primary"/>  
+                &nbsp;
+                <Button variant="outlined" onClick={()=>window.open("https://x.com/weight_x_reps","_blank")}>@x.com/weight_x_reps</Button>
             </Box>
             
 

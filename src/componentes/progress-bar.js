@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme=>({
         display:"flex", 
         flexDirection:"row",  
         overflow:"hidden", 
-        borderBottom:"1px solid "+theme.palette.background.default,
+        marginBottom:1,
         lineHeight:"10px",
         alignItems:"center"
     },
