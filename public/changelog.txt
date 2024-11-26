@@ -1,3 +1,8 @@
+- 2.34.3 : 2024-11-26
+        + added total reps and total sets count on the journal's post.
+        * fixed/retouched the colors on dark mode because I know dark mode looked like shit...
+        * Hided the "get fit" banner on the index page because in that page she is already being used in the main callout banner.
+
 - 2.34.2 : 2024-11-25
         * Bug fix reported by @asambol : An error was happening when there was no session available and the app tried to access a session property. This error made the page look all white, nothing loaded in Safari. My bad, forgot to check for a null session.
 
