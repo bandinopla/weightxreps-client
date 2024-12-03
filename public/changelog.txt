@@ -1,3 +1,6 @@
+- 2.34.4 : 2024-12-03
+        * requested by @Willem a way to turn off the snow effect because it made some browsers lag a lot.
+
 - 2.34.3 : 2024-11-26
         + added total reps and total sets count on the journal's post.
         * fixed/retouched the colors on dark mode because I know dark mode looked like shit...

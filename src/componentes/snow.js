@@ -1,13 +1,35 @@
 // credit to: https://pajasevi.github.io/CSSnowflakes/
 
+import { useEffect, useState } from "react";
+import AcUnitIcon from '@material-ui/icons/AcUnit';
+
 const now = new Date();
 const isChristmasSeason = now.getMonth() === 11; // December only
 
 export function Snowfall() {
+  const [on, setOn] = useState(false);
+
+  useEffect(()=>{
+
+    const state = window.localStorage?.getItem("snow") ?? "1";
+ 
+    setOn(state=="1"); 
+
+  },[]);
+
+  const toggleSnow = ()=>{
+    const newState = on? "0" : "1";
+    window.localStorage?.setItem("snow", newState);
+    setOn(!on);
+  }
 
   if (!isChristmasSeason) return;
 
-  return <div class="snowflakes" aria-hidden="true">
+  return <>
+  <div onClick={()=>toggleSnow()} style={{ display:"flex", color:"red", alignItems:"center", border:"3px solid red", borderTop:"none", position:"fixed", top:0, left:"50%", background:"#eee", zIndex:9999, padding:"5px 10px", borderBottomLeftRadius:5, borderBottomRightRadius:5, cursor:"pointer" }}>
+    <AcUnitIcon/> Snow: <strong>{ on?"ON":"OFF"}</strong></div>
+  
+  { on && <div class="snowflakes" aria-hidden="true">
   <div class="snowflake">
     <div class="inner">❅</div>
   </div>
@@ -44,7 +66,9 @@ export function Snowfall() {
   <div class="snowflake">
     <div class="inner">❅</div>
   </div>
-</div>;
+</div> }
+
+</>;
 }
 
 // CSS styles (include in your CSS file or add inline)
