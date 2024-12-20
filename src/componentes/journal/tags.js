@@ -34,8 +34,9 @@ export const JournalTagValue = ({ value:utagValue, utag })=>{
  
 
 export const TagTokenMatcher = ( userTags, utagsValues ) => { 
-     
+      
     let values = utagsValues?.slice(0)
+                            .filter(tval=>!!tval.type)
                             .map( tval=>new UTagValue(tval) );  
 
 
