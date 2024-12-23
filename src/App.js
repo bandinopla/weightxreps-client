@@ -225,15 +225,14 @@ const AppSideBar = ()=>{
 
                                 <ServiceWorkerStatusDisplay/>
                                 <Route path="/" component={VisualPreferencesSwitcher}/>
-                                <Route path="/" component={DonationSoftbox}/>
-                                <Route path="/" exact component={SideVideoBanner}/>
-
-                                <Route path="/journal/:uname" component={JournalSideBar} />
+                                <Route path="/" component={DonationSoftbox}/> 
+                                <Route path="/" component={SideVideoBanner}/>
+                                
                                 
 
                                 <Suspense fallback={<LinearProgress />}>
                                 <Switch>
-                                    
+                                    <Route path="/journal/:uname" component={JournalSideBar} />
                                     <Route path="/explore" component={HomeSidebar}/>  
                                     <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStatsSoftBox} />   
                                     <Route path="/sbd-stats" component={SBDRankSidebar} />

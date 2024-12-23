@@ -8,7 +8,7 @@ import { Box, Button, Grid, LinearProgress, Typography, makeStyles } from "@mate
 import WeightValue from "./weight-value";
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import { Alert } from "@material-ui/lab";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom"; 
 
 const ranges = [
     { range:1 },
@@ -49,6 +49,8 @@ export const QuickRangeOverview = ()=>{
     const user              = useGetSession();
     const classes           = useStyles();
     const history           = useHistory(); 
+    const $params           = useParams();
+
 
     const overview = useMemo(()=>
     {
@@ -101,6 +103,8 @@ export const QuickRangeOverview = ()=>{
         }
 
     },[range, user.session ]);
+
+    if( $params?.uname.toLowerCase() !==user.session?.user?.uname.toLowerCase() ) return;
 
     
     return <SoftBox title="YOU DID" Icon={<DateRangeIcon/>} style={{ border:"3px solid #333"}}>
