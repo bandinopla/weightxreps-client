@@ -38,7 +38,7 @@ export const MENU = [
     { Icon:SearchIcon, goto:"/explore", label:"Explore" },
     { Icon:RssFeedIcon, goto:"/community-stats", label:"Community stats" },
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
-    { Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
+    //{ Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
     { Icon:VideocamIcon, goto:"/videos", label:"Videos" },
     { Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
     { Icon:HelpIcon, goto:"/faq", label:"Help" },

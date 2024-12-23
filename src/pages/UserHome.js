@@ -2,6 +2,7 @@ import { LinearProgress } from "@material-ui/core";
 import { useGetSession } from "../session/session-handler"
 import { ActivityFeed } from "./Home"
 import { GuestHome } from "./GuestHome";
+import { MainBannerWrapper } from "../banners/MainBannerWrapper";
  
 export const UserHome = ()=>{
     const user = useGetSession();
@@ -17,7 +18,9 @@ export const UserHome = ()=>{
     }
 
     return <> 
-    <img fetchpriority="high" src="/session-banner.jpg" className='banner-fullrow sha'/>
+   <MainBannerWrapper>
+        <img fetchpriority="high" src="/session-banner.jpg" className='banner-fullrow sha'/>
+    </MainBannerWrapper> 
                 <ActivityFeed type="following" />
                 </>
 }

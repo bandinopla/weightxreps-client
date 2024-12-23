@@ -103,16 +103,15 @@ export const QuickRangeOverview = ()=>{
     },[range, user.session ]);
 
     
-    return <SoftBox title="You did this" Icon={<DateRangeIcon/>}>
+    return <SoftBox title="YOU DID" Icon={<DateRangeIcon/>} style={{ border:"3px solid #333"}}>
         
         { error && <Alert severity="error">Oops! Something happened :(</Alert>}
 
         { loading && <LinearProgress/>}
 
-        { overview && <> 
-            Overview of <strong>your</strong> last X week/s...
+        { overview && <>  
             <SoftBoxTabs labels={ranges.map(itm=>itm.range)} selected={range} onSelected={setRange} disabled={loading}/> <br/><br/>
-            <Typography variant="h4">{ranges[range].range} Week/s</Typography>
+            <Typography variant="h6">In the last {ranges[range].range} Week/s</Typography>
             <div className={classes.from}>
                 <strong>From</strong> {data.jrange.from}<br/>
                 <strong>To</strong> {data.jrange.to}<br/>

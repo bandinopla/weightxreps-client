@@ -34,13 +34,15 @@
     <!-- <script src="https://accounts.google.com/gsi/client" async defer></script> -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-22056619-2"></script> 
-
+     
     <script>
+        window.onBanners = [];
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date()); 
         gtag('config', 'UA-22056619-2', { 'send_page_view': false }); 
     </script>
+    <script async src="/banners/banners.js"></script>
     
     <style>
         .loader {

@@ -2,6 +2,7 @@
 import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom"; 
 import { todayAsYMD } from "../../utils/utils";
 import AlsoPosted from "./AlsoPosted";
+import { SessionHomeSidebar } from "../SessionHomeSidebar";
  
 const TODAY_AS_YMD              = todayAsYMD();
 
@@ -23,6 +24,8 @@ export default function JournalSideBar({ location: { pathname }}) {
     }
 
     return <>
+            <SessionHomeSidebar/>
+            <br/>
             <AlsoPosted ymd={ymd}/>
             </>
 }

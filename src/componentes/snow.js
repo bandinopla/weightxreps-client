@@ -27,7 +27,7 @@ export function Snowfall() {
 
   return <>
   <div onClick={()=>toggleSnow()} style={{ display:"flex",transform: "translateX(-50%)", gap:5, color:"red", alignItems:"center", border:"3px solid red", borderTop:"none", position:"fixed", top:0, left:"50%", background:"#eee", zIndex:9999, padding:"5px 10px", borderBottomLeftRadius:5, borderBottomRightRadius:5, cursor:"pointer" }}>
-    <AcUnitIcon/> Snow: <strong>{ on?"ON":"OFF"}</strong></div>
+    <AcUnitIcon/> <strong>{ on?"ON":"OFF"}</strong></div>
   
   { on && <div class="snowflakes" aria-hidden="true">
   <div class="snowflake">

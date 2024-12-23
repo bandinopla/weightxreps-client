@@ -25,6 +25,7 @@ import { JOwnerContext } from './journal-context';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { YearOVerview } from '../componentes/year-overview';
 import { ForumRoleChip } from '../forum/roles';
+import { MainBannerWrapper } from '../banners/MainBannerWrapper';
 
 //import { PRsHistoryTable } from '../componentes/journal/prs-history'; 
 //const JRange        = lazy(()=>import("../componentes/journal/jrange"));
@@ -93,7 +94,7 @@ export default function({ match:{  path, url, params:{ uname } } }) {
      
     return (
             <JOwnerContext.Provider value={{ ...uinfo.user, gotoYMD, estimate1RM }}>
- 
+                <MainBannerWrapper></MainBannerWrapper> 
                 <Container maxWidth="lg" ref={containerDivRef} style={{marginTop:20}}>  
                     
 
@@ -104,6 +105,7 @@ export default function({ match:{  path, url, params:{ uname } } }) {
 
                             {/*=== HEADER ===*/}
                             <Grid container spacing={2} alignItems="stretch" style={{marginBottom:20}}>
+                                
                                 <Grid item xs={12} sm={4}>
                                     <Box marginBottom={3} > 
                              

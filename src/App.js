@@ -17,7 +17,7 @@ import {
     useLocation
 } from "react-router-dom";
 import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react';
-
+import YouTubeIcon from '@material-ui/icons/YouTube';
 //import { SettingsPage } from './pages/settings'; 
 
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -56,6 +56,7 @@ import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
 import { Snowfall } from './componentes/snow';
 import { SearchBox } from './componentes/SearchBox';
 import { SideVideoBanner } from './componentes/SideVideoBanner';
+import { MainBannerWrapper } from './banners/MainBannerWrapper';
 
 // window.fetch = (url, config)=>{
 //     return fetchPolyfill(url, config)
@@ -161,7 +162,9 @@ function App() {
                                                 <Route path="/" exact component={UserHome} />  
                                                 <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStats} />    
                                                 <Route path="/explore">
-                                                    <MainBanner /> 
+                                                    <MainBannerWrapper>
+                                                        <MainBanner /> 
+                                                    </MainBannerWrapper>
                                                     {/* <Home activator /> */}
                                                     <SearchBox>
                                                         <ActivityFeed type="global" />
@@ -223,22 +226,30 @@ const AppSideBar = ()=>{
                                 <ServiceWorkerStatusDisplay/>
                                 <Route path="/" component={VisualPreferencesSwitcher}/>
                                 <Route path="/" component={DonationSoftbox}/>
-                                <SideVideoBanner/>
+                                <Route path="/" exact component={SideVideoBanner}/>
+
+                                <Route path="/journal/:uname" component={JournalSideBar} />
+                                
 
                                 <Suspense fallback={<LinearProgress />}>
                                 <Switch>
                                     
-                                    <Route path="/explore" component={HomeSidebar}/> 
-                                    <Route path="/" exact component={SessionHomeSidebar}/> 
+                                    <Route path="/explore" component={HomeSidebar}/>  
                                     <Route path="/community-stats/:filtermask([\w-]+)?" component={CommunityStatsSoftBox} />   
                                     <Route path="/sbd-stats" component={SBDRankSidebar} />
-                                    <Route path="/journal/:uname" component={JournalSideBar} />
+                                    
 
                                 </Switch>
                                 </Suspense>
                             </Box>
 
                             <Box padding={1} paddingTop={5} textAlign="center" maxWidth={250}>
+
+                                <div style={{ display:"flex", justifyContent:"center", alignContent:"center", gap:5 }}>
+                                <YouTubeIcon/> 
+                                    <a href="https://www.youtube.com/@weightxreps" target='_blank' style={{ fontWeight:"bold", display:"block", marginBottom:20}}>
+                                    YouTube @weightxreps</a>
+                                </div>
 
                                 <div style={{ display:"flex", justifyContent:"center"}}>
                                     <FollowOnX/> &nbsp;
