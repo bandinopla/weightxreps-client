@@ -1,3 +1,6 @@
+- 2.34.7 : 2024-12-24
+        * Made the "best 3 lifts" under the user card on the journal page link to the journal logs in which each lift was done. 
+
 - 2.34.6 : 2024-12-23
         * Interview with @strongcatty https://www.youtube.com/watch?v=JZEWbSPrPhc
         * Added banner of the interview

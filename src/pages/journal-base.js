@@ -212,7 +212,7 @@ export const Best3Lifts = ({ data, usekg }) =>{
     return <Grid container style={{marginTop:10}} alignItems="flex-end">
                 {data.map( (itm,i)=>(<Grid key={i} item xs={colsSpan} style={{textAlign:"center"}}>
                         <Typography variant="subtitle1" noWrap>
-                            <strong><WeightValue value={itm.w} inkg={usekg}/></strong>
+                          <a href={`${itm.ymd}`} title={itm.e.name + " on "+ itm.ymd}><strong><WeightValue value={itm.w} inkg={usekg}/></strong></a>
                         </Typography>
                         <Tooltip title={itm.e.name}>
                             <Typography variant="body1">{ itm.e.type.toUpperCase() }</Typography>
