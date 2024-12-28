@@ -55,7 +55,7 @@ export default function LogWorkoutPage ({ location }) {
 
                         <Hidden mdDown>
                             <div style={{ flexGrow:1}}>&nbsp;</div>
-                            <Button startIcon={<HelpOutlineIcon/>} variant="outlined" disabled={disabled} onClick={()=>helpModalState[1](true) }>HELP</Button>
+                            <Button startIcon={<HelpOutlineIcon/>} color="secondary" variant="contained" disabled={disabled} onClick={()=>helpModalState[1](true) } className="pulseButton">TUTORIAL</Button>
                             <Button variant="outlined" color="primary" disabled={disabled} onClick={()=>hintTriggerRef.current()}>Trigger Autocomplete</Button>
                         
                         </Hidden>

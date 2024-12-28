@@ -45,6 +45,21 @@
     }
   }
 
+.pulseButton {
+  animation: PulseButton infinite 1s alternate-reverse;
+  transform-origin: center center;
+}
+@keyframes PulseButton {
+  from {
+      transform: scale(1);
+      border-width: 1px;
+  }
+  to {
+    transform: scale(1.05);
+    border-width: 3px;
+  }
+}
+
 
 /*----------------------------------------------------------*/
 .mb20 { margin-bottom: 20px !important ;}

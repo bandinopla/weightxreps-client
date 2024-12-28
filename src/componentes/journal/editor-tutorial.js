@@ -73,6 +73,9 @@ export const TutorialContents = () => {
 	return (
 		<div style={{ color:"black !important"}}>
 			<Grid container spacing={5}>
+				<Grid item xs={12}>
+				<iframe width="100%" height="415" src="https://www.youtube.com/embed/vRCtVyGCZ5k?si=t5zRZggjaqSh37TN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+				</Grid>
 				<Grid item sm={6}>
 					<Typography variant="h3" gutterBottom>Autocomplete</Typography>
 					<Typography>Use the "trigger autocomplete" <FitnessCenterIcon fontSize="small"/> button ( or CTRL+SPACE ) to triger the autocomplete of an exercise's name when you have the cursor in a new line. You can type the first few letters of an exercise's name and then trigger the autocomplete to show a list of options.</Typography>
