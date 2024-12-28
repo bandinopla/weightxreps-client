@@ -41,7 +41,7 @@ const TODAY_AS_YMD              = todayAsYMD();
 export const YMD_PATH_MATCHER   = "/:ymd(\\d{4}-\\d{2}-\\d{2})";
 export const RANGE_MATCHER      = ":range(:\\d{1,2})";
 
-export default function({ match:{  path, url, params:{ uname } } }) {
+export default function JournalBase({ match:{  path, url, params:{ uname } } }) {
  
     const { data, loading, error }      = useGetUserInfoQuery({ variables: { userInfoUname:uname } }) ;//, { variables:{ uname } }
     let history                         = useHistory();    
@@ -133,7 +133,7 @@ export default function({ match:{  path, url, params:{ uname } } }) {
                                     <Suspense fallback={<div>Loading stats...</div>}>
                                     <Switch> 
                                         <Route path={path+YMD_PATH_MATCHER+RANGE_MATCHER+"?"} render={ ({match:{params}, location})=>(<>
-                                                <YearOVerview ymd={params.ymd}/>
+                                                <YearOVerview ymd={params.ymd} range={params.range?.substr(1)}/>
                                                 <Calendario ymd={params.ymd} rangeHighlight={ params.range?.substr(1) } />
                                                 <Box paddingLeft="10%"> 
                                                     <CalendarioZoomSlider currentSelection={Number(params.range?.substr(1) || 0)} onSelect={ v=>onClickOnRange( params.ymd, v) } />

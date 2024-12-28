@@ -101,3 +101,9 @@
     pointer-events: none;
     opacity: 0.2;
 }
+.outOfRangeCell {
+    opacity: 0.1;
+}
+.cell0.onRangeCell { 
+    background-color: #ccc;
+}

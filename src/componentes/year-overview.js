@@ -35,7 +35,7 @@ import { AsciiSpinner } from './ascii-spinner';
  */
 
 
-export const YearOVerview = ({ ymd })=>{
+export const YearOVerview = ({ ymd, range })=>{
     const jowner    = useContext( JOwnerContext );
     const darkMode = useDarkModeOn();
     const { userSettings }  = useGetSession(); 
@@ -74,6 +74,7 @@ export const YearOVerview = ({ ymd })=>{
 
                 <div className={styles.mainArea}>
                 <YearOVerviewGrid ymd={ymd} 
+                            range={range}
                             daysData={ data?.getYearOverview } 
                             focusOn={ymd2date(ymd,true)} 
                             onClickDay={onClickDay}
@@ -97,14 +98,24 @@ const colorStyles = [
  * @param {YearOVerviewParams} param0 
  * @returns 
  */
-const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header, firstDayOfWeek })=>{ 
+const YearOVerviewGrid = ({ ymd, range, daysData, onClickDay, focusOn, header, firstDayOfWeek })=>{ 
+
+    const d = ymd2date(ymd); 
+
+    let d0 = useMemo(()=>{
+        if( range ) {
+            const d0 = new Date(d);
+            d0.setDate( d0.getDate() - parseInt(range)*7 + 1)
+            return d0;
+        }
+    }, [ymd, range])
+   
 
     /**
      * @type {CalInfo}
      */
-    const calInfo = useMemo(()=>{
-
-        const d = ymd2date(ymd);
+    const calInfo = useMemo(()=>{ 
+        
         const d0 = new Date( d.getFullYear(), 0, 1);
         const dF = new Date( d.getFullYear()+1, 0, 0);
         const days2add = 52 * 7;
@@ -160,7 +171,7 @@ const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header, firstDay
      * @param {Date} d 
      * @returns {string}
      */
-    const cellColor = (i,d) => {
+    const cellColor0 = (i,d) => {  
 
         if( d.getUTCFullYear()==focusOn.getUTCFullYear() 
         &&  d.getUTCMonth()==focusOn.getUTCMonth() 
@@ -180,6 +191,25 @@ const YearOVerviewGrid = ({ ymd, daysData, onClickDay, focusOn, header, firstDay
         }
 
         return "";
+    }
+
+    const cellColor = (i,dayDate) => { 
+        let rtrn = cellColor0(i, dayDate );
+        if( d0 )
+        {
+            const dayDateOnly = dayDate.toISOString().split('T')[0];
+            const d0Only = d0.toISOString().split('T')[0];
+            const dOnly = d.toISOString().split('T')[0];
+
+            if( dayDateOnly < d0Only || dayDateOnly > dOnly ) {
+                rtrn += " " + styles.outOfRangeCell;
+            } 
+            else 
+            {
+                rtrn += " " + styles.onRangeCell;
+            }
+        }
+        return rtrn;
     }
 
      
