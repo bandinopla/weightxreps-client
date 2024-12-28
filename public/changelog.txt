@@ -1,3 +1,6 @@
+- 2.34.8 : 2024-12-28
+        * added range highlight to the year overview calendar so when selecting a range you can see it reflected in the year calendar too.
+        
 - 2.34.7 : 2024-12-24
         * Made the "best 3 lifts" under the user card on the journal page link to the journal logs in which each lift was done. 
 
