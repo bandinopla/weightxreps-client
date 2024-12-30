@@ -94,7 +94,7 @@ function UnameTag( { inline=false, nolink=false, id, uname, cc, isf, slvl, sok, 
                 { Icon!=null && <Icon className={classes.icon + " "+ (sok && "ok")} fontSize="small"/> }
                 {rest.private ? <LockIcon style={{fontSize:"1em"}}/>:""}
                 { userCollabs?.length>0 && <><StarOutlineRoundedIcon style={{fontSize:"1em"}}/>{userCollabs?.length>1 && <sup>{userCollabs?.length}</sup> }</> }
-                { forumRole2Icon(forumRole, { fontSize:"small", className:classes.icon }) }
+                {/* { forumRole2Icon(forumRole, { fontSize:"small", className:classes.icon }) } */}
             </Wrapper>
 }
 

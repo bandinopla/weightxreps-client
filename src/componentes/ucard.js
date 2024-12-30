@@ -82,7 +82,7 @@ const MiniUserStats = ({ userdata:u, extraRows } ) => (<div className="ustats">
 
 
 
-export default function({ data:{ user, media, text, when, utags }, url, extraRows=[], ymd, injournal, minimal, children, noClickable=false }) {
+export default function UCard({ data:{ user, media, text, when, utags }, url, extraRows=[], ymd, injournal, minimal, children, noClickable=false }) {
  
     const classes           = useStyles();
     const history           = useHistory(); 

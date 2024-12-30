@@ -77,15 +77,15 @@ export default function JournalBase({ match:{  path, url, params:{ uname } } }) 
 
     const extraRows     = [
         ["Days Logged", uinfo.daysLogged],
-        [ <Link to={`/forum/by--${uinfo.user.uname}`}>Forum posts</Link> , uinfo.forum?.posts ?? 0]
+        //[ <Link to={`/forum/by--${uinfo.user.uname}`}>Forum posts</Link> , uinfo.forum?.posts ?? 0]
     ];
 
-    if( uinfo.forum?.role )
-    {
-        extraRows.push([
-            "Forum Role", <ForumRoleChip role={uinfo.forum.role.title}/>
-        ]);
-    }
+    // if( uinfo.forum?.role )
+    // {
+    //     extraRows.push([
+    //         "Forum Role", <ForumRoleChip role={uinfo.forum.role.title}/>
+    //     ]);
+    // }
 
     if( uinfo.user.private ) {
         extraRows.push(["Visibility","Private"])
