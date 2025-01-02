@@ -89,13 +89,13 @@ export const GuestLandingPage = ()=>{
                         </Typography> 
 
 
-                        <div style={{ marginTop: theme.spacing(3)}}>
+                        {/* <div style={{ marginTop: theme.spacing(3)}}>
             
                             <a  href='https://play.google.com/store/apps/details?id=net.weightxreps.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
                                 <img  width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
                             </a><br/>
                             <Typography variant="caption" color="textSecondary">* The mobile android app is not up to date with the web app. But this web app should be accessible vía mobile browsers, so try it out!</Typography>
-                        </div>
+                        </div> */}
 
             </Grid>
             <Grid item md={6}> 
@@ -110,7 +110,7 @@ export const GuestLandingPage = ()=>{
                             Work, family &amp; life in general will offer you several pathways to gradually steer away from holding onto a somewhat decent fitness level. 
                             
                         </Typography> 
-                        <Button size="large" onClick={()=>window.scrollTo(0,0)} color="primary" variant="outlined" endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
+                        <Button className="fancy" size="large" onClick={()=>window.scrollTo(0,0)}  endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
                 
                 </Grid>
             </Grid> 
@@ -125,9 +125,11 @@ export const GuestLandingPage = ()=>{
             </Box>
 
             <SectionSeparator>What can you track?</SectionSeparator> 
-            <Alert severity="info">
-                    [*] In the end, you move <strong>weight</strong>, but sometimes the <strong>goal</strong> is to perform a number of <strong>repetitions</strong> or to move it over a particular <strong>distance</strong> or endure tension over <strong>time</strong>. 
-                </Alert>
+
+            <div>
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/vRCtVyGCZ5k?si=mVXOswmKQTLE01Wq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+             
+            </div> 
             <Box margin={2} marginTop={5} marginBottom={10}>
                 <TypesOfLog/>
             </Box>
