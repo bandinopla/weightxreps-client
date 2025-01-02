@@ -229,11 +229,11 @@ export default function SBDStatsPage() {
                     <Box padding={3}>
                 <form className="sbd"  noValidate autoComplete="off">
 
-<Grid container>
+<Grid container spacing={2}> 
     <Grid item xs={4}>
-        <FormControl >
+        <FormControl fullWidth>
             <InputLabel id="sex">GENDER</InputLabel>
-            <Select value={gender} onChange={ e=>setGender(e.target.value)} style={{ textAlign:"center"}}>
+            <Select value={gender} onChange={ e=>setGender(e.target.value)} style={{ textAlign:"center"}} fullWidth>
                 <MenuItem value={0}>---- All ----</MenuItem>
                 <MenuItem value={1}>Males only</MenuItem>
                 <MenuItem value={2}>Females only</MenuItem>
@@ -241,9 +241,9 @@ export default function SBDStatsPage() {
         </FormControl> 
     </Grid>
     <Grid item xs={4}>
-        <FormControl >
+        <FormControl fullWidth>
             <InputLabel id="agec">AGE</InputLabel>
-            <Select value={ageClass} onChange={ e=>setAgeClass(e.target.value)} >
+            <Select value={ageClass} onChange={ e=>setAgeClass(e.target.value)} fullWidth>
             <MenuItem value={ -1 } >--- ANY ---</MenuItem>
                 {
                     data && data.ageClasses.map( cls=><MenuItem value={ cls.index} key={cls.index}>{ cls.name }</MenuItem>  )
@@ -253,9 +253,9 @@ export default function SBDStatsPage() {
         </FormControl>
     </Grid>
     <Grid item xs={4}>
-        <FormControl >
+        <FormControl fullWidth>
             <InputLabel id="sex">UNIT</InputLabel>
-            <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)}> 
+            <Select value={useLbs}  onChange={ e=>setUseLbs(e.target.value)} fullWidth> 
                 <MenuItem value={0}>Kilograms</MenuItem>
                 <MenuItem value={1}>Pounds</MenuItem>
             </Select>
@@ -263,9 +263,9 @@ export default function SBDStatsPage() {
     </Grid>
     
     
-    { LiftId2Name.map( (liftName,i)=><Grid key={i} item xs={4} style={{ marginTop:10}}><FormControl error={SBD[i]?.error}>
+    { LiftId2Name.map( (liftName,i)=><Grid key={i} item xs={4} style={{ marginTop:10}}><FormControl fullWidth error={SBD[i]?.error}>
         <InputLabel htmlFor={liftName}>{liftName}</InputLabel>
-        <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName}/>
+        <Input value={SBD[i]?.rawValue} onChange={ e=>setSBD(i, e.target.value) } id={liftName} placeholder="225lbs x 5 @ 165lbs"/>
         <FormHelperText>{ SBD[i]?.error? SBD[i]?.error : SBD[i]?.weight? "1RM = "+ SBD[i].weight : "Type your best RAW " + liftName }</FormHelperText>
     </FormControl></Grid> )} 
 

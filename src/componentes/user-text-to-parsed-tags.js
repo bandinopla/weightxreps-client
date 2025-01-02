@@ -64,6 +64,10 @@ export const parsedTags2render = (tags, trimTexts) => tags.map( (tag,i) => {
             element = <br/>;
             break;
 
+        case TAGTYPE.INLINESET:
+            element = <strong style={{fontSize:"1.2em"}}>{tag.val}</strong>;
+            break;
+
         case TAGTYPE.IMG:
             element = <div><a href={tag.url} target="_blank"><img className="sha" src={tag.url} style={{maxWidth:"200px", margin:"10px 0"}}/></a></div>
             break;

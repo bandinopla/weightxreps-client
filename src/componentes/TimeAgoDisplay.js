@@ -41,7 +41,9 @@ export function date2timeago( time, returnUnitsOf, bracketsLimitIndex ) {
 
             if( units<1 )
             {
-                label = "less than a "+ bracket[1];
+                label = bracket[1]=='day'? "Today" : "less than a "+ bracket[1];
+
+                if( !returnUnitsOf) return label;
                 break; 
             }
             

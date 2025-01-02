@@ -21,7 +21,7 @@ import { renderWxD_Erows } from './erow-render-WxDoT';
 import { ProgressBar, ProgressBarsContainer } from '../progress-bar';
 import { statsOfWxDoT } from './erow-stats-WxDoT';
 import { BrowserView } from 'react-device-detect';
-
+import SearchIcon from '@material-ui/icons/Search';
 const effintLink = {
     textDecoration:"underline",
     fontWeight:"bold",
@@ -141,13 +141,13 @@ const useStyles = makeStyles((theme) => ({
      },
 
      ecom: { 
-        ...theme.dataCell
+        //...theme.dataCell
+        backgroundColor:"rgba(0,0,0,0.1)"
          , padding:"5px 10px" 
          , margin:"8px 10px"
-         , borderRadius: 3
-         , boxShadow:"2px 1px 5px rgba(0,0,0,0.5)"
+         , borderRadius: 3 
          , "& svg": {
-            color: theme.dataCell.color
+            //color: theme.dataCell.color
          }
      },
 
@@ -221,7 +221,7 @@ function EblockUI({ data }){
                 <Box padding={1} paddingLeft={2} position={"relative"}>
                     {/*<Typography variant="h6" gutterBottom>#<b>{ data.exerciseRef.exercise.name }</b></Typography> */}
 
-                    <IconButton style={{ position:"absolute", top:0, right:0 }} variant="outlined" title='Personal Records' onClick={()=>history.push(`/journal/${jowner.uname}/personal-records--${data.exerciseRef.exercise.id}`)}><MenuBookIcon/></IconButton>
+                    <IconButton style={{ position:"absolute", top:0, right:0 }} variant="outlined" title='Personal Records' onClick={()=>history.push(`/journal/${jowner.uname}/personal-records--${data.exerciseRef.exercise.id}`)}><SearchIcon/></IconButton>
                     <Ename gutter {...data.exerciseRef.exercise} variant="h6"/>
 
                     <div className={classes.stat}> 

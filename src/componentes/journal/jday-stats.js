@@ -41,5 +41,5 @@ export const JDayStats = ({ data })=> {
 const Stat = ({ label, value, color }) => {
     const theme = useTheme();
 
-    return <span style={{ fontWeight:"normal", margin:"0px 5px", padding:"0px 10px", backgroundColor:theme.palette[color].main, color:theme.palette[color].contrastText }}>{value} <small>{label+(value>1?"s":"")}</small></span>
+    return <span style={{ borderRadius:33, fontSize:32, fontWeight:"normal", margin:"0px 5px", padding:"0px 10px", backgroundColor:theme.palette[color].main, color:theme.palette[color].contrastText }}>{value} <small>{label+(value>1?"s":"")}</small></span>
 }

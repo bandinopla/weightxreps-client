@@ -16,7 +16,8 @@ export const TYPE = {
      TAG:9,
      IMG:10,
      UNAME:11, 
-     GIPHY:12
+     GIPHY:12,
+     INLINESET:13
 }
 
 const _urlTagMatcher = { match:/^(?:http(?:s?):\/\/(?:www\.)?)[\S]+/, block: m=>({ type:TYPE.LINK, url:m[0] }) };
@@ -79,7 +80,7 @@ export const parseJlog = (text2parse, eblocks, execises, bw, usekg, userTags, ut
         ,{ match:/^(?:http(?:s?):\/\/(?:www\.)?)?youtube\.com\/shorts\/([\w\-\_]*)(?:\?t=(\d+))?\S*\b/, block: m=>({ type:TYPE.YT, yt:m[1], t:m[2] }) }
     
         //remove iframes
-        , { match:/^\<iframe.*iframe\>/, block:m=>({ type:"_" }) }
+        , { match:/^\<iframe.*iframe\>/, block:m=>({ type:"_" }) } 
 
         //https://postimg.cc/   https://postimg.cc/bdTxsFGh
         , { match:/^(?:http(?:s?):\/\/(?:www\.)?)?postimg\.cc\/(\S+)\b/, block: m=>({ type:TYPE.POSTIMGCC, id:m[1] }) }
@@ -106,8 +107,9 @@ export const parseJlog = (text2parse, eblocks, execises, bw, usekg, userTags, ut
 
         , { match:/^(?:B(\d+))?W(\d+)D(\d+)\b/, block: m=>({ type:TYPE.BlockWeekDay, B:m[1], W:m[2], D:m[3] }) }
         , ...JLogTextFormatTags
-        //<div style="width:480px"><iframe allow="fullscreen" frameBorder="0" height="270" src="https://giphy.com/embed/NPl40igBCxq9FAgyKI/video" width="480"></iframe></div>
         
+        // give a diferent styles to just numbers
+        , { match:/^(\d+(?:\.\d+)?(?:\s*[*x]\s*\d+(?:\.\d+)?)*)/, block:m=>({ type:TYPE.INLINESET, val:m[1] }) }
     ]; 
 
     if( eblocks )

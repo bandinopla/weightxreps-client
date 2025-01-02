@@ -103,7 +103,7 @@ export default function DonatePage() {
 								<Grid item xs={12}>
 									<Box padding={2}>
 										<Typography variant="h4" gutterBottom>
-											Donate with <strong>Paypal</strong> ↓
+											Click below to donate via <strong>Paypal</strong> ↓
 										</Typography>
 										
 									</Box>

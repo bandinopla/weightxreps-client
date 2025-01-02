@@ -3,7 +3,7 @@ import { Skeleton } from "@material-ui/lab";
 import { NothingHere } from "../nothing-here-alert";
 
 export const JDayContentHeader = ({ noData, title, titleChild, children, noDataLabel="No log on this day" })=>(<>
-    <Typography variant="h4" style={{textTransform:"capitalize"}}>
+    <Typography variant="h3" style={{textTransform:"capitalize"}}>
         <b>{ title }</b>
         { titleChild }
     </Typography>

@@ -253,6 +253,21 @@ animation: rainbowSlide 2s linear infinite;
     width: 100%;
 }
 
+.pulse { 
+  transform-origin: center center;
+  animation:pulse  1s linear infinite alternate-reverse }
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  } 
+  100% {
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+  }
+}
+
+
 /**
  * ----------------------------------------
  * animation pulsate-fwd
@@ -293,4 +308,10 @@ animation: rainbowSlide 2s linear infinite;
     border-top-left-radius:10px;
     border-bottom-left-radius:10px;
     border-right-width: 0;
+  }
+
+  .user-text {
+    font-family: "Pangolin", serif;
+    font-weight: 400;
+    font-style: normal;
   }

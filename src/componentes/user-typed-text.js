@@ -15,7 +15,7 @@ export const UserTypedText = ({ text, short, noWrap, style={} })=> {
 
     if( text.trim()=="|" )
     {
-        return "";
+        return ""; 
     }
 
     if( !text || text.trim().length==0 ) {
@@ -23,5 +23,5 @@ export const UserTypedText = ({ text, short, noWrap, style={} })=> {
     }
 
     //whiteSpace:"break-spaces", wordBreak:"break-word"
-    return <div style={{ display:"inline", whiteSpace: noWrap? "nowrap" : "pre-wrap", wordBreak:"normal", wordWrap:"break-word", ...style }}>{ short? shortText(text) : text }</div>;
+    return <div className="user-text" style={{ display:"inline", whiteSpace: noWrap? "nowrap" : "pre-wrap", wordBreak:"normal", wordWrap:"break-word", ...style }}>{ short? shortText(text) : text }</div>;
 }

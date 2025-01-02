@@ -254,9 +254,12 @@ const AppSideBar = ()=>{
                                     <FollowOnX/> &nbsp;
                                     <GitHubButton href="https://github.com/bandinopla/weightxreps-client" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bandinopla/weightxreps-client on GitHub">Star</GitHubButton>
                                 </div>
-                                <Typography variant="caption">
+                                <Typography>
+                                <a href="/about">About</a> | <a href="/terms-of-service">Terms</a> | <a href="/privacy-policy">Privacy</a>
+                                </Typography>
+                                <Typography variant="caption"> 
                                     <a href="/changelog"><strong>{`v${metadata.buildMajor}.${metadata.buildMinor}.${metadata.buildRevision} `}</strong> (<TimeAgoDisplay time={metadata.when} />)</a>
-                                    &nbsp;&nbsp;| <a href="/terms-of-service">Terms</a> | <a href="/privacy-policy">Privacy</a>
+                                    
                                 </Typography>
                             </Box>
     </>

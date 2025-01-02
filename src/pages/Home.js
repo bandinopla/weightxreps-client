@@ -17,6 +17,7 @@ import { useGetSession } from '../session/session-handler';
 import { SupportersDisplay } from '../componentes/supporters-display';
 import { RestoreScroll } from '../componentes/scroll-restoration';
 import { BlankLogText } from '../utils/blankLogText';
+import { ymd2Nice } from '../utils/ymd2Nice';
 //import OlympicsVisor from '../olympics/olympics';
 
 
@@ -206,7 +207,7 @@ export const ActivityFeed = function({ type }) {
 
 const UCardMemo = React.memo( (itm)=>{
 
-    const extras = itm.user.private? [] : [["Posted",itm.posted]];
+    const extras = itm.user.private? [] : [["Logged", ymd2Nice( itm.posted )]];
     return <UCard noClickable={itm.user.private} ymd={itm.posted} extraRows={extras} data={itm}>
                                                                           
                 { itm.workoutPreview && itm.workoutPreview.map( w=>(<UcardErow key={w.e.id} type={w.e.type} ename={w.e.name} weight={w.w} reps={w.r} />) )  }

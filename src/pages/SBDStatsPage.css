@@ -48,6 +48,5 @@
 form.sbd .MuiInputBase-input {
     background-color:#eee;
     color:blue;
-    font-weight: bold;
-    padding: 3px 5px;
+    font-weight: bold; 
 }

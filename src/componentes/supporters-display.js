@@ -32,7 +32,7 @@ export const SupportersDisplay = ()=>{
     return <Box textAlign="center" className={classes.root}> 
 
         <Box marginBottom={3} marginTop={3}>
-            <Typography>Special thanks to 
+            <Typography>Special thanks to our <a href="/donate">current supporters</a>
                 <div className={classes.list}>
                 { data.getActiveSupporters.map( (sup,i)=>{
 

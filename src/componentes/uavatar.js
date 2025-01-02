@@ -17,7 +17,8 @@ export const uid2avatarurl = (id,hash)=>{
 
 export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, width, iconsScale=1, variant, className, cc })
 {
-    const src       = (!hash || hash=="") && cc && cc.toLowerCase()!="xx"?"https://flagcdn.com/w160/"+cc.toLowerCase()+".png" : uid2avatarurl(uid, hash);
+    const noAvatar = (!hash || hash==="") ;
+    const src       = noAvatar? cc && cc.toLowerCase()!=="xx"?"https://flagcdn.com/w160/"+cc.toLowerCase()+".png" : undefined : uid2avatarurl(uid, hash);
     const img       = `url( ${ src } )`; 
 
     if( variant=="circular")
@@ -25,8 +26,9 @@ export default function UAvatar({ uid, hash, slvl = 0, sactive=false, height, wi
         return <Avatar src={src} className='sha'/>
     }
 
-    return <div className={ (className || "") + " sha"} style={{position:"relative", height, minWidth:50, width, backgroundImage:img, backgroundRepeat:"no-repeat", backgroundColor:"#ccc", backgroundSize:"cover", backgroundPosition:"center" }}>
+    return <div className={ (className || "") + " sha"} style={{position:"relative", display:"flex", justifyContent:"center", alignContent:"center", alignItems:"center", height, minWidth:50, width, backgroundImage: src? img : null, backgroundRepeat:"no-repeat", backgroundColor:"#ccc", backgroundSize:"cover", backgroundPosition:"center" }}>
                 <Slvl level={slvl} isActive={sactive} scale={iconsScale}/> 
+                {noAvatar && !src && <span className='pulse'>?</span>}
             </div>
 }
 

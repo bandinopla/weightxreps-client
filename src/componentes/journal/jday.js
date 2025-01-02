@@ -80,15 +80,15 @@ export const JDay = ()=>{
                                                                                                         { log && <LikeJournalButton  variant="outlined" size="large"/> }
 
                                                                                                     </div>}>
-              { data?.jday?.bw>0 && <>-- Bodyweight: <strong><WeightValue value={data?.jday?.bw} inkg={jowner.usekg}/></strong></> }
+              { data?.jday?.bw>0 && <>@ <strong><WeightValue value={data?.jday?.bw} inkg={jowner.usekg}/></strong> Bodyweight</> }
               
               { jowner.custom1RM>0 && <Custom1RMFactorChip factor={jowner.custom1RM}/> } 
 
-              { data?.jday?.fromMobile && <Chip onClick={ ()=>window.open("https://play.google.com/store/apps/details?id=net.weightxreps.app","_blank") } style={{marginLeft:10}} icon={<SmartphoneIcon/>} variant="outlined" label="logged from mobile"/>}
+              { /* data?.jday?.fromMobile && <Chip onClick={ ()=>window.open("https://play.google.com/store/apps/details?id=net.weightxreps.app","_blank") } style={{marginLeft:10}} icon={<SmartphoneIcon/>} variant="outlined" label="logged from mobile"/> */}
             </JDayContentHeader>
-                 
+            
         
-            <div>
+            <div style={{ borderTop:"1px dashed #ccc", paddingTop:20 }}>
                 { log?.length>0 && parsedTags2render(log) }
                 { log && log.length==0 && <Paper elevation={3}><Box padding={1}><Typography variant='subtitle2'>⊂(◉‿◉)つ <i>Blank log!</i></Typography></Box></Paper> }
             </div>

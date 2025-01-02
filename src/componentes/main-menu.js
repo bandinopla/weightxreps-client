@@ -36,13 +36,13 @@ import GroupIcon from '@material-ui/icons/Group';
 export const MENU = [
     { Icon:HomeIcon, goto:"/", label:"Home" },
     { Icon:SearchIcon, goto:"/explore", label:"Explore" },
-    { Icon:RssFeedIcon, goto:"/community-stats", label:"Community stats" },
+    { Icon:RssFeedIcon, goto:"/community-stats", label:"User Rank" },
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
     //{ Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
     { Icon:VideocamIcon, goto:"/videos", label:"Videos" },
-    { Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
+    //{ Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
     { Icon:HelpIcon, goto:"/faq", label:"Help" },
-    { Icon:FingerprintIcon, goto:"/about", label:"About" },
+    //{ Icon:FingerprintIcon, goto:"/about", label:"About" },
 //liClass:styles.firstSession,
 
     { Icon:FitnessCenterSharpIcon, sessionMenuStart:true, fancy:true, goto:"/log-workout", label:"Log Workout", session:true },
