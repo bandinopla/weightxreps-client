@@ -1,11 +1,10 @@
-import { makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 import LanguageIcon from '@material-ui/icons/Language';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';  
 import { useGetSession } from '../session/session-handler';
 import FitnessCenterSharpIcon from '@material-ui/icons/FitnessCenterSharp';
 import { useHistory, useLocation } from "react-router-dom";
@@ -16,7 +15,7 @@ import Logo from "./Logo"
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { JEditorButton } from './journal/editor-button';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-
+import metadata from "../version.json";
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden'; 
 import List from '@material-ui/core/List';
@@ -28,10 +27,9 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import { SwipeableDrawer } from './SwipableDrawer';
 import HelpIcon from '@material-ui/icons/Help';
-import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { openExercisesModal } from './journal/exercises';
 import VideocamIcon from '@material-ui/icons/Videocam';
-import GroupIcon from '@material-ui/icons/Group';
+import TimeAgoDisplay from './TimeAgoDisplay';
 
 export const MENU = [
     { Icon:HomeIcon, goto:"/", label:"Home" },
@@ -124,6 +122,12 @@ const useStylesDrawer = makeStyles( theme=>({
 
     selected: {
 
+    },
+
+    socialIcon: {
+        backgroundColor:"white",
+        borderRadius:33,
+        border:"2px solid white"
     }
     
 }));
@@ -185,6 +189,26 @@ export const MainMenuDrawer = ()=>{
                             <ListItemText color='primary' primary={  btn.wrap? btn.wrap(label) : label } />
                         </ListItem>)})}
         </List>
+
+        <div style={{ textAlign:"center", marginTop:10}}>
+            <Typography>
+            <a href="/about"><strong>About</strong></a> | <a href="/terms-of-service">Terms</a> | <a href="/privacy-policy">Privacy</a>
+            </Typography>
+            <Typography variant="caption"> 
+                <a href="/changelog"><strong>{`v${metadata.buildMajor}.${metadata.buildMinor}.${metadata.buildRevision} `}</strong> (<TimeAgoDisplay time={metadata.when} />)</a> 
+            </Typography>
+            <Grid container alignItems='center' justifyContent='space-between' style={{ marginTop:10}}>
+                <Grid xs={4} item>
+                    <a href="https://github.com/bandinopla/weightxreps-client" target='_blank'><img className={cls.socialIcon} src="/github.png" width={32} height={32}/></a>
+                </Grid>
+                <Grid xs={4} item>
+                    <a href="https://x.com/weight_x_reps" target='_blank'><img className={cls.socialIcon}  src="/twitter.png" width={32} height={32}/></a>
+                </Grid>
+                <Grid xs={4} item>
+                    <a href="https://www.youtube.com/@weightxreps" target='_blank'><img className={cls.socialIcon}  src="/youtube.png" width={32} height={32}/></a>
+                </Grid>
+            </Grid>
+        </div>
     </div>);
 
     return <nav className={cls.root}> 

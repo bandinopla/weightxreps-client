@@ -1,7 +1,7 @@
 //import { fetch as fetchPolyfill } from 'whatwg-fetch';
 
 import './App.css';
-import { Box, Drawer, LinearProgress, Typography, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Drawer, LinearProgress, makeStyles, useMediaQuery, useTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { DBProvider } from "./data/db";
@@ -17,7 +17,6 @@ import {
     useLocation
 } from "react-router-dom";
 import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react';
-import YouTubeIcon from '@material-ui/icons/YouTube';
 //import { SettingsPage } from './pages/settings'; 
 
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -25,8 +24,6 @@ import { TrackPageView } from './componentes/google-tracker';
 import { ThemeSwitcher } from './MainTheme';
 //import { GuestLandingPage } from './pages/guest/GuestLandingPage';
 //import { HelpPage } from './pages/HelpPage';
-import metadata from "./version.json";
-import TimeAgoDisplay from './componentes/TimeAgoDisplay';
 import { DialogModalListener } from './componentes/Dialog';
 import ChangelogPage from './pages/ChangelogPage';
 import { MainBanner } from './banners/SideBanners';
@@ -41,17 +38,14 @@ import { HomeSidebar } from './componentes/HomeSidebar';
 //import JournalBase from "./pages/journal-base";
 
 import { UserHome } from './pages/UserHome';
-import { SessionHomeSidebar } from './componentes/SessionHomeSidebar';
 import { DonationSoftbox } from './componentes/DonationSoftbox';
 import { DMsWindow } from './session/ui/dms-window/dm-window';
 import { ContentPage } from './componentes/ContentPageWrapper';
 import ScheduleRoundedIcon from '@material-ui/icons/ScheduleRounded';
 import { ExercisesModal } from './componentes/journal/exercises';
-import { FollowOnX } from './componentes/twitter';
 import { VisualPreferencesSwitcher } from './componentes/VisualPreferencesSwitcher';
 import { SwipeableDrawer } from './componentes/SwipableDrawer';
 import { ServiceWorkerStatusDisplay } from './componentes/service-worker-status-ui';
-import GitHubButton from 'react-github-btn'
 import OAuthAuthorizationPage from './oauh/OAuthAuthorizationPage';
 import { Snowfall } from './componentes/snow';
 import { SearchBox } from './componentes/SearchBox';
@@ -153,6 +147,7 @@ function App() {
                                 <div className={ cls.root }>
                                 <div className={ cls.menubar }>  
                                         <MainMenuDrawer/>
+                                        
                                 </div>
 
                                 <div className={ cls.content }>  
@@ -240,28 +235,7 @@ const AppSideBar = ()=>{
 
                                 </Switch>
                                 </Suspense>
-                            </Box>
-
-                            <Box padding={1} paddingTop={5} textAlign="center" maxWidth={250}>
-
-                                <div style={{ display:"flex", justifyContent:"center", alignContent:"center", gap:5 }}>
-                                <YouTubeIcon/> 
-                                    <a href="https://www.youtube.com/@weightxreps" target='_blank' style={{ fontWeight:"bold", display:"block", marginBottom:20}}>
-                                    YouTube @weightxreps</a>
-                                </div>
-
-                                <div style={{ display:"flex", justifyContent:"center"}}>
-                                    <FollowOnX/> &nbsp;
-                                    <GitHubButton href="https://github.com/bandinopla/weightxreps-client" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bandinopla/weightxreps-client on GitHub">Star</GitHubButton>
-                                </div>
-                                <Typography>
-                                <a href="/about">About</a> | <a href="/terms-of-service">Terms</a> | <a href="/privacy-policy">Privacy</a>
-                                </Typography>
-                                <Typography variant="caption"> 
-                                    <a href="/changelog"><strong>{`v${metadata.buildMajor}.${metadata.buildMinor}.${metadata.buildRevision} `}</strong> (<TimeAgoDisplay time={metadata.when} />)</a>
-                                    
-                                </Typography>
-                            </Box>
+                            </Box> 
     </>
 
     if( isSmallScreen )
