@@ -50,7 +50,7 @@ export const applyPaletteColorsToTheme = ( isDarkTheme, colors, theme )=> {
 
     ntheme.palette.type = isDarkTheme? 'dark':'light';
     ntheme.referenceLineColor = alpha(colors.backgroundColorOnTop, 0.1)  ;
-    ntheme.ucardBgColor = isDarkTheme? alpha("#fff", 0.1) : alpha("#000", 0.01)//lighten(colors.backgroundColor, 0.3)
+    ntheme.ucardBgColor = isDarkTheme? "#333" : "#fefefe" //lighten(colors.backgroundColor, 0.3)
 
     ntheme.palette.background = {
         default: colors.backgroundColor,

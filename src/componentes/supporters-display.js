@@ -4,9 +4,7 @@ import UnameTag from "./uname";
 
 const useStyles = makeStyles( theme=>({
     list: {
-        fontSize:11, 
-        borderTop:"1px solid "+theme.palette.background.paper,
-        borderBottom:"1px solid "+theme.palette.background.paper,
+        fontSize:11,  
         paddingTop:15,
 
         "& > div": {

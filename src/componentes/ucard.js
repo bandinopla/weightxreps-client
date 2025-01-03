@@ -124,7 +124,7 @@ export default function UCard({ data:{ user, media, text, when, utags }, url, ex
                             +(isSupporter && user.sok && classes.supporterBG) 
                             +" "
                             +(user.private && !minimal && classes.private)
-                            } square={true} elevation={2}> 
+                            } square={true} elevation={1}> 
                 <Wrapper onClick={ onClick }>  
                     
                    
