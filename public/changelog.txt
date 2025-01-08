@@ -1,3 +1,6 @@
+- 2.35.0 : 2025-01-08
+        + added the posibility to set and track "goals". More info: https://www.youtube.com/watch?v=A9a_AJ_sZuk
+
 - 2.34.9 : 2025-01-02
         * Several small adjustments here and there. Mostly cosmetic. 
         
