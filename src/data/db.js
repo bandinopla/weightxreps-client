@@ -31,6 +31,7 @@ import { UTagsPolicy } from "../componentes/journal/tags";
 import { VideosCachePolicy } from "./videos-policy";
 import { ForumPolicy } from "../forum/forum-policy";
 import { SearchResultsPolicy } from "./search-results-policy";
+import { GoalsTypePolicy } from "../componentes/journal/goals";
 
 const { REACT_APP_REMOTE_SERVER, NODE_ENV } = process.env;
 
@@ -78,6 +79,7 @@ let typePolicies = mergeObjects([
     VideosCachePolicy,
     ForumPolicy
 	,SearchResultsPolicy
+	,GoalsTypePolicy
 ]);
 
 const client = new ApolloClient({

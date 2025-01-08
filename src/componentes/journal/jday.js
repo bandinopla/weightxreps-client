@@ -23,6 +23,7 @@ import { JDayContext } from "./jday-context";
 import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import { Custom1RMFactorChip } from "./custom-1rm-factor-chip";
 import { JDayStats } from './jday-stats';
+import { CreateGoalButton, UserGoals } from './goals';
  
 
 
@@ -53,7 +54,7 @@ export const JDay = ()=>{
     const classes                               = useStyles();
     const { loading, data, error}               = useJDayQuery({ variables:{ uid:jowner.id, ymd } }) //useQuery( GET_JDAY, { variables:{ uname, ymd } });
     const date                                  = ymd2date (ymd);
-
+    
     const log = useMemo ( 
         ()=> data?.jday && parseJlog( data.jday.log, data.jday.eblocks, data.jday.exercises, data.jday.bw, jowner.usekg, data.jday.utags, data.jday.utagsValues )
         ,  [ data?.jday ] )
@@ -73,9 +74,10 @@ export const JDay = ()=>{
  
     return <JDayContext.Provider value={{...data.jday, ymd}}> 
 
+            { data?.getGoals && <UserGoals data={data.getGoals} currentYMD={ymd}/> }
 
-            <JDayContentHeader noData={!data.jday} title={<>{date2NiceString(date)} <JDayStats data={data}/></>} titleChild={ <div style={{float:"right", marginLeft:15}}>
-
+            <JDayContentHeader noData={!data.jday} title={<>{date2NiceString(date)} <JDayStats data={data}/></>} titleChild={ <div style={{float:"right", marginLeft:15, display:"flex", gap:2, alignItems:"center"}}>
+                                                                                                        <CreateGoalButton variant='outlined' size="large"/>
                                                                                                         <JEditorButton ymd={ymd} wouldBeNewLog={!data.jday} variant="contained" color="primary" size="large" style={{marginRight:5}}/>
                                                                                                         { log && <LikeJournalButton  variant="outlined" size="large"/> }
 

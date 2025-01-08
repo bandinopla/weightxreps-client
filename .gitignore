@@ -32,3 +32,4 @@ WIKI.md
 *.php
 sbd-stats.js
 /public/banners
+test*

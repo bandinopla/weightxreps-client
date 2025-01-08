@@ -267,19 +267,20 @@ const YearsLoggedWidget = ({ years, pinned, onClickYear }) => {
 
     if( endIndex>=years.length )
     {
-        startIndex = years.length - gap*2 - 1;
+        startIndex = Math.max(0, years.length - gap*2 - 1);
         endIndex = years.length-1;
-    }  
+    }   
  
 
     const move = dir => {
         let ni = Math.min( years.length-1, Math.max(0, i+dir) ); 
         setOffset( ni-(i-offset) );
     }
-
+ 
     return <>
         <div className={styles.btn+(startIndex<=0?" "+styles.hidden:"")} onClick={e=>move(-1)||e.preventDefault()}>▲</div>
         { years?.slice(startIndex,endIndex+1).map( y=><div key={y} className={ y==pinned? styles.pinnedYear : ""} onClick={()=>onClickYear(y)}>{y}</div>)}
         <div className={styles.btn+(endIndex+1>=years.length?" "+styles.hidden:"")} onClick={e=>move(1)||e.preventDefault()}>▼</div> 
+        
     </>;
 }

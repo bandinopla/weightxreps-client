@@ -10,7 +10,7 @@ const Alert = (props) => (<MuiAlert elevation={6} variant="filled" {...props} />
  * Muestra un snackbar de error si el trigger tiene contenido. Se espera un string
  * @param {{ trigger:String }} 
  */
-export default function({ trigger, onClose, vertical="top", horizontal="right" }) {
+export default function ErrorSnackbar({ trigger, onClose, vertical="top", horizontal="right" }) {
 
     const [open, setOpen] = React.useState(false);
  
