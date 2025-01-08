@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react" 
+import { useMemo, useRef, useState } from "react";
 import { useGetExercisesQuery, useSetGoalMutation } from "../../data/generated---db-types-and-hooks";
 import { AsciiSpinner } from "../ascii-spinner";
 import { Box, Button, ButtonGroup, TextField, Typography, useMediaQuery, useTheme } from "@material-ui/core";
@@ -14,15 +14,14 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Ename from "../ename";
 import { useGetSession } from "../../session/session-handler";
-import WeightValue, { kg2lb } from "../weight-value";
+import WeightValue from "../weight-value";
 import { Alert } from "@material-ui/lab";
 import { parseError } from "../../data/db";
-import { todayAsYMD } from "../../utils/utils";
 import OperationBackdrop from "../backdrop";
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
 
 function getSteps() {
@@ -39,7 +38,7 @@ export const GoalCreationUI = ({ uid, startDate })=>{
     const usekg = user.session?.user.usekg;
     const { data, loading, error } = useGetExercisesQuery({ variables: { uid:user.session.user.id }});
     const[ save, { data:saveData, loading:saveLoading, error:saveError } ] = useSetGoalMutation();
-
+ 
     const [e, setE] = useState();
     const [activeStep, setActiveStep] = useState(0);
     const [setGoal, setSetGoal] = useState();
@@ -176,7 +175,7 @@ export const GoalCreationUI = ({ uid, startDate })=>{
 
       { // STEP 1: SELECT EXERCISE...
         activeStep===0 && <>
-        <Typography>Pick the exercise in which you want to set this goal...</Typography>
+        <Typography>1. <strong>Type the exercise's name</strong> in which you want to set this goal...</Typography>
         <TextField fullWidth onChange={event=>setTypedEname(event.target.value)} placeholder="Type the exercise's name (can be new)"/>
 
             <List dense={true}> 
@@ -191,7 +190,7 @@ export const GoalCreationUI = ({ uid, startDate })=>{
 
       { // SETP 2: DEFINE THE GOAL...
         activeStep===1 && <>
-            <Typography>Type the weight ({usekg?"KG":"LBS"}), reps and sets you want to achieve...</Typography>
+            <Typography>2. Type the weight ({usekg?"KG":"LBS"}), reps and sets you want to achieve...</Typography>
             <TextField inputRef={setGoalRef} 
                         fullWidth 
                         error={!!goalError} 
@@ -205,7 +204,7 @@ export const GoalCreationUI = ({ uid, startDate })=>{
 
       {
         activeStep===2 && <>
-            <Typography>In how many weeks you plan to achieve this?</Typography>
+            <Typography>3. In how many weeks you plan to achieve this?</Typography>
             <ButtonGroup fullWidth variant="outlined">
 
                 {
@@ -218,7 +217,7 @@ export const GoalCreationUI = ({ uid, startDate })=>{
 
       { // STEP 4: Define the progression...
         activeStep===3 && <>
-            <Typography>Click and drag to define the progression...</Typography>
+            <Typography>4. Click and drag to define the progression...</Typography>
             <GoalPlannerCanvas width={200} height={50} ref={pointsRef} resolution={inWeeks*7} canvasStyles={{ width:"100%"}}/>
  
         </>
@@ -279,6 +278,7 @@ export const GoalCreationUI = ({ uid, startDate })=>{
       {saveError && <Box><Alert severity="error">{parseError(saveError)}</Alert></Box>}
       <Box display="flex" gridGap={5} flexDirection={"row-reverse"} marginTop={3}>
        
+        { activeStep===0 && <Button startIcon={<VideoLibraryIcon/>} variant="outlined" onClick={()=>window.open("https://www.youtube.com/watch?v=A9a_AJ_sZuk","__blank")}>Watch tutorial</Button>}
         { !!e && <Button variant="contained" color="primary" onClick={gotoNextStep}>{ activeStep===4?"Set goal. Good luck!":"Next" }</Button> }
         { activeStep>0 && <Button variant="outlined" onClick={()=>setActiveStep(activeStep-1)}>Back</Button> }
       </Box>
