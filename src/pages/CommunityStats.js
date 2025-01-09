@@ -253,6 +253,8 @@ function CommunityStatsPage({ match:{  path, url, params:{ filtermask } } }) {
 
             { (loading || error ) && <Box marginTop={2}><PageLoadIndicator isLoading={loading} error={error} onRetry={ ()=>refetch() } /></Box> }
             
+            <ExplainHowToParticipate exercises={official?.officialExercises}>How to participate?</ExplainHowToParticipate>
+            &nbsp;
             { stats && <>
                         <Typography variant="caption">
                             Last scan: <strong>{ new Date(stats.timestamp).toLocaleString() }</strong> - Updated every <strong>~{stats.scanFrecuency}</strong> aprox.
