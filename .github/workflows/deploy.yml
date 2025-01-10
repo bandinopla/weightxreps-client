@@ -27,7 +27,7 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies to be able to build
-        run: pnpm install --legacy-peer-deps  
+        run: pnpm install --strict-peer-dependencies=false  
         
       - name: Build
         run: CI=false pnpm run build 
