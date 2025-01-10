@@ -1,12 +1,13 @@
-import { makeStyles } from '@material-ui/core';
-import Rive, { EventType } from '@rive-app/react-canvas';
+import { LinearProgress, makeStyles } from '@material-ui/core';
+import { EventType } from '@rive-app/react-canvas';
 import { useRive, Layout, Fit, Alignment } from '@rive-app/react-canvas';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles( theme =>({
     root: {
         width:"100%",
-        height:280, 
+        height: 240, 
         [theme.breakpoints.up("sm")]: {
             height:500
         },
@@ -21,44 +22,28 @@ const useStyles = makeStyles( theme =>({
             objectFit:"contain",
             maxWidth:"100%"
         }
+    },
+    mainBannerText: {
+        "& .MuiTypography-h3": {
+            color:"black !important"
+        }
     }
 }))
 
-
+/*
+<div style={{ position:"absolute", top:30, left:"35%" }} className={style.mainBannerText}>
+            <Typography variant='h3'>START TODAY!</Typography>
+            <Typography className='user-text'>Hola como estas</Typography>
+        </div>
+        */
 export const StartTodayBanner = ({ onClickStart })=>{
-    const style = useStyles();
+    const style = useStyles({ isMobile }); 
 
-    const { RiveComponent, rive } = useRive({
-        src: '/start-today-banner.riv',
-        autoplay: true,
-        stateMachines: ["State Machine 1","noise","button"],
-        layout: new Layout({
-            fit: Fit.Contain, // Keeps the content within the parent while maintaining aspect ratio
-            alignment: Alignment.TopCenter, // Centers the content in the parent
-        }),
-    });
+    return <div style={{ position:"relative", color:"white"}}>
 
-    useEffect(()=>{
-
-        if( rive )
-        { 
-            const onAnimEnds = (event) => {
-                if(event.data.name=='onClickStart') {
-                    onClickStart?.();
-                    console.log("y?")
-                }
-            };
-
-            // Listen for when an animation ends
-            rive.on(EventType.RiveEvent, onAnimEnds);
-            return ()=>{
-                rive.off(EventType.RiveEvent, onAnimEnds);
-            }
-        }
-
-    }, [rive]);
-
-    return <div className={ style.root }>
-                <RiveComponent />
-            </div>
+        
+         <img src="/banner-starttoday-v2.jpg" style={{ cursor:"pointer"}} onClick={onClickStart}/>
+         
+        </div>
 }
+ 

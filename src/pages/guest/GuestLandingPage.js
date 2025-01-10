@@ -110,7 +110,8 @@ export const GuestLandingPage = ()=>{
                             Work, family &amp; life in general will offer you several pathways to gradually steer away from holding onto a somewhat decent fitness level. 
                             
                         </Typography> 
-                        <Button className="fancy" size="large" onClick={()=>window.scrollTo(0,0)}  endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
+                        <Button className="fancy" size="large" onClick={()=>{window.skinLoginCover=true;
+        window.quickAccessLogin && window.quickAccessLogin();}}  endIcon={<ArrowUpwardIcon/>}>TAKE ACTION</Button>
                 
                 </Grid>
             </Grid> 

@@ -24,8 +24,7 @@
     "rules": {
       "no-restricted-globals": "warn",
       "no-unused-expressions": "warn",
-      "@typescript-eslint/no-unused-expressions":"warn"
-
+      "@typescript-eslint/no-unused-expressions": "warn"
     }
   },
   "browserslist": {
@@ -50,17 +49,20 @@
     "@use-gesture/react": "^10.3.0",
     "apollo-upload-client": "^16.0.0",
     "codemirror": "^5.62.3",
+    "cropperjs": "^1.6.2",
     "dropbox": "^10.34.0",
     "firebase": "^9.6.11",
     "firebaseui": "^6.0.1",
     "fireworks": "^2.2.7",
     "fuse.js": "^6.6.2",
     "graphql": "^15.5.1",
+    "graphql-tag": "^2.12.6",
     "joi": "^17.12.1",
     "js-yaml": "^4.1.0",
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "papaparse": "^5.3.1",
+    "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-colorful": "^5.6.1",
     "react-cropper": "^2.1.8",

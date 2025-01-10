@@ -11,9 +11,9 @@ export const SideVideoBanner = ()=>{
   let match = useRouteMatch("/journal/:username");
 
   //if( location.pathname=="/") return "";
-  if( location.pathname=="/") {
-    if( !$session.session ) return "";
-  } 
+  // if( location.pathname=="/") {
+  //   if( !$session.session ) return "";
+  // } 
 
   if( $session.session && match?.params?.username.toLowerCase()===$session.session.user.uname.toLowerCase()) return "";
   

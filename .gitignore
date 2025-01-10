@@ -33,3 +33,4 @@ WIKI.md
 sbd-stats.js
 /public/banners
 test*
+/.pnpm-store

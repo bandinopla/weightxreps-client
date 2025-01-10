@@ -1,11 +1,8 @@
 import { makeVar, useReactiveVar } from "@apollo/client";
 import { makeStyles } from "@material-ui/core";
-import NoddingGuySrc from "../../banners/nodding-guy.gif";
 import ErrorIcon from '@material-ui/icons/Error';
 import { Backdrop, CircularProgress, Typography } from "@material-ui/core";
 import { useEffect } from 'react';
-//import { Fireworks } from 'fireworks/lib/react';
-//import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import "./editor-save-backdrop.css";
 import { AnimatedLogoIntro } from "../SplashScreenIntro";
 
@@ -93,22 +90,10 @@ export const JeditorSaveBackdrop = ()=>{
 
     return <Backdrop className={ classes.backdrop + ( " success-"+data.success?.toString() ) } 
                      open={ !!shouldBeOpen } >
-
-        <div style={{display:"none"}}>
-            <img src={ NoddingGuySrc } alt=""/>
-        </div>
         
         { data.loading? <CircularProgress color="inherit" /> 
         : data.success? <div>  
-                            {/* <img src={ NoddingGuySrc } alt="" style={{ border:"14px solid rgba(0,0,0,0.3)", borderRadius:180 }}/> */}
-                            {/* <Typography variant="h6" style={{ transform:"scale(0.5)"}}>
-                                 <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" >
-                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                                            </svg>
-                                 </Typography> */}
                             <AnimatedLogoIntro/>
-                            {/* <Fireworks {...fxProps} /> */}
                         </div>
         : data.error? <Typography variant="h4" ><ErrorIcon fontSize="large"/> Oops! {data.error?.message ?? "Something went wrong"}</Typography>
         : "" }
