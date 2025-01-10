@@ -74,7 +74,7 @@ export const JDay = ()=>{
  
     return <JDayContext.Provider value={{...data.jday, ymd}}> 
 
-            { data?.getGoals && <UserGoals data={data.getGoals} currentYMD={ymd}/> }
+            { data?.getGoals && <UserGoals data={data.getGoals} user={jowner} currentYMD={ymd}/> }
 
             <JDayContentHeader noData={!data.jday} title={<>{date2NiceString(date)} <JDayStats data={data}/></>} titleChild={ <div style={{float:"right", marginLeft:15, display:"flex", gap:2, alignItems:"center"}}>
                                                                                                         <CreateGoalButton variant='outlined' size="large"/>

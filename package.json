@@ -74,6 +74,7 @@
     "react-sizeme": "^3.0.1",
     "react-text-tokenizer": "^1.0.4",
     "recharts": "^2.1.2",
+    "styled-components": "^6.1.14",
     "typewriter-effect": "^2.18.2",
     "whatwg-fetch": "^3.6.20",
     "workbox-core": "^7.1.0",

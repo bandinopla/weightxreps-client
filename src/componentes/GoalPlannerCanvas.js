@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 
+
+
 const GoalPlannerCanvas = forwardRef(({ width = 400, height = 400, plannedPoints, resolution = 12, externalPoints = [], cursor, canvasStyles}, ref) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -99,10 +101,10 @@ const GoalPlannerCanvas = forwardRef(({ width = 400, height = 400, plannedPoints
     ctx.clearRect(0, 0, width, height);
 
     // mark the start "intensity" of the planned progression
-    ctx.beginPath();
-    ctx.setLineDash([]);
-    drawFilledCircle(0, height * (1 - points[0]), 2, "blue");
-    ctx.stroke();  
+    // ctx.beginPath();
+    // ctx.setLineDash([]);
+    // drawFilledCircle(0, height * (1 - points[0]), 2, "blue");
+    // ctx.stroke();  
  
     ctx.strokeStyle = 'blue';
     ctx.setLineDash([3, 1]); 
@@ -165,6 +167,16 @@ const GoalPlannerCanvas = forwardRef(({ width = 400, height = 400, plannedPoints
  
       }
       ctx.stroke();
+ 
+      // draw a point in every workout
+      for (let i = 0; i < externalPoints.length; i++){
+        const x = (i / (_resolution - 1)) * width;
+        const y = height * (1 - externalPoints[i]);
+        if( !externalPoints[i] ) continue;
+        drawFilledCircle(x, y,2, "red");
+        drawFilledCircle(x, y,1, "white");
+      }
+      ctx.stroke();
 
 
     }
@@ -180,8 +192,16 @@ const GoalPlannerCanvas = forwardRef(({ width = 400, height = 400, plannedPoints
       ctx.setLineDash([]);
       ctx.strokeStyle = hasValue?'black':'#ccc';
       ctx.lineWidth = hasValue ? 3 : 1; 
-      ctx.moveTo(x, y-5);
+      ctx.moveTo(x, y-3);
       ctx.lineTo(x, y);
+
+      if( i%7==0) {
+        ctx.setLineDash([1,2]); 
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1; 
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, y);
+      }
       ctx.stroke();
     } 
   };

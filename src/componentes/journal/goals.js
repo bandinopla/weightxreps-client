@@ -23,6 +23,12 @@ import { GoalCreationUI } from "./goal-creation";
 import { JDayContext } from "./jday-context";
 import { useGetSessionQuery } from "../../data/generated---db-types-and-hooks";
 import { DeleteGoalButton } from "./goal-deletion";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow'; 
 
 const useStyles = makeStyles(theme=>({
     root: { 
@@ -89,19 +95,19 @@ function timeLeft(currentDate, endDate) {
  * @param {MyProps} param0 
  * @returns 
  */
-export const UserGoals = ({ data, currentYMD }) => {
-    const classes = useStyles();  
+export const UserGoals = ({ data, user , currentYMD }) => {
+    const classes = useStyles();   
 
     return <Grid container className={classes.root} spacing={1}>  
 
-        { data.map( (goal, i)=><UserGoal key={i} goal={goal} currentYMD={currentYMD}/>)}
+        { data.map( (goal, i)=><UserGoal key={i} goal={goal} user={user} currentYMD={currentYMD}/>)}
   
                             
     </Grid>
 }
 
 
-const UserGoal = ({ goal, currentYMD }) => {
+const UserGoal = ({ goal, user, currentYMD }) => {
     const classes = useStyles();
     const pointsRef = useRef();
     const currentDate = ymd2date(currentYMD); 
@@ -147,17 +153,31 @@ const UserGoal = ({ goal, currentYMD }) => {
                                     
                                     <GoalPlannerCanvas canvasStyles={{width:"100%"}} width={200} height={50} ref={pointsRef} cursor={ daysSinceStart } plannedPoints={goal.plannedProgress} externalPoints={goal.progress}/>
                                     <br/>
+
+                                    <TableContainer component={Paper}>
+                                        <Table size="small"> 
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell>Block size</TableCell>
+                                                    <TableCell>{Math.round(goal.plannedProgress.length/7)} weeks</TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Start</TableCell>
+                                                    <TableCell><a href={goal.creationDate}>{goal.creationDate}</a></TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Limit</TableCell>
+                                                    <TableCell><a href={goal.maxDate}>{goal.maxDate}</a></TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Goal</TableCell>
+                                                    <TableCell>{ formatGoal(goal, user.usekg ) }</TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    <LinearProgress  value={Math.min(1,bestResult)*100} variant="determinate" />
                                     
-                                    <Typography gutterBottom>
-                                        In the span of <strong>{Math.round(goal.plannedProgress.length/7)}</strong> weeks, the goal is to hit:
-                                    </Typography>
-                                    <Paper>
-                                        <Box padding={1}>
-                                        { formatGoal(goal) } 
-                                        { goal.comment && <div className="user-text">{goal.comment}</div>  } 
-                                        </Box>
-                                        <LinearProgress classes={{ root:classes.bar, bar: classes.bar }}  value={ Math.min(bestResult,1)*100 } variant="determinate" />
-                                    </Paper>
                                     
                                     <br/>
                                     <Typography>↓ Options for today to stay on track...</Typography>
@@ -176,7 +196,7 @@ const UserGoal = ({ goal, currentYMD }) => {
                                                                 <DeleteGoalButton goalid={goal.id}/>
                                                             </Grid>}
                                 <Grid item>
-                                    <Button fullWidth variant="outlined" onClick={()=>setDetails(!details)}>{details?"[x] Hide":"[+] Details"}</Button>
+                                    <Button fullWidth variant="outlined" onClick={()=>setDetails(!details)}>{details?"X":"[+] Details"}</Button>
                                 </Grid>
                             </Grid>
                         
@@ -187,7 +207,7 @@ const UserGoal = ({ goal, currentYMD }) => {
 
 
 
-function formatGoal(goal) {
+function formatGoal(goal, usekg) {
     const weight = goal.weight || 1;
     const reps = goal.reps || 1;
     const sets = goal.sets || 1;
@@ -198,15 +218,15 @@ function formatGoal(goal) {
     switch (goal.type) {
 
       case "WEIGHT_X_REPS": // Weight x Reps x Sets
-        elements.push(<WeightValue value={weight}/> ); 
-        if( reps>1 || sets>1 ) elements.push(<span>x <strong>{reps}</strong> reps</span> )
+        elements.push(<WeightValue value={weight} inkg={usekg}/> ); 
+        if( reps>1 || sets>1 ) elements.push(<span>x <strong>{reps}</strong></span> )
         if( sets>1 ) elements.push(<span>x <strong>{sets}</strong> sets</span>)
         break;  
 
       case "WEIGHT_X_DISTANCE": // Weight x Distance [x Time]
 
         if( weight>1 ) 
-            elements.push(<WeightValue value={weight}/> );
+            elements.push(<WeightValue value={weight} inkg={usekg}/> );
 
         elements.push(<span>{weight>1?"x ":""}<DistanceValue value={distance} unit={goal.dUnit}/></span> );
 
@@ -218,7 +238,7 @@ function formatGoal(goal) {
       case "WEIGHT_X_TIME": // Weight x Time
 
         if( weight>1 ) 
-            elements.push(<WeightValue value={weight}/> );
+            elements.push(<WeightValue value={weight}  inkg={usekg}/> );
 
         elements.push(<span>{weight>1?"x ":""}<TimeValue milliseconds={time*1000}/></span>)
         
@@ -227,7 +247,7 @@ function formatGoal(goal) {
         return 'Unknown goal type';
     }
 
-    return <div style={{ display:"flex", gap:5, fontSize:"1.5em", alignContent:"center" }}>{elements}</div>;
+    return <div style={{ display:"flex", gap:5, alignContent:"center" }}>{elements}</div>;
   }
 
 
