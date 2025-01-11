@@ -111,7 +111,7 @@ export const RPETableWidget = ({setting})=>{
             <ImportCSVWidget sid={setting.id}/>
 
             <Typography variant="subtitle2" gutterBottom>
-                <UnameRef uid={1080} uname="Skullengaged"/> made a <a href="https://docs.google.com/spreadsheets/d/1BmUzqruLxg98rKsi6ocneIUnKMwzndhigo8yUg15_0g/edit#gid=0" target="_blank"><strong>CVS template</strong> you can download</a> from Google Docs.
+                <UnameRef uid={1080} uname="Skullengaged"/> made a <a href="https://docs.google.com/spreadsheets/d/1BmUzqruLxg98rKsi6ocneIUnKMwzndhigo8yUg15_0g/edit#gid=0" target="_blank"><strong>CSV template</strong> you can download</a> from Google Docs.
                 <br/>
                 <br/>
                 Click on the % you want to change. You can <strong>hold mouse + drag</strong> to scroll the table horizontally when/if needed. 

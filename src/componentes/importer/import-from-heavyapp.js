@@ -5,6 +5,7 @@ import { fixRPE } from "./fixRPE";
 import { enameToEtag } from "./import-from-strongapp";
 import { TYPES } from "../../user-tags/data-types";
 import { SET_TYPES } from "../../data/set-types";
+import { Alert } from "@material-ui/lab";
  
 //
 // the Hevyapp time string format
@@ -208,5 +209,10 @@ const config = {
 }
 
 export const ImportFromHevyapp = ()=>{ 
-    return <ImportFromCVS config={config} fileInputLabel="Select hevyapp backup file .cvs" />
+    return <div>
+        <ImportFromCVS config={config} fileInputLabel="Select hevyapp backup file .csv" />
+        <Alert severity="warning">
+        Hevy imports seem to be broken in Hevy v2.0.15 on Android...
+        </Alert>
+        </div>
 }

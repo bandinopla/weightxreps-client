@@ -40,7 +40,7 @@ const formatCVS = async (config, file, informStatus) => {
         }
     } 
 
-    informStatus("Prepearing to parse cvs");
+    informStatus("Prepearing to parse .csv");
 
     const Papa = await import(/* webpackChunkName: "papaparse" */"papaparse");
      
@@ -149,12 +149,12 @@ const formatCVS = async (config, file, informStatus) => {
 
                 if( errorsIgnored>0 )
                 {
-                    alert(`The cvs was parsed! But we skipped (${errorsIgnored}) rows with errors.\n %${ ((rowsDone-errorsIgnored)/rowsDone*100).toFixed(1) } of the cvs was parsed successfully.\n\n${disclaimer}`);
+                    alert(`The .csv was parsed! But we skipped (${errorsIgnored}) rows with errors.\n %${ ((rowsDone-errorsIgnored)/rowsDone*100).toFixed(1) } of the cvs was parsed successfully.\n\n${disclaimer}`);
                 }
 
                 resolve( log );
             },
-            error: err => reject(`Error parsing cvs --> ${err.message}`)
+            error: err => reject(`Error parsing csv --> ${err.message}`)
         });
 
     });

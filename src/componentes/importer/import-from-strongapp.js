@@ -215,5 +215,5 @@ export const enameToEtag = ( ename )=>{
 }
 
 export const ImportFromWStrongapp = ()=>{ 
-    return <ImportFromCVS config={config} fileInputLabel="Select strongapp backup file .cvs" />
+    return <ImportFromCVS config={config} fileInputLabel="Select strongapp backup file .csv" />
 }
