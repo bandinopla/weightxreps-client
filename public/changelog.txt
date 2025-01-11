@@ -4,6 +4,7 @@
         * Moved the Achievements badges to the user card to make them more visible, I don't think anyone was taking the time to click the "achievements" button and to be fair not even me...
         * Added a compresison plugin on build time to compress images to hopefully reduce the bandwith taken...
         * Removed the rive animated banner, it was too heavy for what it was adding. (this I did yesterday)
+        * Added the bar display and reps on the best 3 lifts.
 
 - 2.35.0 : 2025-01-08
         + added the posibility to set and track "goals". More info: https://www.youtube.com/watch?v=A9a_AJ_sZuk

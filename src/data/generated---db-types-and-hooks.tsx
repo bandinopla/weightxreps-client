@@ -73,6 +73,7 @@ export type BestEStat = {
 export type BestLift = {
   __typename?: 'BestLift';
   e: Exercise;
+  r: Scalars['Int'];
   w: Scalars['Float'];
   ymd: Scalars['YMD'];
 };
@@ -1675,7 +1676,7 @@ export type GetUserInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetUserInfoQuery = { __typename?: 'Query', userInfo: { __typename?: 'UserInfo', daysLogged: number, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, sleft?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, forumRole?: ForumRoleKey | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null }, forum?: { __typename?: 'ForumStatus', posts?: number | null, role?: { __typename?: 'ForumRole', title: string } | null } | null, best3?: Array<{ __typename?: 'BestLift', w: number, ymd: any, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } }> | null } };
+export type GetUserInfoQuery = { __typename?: 'Query', userInfo: { __typename?: 'UserInfo', daysLogged: number, user: { __typename?: 'User', id: string, avatarhash: string, uname: string, cc?: string | null, slvl?: number | null, sok?: number | null, sleft?: number | null, age?: number | null, bw?: number | null, private?: number | null, isf?: number | null, joined?: string | null, usekg?: number | null, forumRole?: ForumRoleKey | null, custom1RM?: number | null, est1RMFactor?: number | null, jranges?: Array<number | null> | null, estimate1RMFormula?: string | null, socialLinks?: Array<string | null> | null }, forum?: { __typename?: 'ForumStatus', posts?: number | null, role?: { __typename?: 'ForumRole', title: string } | null } | null, best3?: Array<{ __typename?: 'BestLift', w: number, r: number, ymd: any, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } }> | null } };
 
 export type GetUserBasicInfoQueryVariables = Exact<{
   of?: InputMaybe<Scalars['ID']>;
@@ -3382,6 +3383,7 @@ export const GetUserInfoDocument = gql`
     }
     best3 {
       w
+      r
       ymd
       e {
         id

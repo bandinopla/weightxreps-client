@@ -24,6 +24,7 @@ import { JOwnerContext } from './journal-context';
 import { YearOVerview } from '../componentes/year-overview';
 import { MainBannerWrapper } from '../banners/MainBannerWrapper';
 import AchievementsBadges from '../achievements/AchievementsBadges';
+import Barra from '../componentes/barras';
 
 //import { PRsHistoryTable } from '../componentes/journal/prs-history'; 
 //const JRange        = lazy(()=>import("../componentes/journal/jrange"));
@@ -194,8 +195,11 @@ export const Best3Lifts = ({ data, usekg }) =>{
 
     let colsSpan = [12,6,4][ data.length-1 ];
 
-    return <Grid container style={{marginTop:10}} alignItems="flex-end">
+    return <Grid container style={{marginTop:10}} alignItems="flex-end" spacing={1}>
                 {data.map( (itm,i)=>(<Grid key={i} item xs={colsSpan} style={{textAlign:"center"}}>
+                        <div>
+                            <Barra weight={itm.w} reps={itm.r}/>
+                        </div>
                         <Typography variant="subtitle1" noWrap>
                           <a href={`${itm.ymd}`} title={itm.e.name + " on "+ itm.ymd}><strong><WeightValue value={itm.w} inkg={usekg}/></strong></a>
                         </Typography>
