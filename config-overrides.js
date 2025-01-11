@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 /**
  * Edit webpack config...
  */
@@ -33,6 +33,20 @@ module.exports = function override(config, env) {
                 "babel-plugin-transform-remove-console"
             );
         }
+
+        config.optimization.minimizer.push(
+            new ImageMinimizerPlugin({
+                minimizer: {
+                    implementation: ImageMinimizerPlugin.imageminMinify,
+                    options: {
+                        plugins: [
+                                ["mozjpeg", { quality: 75 }],
+                                ["pngquant", { quality: [0.6, 0.8] }],
+                            ],
+                    }
+              },
+            })
+          );
     }
     return config;
 }
