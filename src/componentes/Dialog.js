@@ -100,7 +100,7 @@ export const InfoDialog = ({ title, info, children, onConfirm, onClose, verb, ca
 
 
 
-export const $openModal = makeVar({ open:false, title:null, info:null, onConfirm:null }); //<--- se le pasa el modal config...
+export const $openModal = makeVar({ open:false, title:null, info:null, onConfirm:null, canCancel:true }); //<--- se le pasa el modal config...
 
 
 /**

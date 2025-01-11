@@ -1,4 +1,3 @@
-import { Button, Chip, Paper } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { Alert } from '@material-ui/lab';
 import { lazy, Suspense, useRef } from 'react';
-import { Redirect, Route, Switch, useHistory, Link } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Calendario from "../componentes/calendario";
 import CalendarioZoomSlider from '../componentes/calendario-zoom-slider';
 import { FollowButton } from '../componentes/follow-button';
@@ -22,10 +21,9 @@ import { useGetUserInfoQuery } from '../data/generated---db-types-and-hooks';
 import { OpenDMButton } from '../session/ui/dms-window/dm-window';
 import { todayAsYMD } from '../utils/utils'; 
 import { JOwnerContext } from './journal-context';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { YearOVerview } from '../componentes/year-overview';
-import { ForumRoleChip } from '../forum/roles';
 import { MainBannerWrapper } from '../banners/MainBannerWrapper';
+import AchievementsBadges from '../achievements/AchievementsBadges';
 
 //import { PRsHistoryTable } from '../componentes/journal/prs-history'; 
 //const JRange        = lazy(()=>import("../componentes/journal/jrange"));
@@ -33,7 +31,7 @@ import { MainBannerWrapper } from '../banners/MainBannerWrapper';
 //const StatsModule = lazy(()=>import("../componentes/journal/stats-modules"));  
 
 const JDay        = lazy(()=>import(/* webpackChunkName: "jday" */"../componentes/journal/jday-lazy"));
-const AchievementsPage = lazy(()=>import("../achievements/page"));
+ 
  
  
  
@@ -112,17 +110,12 @@ export default function JournalBase({ match:{  path, url, params:{ uname } } }) 
                                         <UCard data={{user:uinfo.user}} injournal extraRows={ extraRows } noClickable>
                                             <Best3Lifts data={uinfo.best3} usekg={uinfo.user.usekg}/>
                                             
-                                            <Switch>
-
-                                                <Route path={`${path}/achievements`} render={()=>{}}/>
-                                                <Route>
-                                                    <div style={{marginTop:10}}>
-                                                        <Button onClick={()=>history.push(`${url}/achievements`)} startIcon={<AccessTimeIcon/>} variant="contained" color="primary" fullWidth>Achievements</Button>
-                                                        <OpenDMButton otherUser={uinfo.user} style={{marginRight:22, marginTop:5}} fullWidth/>
-                                                        <br/><br/><FollowButton/> 
-                                                    </div> 
-                                                </Route>
-
+                                            <Switch>  
+                                                <div style={{marginTop:10}}>
+                                                    <Route path={path+YMD_PATH_MATCHER+RANGE_MATCHER+"?"} component={AchievementsBadges}/>  
+                                                    <OpenDMButton otherUser={uinfo.user} style={{marginRight:22, marginTop:5}} fullWidth/>
+                                                    <br/><br/><FollowButton/> 
+                                                </div>  
                                             </Switch>
                                             
                                         </UCard>
@@ -141,14 +134,7 @@ export default function JournalBase({ match:{  path, url, params:{ uname } } }) 
                                             </>)}/> 
 
                                         <Route path={`${path}/personal-records--:eid(\\d+)`} component={PRsHistoryHeader}/>
-                                        <Route path={`${path}/achievements`} render={()=><Paper elevation={3} style={{padding:20, border:"1px dotted #333"}}>
-                                            <Typography variant="h3" style={{textTransform:"capitalize"}} gutterBottom><AccessTimeIcon/> Achievements</Typography>
-                                            <Typography variant='subtitle1'>
-                                                Based on the training logged, here lays a collection of badges earned after achieving a particular level or goal.
-                                                <br/><br/>These achievements are <strong>temporary</strong> and <strong>you must HOLD them to keep them</strong>. Just like real fitness!
-                                                <br/><br/>Click on them to see their details and how to get them.
-                                            </Typography>
-                                        </Paper>}/> 
+                                         
                                     </Switch>
                                     </Suspense>
 
@@ -160,8 +146,7 @@ export default function JournalBase({ match:{  path, url, params:{ uname } } }) 
  
                                 <Suspense fallback={<div>Loading stats...</div>}>
                                 <Switch> 
-                                        <Route path={`${path}/personal-records--:eid(\\d+)`} component={PRsHistoryTable} /> 
-                                        <Route path={`${path}/achievements`} component={AchievementsPage}/> 
+                                        <Route path={`${path}/personal-records--:eid(\\d+)`} component={PRsHistoryTable} />  
                                 
                                         <Route path={path+YMD_PATH_MATCHER+RANGE_MATCHER} component={JRange}/> 
 
