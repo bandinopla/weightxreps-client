@@ -55,10 +55,11 @@ const useStyles = makeStyles(theme=>({
 }));
 
 export const GoalsTypePolicy = {
+    UserGoal: {
+        keyFields: false, // Disables normalization
+      },
     Query: {
-        UserGoal: {
-            keyFields: false, // Disables normalization
-          },
+        
 
         fields: { 
             getGoals: {
