@@ -1,3 +1,6 @@
+- 2.35.2 : 2025-01-16
+        * Fix bug reported by @Melchior on https://github.com/bandinopla/weightxreps-client/issues/33 : Datetime saving issues in the year overview calendar displaying the wrong week days on some edge cases.
+
 - 2.35.1 : 2025-01-11
         * Reported by @jromero : Hevy imports are broken in Hevy v2.0.15 on Android... right now I don't have the energy to recode the improter to solve this :(
         * @jromero reported that I misspelled CSV writing it as CVS... fixed.

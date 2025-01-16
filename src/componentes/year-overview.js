@@ -100,7 +100,7 @@ const colorStyles = [
  */
 const YearOVerviewGrid = ({ ymd, range, daysData, onClickDay, focusOn, header, firstDayOfWeek })=>{ 
 
-    const d = ymd2date(ymd); 
+    const d = ymd2date(ymd,true); 
 
     let d0 = useMemo(()=>{
         if( range ) {
@@ -116,54 +116,52 @@ const YearOVerviewGrid = ({ ymd, range, daysData, onClickDay, focusOn, header, f
      */
     const calInfo = useMemo(()=>{ 
         
-        const d0 = new Date( d.getFullYear(), 0, 1);
-        const dF = new Date( d.getFullYear()+1, 0, 0);
-        const days2add = 52 * 7;
+        const d0 = new Date(Date.UTC(d.getFullYear(), 0, 1));
+        const dF = new Date(Date.UTC(d.getFullYear() + 1, 0, 0));
 
-        d0.setDate( d0.getDate() - d0.getDay() );  
-        dF.setDate( dF.getDate() + (6 - dF.getDay()) );  
-
+        d0.setUTCDate( d0.getUTCDate() - d0.getUTCDay() );
+        dF.setUTCDate( dF.getUTCDate() + (6 - dF.getUTCDay()) );  
+    
         const diffMs = dF - d0;
         const differenceInDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        const weeks = Math.ceil( differenceInDays/7 ) ; 
- 
+        const weeks = Math.ceil(differenceInDays / 7);
+    
         /**
          * @type {MonthLabel[]}
          */
         const months = [];
         let lastMonth;
-
+    
         const dates = new Array( weeks*7 ).fill(0).map((_,i)=>{
-            const day = new Date(d0);
-            day.setDate( day.getDate() + i);
+            const day = new Date(Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth(), d0.getUTCDate() + i));
             //
- 
-            if( i%7 == 0 ) //first row
-            {
-                const monthNum = day.getMonth();
 
+            if( i%7 == 0 ) //first row
+            { 
+                const monthNum = day.getUTCMonth();
+    
                 if(!lastMonth || (lastMonth.num != monthNum) )
                 {
                     lastMonth = {
                         num: monthNum,
                         count: 0,
-                        name: day.toDateString().split(" ")[1]
+                        name: day.toUTCString().split(" ")[2] 
                     }
-
+    
                     months.push(lastMonth);
                 }
-
-                lastMonth.count++; 
+    
+                lastMonth.count++;
             }
-
+    
             return day;
         });
- 
+    
         return {
-            dates, months, weeks, year:d.getFullYear()
+            dates, months, weeks, year:d.getUTCFullYear()
         }
 
-    },[ymd, firstDayOfWeek]); 
+    },[ymd, firstDayOfWeek]);
 
     /**
      * Determines the color of the cell
