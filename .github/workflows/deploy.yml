@@ -36,6 +36,9 @@ jobs:
 
       - name: Install dependencies to be able to build
         run: pnpm install --strict-peer-dependencies=false  
+
+      - name: Rebuild pngquant-bin
+        run: pnpm rebuild pngquant-bin
         
       - name: Build
         run: CI=false pnpm run build 
