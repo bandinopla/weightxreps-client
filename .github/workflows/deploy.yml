@@ -32,10 +32,10 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: npm install -g pnpm@9.15.0
 
       - name: Install dependencies to be able to build
-        run: pnpm install --strict-peer-dependencies=false --ignore-scripts=false
+        run: pnpm install --strict-peer-dependencies=false
         
       - name: Build
         run: CI=false pnpm run build 
