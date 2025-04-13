@@ -1,3 +1,6 @@
+- 2.35.3 : 2025-04-13
+        * Bug fix reported by @Jhn79 : On some of the non exercise notes, not all, the same numeral will repeat in different fonts. 
+        
 - 2.35.2 : 2025-01-16
         * Fix bug reported by @Melchior on https://github.com/bandinopla/weightxreps-client/issues/33 : Datetime saving issues in the year overview calendar displaying the wrong week days on some edge cases.
 

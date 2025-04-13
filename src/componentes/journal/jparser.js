@@ -150,7 +150,8 @@ const text2tags = (text2parse, tags) => {
 
                 if( m[0].length==1 )
                 {
-                    i-=1;
+                    if( isNaN(Number(m[0])) ) // I dont remember why I write the line below, so I add this IF to solve the issue with numbers...
+                        i-=1;
                 }
 
                 rtrn.push( tag.block(m) ); 
