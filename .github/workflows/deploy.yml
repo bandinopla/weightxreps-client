@@ -34,11 +34,11 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Allow all build scripts
+        run: pnpm config set ignore-scripts false
+
       - name: Install dependencies to be able to build
         run: pnpm install --strict-peer-dependencies=false  
-
-      - name: Rebuild pngquant-bin
-        run: pnpm rebuild pngquant-bin
         
       - name: Build
         run: CI=false pnpm run build 
