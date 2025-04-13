@@ -34,11 +34,8 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Allow all build scripts
-        run: pnpm config set ignore-scripts false
-
       - name: Install dependencies to be able to build
-        run: pnpm install --strict-peer-dependencies=false  
+        run: pnpm install --strict-peer-dependencies=false --ignore-scripts=false
         
       - name: Build
         run: CI=false pnpm run build 
