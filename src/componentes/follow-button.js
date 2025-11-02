@@ -85,18 +85,21 @@ export const FollowButton = ()=>{
         return <Alert severity="error">{parseError(error)}</Alert>
     }
 
-    return <Typography className="oneline" variant="body2">
+    return <Typography className="follow-widget" variant="body2">
 
             <ErrorSnackbar trigger={ execError?.message } horizontal="center" vertical="bottom"/>
 
-            <a href="#" onClick={showUsers(false)}>
-            <strong >{data?.getFollowing?.length}</strong> Following
-            </a>
+            <div>
+                <a href="#" onClick={showUsers(false)}>
+                    <strong >{data?.getFollowing?.length}</strong> Following
+                </a>
 
-            <a href="#" onClick={showUsers(true)}>
-                <strong style={{marginLeft:10}}>{data?.getFollowers?.length}</strong> Followers
-            </a>
-            {canFollow && <ActionButton className={"FollowButton"+(isFollowing?" unfollow":"")} style={{marginLeft:20}} execAction={execFollow}>
+                <a href="#" onClick={showUsers(true)}>
+                    <strong style={{marginLeft:10}}>{data?.getFollowers?.length}</strong> Followers
+                </a>
+            </div>
+
+            {canFollow && <ActionButton className={"FollowButton"+(isFollowing?" unfollow":"")} execAction={execFollow}>
                 { isFollowing?"Unfollow":"Follow"}
             </ActionButton>}
             

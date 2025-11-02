@@ -1,3 +1,6 @@
+- 2.35.4 : 2025-11-02
+        * Bug fix reported by @bartman : The "Follow" button was disappearing on some screen sizes and also it was hard to spot.
+
 - 2.35.3 : 2025-04-13
         * Bug fix reported by @Jhn79 : On some of the non exercise notes, not all, the same numeral will repeat in different fonts. 
         
