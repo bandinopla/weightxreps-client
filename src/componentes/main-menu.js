@@ -222,7 +222,7 @@ export const MainMenuDrawer = ()=>{
             >{menu}
             </Drawer>
       </Hidden>
-        <Hidden lgUp implementation="css"> 
+        <Hidden lgUp implementation="js"> 
             <SwipeableDrawer
                 anchor="left"
                 open={show}

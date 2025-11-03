@@ -18,7 +18,11 @@ export const SwipeableDrawer = ({ children, ...props}) => {
 
         const handleMenuOpen = ev => {
 
-            const x = ev.changedTouches?.[0].clientX ?? ev.touches[0].clientX;
+			const isMouseEvent = ev.type.includes("mouse");
+			if( isMouseEvent ) ev.preventDefault();
+			
+			 
+            const x = ev.clientX ?? ev.changedTouches?.[0].clientX ?? ev.touches[0].clientX ;
 
             if( startX<0 ) {
                 startX = x;
@@ -31,7 +35,7 @@ export const SwipeableDrawer = ({ children, ...props}) => {
             {
                 const diff = Math.abs( startX - handlebar.current.getBoundingClientRect().x );
 
-                if( diff<radio && iOS && !props.open ) props.onOpen();
+                if( diff<radio && (iOS || isMouseEvent) && !props.open ) props.onOpen();
             } 
 
             startX = -1;
@@ -41,9 +45,15 @@ export const SwipeableDrawer = ({ children, ...props}) => {
         window.addEventListener("touchstart", handleMenuOpen);
         window.addEventListener("touchend", handleMenuOpen);
 
+		window.addEventListener("mousedown", handleMenuOpen);
+        window.addEventListener("mouseup", handleMenuOpen);
+
         return ()=>{
             window.removeEventListener("touchstart", handleMenuOpen);
             window.removeEventListener("touchend", handleMenuOpen);
+
+			window.removeEventListener("mousedown", handleMenuOpen);
+            window.removeEventListener("mouseup", handleMenuOpen);
         }
 
     },[]);

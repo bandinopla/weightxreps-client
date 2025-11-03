@@ -1,3 +1,6 @@
+- 2.35.5 : 2025-11-03 
+		* Bug fix reported by @bartman : Side menues were not being activated in the case of desktop and small window size (non mobile)
+		
 - 2.35.4 : 2025-11-02
         * Bug fix reported by @bartman : The "Follow" button was disappearing on some screen sizes and also it was hard to spot.
 
