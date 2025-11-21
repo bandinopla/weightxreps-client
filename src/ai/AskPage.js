@@ -9,7 +9,8 @@ import { exampleLog } from "../componentes/journal/editor-tutorial"
 import { ApiKey } from "./ApiKey"
 import { $openModal } from "../componentes/Dialog"
 import { ClientConfigForm } from "./ClientConfigForm"
-import { LinearProgress } from "@material-ui/core"
+import { LinearProgress } from "@material-ui/core" 
+import { Alert } from "@material-ui/lab"
 
 const IFRAME_URL = inProduction? "https://ai.weightxreps.net":"http://localhost:5173"
 
@@ -20,10 +21,14 @@ const Guest = {
 	id:0, uname:"guest", isGuest:true
 }
 
+let timeoutTimer;
+
 export default function AskAIPage() {
 	/** @type {ReturnType<typeof useRef<HTMLIFrameElement|null>>} */
 	const iframeRef = useRef()
 	const $session = useGetSession();
+	const [error, setError] = useState();
+	const [loaded, setLoaded] = useState(false);
 
 	/**
 	 * Reference to the currently logged user.
@@ -44,6 +49,12 @@ export default function AskAIPage() {
 	 * This is the "api" the iframe's app will have access to call functions on.
 	 */
 	const $api = {
+
+		aiAppReady: ()=>{
+			clearTimeout(timeoutTimer)
+			setLoaded(true)
+			setError(undefined)
+		},
 
 		/**
 		 * Let the AI App get a hold onto the session token so the calls are made as that user.
@@ -140,6 +151,10 @@ export default function AskAIPage() {
 
 	useEffect(()=>{
 
+		timeoutTimer = setTimeout(()=>{
+			setError("Mmmhh... Failed to connect to the AI App. Maybe a network issue?");
+		}, 5000)
+
 		const onIframeMessage = event => { 
 
 			if (event.origin !== IFRAME_URL) {
@@ -194,23 +209,35 @@ export default function AskAIPage() {
 		window.addEventListener("message", onIframeMessage);
 		return ()=>window.removeEventListener("message", onIframeMessage);
 
-	},[ ])
+	},[ ]);
 
-	if( $session.sessionError )
-	{
-		console.error( $session.sessionError )
-		return <div>Error</div>
-	}
+	useEffect(()=>{
+
+		if( $session.sessionError )
+		{
+			console.log("SESSION ERROR:",$session.sessionError)
+			setError($session.sessionError)
+		}
+
+		else if( $session.notLogged )
+		{
+			setError("SIGN IN REQUIRED: You must be logged in to access this tool!")
+		}
+
+	}, [$session])
+
+	if( error )
+		return <Alert severity="error">{error}</Alert>;
+  
  
 	return <div className={styles.root}>
  
 		{
-			 $session.loadingSession && <LinearProgress/>
+			!loaded && <LinearProgress/>
 		}
 
-		{ !$session.loadingSession && !$session.sessionError && <>
-			
-			<iframe src={IFRAME_URL} ref={iframeRef}></iframe>
+		{ !$session.loadingSession && <> 
+			<iframe src={IFRAME_URL} ref={iframeRef} style={{ display: loaded?"block":"hidden" }}></iframe>
 
 		</>  }
  
