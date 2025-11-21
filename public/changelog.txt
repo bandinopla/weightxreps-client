@@ -1,3 +1,6 @@
+- 2.36.0 : 2025-11-18
+		+ Added AI Chat. You can now hook ChatGPT, xAI or Ollama and ask questions about your training data. Thanks to @bartman for providing me with a test ApiKey for xAI which also let me test for OpenAI since it is compatible.
+		
 - 2.35.5 : 2025-11-03 
 		* Bug fix reported by @bartman : Side menues were not being activated in the case of desktop and small window size (non mobile)
 		

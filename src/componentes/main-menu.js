@@ -28,16 +28,16 @@ import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRoun
 import { SwipeableDrawer } from './SwipableDrawer';
 import HelpIcon from '@material-ui/icons/Help';
 import { openExercisesModal } from './journal/exercises';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import TimeAgoDisplay from './TimeAgoDisplay';
-
+import AndroidIcon from '@material-ui/icons/Android';
 export const MENU = [
     { Icon:HomeIcon, goto:"/", label:"Home" },
     { Icon:SearchIcon, goto:"/explore", label:"Explore" },
     { Icon:RssFeedIcon, goto:"/community-stats", label:"User Rank" },
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
     //{ Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
-    { Icon:VideocamIcon, goto:"/videos", label:"Videos" },
+    //{ Icon:VideocamIcon, goto:"/videos", label:"Videos" },
+    { Icon:AndroidIcon, goto:"/ask-ai", label:"Ask the AI", fancy:true },
     //{ Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
     { Icon:HelpIcon, goto:"/faq", label:"Help" },
     //{ Icon:FingerprintIcon, goto:"/about", label:"About" },

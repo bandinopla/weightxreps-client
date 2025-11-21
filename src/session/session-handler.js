@@ -98,6 +98,7 @@ export const useGetSession = ()=> {
             , loadingSession    : loading
             , sessionError      : error  
             , userSettings      : SETTINGS
+			, notLogged			: !error && !loading && !data?.getSession?.user
             , messages 
             , notifications
             , reload

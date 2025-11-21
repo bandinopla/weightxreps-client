@@ -10,6 +10,7 @@ import {
 import TwitterChallenges from "../componentes/twitter-to-donate/TwitterChallenges"; 
 import { useGetSession } from "../session/session-handler";
 import slvlsUrl from "../componentes/slvls.png";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
 	logo: {
@@ -35,7 +36,7 @@ export default function DonatePage() {
 								<Grid item xs={12}>
 									<Box padding={2}>
 										<Typography variant="h4" gutterBottom>
-											Become a <strong>Supporter</strong>
+											Become an <strong>Active Supporter</strong>
 										</Typography>
 									</Box>
 								</Grid>
@@ -43,11 +44,11 @@ export default function DonatePage() {
 							<Divider />
 							<Box padding={2}>
 								<Typography gutterBottom>
-									Donations keeps the site alive!
+									<strong>Donations keeps the site alive!</strong>
 								</Typography>
 								<Typography>
-									By donating you become a "supporter". That means "someone who
-									at some poin in time sent some monetary support". This is
+									By donating you become an "active supporter". That means "someone who
+									recently sent some monetary support". This is
 									always manual, non recurrent nor automatic, so dont worry,
 									this site wont leach your wallet.
 								</Typography>
@@ -60,6 +61,9 @@ export default function DonatePage() {
 									exchanged. But, as a token of appreciation, you will be
 									granted with some virtual goodies:
 									<ul>
+										<li>
+											<strong>[ NEW ]</strong> Unlimited AI log recall access ( free users get only past 30 days recall )
+										</li>
 										<li>
 											Calendar zoom increased up to <strong>32 weeks</strong>
 										</li>
@@ -111,6 +115,7 @@ export default function DonatePage() {
 
 								<Grid item xs={12}>
 								<Divider />
+									<Alert severity="info">Money is used to support the development & site maintenance.</Alert>
 									<Box padding={2} textAlign="center">
 										<form
 											name="_xclick"
