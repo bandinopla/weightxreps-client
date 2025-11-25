@@ -47,7 +47,7 @@ export const useChangelog = () => {
         if(!changeLogLoader) {
 			changeLogLoader = Promise.all([
 				fetch('/changelog.txt').then(resp=>resp.text()),
-				fetch( (inProduction? "https://weightxreps.net":"http://localhost:5173" ) +'/changelog.txt').then(resp=>resp.text()),
+				fetch( (inProduction? "https://ai.weightxreps.net":"http://localhost:5173" ) +'/changelog.txt').then(resp=>resp.text()),
 			])
 			.then( logs => {
 
