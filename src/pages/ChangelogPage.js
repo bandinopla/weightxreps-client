@@ -1,9 +1,9 @@
-import { Box, Divider, LinearProgress, Typography } from "@material-ui/core";
+import { Box, Chip, Divider, LinearProgress, Typography } from "@material-ui/core";
 import { useEffect, useMemo, useState } from "react";
 import { UnameRef } from "../componentes/uname";
 import { useChangelog } from "../utils/useChangelog";
 import { Alert } from "@material-ui/lab";
-
+import AndroidIcon from '@material-ui/icons/Android';
 
 const uname2Tag = txt => {
     let out = [""];
@@ -38,15 +38,15 @@ export default function ChangelogPage() {
 
     const { changelog, loading, error } = useChangelog(); 
 
-    const content = useMemo(() => {
+    // const content = useMemo(() => {
 
-        if( changelog )
-        {
-            return uname2Tag(changelog);
-        }
+    //     if( changelog )
+    //     {
+    //         return uname2Tag(changelog);
+    //     }
         
-    }, [changelog])
-
+    // }, [changelog])
+ 
     return <>
         <Box margin={2}>
             <Typography gutterBottom>
@@ -60,7 +60,19 @@ export default function ChangelogPage() {
             <Divider />
             { loading && <LinearProgress/>}
             { error && <Alert severity="error">{error}</Alert>}
-            <pre style={{ whiteSpace: "pre-wrap", marginTop: 30 }}>{content}</pre>
+
+			{
+				changelog?.map( log=><div style={{ marginTop: 30, flex:1 }}>
+					<div>
+						{ log.category && <Chip label={log.category} icon={log.category=="ai"? <AndroidIcon/> : null} />} <strong>{ log.version }</strong> { log.date && <span>on <strong>{log.date}</strong></span>}
+					</div>
+					{
+						log.done.map( (what, i)=><div key={i} style={{ paddingLeft:30, whiteSpace: "pre-wrap", fontFamily:"monospace" }}>{uname2Tag(what)}</div>)
+					}
+				</div> )
+			}
+
+            
         </Box>
 
 

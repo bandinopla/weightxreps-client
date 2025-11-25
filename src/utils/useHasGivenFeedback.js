@@ -18,31 +18,25 @@ export const useHasGivenFeedback = ()=>{
                 collaborators = new Map();
 
                 var lastVersion = null;
+				let m;
 
-                //console.group("COLABS");
-                changelog.split("\n").forEach( line=>{
+				changelog.forEach( log => {
 
-                    let m = line.match(/- +(\d+\.\d+\.\d+)\s+:/);
-                    if( m )
-                    {
-                        lastVersion = line.replace("- ","");
-                    }
-                    else 
-                    {
-                        const regex = /@([a-z0-9_]+)/gi;
-                        
-                        while ((m = regex.exec(line)) !== null) {
-                            if (m.index === regex.lastIndex) {
+					log.done.forEach( line => {
+
+						const regex = /@([a-z0-9_]+)/gi;
+						
+
+						while ((m = regex.exec(line)) !== null) {
+							if (m.index === regex.lastIndex) {
                                 regex.lastIndex++;
                             }
 
-                            // The result can be accessed through the `m`-variable.
-                            m.forEach((uname, groupIndex) => {
+							m.forEach((uname, groupIndex) => {
 
                                 if( groupIndex==0 ) return;
-
-                                //console.log( uname, lastVersion)
-                                const what = lastVersion + " | " + line;
+ 
+                                const what = (log.category?`( ${log.category} ) `:"")+ log.version + " | "+ (log.date?`${log.date} | `:"") + line;
 
                                 if( !collaborators.has(uname) )
                                 {
@@ -54,12 +48,11 @@ export const useHasGivenFeedback = ()=>{
                                 }
 
                             });
-                        }
-                        
-                    }
+						}
 
-                });
-                //console.groupEnd();
+					});
+				});
+ 
             } 
 
             return collaborators.get( uname );
