@@ -237,7 +237,7 @@ export default function AskAIPage() {
 		}
 
 		{ !$session.loadingSession && <> 
-			<iframe src={IFRAME_URL} ref={iframeRef} style={{ display:loaded? "block" : "none" }}></iframe>
+			<iframe src={IFRAME_URL} ref={iframeRef} allow="clipboard-write" style={{ display:loaded? "block" : "none" }}></iframe>
 
 		</>  }
  
