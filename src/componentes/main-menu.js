@@ -30,6 +30,9 @@ import HelpIcon from '@material-ui/icons/Help';
 import { openExercisesModal } from './journal/exercises';
 import TimeAgoDisplay from './TimeAgoDisplay';
 import AndroidIcon from '@material-ui/icons/Android';
+import { useChangelog } from '../utils/useChangelog';
+import { AsciiSpinner } from './ascii-spinner';
+import { Alert } from '@material-ui/lab';
 export const MENU = [
     { Icon:HomeIcon, goto:"/", label:"Home" },
     { Icon:SearchIcon, goto:"/explore", label:"Explore" },
@@ -195,7 +198,7 @@ export const MainMenuDrawer = ()=>{
             <a href="/about"><strong>About</strong></a> | <a href="/terms-of-service">Terms</a> | <a href="/privacy-policy">Privacy</a>
             </Typography>
             <Typography variant="caption"> 
-                <a href="/changelog"><strong>{`v${metadata.buildMajor}.${metadata.buildMinor}.${metadata.buildRevision} `}</strong> (<TimeAgoDisplay time={metadata.when} />)</a> 
+                <ChangelogCaption/>
             </Typography>
             <Grid container alignItems='center' justifyContent='space-between' style={{ marginTop:10}}>
                 <Grid xs={4} item>
@@ -233,4 +236,29 @@ export const MainMenuDrawer = ()=>{
             </SwipeableDrawer>
         </Hidden>
     </nav>
+}
+
+function ChangelogCaption(){
+	const { changelog, error, loading } = useChangelog()
+	if( loading ) return <AsciiSpinner label={"Checking version"}/>
+	
+	if( error )
+	return <Alert severity='error'>Failed to check version</Alert>
+ 
+	const ver = []
+
+	changelog.forEach( log => { 
+		if( !ver.some(v=>v[0]==log.category) )
+		{
+			ver.push([
+				log.category, 
+				log.version,
+				log.date
+			])
+		}
+	});
+
+	return <div style={{ marginTop:10 }}>
+		{ ver.map( v => <a key={v[1]} href='/changelog' style={{ padding:1, display:"block" }}>{v[0]?`( ${v[0]} ) `:"( site ) "}{v[1]} - <TimeAgoDisplay time={v[2]} /></a> )}
+	</div>
 }
