@@ -7,6 +7,15 @@ import { useEffect, useRef } from 'react';
 const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 const radio = 30;
 
+function isInsideOf(div, ev) {
+  let t = ev.target;
+  while (t) {
+    if (t === div) return true;
+    t = t.parentNode;
+  }
+  return false;
+}
+
 export const SwipeableDrawer = ({ children, ...props}) => {
 
     const handlebar = useRef();
@@ -19,7 +28,7 @@ export const SwipeableDrawer = ({ children, ...props}) => {
         const handleMenuOpen = ev => {
 
 			const isMouseEvent = ev.type.includes("mouse");
-			if( isMouseEvent ) ev.preventDefault();
+			if( isMouseEvent && isInsideOf(handlebar.current, ev) ) ev.preventDefault();
 			
 			 
             const x = ev.clientX ?? ev.changedTouches?.[0].clientX ?? ev.touches[0].clientX ;
