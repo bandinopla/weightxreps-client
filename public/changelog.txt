@@ -1,3 +1,7 @@
+- 2.36.1 : 2025-11-26
+		* Bug fix reported by @bartman : Delete goal button was visible for any user.
+		* Bug fix reported by @BillHolland and @JaHenAnn : On mobile it was impossible to click the text boxes and type of them.
+		
 - 2.36.0 : 2025-11-18
 		+ Added AI Chat. You can now hook ChatGPT, xAI or Ollama and ask questions about your training data. Thanks to @bartman for providing me with a test ApiKey for xAI which also let me test for OpenAI since it is compatible.
 		
