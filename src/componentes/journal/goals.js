@@ -114,7 +114,8 @@ const UserGoal = ({ goal, user, currentYMD }) => {
     const currentDate = ymd2date(currentYMD); 
     const [details, setDetails] = useState(false);
     const { data } = useGetSessionQuery()
-
+	const jowner                        = useContext(JOwnerContext);
+ 
     const endDate = new Date(goal.maxDate); 
                 
     const daysSinceStart = daysBetween(goal.creationDate, currentDate);
@@ -193,7 +194,7 @@ const UserGoal = ({ goal, user, currentYMD }) => {
                             
                             <Grid container spacing={1} direction="row-reverse">
 
-                                { data?.getSession?.user &&  <Grid item>
+                                { data?.getSession?.user?.id==jowner.id  &&  <Grid item>
                                                                 <DeleteGoalButton goalid={goal.id}/>
                                                             </Grid>}
                                 <Grid item>
