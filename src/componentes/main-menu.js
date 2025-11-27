@@ -33,6 +33,11 @@ import AndroidIcon from '@material-ui/icons/Android';
 import { useChangelog } from '../utils/useChangelog';
 import { AsciiSpinner } from './ascii-spinner';
 import { Alert } from '@material-ui/lab';
+
+const DiscordIcon = ()=>{
+    return <img src="/discord-icon-svgrepo-com.svg" width={24} height={24} alt="Discord" />
+}
+
 export const MENU = [
     { Icon:HomeIcon, goto:"/", label:"Home" },
     { Icon:SearchIcon, goto:"/explore", label:"Explore" },
@@ -40,7 +45,8 @@ export const MENU = [
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
     //{ Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
     //{ Icon:VideocamIcon, goto:"/videos", label:"Videos" },
-    { Icon:AndroidIcon, goto:"/ask-ai", label:"Ask the AI", fancy:true },
+    { Icon:DiscordIcon, goto:"https://discord.com/channels/1443510919614300222/", label:"Discord" },
+    { Icon:AndroidIcon, goto:"/ask-ai", label:"Ask the AI", fancy:true, fancyVariant:"secondary" },
     //{ Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
     { Icon:HelpIcon, goto:"/faq", label:"Help" },
     //{ Icon:FingerprintIcon, goto:"/about", label:"About" },
@@ -170,7 +176,7 @@ export const MainMenuDrawer = ()=>{
     const onClickButton = (btn,linkUrl) =>{
 
         btn.onPreClick && btn.onPreClick()
-        btn.onClick ? btn.onClick() : history.push( linkUrl )
+        btn.onClick ? btn.onClick() : linkUrl.startsWith("http")? window.open(linkUrl,"_blank") : history.push( linkUrl )
         setShow(false);
     }
 
@@ -187,7 +193,7 @@ export const MainMenuDrawer = ()=>{
 
                 return (<ListItem button key={i} selected={isSelected} 
                                     onClick={ ev=>onClickButton(btn, linkUrl)} 
-                                    className={(btn.sessionMenuStart? cls.firstSession: "") +" " + (btn.fancy?" fancy sha spaceBelow": "")+ (btn.addClass?" "+btn.addClass(cls):"")}>
+                                    className={(btn.sessionMenuStart? cls.firstSession: "") +" " + (btn.fancy?` fancy ${btn.fancyVariant??""} sha spaceBelow`: "")+ (btn.addClass?" "+btn.addClass(cls):"")}>
                             <ListItemIcon><btn.Icon/></ListItemIcon>
                             <ListItemText color='primary' primary={  btn.wrap? btn.wrap(label) : label } />
                         </ListItem>)})}

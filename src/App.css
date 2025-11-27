@@ -193,6 +193,14 @@ animation: rainbowSlide 2s linear infinite;
   padding-left: 20px;
   padding-right: 20px;
 }
+.fancy.secondary {
+  background: linear-gradient(
+      15deg,
+      #00aeff,
+	  #1555aa
+    )
+    no-repeat;	
+}
 .MuiButton-root.fancy:hover {
     background-size: 320%;
     background-position: right center;
