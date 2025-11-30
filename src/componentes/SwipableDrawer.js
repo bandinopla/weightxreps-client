@@ -31,7 +31,7 @@ export const SwipeableDrawer = ({ children, ...props}) => {
 			if( isMouseEvent && isInsideOf(handlebar.current, ev) ) ev.preventDefault();
 			
 			 
-            const x = ev.clientX ?? ev.changedTouches?.[0].clientX ?? ev.touches[0].clientX ;
+            const x = ev.clientX ?? ev.changedTouches?.[0]?.clientX ?? ev.touches?.[0]?.clientX ;
 
             if( startX<0 ) {
                 startX = x;
