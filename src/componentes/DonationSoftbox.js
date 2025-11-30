@@ -24,7 +24,7 @@ export const DonationSoftbox = ({ location: {pathname}})=>{
         return <SupporterStatusSoftbox days={user.session?.user.sleft}/>
     }
 
-    return <SoftBox style={{ border:"1px dotted #cc3f47", fontSize:"1.2em"}}>
+    return <SoftBox style={{ border:"1px dotted #cc3f47", fontSize:"1.2em"}} extraClasses="fancyBorder">
                 <strong>Support us!</strong> Donate any amount to help us stay alive! 
                 <SoftSpace/>
                 <Button className="fancy" startIcon={<FavoriteBorderIcon className="pulse"/>} onClick={()=>history.push("/donate")}>Donate</Button>

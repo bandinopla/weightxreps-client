@@ -323,3 +323,43 @@ animation: rainbowSlide 2s linear infinite;
     font-weight: 400;
     font-style: normal;
   }
+
+  .fancyBorder {
+	position: relative;
+	margin: 10px;
+  }
+
+  @property --rotate {
+	syntax: "<angle>";
+	initial-value: 0deg;
+	inherits: false;
+  }
+  
+  /* coll effect: https://www.youtube.com/watch?v=ezP4kbOvs_E */
+  .fancyBorder::after, .fancyBorder::before{
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 100%; 
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	z-index: -1;
+	padding:3px !important;
+	box-sizing: content-box;
+	border-radius: inherit;
+	background-image: conic-gradient(from var(--rotate), transparent 60%,  #e7194c );
+	animation: rotateBg 4s linear infinite;
+  }
+  .fancyBorder::before {
+	filter: blur(0.8rem);
+	opacity: 0.5;
+  }
+  @keyframes rotateBg {
+	from {
+		--rotate: 0deg;
+	  }
+	  to {
+		--rotate: 360deg;
+	  }
+	}
