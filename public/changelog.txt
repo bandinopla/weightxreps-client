@@ -1,3 +1,8 @@
+- 2.37.0 : 2025-12-01
+		+ Added AI Review. EXPERIMENTAL: an AI will sometimes review recent workouts from active users.
+		* fix bug when retrieving clientX on close on mobile.
+		* add fancy border to donate button to make ip pop and hopefully make people say "Yea!, I'll donate!"
+		
 - 2.36.1 : 2025-11-26
 		* Bug fix reported by @bartman : Delete goal button was visible for any user.
 		* Bug fix reported by @BillHolland and @JaHenAnn : On mobile it was impossible to click the text boxes and type of them.
