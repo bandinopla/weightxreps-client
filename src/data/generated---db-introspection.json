@@ -35,6 +35,7 @@
       "LikeOnJComment"
     ],
     "IHasText": [
+      "AIReview",
       "DM",
       "ForumLike",
       "ForumNotification",
@@ -48,6 +49,7 @@
       "JComment"
     ],
     "INotification": [
+      "AIReview",
       "DM",
       "ForumLike",
       "ForumNotification",
@@ -76,6 +78,7 @@
       "UTagValue"
     ],
     "Notification": [
+      "AIReview",
       "DM",
       "ForumLike",
       "ForumNotification",

@@ -25,6 +25,14 @@ export type Scalars = {
   YYYYMMDD: any;
 };
 
+export type AiReview = IHasText & INotification & {
+  __typename?: 'AIReview';
+  id: Scalars['ID'];
+  logYMD: Scalars['YMD'];
+  text: Scalars['String'];
+  when: Scalars['UTCDate'];
+};
+
 /** A generic thing that was achieved.  */
 export type Achievement = {
   __typename?: 'Achievement';
@@ -805,7 +813,7 @@ export type MutationVerifySignupArgs = {
   code: Scalars['String'];
 };
 
-export type Notification = Dm | ForumLike | ForumNotification | JComment | LikeOnDm | LikeOnJComment | LikeOnLog | StartedFollowing | SystemNotification;
+export type Notification = AiReview | Dm | ForumLike | ForumNotification | JComment | LikeOnDm | LikeOnJComment | LikeOnLog | StartedFollowing | SystemNotification;
 
 export enum OAuthAction {
   Error = 'ERROR',
@@ -871,6 +879,8 @@ export type Query = {
   getActiveSupporters?: Maybe<Array<Maybe<Supporter>>>;
   /** Returns the activity of the users that fall in the context of `type`  */
   getActivityFeed?: Maybe<Array<Maybe<UCard>>>;
+  /** Get the AI review for a particular log */
+  getAiReview?: Maybe<AiReview>;
   getAllPublicInteractionsInbox?: Maybe<Inbox>;
   getAnnouncements?: Maybe<Array<Maybe<SystemNotification>>>;
   /** Returns the info to be used by the calendar UI to show the dates */
@@ -941,6 +951,11 @@ export type QueryGetActivityFeedArgs = {
   newerThan?: InputMaybe<Scalars['UTCDate']>;
   olderThan?: InputMaybe<Scalars['UTCDate']>;
   type: ActivityFeedType;
+};
+
+
+export type QueryGetAiReviewArgs = {
+  logid: Scalars['ID'];
 };
 
 
@@ -1620,6 +1635,8 @@ export type DeleteGoalMutationVariables = Exact<{
 
 export type DeleteGoalMutation = { __typename?: 'Mutation', deleteGoal?: boolean | null };
 
+type NotificationFields_AiReview_Fragment = { __typename: 'AIReview', id: string, when: any, text: string, logYMD: any };
+
 type NotificationFields_Dm_Fragment = { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null };
 
 type NotificationFields_ForumLike_Fragment = { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, dislike?: boolean | null, postId: string };
@@ -1638,7 +1655,7 @@ type NotificationFields_StartedFollowing_Fragment = { __typename: 'StartedFollow
 
 type NotificationFields_SystemNotification_Fragment = { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null };
 
-export type NotificationFieldsFragment = NotificationFields_Dm_Fragment | NotificationFields_ForumLike_Fragment | NotificationFields_ForumNotification_Fragment | NotificationFields_JComment_Fragment | NotificationFields_LikeOnDm_Fragment | NotificationFields_LikeOnJComment_Fragment | NotificationFields_LikeOnLog_Fragment | NotificationFields_StartedFollowing_Fragment | NotificationFields_SystemNotification_Fragment;
+export type NotificationFieldsFragment = NotificationFields_AiReview_Fragment | NotificationFields_Dm_Fragment | NotificationFields_ForumLike_Fragment | NotificationFields_ForumNotification_Fragment | NotificationFields_JComment_Fragment | NotificationFields_LikeOnDm_Fragment | NotificationFields_LikeOnJComment_Fragment | NotificationFields_LikeOnLog_Fragment | NotificationFields_StartedFollowing_Fragment | NotificationFields_SystemNotification_Fragment;
 
 export type GetInboxQueryVariables = Exact<{
   olderThan?: InputMaybe<Scalars['UTCDate']>;
@@ -1647,7 +1664,7 @@ export type GetInboxQueryVariables = Exact<{
 }>;
 
 
-export type GetInboxQuery = { __typename?: 'Query', getInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, dislike?: boolean | null, postId: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, isMention?: boolean | null, postId: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
+export type GetInboxQuery = { __typename?: 'Query', getInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'AIReview', id: string, when: any, text: string, logYMD: any } | { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, dislike?: boolean | null, postId: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, isMention?: boolean | null, postId: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type GetNotificationsQueryVariables = Exact<{
   olderThan?: InputMaybe<Scalars['UTCDate']>;
@@ -1655,7 +1672,7 @@ export type GetNotificationsQueryVariables = Exact<{
 }>;
 
 
-export type GetNotificationsQuery = { __typename?: 'Query', getNotifications?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, dislike?: boolean | null, postId: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, isMention?: boolean | null, postId: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
+export type GetNotificationsQuery = { __typename?: 'Query', getNotifications?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'AIReview', id: string, when: any, text: string, logYMD: any } | { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string, isGlobal?: boolean | null } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, dislike?: boolean | null, postId: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string, forumSlug: string, threadId: string, threadSlug: string, isMention?: boolean | null, postId: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type GetAnnouncementsQueryVariables = Exact<{
   olderThan?: InputMaybe<Scalars['UTCDate']>;
@@ -1750,6 +1767,13 @@ export type DownloadLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type DownloadLogsQuery = { __typename?: 'Query', downloadLogs?: { __typename?: 'JEditorData', etags: Array<string | null>, baseBW?: number | null, exercises: Array<{ __typename?: 'ExerciseStat', days: number, reps: number, e: { __typename?: 'Exercise', id: string, name: string, type?: string | null } } | null>, utags?: Array<{ __typename?: 'UTag', id?: string | null, name: string } | null> | null, did?: Array<{ __typename?: 'JEditorBWTag', bw?: number | null } | { __typename?: 'JEditorDayTag', on: any } | { __typename?: 'JEditorEBlock', e?: number | null, sets?: Array<{ __typename?: 'JEditorEROW', usebw?: number | null, v?: number | null, c?: string | null, s?: number | null, r?: number | null, lb?: number | null, rpe?: number | null, t?: number | null, d?: number | null, dunit?: string | null, type?: number | null } | null> | null } | { __typename?: 'JEditorNewExercise' } | { __typename?: 'JEditorText', text?: string | null } | { __typename?: 'UTagValue', tagid: string, type: string, value: string } | null> | null } | null };
 
+export type GetAiReviewQueryVariables = Exact<{
+  logid: Scalars['ID'];
+}>;
+
+
+export type GetAiReviewQuery = { __typename?: 'Query', getAiReview?: { __typename?: 'AIReview', id: string, logYMD: any, text: string, when: any } | null };
+
 export type GetFollowersQueryVariables = Exact<{
   of: Scalars['ID'];
   has?: InputMaybe<Scalars['ID']>;
@@ -1822,7 +1846,7 @@ export type GetLogInboxQueryVariables = Exact<{
 }>;
 
 
-export type GetLogInboxQuery = { __typename?: 'Query', getLogInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
+export type GetLogInboxQuery = { __typename?: 'Query', getLogInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'AIReview', id: string, when: any, text: string } | { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type GetPublicInteractionsInboxQueryVariables = Exact<{
   olderThan?: InputMaybe<Scalars['UTCDate']>;
@@ -1830,7 +1854,7 @@ export type GetPublicInteractionsInboxQueryVariables = Exact<{
 }>;
 
 
-export type GetPublicInteractionsInboxQuery = { __typename?: 'Query', getAllPublicInteractionsInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
+export type GetPublicInteractionsInboxQuery = { __typename?: 'Query', getAllPublicInteractionsInbox?: { __typename?: 'Inbox', referencedUsers?: Array<{ __typename?: 'User', id: string, avatarhash: string, joined?: string | null, private?: number | null, uname: string, cc?: string | null, isf?: number | null, sok?: number | null, slvl?: number | null, forumRole?: ForumRoleKey | null }> | null, notifications?: Array<{ __typename: 'AIReview', id: string, when: any, text: string } | { __typename: 'DM', id: string, when: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'ForumLike', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'ForumNotification', id: string, when: any, jowner: string, ymd: any, by: string, to: string, text: string } | { __typename: 'JComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, inResponseTo?: string | null, inResponseToMsg?: string | null, text: string } | { __typename: 'LikeOnDM', id: string, when: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnJComment', id: string, when: any, jowner: string, ymd: any, by: string, to: string, msgid: string, text: string } | { __typename: 'LikeOnLog', id: string, when: any, jowner: string, ymd: any, by: string } | { __typename: 'StartedFollowing', id: string, when: any, by: string, to: string } | { __typename: 'SystemNotification', id: string, when: any, text: string, variant?: SystemNotificationType | null }> | null } | null };
 
 export type SearchQueryVariables = Exact<{
   query: Scalars['String'];
@@ -2121,6 +2145,9 @@ export const NotificationFieldsFragmentDoc = gql`
   ... on ForumNotification {
     isMention
     postId
+  }
+  ... on AIReview {
+    logYMD
   }
 }
     `;
@@ -3884,6 +3911,44 @@ export function useDownloadLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type DownloadLogsQueryHookResult = ReturnType<typeof useDownloadLogsQuery>;
 export type DownloadLogsLazyQueryHookResult = ReturnType<typeof useDownloadLogsLazyQuery>;
 export type DownloadLogsQueryResult = Apollo.QueryResult<DownloadLogsQuery, DownloadLogsQueryVariables>;
+export const GetAiReviewDocument = gql`
+    query GetAiReview($logid: ID!) {
+  getAiReview(logid: $logid) {
+    id
+    logYMD
+    text
+    when
+  }
+}
+    `;
+
+/**
+ * __useGetAiReviewQuery__
+ *
+ * To run a query within a React component, call `useGetAiReviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAiReviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAiReviewQuery({
+ *   variables: {
+ *      logid: // value for 'logid'
+ *   },
+ * });
+ */
+export function useGetAiReviewQuery(baseOptions: Apollo.QueryHookOptions<GetAiReviewQuery, GetAiReviewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAiReviewQuery, GetAiReviewQueryVariables>(GetAiReviewDocument, options);
+      }
+export function useGetAiReviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAiReviewQuery, GetAiReviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAiReviewQuery, GetAiReviewQueryVariables>(GetAiReviewDocument, options);
+        }
+export type GetAiReviewQueryHookResult = ReturnType<typeof useGetAiReviewQuery>;
+export type GetAiReviewLazyQueryHookResult = ReturnType<typeof useGetAiReviewLazyQuery>;
+export type GetAiReviewQueryResult = Apollo.QueryResult<GetAiReviewQuery, GetAiReviewQueryVariables>;
 export const GetFollowersDocument = gql`
     query GetFollowers($of: ID!, $has: ID) {
   getFollowersCount(uid: $of, has: $has) {

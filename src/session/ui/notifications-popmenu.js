@@ -15,6 +15,7 @@ import Alert from '@material-ui/lab/Alert';
 import {  useGetSession, useReactiveSetting } from "../session-handler";
 import ForumNotificationItem from "./notifications-popmenu-items/ForumNotificationItem";
 import ForumLikeNotificationItem from "./notifications-popmenu-items/ForumLikeNotificationItem";
+import { AIReviewNotificationItem } from "./notifications-popmenu-items/AIReviewNotificationItem";
 
  
 const useStyles = makeStyles((theme) => ({
@@ -193,6 +194,10 @@ export default function NotificationsPopMenu({ type }) {
                                     case "ForumNotification":
                                         element = <ForumNotificationItem data={msg} myId={myID}/>;
                                         break; 
+
+									case "AIReview":
+										element = <AIReviewNotificationItem data={msg} myId={myID}/>;
+										break;
  
                                     default:  
                                         element = "---?? "+msg.__typename +" ??---";

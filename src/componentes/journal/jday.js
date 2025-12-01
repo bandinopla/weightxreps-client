@@ -24,6 +24,7 @@ import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import { Custom1RMFactorChip } from "./custom-1rm-factor-chip";
 import { JDayStats } from './jday-stats';
 import { CreateGoalButton, UserGoals } from './goals';
+import { AIReview } from './ai-review';
  
 
 
@@ -96,7 +97,7 @@ export const JDay = ()=>{
             </div>
 
 
-
+			<AIReview logid={data.jday.id}/>
             { data.jday!=null && <Box marginTop={5} marginBottom={5}><JComments logid={data.jday.id}/></Box> }
  
         </JDayContext.Provider>
