@@ -284,7 +284,7 @@ export const useInbox = ( type, uid, SETTINGS ) =>{
 
             let itmDate = new Date( item.when ); 
 
-            let isUnseen = (!lastSeenDate || lastSeenDate<itmDate) && ( item.by!=null && (item.by.id!=uid) );  
+            let isUnseen = (!lastSeenDate || lastSeenDate<itmDate) && (item.__typename=="AIReview" || (item.by!=null && (item.by.id!=uid)) );  
     
             return { 
                 ...itm,
