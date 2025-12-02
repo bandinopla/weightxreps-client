@@ -45,7 +45,7 @@ export const MENU = [
     { Icon:LanguageIcon, goto:"/sbd-stats", label:"SBD Rank" },
     //{ Icon:GroupIcon, goto:"/forum", label:"Forum", addClass: classes => classes.forumBtn },
     //{ Icon:VideocamIcon, goto:"/videos", label:"Videos" },
-    { Icon:DiscordIcon, goto:"https://discord.com/channels/1443510919614300222/", label:"Discord" },
+    { Icon:DiscordIcon, goto:"https://discord.gg/2qAHAKqMKc", label:"Discord" },
     { Icon:AndroidIcon, goto:"/ask-ai", label:"Ask the AI", fancy:true, fancyVariant:"secondary" },
     //{ Icon:FavoriteBorderIcon, goto:"/donate", label:"Donate" },
     { Icon:HelpIcon, goto:"/faq", label:"Help" },

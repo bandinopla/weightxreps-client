@@ -97,7 +97,7 @@ export const JDay = ()=>{
             </div>
 
 
-			<AIReview logid={data.jday.id}/>
+			{ data.jday?.id && <AIReview logid={data.jday.id}/> }
             { data.jday!=null && <Box marginTop={5} marginBottom={5}><JComments logid={data.jday.id}/></Box> }
  
         </JDayContext.Provider>

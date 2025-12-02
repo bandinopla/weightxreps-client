@@ -1,3 +1,7 @@
+- 2.37.1 : 2025-12-02
+		* fix: spotted by @jimr1603 , link to Discord was not an invitation link.
+		* bug fix: ai review component when there's no log data it was crashing.
+
 - 2.37.0 : 2025-12-01
 		+ Added AI Review. EXPERIMENTAL: an AI will sometimes review recent workouts from active users.
 		* fix bug when retrieving clientX on close on mobile.
