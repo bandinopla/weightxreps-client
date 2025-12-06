@@ -1,10 +1,8 @@
  
 
 import styles from "./AskPage.module.css"
-import { inProduction } from "../system-config"
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react" 
+import { useEffect, useMemo, useRef, useState } from "react" 
 import { useGetSession } from "../session/session-handler"
-import { AsciiSpinner } from "../componentes/ascii-spinner"
 import { exampleLog } from "../componentes/journal/editor-tutorial"
 import { ApiKey } from "./ApiKey"
 import { $openModal } from "../componentes/Dialog"
@@ -12,7 +10,7 @@ import { ClientConfigForm } from "./ClientConfigForm"
 import { LinearProgress } from "@material-ui/core" 
 import { Alert } from "@material-ui/lab"
 
-const IFRAME_URL = inProduction? "https://ai.weightxreps.net":"http://localhost:5173"
+const IFRAME_URL = process.env.REACT_APP_AIHOST; 
 
 /** @type {Map<string, ApiKey>} */
 const akey = new Map()

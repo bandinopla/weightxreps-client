@@ -24,7 +24,7 @@ import { JDayContentHeader, JDayHeaderSkeleton } from "./jday-header";
 import { Custom1RMFactorChip } from "./custom-1rm-factor-chip";
 import { JDayStats } from './jday-stats';
 import { CreateGoalButton, UserGoals } from './goals';
-import { AIReview } from './ai-review';
+import { AIReview } from '../../ai/ai-review';
  
 
 
