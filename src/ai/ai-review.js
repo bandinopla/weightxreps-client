@@ -12,8 +12,26 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { JOwnerContext } from '../pages/journal-context';
 import { useGetSession } from '../session/session-handler';
-const getMarked = () => import("https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js");
+ 
+let markedScript;
+const getMarked = ()=>{ 
+	if(!markedScript)
+	{
+		markedScript = new Promise((resolve, reject) => {
+		 
+			const script = document.createElement('script');
+		    script.src = "https://cdn.jsdelivr.net/npm/marked/lib/marked.js";
+		        
+		    document.body.appendChild(script);
+			 
 
+			script.onload = ()=>resolve(window.marked);
+		    script.onerror = ()=>resolve( null );
+			
+	    })
+	}
+    return markedScript; 
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,7 +99,8 @@ export function AIReview({ logid }){
  
 useEffect(() => {
   let alive = true;
-  getMarked().then(m => { if (alive) setParsed(() => data?.getAiReview?.text? m.marked.parse(data.getAiReview.text) : "" ); });
+  let review = data?.getAiReview?.text;
+  getMarked().then(marked => { if (alive) setParsed(() => review? marked?.parse(review) ?? review.replaceAll("\n","<br/>") : "??" ); });
   return () => { alive = false; };
 }, [data]);
 
