@@ -12,7 +12,8 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { JOwnerContext } from '../pages/journal-context';
 import { useGetSession } from '../session/session-handler';
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+const getMarked = () => import("https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js");
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,11 +76,14 @@ export function AIReview({ logid }){
   const [aiError, setAiError] = useState();
   const errorMessage = error || aiError;
   const isLoading = loading || !profiles;
-  const parsed = useMemo(()=>{
-	return data?.getAiReview?.text? marked.parse(data.getAiReview.text) : ""
-;  },[data])
+  const [parsed, setParsed] = useState(); 
  
  
+useEffect(() => {
+  let alive = true;
+  getMarked().then(m => { if (alive) setParsed(() => data?.getAiReview?.text? m.marked.parse(data.getAiReview.text) : "" ); });
+  return () => { alive = false; };
+}, [data]);
 
   useEffect(()=>{
 
