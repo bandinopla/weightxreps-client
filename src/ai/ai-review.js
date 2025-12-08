@@ -93,7 +93,7 @@ export function AIReview({ logid }){
   const [aiName, setAiName] = useState();
   const [aiError, setAiError] = useState();
   const errorMessage = error || aiError;
-  const isLoading = loading || !profiles;
+  const isLoading = loading || ( $profiles && !profiles );
   const [parsed, setParsed] = useState(); 
  
  
@@ -112,7 +112,7 @@ useEffect(() => {
 	if( data?.getAiReview )
 	{
 		if(!$profiles)
-		{
+		{ 
 			$profiles = fetch( process.env.REACT_APP_AIHOST+"/aiprofile/types.json" ).then( res=>res.json() );
 		}  
 
@@ -133,6 +133,11 @@ useEffect(() => {
 			}
 		}, err => {
 			if(unmounted) return;
+			err = err.toString();
+			if( err.includes('Failed to fetch') )
+			{
+				err = "Can't connect to the ai server at "+process.env.REACT_APP_AIHOST;
+			}
 			setAiError("Failed to load AI review due to: "+err.toString())
 		}) ;
 
@@ -140,7 +145,7 @@ useEffect(() => {
 			unmounted = true;
 		}
 
-	}
+	} 
 
   }, [ data ]);
  
