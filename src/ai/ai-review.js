@@ -8,10 +8,12 @@ import { useGetAiReviewQuery } from '../data/generated---db-types-and-hooks';
 import { Alert } from '@material-ui/lab';
 import { Button, LinearProgress } from '@material-ui/core';
 import { parseError } from '../data/db';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { JOwnerContext } from '../pages/journal-context';
 import { useGetSession } from '../session/session-handler';
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -36,11 +38,13 @@ const useStyles = makeStyles((theme) => ({
 	color:"white"
   },
   aiText: {
-	whiteSpace:"pre-line",
 	fontSize:"1.3em",
 	marginTop:10,
 	color:"cyan",
-	fontFamily:"monospace"
+	fontFamily:"monospace",
+	"& strong" : {
+		color:"white"
+	}
   },
   acl :{
 	borderTop:"1px dashed yellow",
@@ -71,6 +75,9 @@ export function AIReview({ logid }){
   const [aiError, setAiError] = useState();
   const errorMessage = error || aiError;
   const isLoading = loading || !profiles;
+  const parsed = useMemo(()=>{
+	return data?.getAiReview?.text? marked.parse(data.getAiReview.text) : ""
+;  },[data])
  
  
 
@@ -123,20 +130,20 @@ export function AIReview({ logid }){
   return (
     <Card className={classes.root} elevation={5}>
 
-		<CardMedia
+		{/* <CardMedia
         className={classes.cover} 
         title="Live from space album cover"
 		image={ aiImage ?? "/ai-bot.webp" }
       	>   
-		</CardMedia>
+		</CardMedia> */}
 
       <div className={classes.details}> 
         <CardContent className={classes.content}>
-          <Typography variant='h3' style={{ color:"#999"}}>
-            <strong><ChatIcon/> <span style={{ color:"yellow"}}>{aiName ?? "Generic Ai Bot"}</span>'s review: </strong>
+          <Typography variant='h3' style={{ color:"#999", display:"flex", alignItems:"center", gap:21}}>
+			<div style={{ width:100, height:100, flexShrink:0, backgroundImage:`url(${aiImage ?? "/ai-bot.webp"})`, backgroundSize:"cover", borderRadius:110}}></div>
+            <strong><ChatIcon style={{color:"white", width:40, height:40}}/> <span style={{ color:"yellow"}}>{aiName ?? "AI"}</span>'s review: </strong>
           </Typography>
-          <div className={classes.aiText+" mb20"}>
-            {data.getAiReview?.text ?? "???"}
+          <div className={classes.aiText+" mb20"} dangerouslySetInnerHTML={{__html:parsed}}>  
           </div> 
 		  {!aiName && (session?.user?.id==jowner.id)  && <Alert severity='info' action={<Button onClick={()=>window.open("/ask-ai","_self")} variant='outlined' startIcon={<SettingsIcon/>}>Configure personality</Button>}>
 			Using the <strong>Generic AI</strong>. Pick a <strong>Personality</strong> →→

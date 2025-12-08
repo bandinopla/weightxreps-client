@@ -1,3 +1,6 @@
+- 2.37.3 : 2025-12-08
+		* fix: AI Review box was deforming.Adjusted the UI layout a bit.
+		
 - 2.37.2 : 2025-12-02
 		* fix: AI Reviews were not being marked as "not seen" in the notifications inbox.
 
