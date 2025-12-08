@@ -150,7 +150,7 @@ useEffect(() => {
   }, [ data ]);
  
 
-  if( errorMessage ) return <Alert elevation={5} severity="error"><strong>Oops! Error:</strong> {parseError(errorMessage)}</Alert>;
+  if( errorMessage ) return <Alert elevation={5} severity="error" style={{ marginTop:20 }}><strong>Oops! Error:</strong> {parseError(errorMessage)}</Alert>;
 
   if( isLoading ) return <LinearProgress/>;
   if( !data.getAiReview ) return "";
