@@ -12,6 +12,8 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { JOwnerContext } from '../pages/journal-context';
 import { useGetSession } from '../session/session-handler';
+import { ToggleAIReviewButton } from './ToggleAIReviewButton';
+import { radia } from './radia';
  
 let markedScript;
 const getMarked = ()=>{ 
@@ -39,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 	backgroundColor:"#333",
 	border:"3px solid #222",
 	color:"white", 
+	marginTop:30,
+	position:"relative",
 	[theme.breakpoints.down("sm")]: { flexDirection:"column"}
   },
   details: {
@@ -75,9 +79,29 @@ const useStyles = makeStyles((theme) => ({
 
 let $profiles;
 
+export function AIReview({ logid }){
+	const [enabled, setEnabled] = useState(undefined);
+  	const { session } = useGetSession()
+  	const jowner = useContext(JOwnerContext);
+	const isOwner = (session?.user?.id==jowner.id);
+
+	useEffect(()=>{
+
+		radia.get("ai-reviews", { uid:jowner.id }).then( res => {
+			setEnabled(res.enabled)
+		})
+
+	}, [jowner]);
+
+	if( enabled===undefined ) return <LinearProgress/>;
+
+	if( enabled ) return <AIReviewWidget logid={logid}/>;
+
+	return <Alert elevation={3} severity='warning' action={isOwner?<ToggleAIReviewButton onEnabled={()=>setEnabled(1)}/>:null}>AI Reviews <strong>disabled</strong> by the user.</Alert>
+}
  
 
-export function AIReview({ logid }){
+export function AIReviewWidget({ logid }){
 
   const { session } = useGetSession()
   const jowner = useContext(JOwnerContext);
@@ -95,6 +119,7 @@ export function AIReview({ logid }){
   const errorMessage = error || aiError;
   const isLoading = loading || ( $profiles && !profiles );
   const [parsed, setParsed] = useState(); 
+  const isOwner = (session?.user?.id==jowner.id);
  
  
 useEffect(() => {
@@ -169,11 +194,12 @@ useEffect(() => {
         <CardContent className={classes.content}>
           <Typography variant='h3' style={{ color:"#999", display:"flex", alignItems:"center", gap:21}}>
 			<div style={{ width:100, height:100, flexShrink:0, backgroundImage:`url(${aiImage ?? "/ai-bot.webp"})`, backgroundSize:"cover", borderRadius:110}}></div>
-            <strong><ChatIcon style={{color:"white", width:40, height:40}}/> <span style={{ color:"yellow"}}>{aiName ?? "AI"}</span>'s review: </strong>
+            <strong><ChatIcon style={{color:"white", width:40, height:40}}/> <span style={{ color:"yellow"}}>{aiName ?? "AI"}</span>'s review: </strong>	
           </Typography>
           <div className={classes.aiText+" mb20"} dangerouslySetInnerHTML={{__html:parsed}}>  
           </div> 
-		  {!aiName && (session?.user?.id==jowner.id)  && <Alert severity='info' action={<Button onClick={()=>window.open("/ask-ai","_self")} variant='outlined' startIcon={<SettingsIcon/>}>Configure personality</Button>}>
+		  { isOwner && <ToggleAIReviewButton style={{  background:"white"}}/>}
+		  {!aiName && isOwner  && <Alert severity='info' action={<Button onClick={()=>window.open("/ask-ai","_self")} variant='outlined' startIcon={<SettingsIcon/>}>Configure personality</Button>}>
 			Using the <strong>Generic AI</strong>. Pick a <strong>Personality</strong> →→
 			</Alert>}
 		  <hr/>
