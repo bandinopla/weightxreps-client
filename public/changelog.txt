@@ -1,5 +1,6 @@
 - 2.37.4 : 2025-12-31
 		* fix: Reported by @bartman : The AI Reviews were not showing notifications. The query missed some parts.
+		* fix: Issue in calendar on "January" dates...
 		
 - 2.37.3 : 2025-12-08
 		* fix: AI Review box was deforming.Adjusted the UI layout a bit.

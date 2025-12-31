@@ -116,8 +116,8 @@ const YearOVerviewGrid = ({ ymd, range, daysData, onClickDay, focusOn, header, f
      */
     const calInfo = useMemo(()=>{ 
         
-        const d0 = new Date(Date.UTC(d.getFullYear(), 0, 1));
-        const dF = new Date(Date.UTC(d.getFullYear() + 1, 0, 0));
+        const d0 = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        const dF = new Date(Date.UTC(d.getUTCFullYear() + 1, 0, 0));
 
         d0.setUTCDate( d0.getUTCDate() - d0.getUTCDay() );
         dF.setUTCDate( dF.getUTCDate() + (6 - dF.getUTCDay()) );  
@@ -138,14 +138,21 @@ const YearOVerviewGrid = ({ ymd, range, daysData, onClickDay, focusOn, header, f
 
             if( i%7 == 0 ) //first row
             { 
-                const monthNum = day.getUTCMonth();
+                let monthNum = day.getUTCMonth();
+				let monthD = day;
+				
+				if( day.getUTCFullYear()<d.getUTCFullYear())
+				{
+					monthNum = 0;
+					monthD = d;
+				}
     
                 if(!lastMonth || (lastMonth.num != monthNum) )
                 {
                     lastMonth = {
                         num: monthNum,
                         count: 0,
-                        name: day.toUTCString().split(" ")[2] 
+                        name: monthD.toUTCString().split(" ")[2] 
                     }
     
                     months.push(lastMonth);
