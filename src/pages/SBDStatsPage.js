@@ -49,15 +49,20 @@ export default function SBDStatsPage() {
             rawValue 
         }
 
-        if( (m = rawValue.match(/^\s*(\d+(?:\.\d+)?)\s*(?:x\s*(\d+))?\s*(?:@\s*(\d+(?:\.\d+)?))?\s*$/)) )
+		 
+        if( (m = rawValue.match(/^\s*(\d+(?:\.\d+)?)\s*(kg|lbs?)?\s*(?:x\s*(\d+))?\s*(?:@\s*(\d+(?:\.\d+)?)\s*(kg|lbs?)?)?\s*$/)) )
         { 
             /*
             m[1] = el peso
-            m[2] = las reps
-            m[3] = el BW
-            */
-            let reps    = m[2]? parseFloat(m[2]) : 1;
+            m[2] = el wunit
+            m[3] = las reps
+            m[4] = el BW
+            m[5] = el BW wunit
+            */ 
+            let reps    = m[3]? parseFloat(m[3]) : 1;
             let weight  = parseFloat(m[1]);
+			let inlbs = m[2]?.startsWith("lb") ;
+			 
 
             if( reps>12 )
             {
@@ -78,8 +83,10 @@ export default function SBDStatsPage() {
                 sbdCopy[lift] = {  
                     ...base,
                     weight  , 
+					inlbs ,
                     estimated   : reps>1,
-                    bw          : m[3]? parseFloat(m[3]) : 0
+                    bw          : m[4]? parseFloat(m[4]) : 0,
+					bwInLbs     : m[5]?.startsWith("lb") 
                 }; 
             } 
             
@@ -133,7 +140,7 @@ export default function SBDStatsPage() {
                     wClassNames     : [],
 
                     //el peso "referencia" sobre el cual calcular el puntaje... en KG
-                    wRef            : sbd?.weight>0? useLbs? sbd.weight*LBS2KG : sbd.weight : 0, // tienen que ser menor a esto...
+                    wRef            : sbd?.weight>0? ( sbd.inlbs ?? useLbs ) ? sbd.weight*LBS2KG : sbd.weight : 0, // tienen que ser menor a esto...
                     refIsBestThan   : 0 ,
                     totalLifts      : 0 , 
                     gender          // 0 all  1 male  2 female
@@ -146,8 +153,9 @@ export default function SBDStatsPage() {
         series.forEach( serie=>{
 
             let bw = serie.params?.bw || 0;
+			const bwUsesLbs = serie.params?.bwInLbs;
 
-            if( bw && useLbs )
+            if( bw && ( bwUsesLbs ?? useLbs) )
             {
                 bw *= LBS2KG; //esta escrito en LBs...
             }
@@ -301,6 +309,7 @@ const CatChart = ({ series, inlbs }) => {
     //const graphData = useMemo( ()=>data.graph.map( (values,i)=>({ weight:i*5, squats:values[0], benches:values[1], deadlifts:values[2] }) ), [data]);
 
     const getWeight = (data)=>inlbs? data.weight*2.204623 : data.weight;
+ 
      
     return <div style={{padding:10, margin:10 }}>
          
@@ -322,8 +331,8 @@ const CatChart = ({ series, inlbs }) => {
                      <div style={{ fontSize:"1.3em"}}> 
 
                                             { serie.params?.estimated? "~" : ""}
-                                            { serie.params?.weight>0 && <strong><WeightValue inkg={inlbs?0:1} value={ serie.params.weight*(inlbs? LBS2KG : 1) }/></strong> }
-                                            { serie.params?.bw>0 && <> @ <strong>{serie.params.bw}</strong></>}
+                                            { serie.params?.weight>0 && <strong><WeightValue inkg={serie.params.inlbs ?? inlbs?0:1} value={ serie.params.weight*(serie.params.inlbs ?? inlbs? LBS2KG : 1) }/></strong> }
+                                            { serie.params?.bw>0 && <> @ <strong><WeightValue inkg={serie.params.bwInLbs ?? inlbs?0:1} value={serie.params.bw*(serie.params.bwInLbs ?? inlbs? LBS2KG : 1)} /></strong></>}
 
 
                                             { !serie.params?.bw && <Chip size="small" label={ "Any "+ (serie.gender>0? serie.gender==1? "Male":"Female" : "") +" class" } variant="outlined" style={{ marginLeft:10}}/>  }

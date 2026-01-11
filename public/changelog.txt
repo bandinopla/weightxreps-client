@@ -1,3 +1,6 @@
+- 2.37.5 : 2026-01-11
+		* fix: Reported by @bartman : the sbd-stats sections was ignoring weight unit on the input fields when you added kg or lbs.
+
 - 2.37.4 : 2025-12-31
 		* fix: Reported by @bartman : The AI Reviews were not showing notifications. The query missed some parts.
 		* fix: Issue in calendar on "January" dates...
